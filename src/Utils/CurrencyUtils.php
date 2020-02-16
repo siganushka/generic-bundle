@@ -12,16 +12,16 @@ class CurrencyUtils
             'divisor' => 100,
             'decimals' => 2,
             'dec_point' => '.',
-            'thousands_sep' => ','
+            'thousands_sep' => ',',
         ], $options);
     }
 
     /**
-     * 格式化货币，单位：分
+     * 格式化货币，单位：分.
      *
-     * @param integer|null $amount  货币金额
-     * @param integer $decimals     小数位数
-     * @param integer $divisor      进位模式
+     * @param int|null $amount   货币金额
+     * @param int      $decimals 小数位数
+     * @param int      $divisor  进位模式
      *
      * @return string
      */

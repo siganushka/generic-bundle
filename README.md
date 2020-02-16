@@ -2,17 +2,13 @@
 
 > 尝试性项目，请勿在生产环境中使用。
 
-### step 1
-
-install bundle
+### 1、install bundle
 
 ```php
 $ composer require siganushka/generic-bundle:dev-master
 ```
 
-### step 2
-
-register bundle for kernel
+### 2、register bundle for kernel
 
 ```php
 // ./src/bundles.php
