@@ -12,9 +12,27 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder('siganushka_generic');
         $rootNode = $treeBuilder->getRootNode();
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+        $rootNode
+            ->children()
+                ->scalarNode('table_prefix')
+                    ->defaultValue('app_')
+                    ->validate()
+                        ->ifTrue(function ($v) {
+                            if (null === $v) {
+                                return false;
+                            }
+
+                            if (!\is_string($v)) {
+                                return true;
+                            }
+
+                            return !preg_match('/^[a-zA-Z0-9_]+$/', $v);
+                        })
+                        ->thenInvalid('Table prefix "%s" contains illegal character(s)')
+                    ->end()
+                ->end()
+            ->end()
+        ;
 
         return $treeBuilder;
     }

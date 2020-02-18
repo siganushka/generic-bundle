@@ -2,6 +2,7 @@
 
 namespace Siganushka\GenericBundle\DependencyInjection;
 
+use Siganushka\GenericBundle\Doctrine\EventListener\TablePrefixListener;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -14,9 +15,14 @@ class SiganushkaGenericExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('generic.yaml');
 
-        // $configuration = new Configuration();
-        // $config = $this->processConfiguration($configuration, $configs);
+        $configuration = new Configuration();
+        $config = $this->processConfiguration($configuration, $configs);
 
-        // dd($config);
+        if (null === $config['table_prefix']) {
+            $container->removeDefinition(TablePrefixListener::class);
+        } else {
+            $container->findDefinition(TablePrefixListener::class)
+                ->setArgument(0, $config['table_prefix']);
+        }
     }
 }
