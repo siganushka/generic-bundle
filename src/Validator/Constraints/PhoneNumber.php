@@ -9,8 +9,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class PhoneNumber extends Constraint
 {
-    public $lengthMessage = 'This value should have exactly {{ length }} character.';
-    public $invalidMessage = 'This value is not valid.';
+    public $invalidMessage = 'This phone number is not valid.';
 
     public function validatedBy()
     {

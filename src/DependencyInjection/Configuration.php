@@ -15,7 +15,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('table_prefix')
-                    ->defaultValue('app_')
+                    ->defaultNull()
                     ->validate()
                         ->ifTrue(function ($v) {
                             if (null === $v) {
