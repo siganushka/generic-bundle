@@ -3,11 +3,14 @@
 namespace Siganushka\GenericBundle\Model;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 trait EnableTrait
 {
     /**
      * @ORM\Column(type="boolean")
+     *
+     * @Groups({"enable"})
      */
     private $enabled;
 

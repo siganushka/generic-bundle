@@ -2,15 +2,22 @@
 
 namespace Siganushka\GenericBundle\Model;
 
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 trait TimestampableTrait
 {
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @Groups({"timestampable"})
      */
     private $updatedAt;
 
     /**
      * @ORM\Column(type="datetime_immutable")
+     *
+     * @Groups({"timestampable"})
      */
     private $createdAt;
 

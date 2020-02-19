@@ -3,6 +3,7 @@
 namespace Siganushka\GenericBundle\Model;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 trait ResourceTrait
 {
@@ -10,6 +11,8 @@ trait ResourceTrait
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     *
+     * @Groups({"resource"})
      */
     private $id;
 
