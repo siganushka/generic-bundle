@@ -12,3 +12,7 @@ services:
         tags:
             - { name: doctrine.event_listener, event: prePersist }
             - { name: doctrine.event_listener, event: preUpdate }
+
+    Siganushka\GenericBundle\Validator\Constraints\UniqueFieldValidator:
+        tags: [ 'validator.constraint_validator' ]
+        arguments: [ '@doctrine' ]
