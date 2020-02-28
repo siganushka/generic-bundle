@@ -15,7 +15,7 @@ class Semver extends Constraint
 
     public function __construct($options = null)
     {
-        if (class_exists(VersionParser::class)) {
+        if (!class_exists(VersionParser::class)) {
             throw new LogicException('The semantic version is required to use the Semver constraint. Try running "composer require composer/semver".');
         }
 
