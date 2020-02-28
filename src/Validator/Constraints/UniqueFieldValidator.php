@@ -58,7 +58,7 @@ class UniqueFieldValidator extends ConstraintValidator
         }
 
         $this->context->buildViolation($constraint->message)
-            ->setParameter('{{ value }}', $value)
+            ->setParameter('{{ value }}', $this->formatValue($value))
             ->setInvalidValue($value)
             ->setCause($result)
             ->addViolation();

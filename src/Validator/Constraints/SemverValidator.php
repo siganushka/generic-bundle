@@ -2,17 +2,18 @@
 
 namespace Siganushka\GenericBundle\Validator\Constraints;
 
+use Composer\Semver\VersionParser;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
-class PhoneNumberValidator extends ConstraintValidator
+class SemverValidator extends ConstraintValidator
 {
     public function validate($value, Constraint $constraint)
     {
-        if (!$constraint instanceof PhoneNumber) {
-            throw new UnexpectedTypeException($constraint, PhoneNumber::class);
+        if (!$constraint instanceof Semver) {
+            throw new UnexpectedTypeException($constraint, Semver::class);
         }
 
         if (null === $value || '' === $value) {
@@ -25,7 +26,9 @@ class PhoneNumberValidator extends ConstraintValidator
 
         $value = (string) $value;
 
-        if (!preg_match('/^[1]([3-9])[0-9]{9}$/', $value)) {
+        try {
+            (new VersionParser())->normalize($value);
+        } catch (\UnexpectedValueException $th) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $this->formatValue($value))
                 ->addViolation();

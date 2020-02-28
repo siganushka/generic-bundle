@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class UniqueField extends Constraint
 {
-    public $message = 'The value "{{ value }}" is already used.';
+    public $message = 'This value is already used.';
     public $em = null;
     public $entityClass = null;
     public $field = null;

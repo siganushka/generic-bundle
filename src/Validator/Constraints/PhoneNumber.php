@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class PhoneNumber extends Constraint
 {
-    public $invalidMessage = 'The phone number is not valid.';
+    public $message = 'This value is not a valid phone number.';
 
     public function validatedBy()
     {
