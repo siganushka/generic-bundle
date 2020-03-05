@@ -16,7 +16,7 @@ trait ResourceTrait
      */
     private $id;
 
-    public function getId(): ?string
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -26,7 +26,7 @@ trait ResourceTrait
         return null === $this->id;
     }
 
-    public function isEqual(?ResourceInterface $target): bool
+    public function isEqualTo(?ResourceInterface $target): bool
     {
         if (null === $target) {
             return false;
