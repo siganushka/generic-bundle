@@ -1,6 +1,6 @@
 {
     "name": "siganushka/generic-bundle",
-    "description": "Generic bundle for symfony",
+    "description": "Generic bundle for symfony.",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -13,7 +13,8 @@
         "doctrine/orm": "^2.7",
         "symfony/framework-bundle": "^3.4|^4.0|^5.0",
         "symfony/serializer": "^3.4|^4.0|^5.0",
-        "symfony/validator": "^3.4|^4.0|^5.0"
+        "symfony/validator": "^3.4|^4.0|^5.0",
+        "phpunit/phpunit": "^9.0"
     },
     "autoload": {
         "psr-4": {
