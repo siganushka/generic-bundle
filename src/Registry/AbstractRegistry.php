@@ -23,6 +23,11 @@ abstract class AbstractRegistry implements RegistryInterface
      */
     protected $services = [];
 
+    /**
+     * Abstraction interface for construct.
+     *
+     * @throws AbstractionNotFoundException
+     */
     public function __construct(string $abstraction)
     {
         if (!interface_exists($abstraction)) {
