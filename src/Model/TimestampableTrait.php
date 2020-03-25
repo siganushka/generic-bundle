@@ -38,7 +38,7 @@ trait TimestampableTrait
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt)
+    public function setCreatedAt(?\DateTimeImmutable $createdAt)
     {
         $this->createdAt = $createdAt;
 

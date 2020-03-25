@@ -19,7 +19,7 @@ trait EnableTrait
         return $this->enabled;
     }
 
-    public function setEnabled(bool $enabled)
+    public function setEnabled(?bool $enabled)
     {
         $this->enabled = $enabled;
 
