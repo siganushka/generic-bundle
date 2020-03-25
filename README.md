@@ -230,20 +230,17 @@ class ChannelRegistry extends AbstractRegistry
         parent::__construct(ChannelInterface::class);
     }
 }
+```
 
-// $registry = new ChannelRegistry();
-// $registry->register(new FooChannel());
-// $registry->register(new BarChannel());
+```php
+$registry = new ChannelRegistry();
+$registry->register(new FooChannel());
+$registry->register(new BarChannel());
 
-// ...
-
-// $registry->get(FooChannel::class); 	// return instanceof FooChannel
-// $registry->has(BarChannel::class); 	// return true
-// $registry->all(); 					// return array of instanceof FooChannel
-// $registry->keys(); 					// return [
-                                        //  'App\Channel\FooChannel',
-                                        //  'App\Channel\BarChannel'
-                                        // ]
+$registry->get(FooChannel::class);  // return instanceof FooChannel
+$registry->has(BarChannel::class);  // return true
+$registry->all(); 				    // return array of instanceof FooChannel
+$registry->keys(); 				    // return ['App\Channel\FooChannel', 'App\Channel\BarChannel']
 ```
 
 具有别名 `alias` 的注册器模式
@@ -281,16 +278,12 @@ class BarChannel implements ChannelInterface, AliasableServiceInterface
 ```
 
 ```php
-// ./src/Channel/ChannelRegistry.php
+$registry = new ChannelRegistry();
+$registry->register(new FooChannel());
+$registry->register(new BarChannel());
 
-// $registry = new ChannelRegistry();
-// $registry->register(new FooChannel());
-// $registry->register(new BarChannel());
-
-// ...
-
-// $registry->get('foo'); 	// return instanceof FooChannel
-// $registry->has('bar'); 	// return true
-// $registry->all(); 		// return array of instanceof FooChannel
-// $registry->keys(); 		// return ['foo', 'bar']
+$registry->get('foo'); 	// return instanceof FooChannel
+$registry->has('bar'); 	// return true
+$registry->all(); 		// return array of instanceof FooChannel
+$registry->keys(); 		// return ['foo', 'bar']
 ```
