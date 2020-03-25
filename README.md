@@ -239,8 +239,8 @@ $registry->register(new BarChannel());
 
 $registry->get(FooChannel::class);  // return instanceof FooChannel
 $registry->has(BarChannel::class);  // return true
-$registry->all(); 				    // return array of instanceof FooChannel
-$registry->keys(); 				    // return ['App\Channel\FooChannel', 'App\Channel\BarChannel']
+$registry->all();                   // return array of instanceof FooChannel
+$registry->keys();                  // return ['App\Channel\FooChannel', 'App\Channel\BarChannel']
 ```
 
 具有别名 `alias` 的注册器模式
@@ -282,8 +282,8 @@ $registry = new ChannelRegistry();
 $registry->register(new FooChannel());
 $registry->register(new BarChannel());
 
-$registry->get('foo'); 	// return instanceof FooChannel
-$registry->has('bar'); 	// return true
-$registry->all(); 		// return array of instanceof FooChannel
-$registry->keys(); 		// return ['foo', 'bar']
+$registry->get('foo');  // return instanceof FooChannel
+$registry->has('bar');  // return true
+$registry->all();       // return array of instanceof FooChannel
+$registry->keys();      // return ['foo', 'bar']
 ```
