@@ -34,7 +34,7 @@ siganushka_generic:
     table_prefix: tb_ # 可选项，如果不设置或设置为 null 对不添加表前缀
 ```
 
-- 通用 `id` 主键字段，统一全局主键类型（`auto_increment` 或 `UUID`）
+- 通用的 `id` 主键字段，统一全局主键类型（`auto_increment` 或 `UUID`）
 
 ```php
 // ./src/Entity/Foo.php
@@ -74,7 +74,7 @@ class Foo implements TimestampableInterface
 // $foo->getUpdatedAt(): ?\DateTimeInterface;
 // $foo->setUpdatedAt(?\DateTimeInterface $updatedAt);
 // $foo->getCreatedAt(): ?\DateTimeImmutable;
-// $foo->setCreatedAt(\DateTimeImmutable $createdAt);
+// $foo->setCreatedAt(?\DateTimeImmutable $createdAt);
 ```
 
 - 通用的 `enabled` 字段，抽象于常用的比如状态、是否有效等场景
@@ -94,7 +94,7 @@ class Foo implements EnableInterface
 
 // $foo = new Foo();
 // $foo->isEnabled(): ?bool;
-// $foo::setEnabled(bool $enabled);
+// $foo::setEnabled(?bool $enabled);
 ```
 
 - 通用的 `sort` 字段，抽象于常用的排序、显示顺序等场景
@@ -114,7 +114,7 @@ class Foo implements SortableInterface
 
 // $foo = new Foo();
 // $foo->getSort(): ?int;
-// $foo->setSort(int $sort);
+// $foo->setSort(?int $sort);
 // $foo->setSort(Foo::DEFAULT_SORT);
 ```
 
@@ -177,7 +177,7 @@ class Client
 
 use Siganushka\GenericBundle\Validator\Constraints\UniqueField;
 
-# 检测 Memger::name 字段在 User::username 实体中是否存在
+# 检测 Memger::name 的值 在 User::username 实体中是否存在
 class Member
 {
     /*
@@ -241,36 +241,25 @@ class ChannelRegistry extends AbstractRegistry
 // $registry->has(BarChannel::class); 	// return true
 // $registry->all(); 					// return array of instanceof FooChannel
 // $registry->keys(); 					// return [
-                                    // 	'App\Channel\FooChannel',
-                                    // 	'App\Channel\BarChannel'
-                                // ]
+                                        //  'App\Channel\FooChannel',
+                                        //  'App\Channel\BarChannel'
+                                        // ]
 ```
 
 具有别名 `alias` 的注册器模式
 
 ```php
-// ./src/Channel/ChannelInterface.php
+// ./src/Channel/FooChannel.php
 
 use Siganushka\GenericBundle\Registry\AliasableServiceInterface
 
-interface ChannelInterface extends AliasableServiceInterface
-{
-    public function method1(): string;
-    public function method2(): string;
-    public function method3(): string;
-}
-```
-
-```php
-// ./src/Channel/FooChannel.php
-
-class FooChannel implements ChannelInterface
+class FooChannel implements ChannelInterface, AliasableServiceInterface
 {
     public function getAlias(): string
-{
+    {
         return 'foo';
     }
-    
+
     // ...
 }
 ```
@@ -278,13 +267,15 @@ class FooChannel implements ChannelInterface
 ```php
 // ./src/Channel/BarChannel.php
 
-class BarChannel implements ChannelInterface
+use Siganushka\GenericBundle\Registry\AliasableServiceInterface
+
+class BarChannel implements ChannelInterface, AliasableServiceInterface
 {
     public function getAlias(): string
     {
         return 'bar';
     }
-    
+
     // ...
 }
 ```
