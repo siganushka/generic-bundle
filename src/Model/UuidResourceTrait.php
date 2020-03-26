@@ -26,7 +26,7 @@ trait UuidResourceTrait
         return null === $this->id;
     }
 
-    public function isEqualTo(?ResourceInterface $target): bool
+    public function isEqualTo(?UuidResourceInterface $target): bool
     {
         if (null === $target) {
             return false;
