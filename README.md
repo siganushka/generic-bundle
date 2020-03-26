@@ -34,7 +34,7 @@ siganushka_generic:
     table_prefix: tb_ # 可选项，如果不设置或设置为 null 对不添加表前缀
 ```
 
-- 通用的 `id` 主键字段，统一全局主键类型（`auto_increment` 或 `UUID`）
+- 通用的 `id` 主键字段，统一全局主键类型（`auto_increment`）
 
 ```php
 // ./src/Entity/Foo.php
@@ -51,6 +51,27 @@ class Foo implements ResourceInterface
 
 // $foo = new Foo();
 // $foo->getId(): ?int;
+// $foo->isNew(): bool;
+// $foo->isEqualTo(?self $target): bool;
+```
+
+- 通用的 `id` 主键字段，统一全局主键类型（`UUID`）
+
+```php
+// ./src/Entity/Foo.php
+
+use Siganushka\GenericBundle\Model\UuidResourceInterface;
+use Siganushka\GenericBundle\Model\UuidResourceTrait;
+
+class Foo implements UuidResourceInterface
+{
+    use UuidResourceTrait;
+
+    // ...
+}
+
+// $foo = new Foo();
+// $foo->getId(): ?string;
 // $foo->isNew(): bool;
 // $foo->isEqualTo(?self $target): bool;
 ```
