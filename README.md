@@ -198,7 +198,7 @@ class Client
 
 use Siganushka\GenericBundle\Validator\Constraints\UniqueField;
 
-# 检测 Memger::name 的值 在 User::username 实体中是否存在
+# 检测 Member::name 的值 在 User::username 实体中是否存在
 class Member
 {
     /*
