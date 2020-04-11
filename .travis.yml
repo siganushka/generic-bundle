@@ -10,7 +10,7 @@ before_script:
     - composer install
 
 script:
-    - php vendor/bin/phpunit --debug
+    - php vendor/bin/simple-phpunit --debug
 
 notifications:
     email: false

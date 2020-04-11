@@ -63,7 +63,7 @@ class RegistryTest extends TestCase
         $this->expectExceptionMessage('Service stdClass for registry ServiceRegistry is unsupported.');
 
         $registry = $this->getMockForAbstractClass(AbstractRegistry::class, [RegistrySubjectInterface::class], 'ServiceRegistry');
-        $registry->register(new \stdClass);
+        $registry->register(new \stdClass());
     }
 
     public function testRegisterExistingServiceException()
@@ -90,10 +90,8 @@ class RegistryTest extends TestCase
 
 interface RegistrySubjectInterface
 {
-
 }
 
 interface AliasableRegistrySubjectInterface extends RegistrySubjectInterface, AliasableServiceInterface
 {
-
 }
