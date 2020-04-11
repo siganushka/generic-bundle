@@ -1,0 +1,16 @@
+language: php
+
+php:
+    - 7.2
+    - 7.3
+    - 7.4
+
+before_script:
+    - rm -rf composer.lock
+    - composer install
+
+script:
+    - php vendor/bin/phpunit --debug
+
+notifications:
+    email: false
