@@ -16,8 +16,8 @@ class Foo implements TimestampableInterface
 }
 
 $foo = new Foo();
-$foo->getUpdatedAt(): ?\DateTimeInterface;          // 返回最后更新时间，为 null 时表明记录未被修改过
-$foo->setUpdatedAt(?\DateTimeInterface $updatedAt); // 设置最后更新时间
+$foo->getUpdatedAt(): ?\DateTimeInterface;          // 返回更新时间，为 null 时表明记录未被修改过
+$foo->setUpdatedAt(?\DateTimeInterface $updatedAt); // 设置更新时间，由系统自动填充
 $foo->getCreatedAt(): ?\DateTimeImmutable;          // 返回创建时间，该字段在创建后不可修改
-$foo->setCreatedAt(?\DateTimeImmutable $createdAt); // 设置创建时间，由 Doctrine 自动填充
+$foo->setCreatedAt(?\DateTimeImmutable $createdAt); // 设置创建时间，由系统自动填充
 ```

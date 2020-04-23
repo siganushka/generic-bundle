@@ -17,5 +17,5 @@ class Foo implements EnableInterface
 
 $foo = new Foo();
 $foo->isEnabled(): ?bool;           // 返回状态、是否有效
-$foo::setEnabled(?bool $enabled);   // 设置状态、是否有效
+$foo->setEnabled(?bool $enabled);   // 设置状态、是否有效
 ```

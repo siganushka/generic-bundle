@@ -17,5 +17,5 @@ class Foo implements VersionableInterface
 
 $foo = new Foo();
 $foo->getVersion(): ?int;           // 获取当前版本
-$foo->setVersion(?int $version);    // 设置当前版本，由 Doctrine 自动设置，不需要手机设置该值
+$foo->setVersion(?int $version);    // 设置当前版本，由 Doctrine 自动设置，不需要手动设置该值
 ```

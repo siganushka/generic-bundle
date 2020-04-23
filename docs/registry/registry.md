@@ -56,9 +56,9 @@ $registry->values();                // return array of instanceof ChannelInterfa
 $registry->keys();                  // return ['App\Channel\FooChannel', 'App\Channel\BarChannel']
 ```
 
-### [Aliasable Service](#aliasable_service)
+### AliasableService
 
-具有别名 `alias` 的注册器模式。
+具有 `alias` 别名的注册器模式。
 
 ```php
 // ./src/Channel/FooChannel.php
