@@ -43,4 +43,4 @@ return [
 
 - 注册器
 	- [Registry](docs/registry/registry.md)
-	- [AliasableService](docs/registry/registry.md#AliasableService)
+	- [AliasableServiceInterface](docs/registry/registry.md#AliasableServiceInterface)
