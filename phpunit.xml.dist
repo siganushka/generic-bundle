@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<phpunit colors="true" bootstrap="vendor/autoload.php">
+<phpunit
+    cacheResult="false"
+    colors="true"
+    bootstrap="vendor/autoload.php">
     <testsuites>
         <testsuite name="Siganushka GenericBundle Test Suite">
             <directory>tests</directory>
