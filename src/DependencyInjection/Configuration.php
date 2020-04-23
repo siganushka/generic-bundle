@@ -31,6 +31,9 @@ class Configuration implements ConfigurationInterface
                         ->thenInvalid('Table prefix "%s" contains illegal character(s)')
                     ->end()
                 ->end()
+                ->booleanNode('unescaped_unicode_json_response')
+                    ->defaultTrue()
+                ->end()
             ->end()
         ;
 

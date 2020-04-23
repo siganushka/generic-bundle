@@ -3,6 +3,7 @@
 namespace Siganushka\GenericBundle\DependencyInjection;
 
 use Siganushka\GenericBundle\Doctrine\EventListener\TablePrefixListener;
+use Siganushka\GenericBundle\EventSubscriber\JsonResponseSubscriber;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -23,6 +24,10 @@ class SiganushkaGenericExtension extends Extension
         } else {
             $container->findDefinition(TablePrefixListener::class)
                 ->setArgument(0, $config['table_prefix']);
+        }
+
+        if (!$config['unescaped_unicode_json_response']) {
+            $container->removeDefinition(JsonResponseSubscriber::class);
         }
     }
 }
