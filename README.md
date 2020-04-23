@@ -25,22 +25,22 @@ return [
 
 ### 功能
 
-- 选项
+- Configuration
 	- [table_prefix](docs/configuration/table_prefix.md)
 	- [unescaped_unicode_json_response](docs/configuration/unescaped_unicode_json_response.md)
 
-- 实体
+- Entity
 	- [Resource](docs/model/resource.md)
 	- [Timestampable](docs/model/timestampable.md)
 	- [Enable](docs/model/enable.md)
 	- [Sortable](docs/model/sortable.md)
 	- [Versionable](docs/model/versionable.md)
 
-- 验证
+- Validator
 	- [PhoneNumber](docs/validator/phone_number.md)
 	- [Semver](docs/validator/semver.md)
 	- [UniqueField](docs/validator/unique_field.md)
 
-- 注册器
+- Registry
 	- [Registry](docs/registry/registry.md)
 	- [AliasableServiceInterface](docs/registry/registry.md#AliasableServiceInterface)
