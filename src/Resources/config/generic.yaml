@@ -1,20 +1,15 @@
 services:
-    Siganushka\GenericBundle\Doctrine\EventListener\TablePrefixListener:
-        tags:
-            - { name: doctrine.event_listener, event: loadClassMetadata }
-
-    Siganushka\GenericBundle\Doctrine\EventListener\SortableListener:
-        tags:
-            - { name: doctrine.event_listener, event: prePersist }
-            - { name: doctrine.event_listener, event: preUpdate }
-
-    Siganushka\GenericBundle\Doctrine\EventListener\TimestampableListener:
-        tags:
-            - { name: doctrine.event_listener, event: prePersist }
-            - { name: doctrine.event_listener, event: preUpdate }
-
     Siganushka\GenericBundle\EventSubscriber\JsonResponseSubscriber:
         tags: [ 'kernel.event_subscriber' ]
+
+    Siganushka\GenericBundle\Doctrine\EventSubscriber\TablePrefixSubscriber:
+        tags: [ 'doctrine.event_subscriber' ]
+
+    Siganushka\GenericBundle\Doctrine\EventSubscriber\SortableSubscriber:
+        tags: [ 'doctrine.event_subscriber' ]
+
+    Siganushka\GenericBundle\Doctrine\EventSubscriber\TimestampableSubscriber:
+        tags: [ 'doctrine.event_subscriber' ]
 
     Siganushka\GenericBundle\Validator\Constraints\UniqueFieldValidator:
         tags: [ 'validator.constraint_validator' ]
