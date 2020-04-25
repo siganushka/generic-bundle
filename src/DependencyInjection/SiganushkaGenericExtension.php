@@ -2,7 +2,7 @@
 
 namespace Siganushka\GenericBundle\DependencyInjection;
 
-use Siganushka\GenericBundle\Doctrine\EventListener\TablePrefixListener;
+use Siganushka\GenericBundle\Doctrine\EventSubscriber\TablePrefixSubscriber;
 use Siganushka\GenericBundle\EventSubscriber\JsonResponseSubscriber;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -20,9 +20,9 @@ class SiganushkaGenericExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         if (null === $config['table_prefix']) {
-            $container->removeDefinition(TablePrefixListener::class);
+            $container->removeDefinition(TablePrefixSubscriber::class);
         } else {
-            $container->findDefinition(TablePrefixListener::class)
+            $container->findDefinition(TablePrefixSubscriber::class)
                 ->setArgument(0, $config['table_prefix']);
         }
 

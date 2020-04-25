@@ -28,6 +28,7 @@ class PhoneNumberValidator extends ConstraintValidator
         if (!preg_match('/^[1]([3-9])[0-9]{9}$/', $value)) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $this->formatValue($value))
+                ->setCode(PhoneNumber::INVALID_ERROR)
                 ->addViolation();
         }
     }

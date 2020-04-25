@@ -31,6 +31,7 @@ class SemverValidator extends ConstraintValidator
         } catch (\UnexpectedValueException $th) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $this->formatValue($value))
+                ->setCode(Semver::INVALID_ERROR)
                 ->addViolation();
         }
     }
