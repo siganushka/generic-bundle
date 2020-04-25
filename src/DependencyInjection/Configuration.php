@@ -28,7 +28,7 @@ class Configuration implements ConfigurationInterface
 
                             return !preg_match('/^[a-zA-Z0-9_]+$/', $v);
                         })
-                        ->thenInvalid('Table prefix "%s" contains illegal character(s)')
+                        ->thenInvalid('The "%s" for table prefix contains illegal character(s).')
                     ->end()
                 ->end()
                 ->booleanNode('unescaped_unicode_json_response')
