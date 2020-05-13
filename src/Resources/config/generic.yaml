@@ -10,7 +10,3 @@ services:
 
     Siganushka\GenericBundle\Doctrine\EventSubscriber\TimestampableSubscriber:
         tags: [ 'doctrine.event_subscriber' ]
-
-    Siganushka\GenericBundle\Validator\Constraints\UniqueFieldValidator:
-        tags: [ 'validator.constraint_validator' ]
-        arguments: [ '@doctrine' ]

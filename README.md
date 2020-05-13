@@ -42,7 +42,6 @@ return [
 - Validator
 	- [PhoneNumber](docs/validator/phone_number.md)
 	- [Semver](docs/validator/semver.md)
-	- [UniqueField](docs/validator/unique_field.md)
 
 - Registry
 	- [Registry](docs/registry/registry.md)
