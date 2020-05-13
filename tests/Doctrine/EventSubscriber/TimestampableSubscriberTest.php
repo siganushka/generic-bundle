@@ -33,19 +33,11 @@ class TimestampableSubscriberTest extends TestCase
 
         $this->assertInstanceOf(TimestampableInterface::class, $foo);
         $this->assertNull($foo->getCreatedAt());
-        $this->assertNull($foo->getUpdatedAt());
 
         $lifecycleEventArgs = new LifecycleEventArgs($foo, $this->entityManager);
         $this->listener->prePersist($lifecycleEventArgs);
 
         $this->assertInstanceOf(\DateTimeImmutable::class, $foo->getCreatedAt());
-        $this->assertNull($foo->getUpdatedAt());
-
-        // set value if not set
-        $foo->setCreatedAt($createdAt = new \DateTimeImmutable());
-        $this->listener->prePersist($lifecycleEventArgs);
-
-        $this->assertEquals($createdAt, $foo->getCreatedAt());
     }
 
     public function testPreUpdate()
@@ -53,7 +45,6 @@ class TimestampableSubscriberTest extends TestCase
         $foo = new TimestampableFoo();
 
         $this->assertInstanceOf(TimestampableInterface::class, $foo);
-        $this->assertNull($foo->getCreatedAt());
         $this->assertNull($foo->getUpdatedAt());
 
         $changeSet = [];
@@ -61,12 +52,6 @@ class TimestampableSubscriberTest extends TestCase
         $this->listener->preUpdate($preUpdateEventArgs);
 
         $this->assertInstanceOf(\DateTimeInterface::class, $foo->getUpdatedAt());
-
-        // set value if not set
-        $foo->setUpdatedAt($updatedAt = new \DateTimeImmutable());
-        $this->listener->preUpdate($preUpdateEventArgs);
-
-        $this->assertEquals($updatedAt, $foo->getUpdatedAt());
     }
 }
 

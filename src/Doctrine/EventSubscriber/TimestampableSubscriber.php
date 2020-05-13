@@ -24,9 +24,7 @@ class TimestampableSubscriber implements EventSubscriber
             return;
         }
 
-        if (null === $entity->getCreatedAt()) {
-            $entity->setCreatedAt(new \DateTimeImmutable());
-        }
+        $entity->setCreatedAt(new \DateTimeImmutable());
     }
 
     public function preUpdate(PreUpdateEventArgs $args)
@@ -36,8 +34,6 @@ class TimestampableSubscriber implements EventSubscriber
             return;
         }
 
-        if (null === $entity->getUpdatedAt()) {
-            $entity->setUpdatedAt(new \DateTime());
-        }
+        $entity->setUpdatedAt(new \DateTime());
     }
 }
