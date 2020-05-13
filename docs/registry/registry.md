@@ -56,16 +56,16 @@ $registry->values();                // return array of instanceof ChannelInterfa
 $registry->keys();                  // return ['App\Channel\FooChannel', 'App\Channel\BarChannel']
 ```
 
-### AliasableServiceInterface
+### AliasableInterface
 
 具有 `alias` 别名的注册器模式。
 
 ```php
 // ./src/Channel/FooChannel.php
 
-use Siganushka\GenericBundle\Registry\AliasableServiceInterface;
+use Siganushka\GenericBundle\Registry\AliasableInterface;
 
-class FooChannel implements ChannelInterface, AliasableServiceInterface
+class FooChannel implements ChannelInterface, AliasableInterface
 {
     public function getAlias(): string
     {
@@ -79,9 +79,9 @@ class FooChannel implements ChannelInterface, AliasableServiceInterface
 ```php
 // ./src/Channel/BarChannel.php
 
-use Siganushka\GenericBundle\Registry\AliasableServiceInterface;
+use Siganushka\GenericBundle\Registry\AliasableInterface;
 
-class BarChannel implements ChannelInterface, AliasableServiceInterface
+class BarChannel implements ChannelInterface, AliasableInterface
 {
     public function getAlias(): string
     {

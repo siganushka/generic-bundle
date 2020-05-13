@@ -32,12 +32,12 @@ return [
 	- [table_prefix](docs/configuration/table_prefix.md)
 	- [unescaped_unicode_json_response](docs/configuration/unescaped_unicode_json_response.md)
 
-- Entity
+- Model
 	- [Resource](docs/model/resource.md)
-	- [Timestampable](docs/model/timestampable.md)
-	- [Enable](docs/model/enable.md)
 	- [Sortable](docs/model/sortable.md)
+	- [Enable](docs/model/enable.md)
 	- [Versionable](docs/model/versionable.md)
+	- [Timestampable](docs/model/timestampable.md)
 
 - Validator
 	- [PhoneNumber](docs/validator/phone_number.md)
@@ -45,4 +45,4 @@ return [
 
 - Registry
 	- [Registry](docs/registry/registry.md)
-	- [AliasableServiceInterface](docs/registry/registry.md#AliasableServiceInterface)
+	- [AliasableInterface](docs/registry/registry.md#AliasableInterface)

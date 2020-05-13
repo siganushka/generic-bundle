@@ -91,7 +91,7 @@ abstract class AbstractRegistry implements RegistryInterface
 
     protected function getServiceId($service)
     {
-        if ($service instanceof AliasableServiceInterface) {
+        if ($service instanceof AliasableInterface) {
             return $service->getAlias();
         }
 

@@ -2,10 +2,10 @@
 
 namespace Siganushka\GenericBundle\Registry;
 
-interface AliasableServiceInterface
+interface AliasableInterface
 {
     /**
-     * Returns alias of services in registry.
+     * Returns alias of service in registry.
      */
     public function getAlias(): string;
 }

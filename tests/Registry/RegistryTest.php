@@ -8,7 +8,7 @@ use Siganushka\GenericBundle\Exception\ExistingServiceException;
 use Siganushka\GenericBundle\Exception\NonExistingServiceException;
 use Siganushka\GenericBundle\Exception\UnsupportedServiceException;
 use Siganushka\GenericBundle\Registry\AbstractRegistry;
-use Siganushka\GenericBundle\Registry\AliasableServiceInterface;
+use Siganushka\GenericBundle\Registry\AliasableInterface;
 
 class RegistryTest extends TestCase
 {
@@ -92,6 +92,6 @@ interface RegistrySubjectInterface
 {
 }
 
-interface AliasableRegistrySubjectInterface extends RegistrySubjectInterface, AliasableServiceInterface
+interface AliasableRegistrySubjectInterface extends RegistrySubjectInterface, AliasableInterface
 {
 }
