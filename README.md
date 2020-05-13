@@ -10,20 +10,7 @@
 ### 安装
 
 ```bash
-$ composer require siganushka/generic-bundle
-```
-
-### 注册
-
-```php
-// ./config/bundles.php
-
-<?php
-
-return [
-    // ...
-    Siganushka\GenericBundle\SiganushkaGenericBundle::class => ['all' => true],
-];
+$ composer require siganushka/generic-bundle:dev-master
 ```
 
 ### 功能
