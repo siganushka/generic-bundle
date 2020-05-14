@@ -28,11 +28,15 @@ class ConfigurationTest extends TestCase
         $this->assertInstanceOf(ConfigurationInterface::class, $this->configuration);
         $this->assertInstanceOf(TreeBuilder::class, $treeBuilder);
 
+        $jsonEncodeOptions = class_exists('Symfony\Component\HttpFoundation\JsonResponse')
+            ? \Symfony\Component\HttpFoundation\JsonResponse::DEFAULT_ENCODING_OPTIONS
+            : JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT;
+
         $config = $this->processor->processConfiguration($this->configuration, []);
 
         $this->assertEquals([
             'table_prefix' => null,
-            'unescaped_unicode_json_response' => true,
+            'json_encode_options' => $jsonEncodeOptions | JSON_UNESCAPED_UNICODE,
         ], $config);
     }
 
@@ -41,13 +45,13 @@ class ConfigurationTest extends TestCase
         $config = $this->processor->processConfiguration($this->configuration, [
             [
                 'table_prefix' => 'app_',
-                'unescaped_unicode_json_response' => false,
+                'json_encode_options' => 0,
             ],
         ]);
 
         $this->assertEquals([
             'table_prefix' => 'app_',
-            'unescaped_unicode_json_response' => false,
+            'json_encode_options' => 0,
         ], $config);
     }
 
@@ -63,14 +67,14 @@ class ConfigurationTest extends TestCase
         ]);
     }
 
-    public function testInvalidUnescapedUnicodeJsonResponseException(): void
+    public function testInvalidJsonEncodeOptionsException(): void
     {
         $this->expectException(InvalidTypeException::class);
-        $this->expectExceptionMessage('Invalid type for path "siganushka_generic.unescaped_unicode_json_response". Expected boolean, but got integer.');
+        $this->expectExceptionMessage('Invalid type for path "siganushka_generic.json_encode_options". Expected int, but got boolean.');
 
         $this->processor->processConfiguration($this->configuration, [
             [
-                'unescaped_unicode_json_response' => 1,
+                'json_encode_options' => false,
             ],
         ]);
     }

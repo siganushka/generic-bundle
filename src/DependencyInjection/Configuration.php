@@ -12,6 +12,10 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder('siganushka_generic');
         $rootNode = $treeBuilder->getRootNode();
 
+        $jsonEncodeOptions = class_exists('Symfony\Component\HttpFoundation\JsonResponse')
+            ? \Symfony\Component\HttpFoundation\JsonResponse::DEFAULT_ENCODING_OPTIONS
+            : JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT;
+
         $rootNode
             ->children()
                 ->scalarNode('table_prefix')
@@ -31,8 +35,8 @@ class Configuration implements ConfigurationInterface
                         ->thenInvalid('The "%s" for table prefix contains illegal character(s).')
                     ->end()
                 ->end()
-                ->booleanNode('unescaped_unicode_json_response')
-                    ->defaultTrue()
+                ->integerNode('json_encode_options')
+                    ->defaultValue($jsonEncodeOptions | JSON_UNESCAPED_UNICODE)
                 ->end()
             ->end()
         ;

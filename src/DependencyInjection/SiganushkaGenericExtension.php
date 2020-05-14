@@ -26,8 +26,7 @@ class SiganushkaGenericExtension extends Extension
                 ->setArgument(0, $config['table_prefix']);
         }
 
-        if (!$config['unescaped_unicode_json_response']) {
-            $container->removeDefinition(JsonResponseSubscriber::class);
-        }
+        $container->findDefinition(JsonResponseSubscriber::class)
+            ->setArgument(0, $config['json_encode_options']);
     }
 }

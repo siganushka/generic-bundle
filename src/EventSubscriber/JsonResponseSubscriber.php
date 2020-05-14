@@ -8,6 +8,13 @@ use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 class JsonResponseSubscriber implements EventSubscriberInterface
 {
+    private $jsonEncodeOptions;
+
+    public function __construct(int $jsonEncodeOptions)
+    {
+        $this->jsonEncodeOptions = $jsonEncodeOptions;
+    }
+
     public static function getSubscribedEvents()
     {
         return [ResponseEvent::class => 'onResponseEvent'];
@@ -16,14 +23,9 @@ class JsonResponseSubscriber implements EventSubscriberInterface
     public function onResponseEvent(ResponseEvent $event)
     {
         $response = $event->getResponse();
-        if (!$response instanceof JsonResponse) {
-            return;
+        if ($response instanceof JsonResponse) {
+            // @see https://www.laruence.com/2011/10/10/2239.html
+            $response->setEncodingOptions($this->jsonEncodeOptions);
         }
-
-        /**
-         * @see https://www.laruence.com/2011/10/10/2239.html
-         */
-        $defaults = $response->getEncodingOptions();
-        $response->setEncodingOptions($defaults | JSON_UNESCAPED_UNICODE);
     }
 }

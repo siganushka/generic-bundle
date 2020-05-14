@@ -17,7 +17,7 @@ $ composer require siganushka/generic-bundle:dev-master
 
 - Configuration
 	- [table_prefix](docs/configuration/table_prefix.md)
-	- [unescaped_unicode_json_response](docs/configuration/unescaped_unicode_json_response.md)
+	- [json_encode_options](docs/configuration/json_encode_options.md)
 
 - Model
 	- [Resource](docs/model/resource.md)
