@@ -1,6 +1,6 @@
-# Table Prefix
+# Configuration
 
-为 Doctrine 实体添加表前缀。
+为 `Doctrine` 实体添加表前缀。
 
 ```yaml
 # ./config/packages/siganushka_generic.yaml

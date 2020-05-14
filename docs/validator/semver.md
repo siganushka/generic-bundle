@@ -1,4 +1,4 @@
-# Semver
+# Validator
 
 语义化的版本号类型约束。
 

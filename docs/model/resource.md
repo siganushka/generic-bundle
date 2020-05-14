@@ -1,4 +1,4 @@
-# Resource
+# Model
 
 通用的 `id` 主键字段，统一全局主键类型为 `auto_increment`。
 

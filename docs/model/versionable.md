@@ -1,6 +1,6 @@
-# Versionable
+# Model
 
-通用的 `version` 字段，由 `Doctrine` 自动更新，典型的乐观锁版本字段。
+通用的 `version` 字段，并由 `Doctrine` 自动更新，典型的乐观锁版本字段。
 
 ```php
 // ./src/Entity/Foo.php

@@ -1,4 +1,4 @@
-# Timestampable
+# Model
 
 通用的 `updatedAt` 和 `createdAt` 时间字段，并在更新、创建时自动更新。
 

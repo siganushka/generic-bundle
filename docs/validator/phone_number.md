@@ -1,4 +1,4 @@
-# PhoneNumber
+# Validator
 
 国内手机号码验证类型约束。
 
