@@ -12,10 +12,6 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder('siganushka_generic');
         $rootNode = $treeBuilder->getRootNode();
 
-        $jsonEncodeOptions = class_exists('Symfony\Component\HttpFoundation\JsonResponse')
-            ? \Symfony\Component\HttpFoundation\JsonResponse::DEFAULT_ENCODING_OPTIONS
-            : JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT;
-
         $rootNode
             ->children()
                 ->scalarNode('table_prefix')
@@ -36,11 +32,23 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
                 ->integerNode('json_encode_options')
-                    ->defaultValue($jsonEncodeOptions | JSON_UNESCAPED_UNICODE)
+                    ->defaultValue(self::getDefaultJsonEncodeOptions())
+                ->end()
+                ->booleanNode('disable_html5_validation')
+                    ->defaultTrue()
                 ->end()
             ->end()
         ;
 
         return $treeBuilder;
+    }
+
+    public static function getDefaultJsonEncodeOptions()
+    {
+        $jsonEncodeOptions = class_exists('Symfony\Component\HttpFoundation\JsonResponse')
+            ? \Symfony\Component\HttpFoundation\JsonResponse::DEFAULT_ENCODING_OPTIONS
+            : JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT;
+
+        return $jsonEncodeOptions | JSON_UNESCAPED_UNICODE;
     }
 }

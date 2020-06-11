@@ -18,6 +18,7 @@ $ composer require siganushka/generic-bundle
 - Configuration
 	- [table_prefix](docs/configuration/table_prefix.md)
 	- [json_encode_options](docs/configuration/json_encode_options.md)
+	- [disable_html5_validation](docs/configuration/disable_html5_validation.md)
 
 - Model
 	- [Resource](docs/model/resource.md)

@@ -28,15 +28,12 @@ class ConfigurationTest extends TestCase
         $this->assertInstanceOf(ConfigurationInterface::class, $this->configuration);
         $this->assertInstanceOf(TreeBuilder::class, $treeBuilder);
 
-        $jsonEncodeOptions = class_exists('Symfony\Component\HttpFoundation\JsonResponse')
-            ? \Symfony\Component\HttpFoundation\JsonResponse::DEFAULT_ENCODING_OPTIONS
-            : JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT;
-
         $config = $this->processor->processConfiguration($this->configuration, []);
 
         $this->assertEquals([
             'table_prefix' => null,
-            'json_encode_options' => $jsonEncodeOptions | JSON_UNESCAPED_UNICODE,
+            'json_encode_options' => Configuration::getDefaultJsonEncodeOptions(),
+            'disable_html5_validation' => true,
         ], $config);
     }
 
@@ -46,12 +43,14 @@ class ConfigurationTest extends TestCase
             [
                 'table_prefix' => 'app_',
                 'json_encode_options' => 0,
+                'disable_html5_validation' => false,
             ],
         ]);
 
         $this->assertEquals([
             'table_prefix' => 'app_',
             'json_encode_options' => 0,
+            'disable_html5_validation' => false,
         ], $config);
     }
 
@@ -70,11 +69,23 @@ class ConfigurationTest extends TestCase
     public function testInvalidJsonEncodeOptionsException(): void
     {
         $this->expectException(InvalidTypeException::class);
-        $this->expectExceptionMessage('Invalid type for path "siganushka_generic.json_encode_options". Expected int, but got boolean.');
+        $this->expectExceptionMessage('Invalid type for path "siganushka_generic.json_encode_options". Expected "int", but got "bool".');
 
         $this->processor->processConfiguration($this->configuration, [
             [
                 'json_encode_options' => false,
+            ],
+        ]);
+    }
+
+    public function testInvalidDisableHtml5Validation(): void
+    {
+        $this->expectException(InvalidTypeException::class);
+        $this->expectExceptionMessage('Invalid type for path "siganushka_generic.disable_html5_validation". Expected "bool", but got "int".');
+
+        $this->processor->processConfiguration($this->configuration, [
+            [
+                'disable_html5_validation' => 1,
             ],
         ]);
     }
