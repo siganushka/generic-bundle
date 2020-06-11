@@ -4,6 +4,7 @@ namespace Siganushka\GenericBundle\DependencyInjection;
 
 use Siganushka\GenericBundle\Doctrine\EventSubscriber\TablePrefixSubscriber;
 use Siganushka\GenericBundle\EventSubscriber\JsonResponseSubscriber;
+use Siganushka\GenericBundle\Form\Extension\DisableHtml5ValidateTypeExtension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -24,6 +25,10 @@ class SiganushkaGenericExtension extends Extension
         } else {
             $container->findDefinition(TablePrefixSubscriber::class)
                 ->setArgument(0, $config['table_prefix']);
+        }
+
+        if (!$config['disable_html5_validation']) {
+            $container->removeDefinition(DisableHtml5ValidateTypeExtension::class);
         }
 
         $container->findDefinition(JsonResponseSubscriber::class)
