@@ -2,36 +2,47 @@
 
 namespace Siganushka\GenericBundle\DependencyInjection;
 
+use Siganushka\GenericBundle\Doctrine\EventSubscriber\SortableSubscriber;
 use Siganushka\GenericBundle\Doctrine\EventSubscriber\TablePrefixSubscriber;
+use Siganushka\GenericBundle\Doctrine\EventSubscriber\TimestampableSubscriber;
 use Siganushka\GenericBundle\EventSubscriber\JsonResponseSubscriber;
 use Siganushka\GenericBundle\Form\Extension\DisableHtml5ValidateTypeExtension;
-use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class SiganushkaGenericExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('generic.yaml');
-
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        if (null === $config['table_prefix']) {
-            $container->removeDefinition(TablePrefixSubscriber::class);
-        } else {
-            $container->findDefinition(TablePrefixSubscriber::class)
-                ->setArgument(0, $config['table_prefix']);
+        if (null !== $config['table_prefix']) {
+            $container
+                ->register(TablePrefixSubscriber::class)
+                ->setArgument(0, $config['table_prefix'])
+                ->addTag('doctrine.event_subscriber')
+            ;
         }
 
-        if (!$config['disable_html5_validation']) {
-            $container->removeDefinition(DisableHtml5ValidateTypeExtension::class);
+        if ($config['disable_html5_validation']) {
+            $container
+                ->register(DisableHtml5ValidateTypeExtension::class)
+                ->addTag('form.type_extension')
+            ;
         }
 
-        $container->findDefinition(JsonResponseSubscriber::class)
-            ->setArgument(0, $config['json_encode_options']);
+        $container
+            ->register(SortableSubscriber::class)
+            ->addTag('doctrine.event_subscriber');
+
+        $container
+            ->register(TimestampableSubscriber::class)
+            ->addTag('doctrine.event_subscriber');
+
+        $container
+            ->register(JsonResponseSubscriber::class)
+            ->setArgument(0, $config['json_encode_options'])
+            ->addTag('kernel.event_subscriber');
     }
 }

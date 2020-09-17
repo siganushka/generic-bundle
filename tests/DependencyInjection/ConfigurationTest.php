@@ -30,28 +30,28 @@ class ConfigurationTest extends TestCase
 
         $config = $this->processor->processConfiguration($this->configuration, []);
 
-        $this->assertEquals([
+        $this->assertSame($config, [
             'table_prefix' => null,
             'json_encode_options' => Configuration::getDefaultJsonEncodeOptions(),
             'disable_html5_validation' => true,
-        ], $config);
+        ]);
     }
 
     public function testCustomConfig(): void
     {
         $config = $this->processor->processConfiguration($this->configuration, [
             [
-                'table_prefix' => 'app_',
+                'table_prefix' => 'test_',
                 'json_encode_options' => 0,
                 'disable_html5_validation' => false,
             ],
         ]);
 
-        $this->assertEquals([
-            'table_prefix' => 'app_',
+        $this->assertSame($config, [
+            'table_prefix' => 'test_',
             'json_encode_options' => 0,
             'disable_html5_validation' => false,
-        ], $config);
+        ]);
     }
 
     public function testInvalidTablePrefixException(): void
@@ -78,7 +78,7 @@ class ConfigurationTest extends TestCase
         ]);
     }
 
-    public function testInvalidDisableHtml5Validation(): void
+    public function testInvalidDisableHtml5ValidationException(): void
     {
         $this->expectException(InvalidTypeException::class);
         $this->expectExceptionMessage('Invalid type for path "siganushka_generic.disable_html5_validation". Expected "bool", but got "int".');
