@@ -2,17 +2,17 @@
 
 namespace Siganushka\GenericBundle\Registry;
 
-use Siganushka\GenericBundle\Exception\ExistingServiceException;
-use Siganushka\GenericBundle\Exception\NonExistingServiceException;
-use Siganushka\GenericBundle\Exception\UnsupportedServiceException;
+use Siganushka\GenericBundle\Exception\ServiceExistingException;
+use Siganushka\GenericBundle\Exception\ServiceNonExistingException;
+use Siganushka\GenericBundle\Exception\ServiceUnsupportedException;
 
 interface RegistryInterface
 {
     /**
      * The service for registry.
      *
-     * @throws UnsupportedServiceException
-     * @throws ExistingServiceException
+     * @throws ServiceUnsupportedException
+     * @throws ServiceExistingException
      */
     public function register(object $service): void;
 
@@ -24,14 +24,14 @@ interface RegistryInterface
     /**
      * Return service from registry.
      *
-     * @throws NonExistingServiceException
+     * @throws ServiceNonExistingException
      */
     public function get(string $serviceId): object;
 
     /**
      * Remove service from registry.
      *
-     * @throws NonExistingServiceException
+     * @throws ServiceNonExistingException
      */
     public function remove(string $serviceId): void;
 

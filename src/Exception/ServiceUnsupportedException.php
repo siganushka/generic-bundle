@@ -4,7 +4,7 @@ namespace Siganushka\GenericBundle\Exception;
 
 use Siganushka\GenericBundle\Registry\RegistryInterface;
 
-class UnsupportedServiceException extends RegistryException
+class ServiceUnsupportedException extends RegistryException
 {
     public function __construct(RegistryInterface $registry, string $serviceId)
     {

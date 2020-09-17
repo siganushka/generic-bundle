@@ -4,7 +4,7 @@ namespace Siganushka\GenericBundle\Exception;
 
 use Siganushka\GenericBundle\Registry\RegistryInterface;
 
-class NonExistingServiceException extends RegistryException
+class ServiceNonExistingException extends RegistryException
 {
     public function __construct(RegistryInterface $registry, string $serviceId)
     {

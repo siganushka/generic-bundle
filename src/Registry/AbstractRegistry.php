@@ -3,9 +3,9 @@
 namespace Siganushka\GenericBundle\Registry;
 
 use Siganushka\GenericBundle\Exception\AbstractionNotFoundException;
-use Siganushka\GenericBundle\Exception\ExistingServiceException;
-use Siganushka\GenericBundle\Exception\NonExistingServiceException;
-use Siganushka\GenericBundle\Exception\UnsupportedServiceException;
+use Siganushka\GenericBundle\Exception\ServiceExistingException;
+use Siganushka\GenericBundle\Exception\ServiceNonExistingException;
+use Siganushka\GenericBundle\Exception\ServiceUnsupportedException;
 
 abstract class AbstractRegistry implements RegistryInterface
 {
@@ -41,11 +41,11 @@ abstract class AbstractRegistry implements RegistryInterface
     {
         $serviceId = $this->getServiceId($service);
         if (!$service instanceof $this->abstraction) {
-            throw new UnsupportedServiceException($this, $serviceId);
+            throw new ServiceUnsupportedException($this, $serviceId);
         }
 
         if ($this->has($serviceId)) {
-            throw new ExistingServiceException($this, $serviceId);
+            throw new ServiceExistingException($this, $serviceId);
         }
 
         $this->services[$serviceId] = $service;
@@ -59,7 +59,7 @@ abstract class AbstractRegistry implements RegistryInterface
     public function get(string $serviceId): object
     {
         if (!$this->has($serviceId)) {
-            throw new NonExistingServiceException($this, $serviceId);
+            throw new ServiceNonExistingException($this, $serviceId);
         }
 
         return $this->services[$serviceId];
@@ -68,7 +68,7 @@ abstract class AbstractRegistry implements RegistryInterface
     public function remove(string $serviceId): void
     {
         if (!$this->has($serviceId)) {
-            throw new NonExistingServiceException($this, $serviceId);
+            throw new ServiceNonExistingException($this, $serviceId);
         }
 
         unset($this->services[$serviceId]);

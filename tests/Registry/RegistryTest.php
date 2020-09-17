@@ -4,9 +4,9 @@ namespace Siganushka\GenericBundle\Tests\Registry;
 
 use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\Exception\AbstractionNotFoundException;
-use Siganushka\GenericBundle\Exception\ExistingServiceException;
-use Siganushka\GenericBundle\Exception\NonExistingServiceException;
-use Siganushka\GenericBundle\Exception\UnsupportedServiceException;
+use Siganushka\GenericBundle\Exception\ServiceExistingException;
+use Siganushka\GenericBundle\Exception\ServiceNonExistingException;
+use Siganushka\GenericBundle\Exception\ServiceUnsupportedException;
 use Siganushka\GenericBundle\Registry\AbstractRegistry;
 use Siganushka\GenericBundle\Registry\AliasableInterface;
 
@@ -57,18 +57,18 @@ class RegistryTest extends TestCase
         $this->getMockForAbstractClass(AbstractRegistry::class, ['NotFoundInterface'], 'ServiceRegistry');
     }
 
-    public function testRegisterUnsupportedServiceException()
+    public function testRegisterServiceUnsupportedException()
     {
-        $this->expectException(UnsupportedServiceException::class);
+        $this->expectException(ServiceUnsupportedException::class);
         $this->expectExceptionMessage('Service stdClass for registry ServiceRegistry is unsupported.');
 
         $registry = $this->getMockForAbstractClass(AbstractRegistry::class, [RegistrySubjectInterface::class], 'ServiceRegistry');
         $registry->register(new \stdClass());
     }
 
-    public function testRegisterExistingServiceException()
+    public function testRegisterServiceExistingException()
     {
-        $this->expectException(ExistingServiceException::class);
+        $this->expectException(ServiceExistingException::class);
         $this->expectExceptionMessage('Service FooService for registry ServiceRegistry already exists.');
 
         $foo = $this->getMockForAbstractClass(RegistrySubjectInterface::class, [], 'FooService');
@@ -80,7 +80,7 @@ class RegistryTest extends TestCase
 
     public function testRegisterNonExistingException()
     {
-        $this->expectException(NonExistingServiceException::class);
+        $this->expectException(ServiceNonExistingException::class);
         $this->expectExceptionMessage('Service NotFoundService for registry ServiceRegistry does not exist.');
 
         $registry = $this->getMockForAbstractClass(AbstractRegistry::class, [RegistrySubjectInterface::class], 'ServiceRegistry');
