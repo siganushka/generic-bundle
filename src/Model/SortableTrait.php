@@ -8,7 +8,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 trait SortableTrait
 {
     /**
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(type="integer")
      *
      * @Groups({"sortable"})
      */

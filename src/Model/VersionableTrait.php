@@ -8,7 +8,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 trait VersionableTrait
 {
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"unsigned":true})
      * @ORM\Version()
      *
      * @Groups({"versionable"})
