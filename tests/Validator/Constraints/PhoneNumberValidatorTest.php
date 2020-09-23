@@ -14,7 +14,7 @@ class PhoneNumberValidatorTest extends ConstraintValidatorTestCase
     }
 
     /**
-     *  @dataProvider getValidPhoneNubmers
+     * @dataProvider getValidPhoneNubmers
      */
     public function testValid(?string $phoneNumber)
     {
