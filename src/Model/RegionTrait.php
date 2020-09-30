@@ -134,14 +134,14 @@ trait RegionTrait
         return $this->depth;
     }
 
-    public function setDepth(int $depth): RegionInterface
+    public function setDepth(int $depth): TreeNodeInterface
     {
         $this->depth = $depth;
 
         return $this;
     }
 
-    public function recalculateDepth(): RegionInterface
+    public function recalculateDepth(): TreeNodeInterface
     {
         if ($this->isRoot()) {
             return $this->depth = 0;
@@ -157,7 +157,7 @@ trait RegionTrait
         return $this->children;
     }
 
-    public function addChild(RegionInterface $child): RegionInterface
+    public function addChild(TreeNodeInterface $child): TreeNodeInterface
     {
         if (!$this->children->contains($child)) {
             $this->children[] = $child;
@@ -167,7 +167,7 @@ trait RegionTrait
         return $this;
     }
 
-    public function removeChild(RegionInterface $child): RegionInterface
+    public function removeChild(TreeNodeInterface $child): TreeNodeInterface
     {
         if ($this->children->contains($child)) {
             $this->children->removeElement($child);
@@ -222,7 +222,7 @@ trait RegionTrait
         return $descendants;
     }
 
-    public function getRoot(): RegionInterface
+    public function getRoot(): TreeNodeInterface
     {
         $node = $this;
 
