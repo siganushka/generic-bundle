@@ -2,19 +2,21 @@
 
 namespace Siganushka\GenericBundle\DataStructure;
 
+use Doctrine\Common\Collections\Collection;
+
 interface TreeNodeInterface
 {
     public function getParent(): ?self;
 
     public function setParent(?self $parent): self;
 
-    public function getChildren(): iterable;
+    public function getChildren(): Collection;
 
-    public function getAncestors(bool $includeSelf = false): iterable;
+    public function getAncestors(bool $includeSelf = false): array;
 
-    public function getSiblings(bool $includeSelf = false): iterable;
+    public function getSiblings(bool $includeSelf = false): array;
 
-    public function getDescendants(bool $includeSelf = false): iterable;
+    public function getDescendants(bool $includeSelf = false): array;
 
     public function getDepth(): int;
 
