@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Tree;
+namespace Siganushka\GenericBundle\DataStructure;
 
-use Siganushka\GenericBundle\Model\ResourceInterface;
-
-interface NodeInterface extends ResourceInterface
+interface TreeNodeInterface
 {
     public function getParent(): ?self;
+
+    public function setParent(?self $parent): self;
 
     public function getChildren(): iterable;
 

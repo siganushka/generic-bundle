@@ -1,9 +1,7 @@
 <?php
 
-namespace App\Command;
+namespace Siganushka\GenericBundle\Command;
 
-use App\Entity\Region;
-use App\Entity\RegionInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;

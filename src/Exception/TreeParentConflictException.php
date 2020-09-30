@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Exception;
+namespace Siganushka\GenericBundle\Exception;
 
-use App\Tree\NodeInterface;
+use Siganushka\GenericBundle\DataStructure\TreeNodeInterface;
 
 class TreeParentConflictException extends \RuntimeException
 {
     private $current;
     private $parent;
 
-    public function __construct(NodeInterface $current, NodeInterface $parent)
+    public function __construct(TreeNodeInterface $current, TreeNodeInterface $parent)
     {
         $this->current = $current;
         $this->parent = $parent;
@@ -17,12 +17,12 @@ class TreeParentConflictException extends \RuntimeException
         parent::__construct('The tree node parent conflict has been detected.');
     }
 
-    public function getCurrent(): NodeInterface
+    public function getCurrent(): TreeNodeInterface
     {
         return $this->current;
     }
 
-    public function getParent(): NodeInterface
+    public function getParent(): TreeNodeInterface
     {
         return $this->parent;
     }

@@ -1,24 +1,14 @@
 <?php
 
-namespace App\Entity;
+namespace Siganushka\GenericBundle\Model;
 
-use App\Exception\TreeDescendantConflictException;
-use App\Exception\TreeParentConflictException;
-use App\Repository\RegionRepository;
-use App\Tree\NodeInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Siganushka\GenericBundle\Model\ResourceInterface;
-use Siganushka\GenericBundle\Model\ResourceTrait;
+use Siganushka\GenericBundle\DataStructure\TreeNodeInterface;
+use Siganushka\GenericBundle\Exception\TreeDescendantConflictException;
 
-/**
- * @ORM\Entity(repositoryClass=RegionRepository::class)
- */
-class Region implements ResourceInterface, RegionInterface
+trait RegionTrait
 {
-    use ResourceTrait;
-
     /**
      * @ORM\ManyToOne(targetEntity=Region::class, inversedBy="children", cascade={"all"})
      */
@@ -59,22 +49,13 @@ class Region implements ResourceInterface, RegionInterface
      */
     private $children;
 
-    public function __construct()
-    {
-        $this->children = new ArrayCollection();
-    }
-
-    public function getParent(): ?self
+    public function getParent(): ?TreeNodeInterface
     {
         return $this->parent;
     }
 
-    public function setParent(?self $parent): self
+    public function setParent(?TreeNodeInterface $parent): TreeNodeInterface
     {
-        if ($parent && $parent->isEqualTo($this) && !$parent->isNew()) {
-            throw new TreeParentConflictException($this, $parent);
-        }
-
         if ($parent && \in_array($parent, $this->getDescendants(), true)) {
             throw new TreeDescendantConflictException($this, $parent);
         }
@@ -89,7 +70,7 @@ class Region implements ResourceInterface, RegionInterface
         return $this->code;
     }
 
-    public function setCode(string $code): self
+    public function setCode(string $code): RegionInterface
     {
         $this->code = $code;
 
@@ -101,7 +82,7 @@ class Region implements ResourceInterface, RegionInterface
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(string $name): RegionInterface
     {
         $this->name = $name;
 
@@ -113,7 +94,7 @@ class Region implements ResourceInterface, RegionInterface
         return $this->pinyin;
     }
 
-    public function setPinyin(string $pinyin): self
+    public function setPinyin(string $pinyin): RegionInterface
     {
         $this->pinyin = $pinyin;
 
@@ -125,7 +106,7 @@ class Region implements ResourceInterface, RegionInterface
         return $this->latitude;
     }
 
-    public function setLatitude(string $latitude): self
+    public function setLatitude(string $latitude): RegionInterface
     {
         $this->latitude = $latitude;
 
@@ -137,7 +118,7 @@ class Region implements ResourceInterface, RegionInterface
         return $this->longitude;
     }
 
-    public function setLongitude(string $longitude): self
+    public function setLongitude(string $longitude): RegionInterface
     {
         $this->longitude = $longitude;
 
@@ -153,20 +134,22 @@ class Region implements ResourceInterface, RegionInterface
         return $this->depth;
     }
 
-    public function setDepth(int $depth): self
+    public function setDepth(int $depth): RegionInterface
     {
         $this->depth = $depth;
 
         return $this;
     }
 
-    public function recalculateDepth(): ?int
+    public function recalculateDepth(): RegionInterface
     {
         if ($this->isRoot()) {
             return $this->depth = 0;
         }
 
-        return $this->depth = $this->getParent()->getDepth() + 1;
+        $this->depth = $this->getParent()->getDepth() + 1;
+
+        return $this;
     }
 
     public function getChildren(): Collection
@@ -174,7 +157,7 @@ class Region implements ResourceInterface, RegionInterface
         return $this->children;
     }
 
-    public function addChild(self $child): self
+    public function addChild(RegionInterface $child): RegionInterface
     {
         if (!$this->children->contains($child)) {
             $this->children[] = $child;
@@ -184,7 +167,7 @@ class Region implements ResourceInterface, RegionInterface
         return $this;
     }
 
-    public function removeChild(self $child): self
+    public function removeChild(RegionInterface $child): RegionInterface
     {
         if ($this->children->contains($child)) {
             $this->children->removeElement($child);
@@ -196,7 +179,7 @@ class Region implements ResourceInterface, RegionInterface
         return $this;
     }
 
-    public function getAncestors(bool $includeSelf = false): iterable
+    public function getAncestors(bool $includeSelf = false): array
     {
         $parents = $includeSelf ? [$this] : [];
         $node = $this;
@@ -209,7 +192,7 @@ class Region implements ResourceInterface, RegionInterface
         return $parents;
     }
 
-    public function getSiblings(bool $includeSelf = false): iterable
+    public function getSiblings(bool $includeSelf = false): array
     {
         if ($this->isRoot()) {
             return [];
@@ -225,7 +208,7 @@ class Region implements ResourceInterface, RegionInterface
         return $siblings;
     }
 
-    public function getDescendants(bool $includeSelf = false): iterable
+    public function getDescendants(bool $includeSelf = false): array
     {
         $descendants = $includeSelf ? [$this] : [];
 
@@ -239,7 +222,7 @@ class Region implements ResourceInterface, RegionInterface
         return $descendants;
     }
 
-    public function getRoot(): NodeInterface
+    public function getRoot(): RegionInterface
     {
         $node = $this;
 
