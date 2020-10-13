@@ -2,13 +2,19 @@
 
 namespace Siganushka\GenericBundle\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Siganushka\GenericBundle\DataStructure\TreeNodeInterface;
 use Siganushka\GenericBundle\Exception\TreeDescendantConflictException;
 
-trait RegionTrait
+/**
+ * @ORM\Entity
+ */
+class Region implements ResourceInterface, RegionInterface
 {
+    use ResourceTrait;
+
     /**
      * @ORM\ManyToOne(targetEntity=Region::class, inversedBy="children", cascade={"all"})
      */
@@ -48,6 +54,11 @@ trait RegionTrait
      * @ORM\OneToMany(targetEntity=Region::class, mappedBy="parent", cascade={"all"})
      */
     private $children;
+
+    public function __construct()
+    {
+        $this->children = new ArrayCollection();
+    }
 
     public function getParent(): ?TreeNodeInterface
     {
@@ -144,7 +155,9 @@ trait RegionTrait
     public function recalculateDepth(): TreeNodeInterface
     {
         if ($this->isRoot()) {
-            return $this->depth = 0;
+            $this->depth = 0;
+
+            return $this;
         }
 
         $this->depth = $this->getParent()->getDepth() + 1;

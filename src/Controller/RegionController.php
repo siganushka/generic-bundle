@@ -3,13 +3,22 @@
 namespace Siganushka\GenericBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Siganushka\GenericBundle\Model\Region;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
-class RegionController extends AbstractController
+class RegionController
 {
-    public function index(Request $request, EntityManagerInterface $entityManager)
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $queryBuilder = $entityManager->getRepository(Region::class)
+        $this->entityManager = $entityManager;
+    }
+
+    public function index(Request $request)
+    {
+        $queryBuilder = $this->entityManager->getRepository(Region::class)
             ->createQueryBuilder('r')
             ->where('r.parent IS null')
             ->addOrderBy('r.depth', 'ASC')
@@ -25,8 +34,8 @@ class RegionController extends AbstractController
         }
 
         $query = $queryBuilder->getQuery();
-        $regions = $query->getResult();
+        $regions = $query->getArrayResult();
 
-        return $this->json($regions);
+        return new JsonResponse($regions);
     }
 }

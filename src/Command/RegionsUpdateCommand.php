@@ -3,6 +3,8 @@
 namespace Siganushka\GenericBundle\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Siganushka\GenericBundle\Model\Region;
+use Siganushka\GenericBundle\Model\RegionInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -21,7 +23,7 @@ class RegionsUpdateCommand extends Command
         820000 => 820100,
     ];
 
-    protected static $defaultName = 'app:regions:update';
+    protected static $defaultName = 'siganushka:regions:update';
 
     private $httpClient;
     private $entityManager;
@@ -112,8 +114,8 @@ class RegionsUpdateCommand extends Command
     }
 
     /**
-     * @see DZGBZ-6BQRQ-NSQ5Z-GQI3W-Z3G2K-OMB56
      * @see https://lbs.qq.com/service/webService/webServiceGuide/webServiceDistrict
+     * @see DZGBZ-6BQRQ-NSQ5Z-GQI3W-Z3G2K-OMB56
      */
     protected function doRequest(string $key, ?RegionInterface $parent)
     {

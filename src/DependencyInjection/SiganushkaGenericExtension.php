@@ -2,18 +2,22 @@
 
 namespace Siganushka\GenericBundle\DependencyInjection;
 
-use Siganushka\GenericBundle\Doctrine\EventSubscriber\SortableSubscriber;
 use Siganushka\GenericBundle\Doctrine\EventSubscriber\TablePrefixSubscriber;
-use Siganushka\GenericBundle\Doctrine\EventSubscriber\TimestampableSubscriber;
 use Siganushka\GenericBundle\EventSubscriber\JsonResponseSubscriber;
 use Siganushka\GenericBundle\Form\Extension\DisableHtml5ValidateTypeExtension;
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class SiganushkaGenericExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container)
     {
+        $loader = new PhpFileLoader($container, new FileLocator(\dirname(__DIR__).'/Resources/config'));
+        $loader->load('services.php');
+        $loader->load('controller.php');
+
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
@@ -31,14 +35,6 @@ class SiganushkaGenericExtension extends Extension
                 ->addTag('form.type_extension')
             ;
         }
-
-        $container
-            ->register(SortableSubscriber::class)
-            ->addTag('doctrine.event_subscriber');
-
-        $container
-            ->register(TimestampableSubscriber::class)
-            ->addTag('doctrine.event_subscriber');
 
         $container
             ->register(JsonResponseSubscriber::class)
