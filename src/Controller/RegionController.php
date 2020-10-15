@@ -16,7 +16,7 @@ class RegionController
         $this->entityManager = $entityManager;
     }
 
-    public function index(Request $request)
+    public function __invoke(Request $request)
     {
         $queryBuilder = $this->entityManager->getRepository(Region::class)
             ->createQueryBuilder('r')

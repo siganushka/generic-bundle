@@ -1,12 +1,13 @@
 # Features
 
-注册路由。
+注册行政区划路由。
 
 ```yaml
 # ./config/routes.yaml
 
-siganushka_generic:
-    resource: "@SiganushkaGenericBundle/Resources/config/routes.php" # 导入接口
+api_regions:
+    path: /api/regions
+    controller: Siganushka\GenericBundle\Controller\RegionController
 ```
 
 更新行政区划数据（来源腾讯地图）。

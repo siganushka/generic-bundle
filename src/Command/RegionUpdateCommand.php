@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class RegionsUpdateCommand extends Command
+class RegionUpdateCommand extends Command
 {
     const MAX_DEPTH = 1;
     const DIRECT_CODES = [
@@ -23,7 +23,7 @@ class RegionsUpdateCommand extends Command
         820000 => 820100,
     ];
 
-    protected static $defaultName = 'siganushka:regions:update';
+    protected static $defaultName = 'siganushka:region:update';
 
     private $httpClient;
     private $entityManager;

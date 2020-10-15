@@ -3,29 +3,34 @@
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Siganushka\GenericBundle\Command\RegionsUpdateCommand;
+use Siganushka\GenericBundle\Command\RegionUpdateCommand;
+use Siganushka\GenericBundle\Controller\RegionController;
 use Siganushka\GenericBundle\Doctrine\EventSubscriber\SortableSubscriber;
 use Siganushka\GenericBundle\Doctrine\EventSubscriber\TimestampableSubscriber;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 return static function (ContainerConfigurator $container) {
-    $services = $container->services();
+    $container->services()
+        // Region Controller
+        ->set(RegionController::class)
+        ->args([
+            service(EntityManagerInterface::class),
+        ])
+        ->public()
 
-    $services
-        ->set(RegionsUpdateCommand::class)
+        // Region Update Command
+        ->set(RegionUpdateCommand::class)
         ->args([
             service(HttpClientInterface::class),
             service(EntityManagerInterface::class),
         ])
         ->tag('console.command')
-    ;
 
-    $services
+        // Timestampable Subscriber
         ->set(TimestampableSubscriber::class)
         ->tag('doctrine.event_subscriber')
-    ;
 
-    $services
+        // Sortable Subscriber
         ->set(SortableSubscriber::class)
         ->tag('doctrine.event_subscriber')
     ;

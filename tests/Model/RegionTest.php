@@ -4,7 +4,7 @@ namespace Siganushka\GenericBundle\Tests\Model;
 
 use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\Exception\TreeDescendantConflictException;
-use Siganushka\GenericBundle\Tests\Model\Fixtures\Region;
+use Siganushka\GenericBundle\Model\Region;
 
 class RegionTest extends TestCase
 {

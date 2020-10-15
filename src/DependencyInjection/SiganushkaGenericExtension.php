@@ -16,7 +16,6 @@ class SiganushkaGenericExtension extends Extension
     {
         $loader = new PhpFileLoader($container, new FileLocator(\dirname(__DIR__).'/Resources/config'));
         $loader->load('services.php');
-        $loader->load('controller.php');
 
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
