@@ -34,3 +34,6 @@ $ composer require siganushka/generic-bundle
 - Registry
 	- [Registry](docs/registry/registry.md)
 	- [AliasableInterface](docs/registry/registry.md#AliasableInterface)
+
+- Features
+	- [Region](docs/region.md)
