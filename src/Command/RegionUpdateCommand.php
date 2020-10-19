@@ -2,12 +2,12 @@
 
 namespace Siganushka\GenericBundle\Command;
 
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Siganushka\GenericBundle\Model\Region;
 use Siganushka\GenericBundle\Model\RegionInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -32,66 +32,39 @@ class RegionUpdateCommand extends Command
     {
         $this
             ->setDescription('更新行政区划数据（来原腾讯地图）')
-            ->addOption('depth', null, InputOption::VALUE_OPTIONAL, '抓取深度，默认为 2 级，即省、直辖市、特别行政区和市、市辖区', 2)
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $depth = (int) $input->getOption('depth');
-        $array = [1, 2, 3, 4];
-
-        if (!\in_array($depth, $array)) {
-            throw new \RuntimeException(sprintf('抓取深度只能为 %s！级', implode(', ', $array)));
-        }
-
-        $this->syncFromRemote($output, $depth);
+        $this->syncFromRemote($output);
 
         return Command::SUCCESS;
     }
 
-    protected function syncFromRemote(OutputInterface $output, int $depth, ?RegionInterface $parent = null)
+    protected function syncFromRemote(OutputInterface $output, ?RegionInterface $parent = null, int $depth = 0)
     {
-        $query = $this->entityManager->createQueryBuilder()
-            ->select('r.code')
-            ->from(Region::class, 'r')
-            ->getQuery();
-
-        $result = $query->getResult();
-        $codes = array_column($result, 'code');
-
+        ++$depth;
         foreach ($this->doRequest($parent) as $data) {
             $messages = sprintf('[%d] %s', $data['id'], $data['fullname']);
 
-            if (\in_array($data['id'], $codes)) {
+            if ($depth > 3) {
+                $output->writeln("<comment>{$messages} 层级过深，已跳过！</comment>");
+                continue;
+            }
+
+            try {
+                $region = $this->persist($parent, $data);
+            } catch (UniqueConstraintViolationException $th) {
                 $output->writeln("<comment>{$messages} 存在，已跳过！</comment>");
                 continue;
             }
-
-            if ($parent && ($parent->getDepth() + 1) >= $depth) {
-                continue;
-            }
-
-            $region = new Region();
-            $region->setParent($parent);
-            $region->setCode($data['id']);
-            $region->setName($data['fullname']);
-            $region->setLatitude($data['location']['lat']);
-            $region->setLongitude($data['location']['lng']);
-            $region->recalculateDepth();
-
-            if (!empty($data['pinyin'])) {
-                $region->setPinyin(implode('', $data['pinyin']));
-            }
-
-            $this->entityManager->persist($region);
-            $this->entityManager->flush();
 
             $output->writeln("<info>{$messages} 添加成功！</info>");
             usleep(200000); // rate limit
 
             try {
-                $this->syncFromRemote($output, $depth, $region);
+                $this->syncFromRemote($output, $region, $depth);
             } catch (\Throwable $th) {
                 if (363 !== $th->getCode()) {
                     throw $th;
@@ -110,7 +83,7 @@ class RegionUpdateCommand extends Command
     {
         $query = ['key' => self::KEY];
         if ($parent instanceof RegionInterface) {
-            $query['id'] = $parent->getCode();
+            $query['id'] = $parent->getId();
         }
 
         $response = $this->httpClient->request('GET', 'https://apis.map.qq.com/ws/district/v1/getchildren', ['query' => $query]);
@@ -121,5 +94,33 @@ class RegionUpdateCommand extends Command
         }
 
         return $data['result'][0] ?? [];
+    }
+
+    public function persist(?RegionInterface $parent, array $data)
+    {
+        $connection = $this->entityManager->getConnection();
+        $metadata = $this->entityManager->getClassMetadata(Region::class);
+
+        $queryBuilder = $connection->createQueryBuilder()
+            ->insert($metadata->getTableName())
+            ->values([
+                'id' => '?',
+                'parent_id' => '?',
+                'name' => '?',
+                'latitude' => '?',
+                'longitude' => '?',
+                'pinyin' => '?',
+            ]);
+
+        $connection->executeStatement($queryBuilder->getSQL(), [
+            $data['id'],
+            $parent instanceof RegionInterface ? $parent->getId() : null,
+            $data['fullname'],
+            $data['location']['lat'],
+            $data['location']['lng'],
+            empty($data['pinyin']) ? null : implode('', $data['pinyin']),
+        ]);
+
+        return $this->entityManager->find(Region::class, $connection->lastInsertId());
     }
 }

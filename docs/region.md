@@ -5,9 +5,8 @@
 ```yaml
 # ./config/routes.yaml
 
-api_regions:
-    path: /api/regions
-    controller: Siganushka\GenericBundle\Controller\RegionController
+siganushka_generic:
+    resource: "@SiganushkaGenericBundle/Resources/config/routing/routes.php"
 ```
 
 更新行政区划数据（来源腾讯地图）。

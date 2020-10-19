@@ -21,7 +21,6 @@ class RegionController
         $queryBuilder = $this->entityManager->getRepository(Region::class)
             ->createQueryBuilder('r')
             ->where('r.parent IS null')
-            ->addOrderBy('r.depth', 'ASC')
             ->addOrderBy('r.parent', 'ASC')
             ->addOrderBy('r.id', 'ASC')
         ;

@@ -21,11 +21,6 @@ class Region implements ResourceInterface, RegionInterface
     private $parent;
 
     /**
-     * @ORM\Column(type="string", length=12, unique=true, options={"fixed": true})
-     */
-    private $code;
-
-    /**
      * @ORM\Column(type="string", length=32)
      */
     private $name;
@@ -44,11 +39,6 @@ class Region implements ResourceInterface, RegionInterface
      * @ORM\Column(type="decimal", precision=11, scale=6)
      */
     private $longitude;
-
-    /**
-     * @ORM\Column(type="smallint")
-     */
-    private $depth;
 
     /**
      * @ORM\OneToMany(targetEntity=Region::class, mappedBy="parent", cascade={"all"})
@@ -72,18 +62,6 @@ class Region implements ResourceInterface, RegionInterface
         }
 
         $this->parent = $parent;
-
-        return $this;
-    }
-
-    public function getCode(): ?string
-    {
-        return $this->code;
-    }
-
-    public function setCode(string $code): RegionInterface
-    {
-        $this->code = $code;
 
         return $this;
     }
@@ -132,35 +110,6 @@ class Region implements ResourceInterface, RegionInterface
     public function setLongitude(string $longitude): RegionInterface
     {
         $this->longitude = $longitude;
-
-        return $this;
-    }
-
-    public function getDepth(): int
-    {
-        if (null === $this->depth) {
-            $this->recalculateDepth();
-        }
-
-        return $this->depth;
-    }
-
-    public function setDepth(int $depth): TreeNodeInterface
-    {
-        $this->depth = $depth;
-
-        return $this;
-    }
-
-    public function recalculateDepth(): TreeNodeInterface
-    {
-        if ($this->isRoot()) {
-            $this->depth = 0;
-
-            return $this;
-        }
-
-        $this->depth = $this->getParent()->getDepth() + 1;
 
         return $this;
     }
@@ -254,5 +203,14 @@ class Region implements ResourceInterface, RegionInterface
     public function isLeaf(): bool
     {
         return 0 === \count($this->children);
+    }
+
+    public function getDepth(): int
+    {
+        if ($this->isRoot()) {
+            return 0;
+        }
+
+        return $this->getParent()->getDepth() + 1;
     }
 }
