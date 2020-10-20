@@ -15,6 +15,15 @@ class RegionUpdateCommand extends Command
 {
     const KEY = 'DZGBZ-6BQRQ-NSQ5Z-GQI3W-Z3G2K-OMB56';
 
+    const DIRECT_CODES = [
+        110000 => 110100,
+        120000 => 120100,
+        310000 => 310100,
+        500000 => 500100,
+        810000 => 810100,
+        820000 => 820100,
+    ];
+
     protected static $defaultName = 'siganushka:region:update';
 
     private $httpClient;
@@ -45,16 +54,20 @@ class RegionUpdateCommand extends Command
     protected function syncFromRemote(OutputInterface $output, ?RegionInterface $parent = null, int $depth = 0)
     {
         ++$depth;
+
+        if ($parent && isset(self::DIRECT_CODES[$parent->getId()])) {
+            ++$depth;
+        }
+
+        if ($depth > 2) {
+            return;
+        }
+
         foreach ($this->doRequest($parent) as $data) {
             $messages = sprintf('[%d] %s', $data['id'], $data['fullname']);
 
-            if ($depth > 3) {
-                $output->writeln("<comment>{$messages} 层级过深，已跳过！</comment>");
-                continue;
-            }
-
             try {
-                $region = $this->persist($parent, $data);
+                $entity = $this->generateEntity($data, $parent);
             } catch (UniqueConstraintViolationException $th) {
                 $output->writeln("<comment>{$messages} 存在，已跳过！</comment>");
                 continue;
@@ -64,7 +77,7 @@ class RegionUpdateCommand extends Command
             usleep(200000); // rate limit
 
             try {
-                $this->syncFromRemote($output, $region, $depth);
+                $this->syncFromRemote($output, $entity, $depth);
             } catch (\Throwable $th) {
                 if (363 !== $th->getCode()) {
                     throw $th;
@@ -96,7 +109,7 @@ class RegionUpdateCommand extends Command
         return $data['result'][0] ?? [];
     }
 
-    public function persist(?RegionInterface $parent, array $data)
+    public function generateEntity(array $rawData, ?RegionInterface $parent)
     {
         $connection = $this->entityManager->getConnection();
         $metadata = $this->entityManager->getClassMetadata(Region::class);
@@ -113,12 +126,12 @@ class RegionUpdateCommand extends Command
             ]);
 
         $connection->executeStatement($queryBuilder->getSQL(), [
-            $data['id'],
+            $rawData['id'],
             $parent instanceof RegionInterface ? $parent->getId() : null,
-            $data['fullname'],
-            $data['location']['lat'],
-            $data['location']['lng'],
-            empty($data['pinyin']) ? null : implode('', $data['pinyin']),
+            $rawData['fullname'],
+            $rawData['location']['lat'],
+            $rawData['location']['lng'],
+            empty($rawData['pinyin']) ? null : implode('', $rawData['pinyin']),
         ]);
 
         return $this->entityManager->find(Region::class, $connection->lastInsertId());

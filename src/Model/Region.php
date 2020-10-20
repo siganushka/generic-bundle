@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Siganushka\GenericBundle\DataStructure\TreeNodeInterface;
 use Siganushka\GenericBundle\Exception\TreeDescendantConflictException;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity
@@ -17,31 +18,43 @@ class Region implements ResourceInterface, RegionInterface
 
     /**
      * @ORM\ManyToOne(targetEntity=Region::class, inversedBy="children", cascade={"all"})
+     *
+     * @Groups({"region_parent"})
      */
     private $parent;
 
     /**
      * @ORM\Column(type="string", length=32)
+     *
+     * @Groups({"region"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", nullable=true, length=64)
+     *
+     * @Groups({"region"})
      */
     private $pinyin;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=6)
+     *
+     * @Groups({"region"})
      */
     private $latitude;
 
     /**
      * @ORM\Column(type="decimal", precision=11, scale=6)
+     *
+     * @Groups({"region"})
      */
     private $longitude;
 
     /**
      * @ORM\OneToMany(targetEntity=Region::class, mappedBy="parent", cascade={"all"})
+     *
+     * @Groups({"region_children"})
      */
     private $children;
 
