@@ -46,6 +46,8 @@ class RegionUpdateCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        dd(transliterator_transliterate('Any-Latin; Latin-ASCII;', '香洲区澳门大学横琴校区(由澳门特别行政区实施管辖)'));
+
         $this->syncFromRemote($output);
 
         return Command::SUCCESS;
@@ -56,10 +58,31 @@ class RegionUpdateCommand extends Command
         ++$depth;
 
         if ($parent && isset(self::DIRECT_CODES[$parent->getId()])) {
+            $newData = [
+                'id' => self::DIRECT_CODES[$parent->getId()],
+                'fullname' => $parent->getName(),
+                'location' => [
+                    'lat' => $parent->getLatitude(),
+                    'lng' => $parent->getLongitude(),
+                ],
+            ];
+
+            $messages = sprintf('[%d] %s', $newData['id'], $newData['fullname']);
+
+            try {
+                $newParent = $this->generateEntity($newData, $parent);
+            } catch (UniqueConstraintViolationException $th) {
+                $output->writeln("<comment>{$messages} 存在，已跳过！</comment>");
+
+                return;
+            }
+
+            $output->writeln("<info>{$messages} 添加成功！</info>");
+
             ++$depth;
         }
 
-        if ($depth > 2) {
+        if ($depth > 3) {
             return;
         }
 
@@ -67,7 +90,7 @@ class RegionUpdateCommand extends Command
             $messages = sprintf('[%d] %s', $data['id'], $data['fullname']);
 
             try {
-                $entity = $this->generateEntity($data, $parent);
+                $entity = $this->generateEntity($data, $newParent ?? $parent);
             } catch (UniqueConstraintViolationException $th) {
                 $output->writeln("<comment>{$messages} 存在，已跳过！</comment>");
                 continue;
@@ -91,6 +114,7 @@ class RegionUpdateCommand extends Command
 
     /**
      * @see https://lbs.qq.com/service/webService/webServiceGuide/webServiceDistrict
+     * @see http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/
      */
     protected function doRequest(?RegionInterface $parent): array
     {
@@ -125,13 +149,17 @@ class RegionUpdateCommand extends Command
                 'pinyin' => '?',
             ]);
 
+        $name = mb_substr($rawData['fullname'], 0, 32);
+        $pinyin = transliterator_transliterate('Any-Latin; Latin-ASCII;', $name);
+        $pinyin = mb_substr(str_replace(' ', '', $pinyin), 0, 32);
+
         $connection->executeStatement($queryBuilder->getSQL(), [
             $rawData['id'],
             $parent instanceof RegionInterface ? $parent->getId() : null,
-            $rawData['fullname'],
+            $name,
             $rawData['location']['lat'],
             $rawData['location']['lng'],
-            empty($rawData['pinyin']) ? null : implode('', $rawData['pinyin']),
+            $pinyin,
         ]);
 
         return $this->entityManager->find(Region::class, $connection->lastInsertId());

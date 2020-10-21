@@ -31,7 +31,7 @@ class Region implements ResourceInterface, RegionInterface
     private $name;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=64)
+     * @ORM\Column(type="string", length=32)
      *
      * @Groups({"region"})
      */
