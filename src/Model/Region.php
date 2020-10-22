@@ -31,27 +31,6 @@ class Region implements ResourceInterface, RegionInterface
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=32)
-     *
-     * @Groups({"region"})
-     */
-    private $pinyin;
-
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=6)
-     *
-     * @Groups({"region"})
-     */
-    private $latitude;
-
-    /**
-     * @ORM\Column(type="decimal", precision=11, scale=6)
-     *
-     * @Groups({"region"})
-     */
-    private $longitude;
-
-    /**
      * @ORM\OneToMany(targetEntity=Region::class, mappedBy="parent", cascade={"all"})
      *
      * @Groups({"region_children"})
@@ -87,42 +66,6 @@ class Region implements ResourceInterface, RegionInterface
     public function setName(string $name): RegionInterface
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getPinyin(): ?string
-    {
-        return $this->pinyin;
-    }
-
-    public function setPinyin(string $pinyin): RegionInterface
-    {
-        $this->pinyin = $pinyin;
-
-        return $this;
-    }
-
-    public function getLatitude(): ?string
-    {
-        return $this->latitude;
-    }
-
-    public function setLatitude(string $latitude): RegionInterface
-    {
-        $this->latitude = $latitude;
-
-        return $this;
-    }
-
-    public function getLongitude(): ?string
-    {
-        return $this->longitude;
-    }
-
-    public function setLongitude(string $longitude): RegionInterface
-    {
-        $this->longitude = $longitude;
 
         return $this;
     }

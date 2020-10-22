@@ -3,12 +3,10 @@
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Siganushka\GenericBundle\Command\RegionImportCommand;
 use Siganushka\GenericBundle\Command\RegionUpdateCommand;
 use Siganushka\GenericBundle\Controller\RegionController;
 use Siganushka\GenericBundle\Doctrine\EventSubscriber\SortableSubscriber;
 use Siganushka\GenericBundle\Doctrine\EventSubscriber\TimestampableSubscriber;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 return static function (ContainerConfigurator $container) {
@@ -24,14 +22,6 @@ return static function (ContainerConfigurator $container) {
         ->set(RegionUpdateCommand::class)
         ->args([
             service(HttpClientInterface::class),
-            service(EntityManagerInterface::class),
-        ])
-        ->tag('console.command')
-
-        // Region Import Command
-        ->set(RegionImportCommand::class)
-        ->args([
-            service(KernelInterface::class),
             service(EntityManagerInterface::class),
         ])
         ->tag('console.command')
