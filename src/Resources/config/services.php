@@ -7,6 +7,7 @@ use Siganushka\GenericBundle\Command\RegionUpdateCommand;
 use Siganushka\GenericBundle\Controller\RegionController;
 use Siganushka\GenericBundle\Doctrine\EventSubscriber\SortableSubscriber;
 use Siganushka\GenericBundle\Doctrine\EventSubscriber\TimestampableSubscriber;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 return static function (ContainerConfigurator $container) {
@@ -15,6 +16,7 @@ return static function (ContainerConfigurator $container) {
         ->set(RegionController::class)
         ->args([
             service(EntityManagerInterface::class),
+            service(SerializerInterface::class),
         ])
         ->public()
 

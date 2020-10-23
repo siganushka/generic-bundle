@@ -2,9 +2,10 @@
 
 namespace Siganushka\GenericBundle\Command;
 
-use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Siganushka\GenericBundle\Model\Region;
+use Siganushka\GenericBundle\Model\RegionInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -17,14 +18,12 @@ class RegionUpdateCommand extends Command
     protected static $defaultName = 'siganushka:region:update';
 
     private $httpClient;
-    private $connection;
-    private $metadata;
+    private $entityManager;
 
     public function __construct(HttpClientInterface $httpClient, EntityManagerInterface $entityManager)
     {
         $this->httpClient = $httpClient;
-        $this->connection = $entityManager->getConnection();
-        $this->metadata = $entityManager->getClassMetadata(Region::class);
+        $this->entityManager = $entityManager;
 
         parent::__construct();
     }
@@ -39,39 +38,60 @@ class RegionUpdateCommand extends Command
         $response = $this->httpClient->request('GET', self::URL);
         $contents = $response->getContent();
 
-        $regions = json_decode($contents, true);
+        $data = json_decode($contents, true);
         if (JSON_ERROR_NONE !== json_last_error()) {
             throw new \UnexpectedValueException(json_last_error_msg());
         }
 
-        $this->import($output, $regions);
+        // $data = [
+        //     [
+        //         'code' => 1,
+        //         'name' => 'foo1',
+        //         'children' => [
+        //             [
+        //                 'code' => 11,
+        //                 'name' => 'foo11',
+        //                 'children' => [
+        //                     [
+        //                         'code' => 1111,
+        //                         'name' => 'foo1111'
+        //                     ]
+        //                 ]
+        //             ]
+        //         ],
+        //     ],
+        // ];
+
+        // manually assign id
+        $metadata = $this->entityManager->getClassMetadata(Region::class);
+        $metadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_NONE);
+
+        $this->import($output, $data);
+        $this->entityManager->flush();
 
         return Command::SUCCESS;
     }
 
-    protected function import(OutputInterface $output, array $regions, ?int $parentId = null)
+    protected function import(OutputInterface $output, array $data, ?RegionInterface $parent = null)
     {
-        foreach ($regions as $region) {
-            $code = str_pad($region['code'], 6, 0);
-            $name = mb_substr($region['name'], 0, 32);
+        foreach ($data as $value) {
+            $region = new Region();
+            $region->setParent($parent);
+            $region->setCode($value['code']);
+            $region->setName($value['name']);
 
-            $messages = sprintf('[%d] %s', $code, $name);
+            $messages = sprintf('[%d] %s', $region->getCode(), $region->getName());
 
-            $queryBuilder = $this->connection->createQueryBuilder()
-                ->insert($this->metadata->getTableName())
-                ->values(['id' => '?', 'parent_id' => '?', 'name' => '?']);
-
-            try {
-                $this->connection->executeStatement($queryBuilder->getSQL(), [$code, $parentId, $name]);
-            } catch (UniqueConstraintViolationException $th) {
+            $newParent = $this->entityManager->find(Region::class, $region->getCode());
+            if ($newParent) {
                 $output->writeln("<comment>{$messages} 存在，已跳过！</comment>");
-                continue;
+            } else {
+                $output->writeln("<info>{$messages} 添加成功！</info>");
+                $this->entityManager->persist($region);
             }
 
-            $output->writeln("<info>{$messages} 添加成功！</info>");
-
-            if (!empty($region['children'])) {
-                $this->import($output, $region['children'], $code);
+            if (isset($value['children'])) {
+                $this->import($output, $value['children'], $newParent ?: $region);
             }
         }
     }

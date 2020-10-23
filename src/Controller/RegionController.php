@@ -6,14 +6,19 @@ use Doctrine\ORM\EntityManagerInterface;
 use Siganushka\GenericBundle\Model\Region;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\Encoder\JsonEncode;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class RegionController
 {
     private $entityManager;
+    private $serializer;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, SerializerInterface $serializer)
     {
         $this->entityManager = $entityManager;
+        $this->serializer = $serializer;
     }
 
     public function __invoke(Request $request)
@@ -33,8 +38,13 @@ class RegionController
         }
 
         $query = $queryBuilder->getQuery();
-        $regions = $query->getArrayResult();
+        $regions = $query->getResult();
 
-        return new JsonResponse($regions);
+        $json = $this->serializer->serialize($regions, 'json', [
+            JsonEncode::OPTIONS => JSON_UNESCAPED_UNICODE,
+            AbstractNormalizer::ATTRIBUTES => ['name', 'code'],
+        ]);
+
+        return new JsonResponse($json, 200, [], true);
     }
 }

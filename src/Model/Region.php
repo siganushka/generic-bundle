@@ -7,7 +7,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Siganushka\GenericBundle\DataStructure\TreeNodeInterface;
 use Siganushka\GenericBundle\Exception\TreeDescendantConflictException;
-use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity
@@ -18,22 +17,16 @@ class Region implements ResourceInterface, RegionInterface
 
     /**
      * @ORM\ManyToOne(targetEntity=Region::class, inversedBy="children", cascade={"all"})
-     *
-     * @Groups({"region_parent"})
      */
     private $parent;
 
     /**
      * @ORM\Column(type="string", length=32)
-     *
-     * @Groups({"region"})
      */
     private $name;
 
     /**
      * @ORM\OneToMany(targetEntity=Region::class, mappedBy="parent", cascade={"all"})
-     *
-     * @Groups({"region_children"})
      */
     private $children;
 
@@ -58,6 +51,18 @@ class Region implements ResourceInterface, RegionInterface
         return $this;
     }
 
+    public function getCode(): ?string
+    {
+        return $this->id;
+    }
+
+    public function setCode(string $code): RegionInterface
+    {
+        $this->id = str_pad($code, 6, 0);
+
+        return $this;
+    }
+
     public function getName(): ?string
     {
         return $this->name;
@@ -65,7 +70,7 @@ class Region implements ResourceInterface, RegionInterface
 
     public function setName(string $name): RegionInterface
     {
-        $this->name = $name;
+        $this->name = mb_substr($name, 0, 32);
 
         return $this;
     }
@@ -168,10 +173,5 @@ class Region implements ResourceInterface, RegionInterface
         }
 
         return $this->getParent()->getDepth() + 1;
-    }
-
-    public function getCode(): ?string
-    {
-        return $this->id;
     }
 }
