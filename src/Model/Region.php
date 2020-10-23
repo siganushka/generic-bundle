@@ -169,4 +169,9 @@ class Region implements ResourceInterface, RegionInterface
 
         return $this->getParent()->getDepth() + 1;
     }
+
+    public function getCode(): ?string
+    {
+        return $this->id;
+    }
 }
