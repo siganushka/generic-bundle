@@ -42,7 +42,7 @@ class RegionController
 
         $json = $this->serializer->serialize($regions, 'json', [
             JsonEncode::OPTIONS => JSON_UNESCAPED_UNICODE,
-            AbstractNormalizer::ATTRIBUTES => ['name', 'code'],
+            AbstractNormalizer::ATTRIBUTES => ['code', 'name'],
         ]);
 
         return new JsonResponse($json, 200, [], true);

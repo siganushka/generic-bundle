@@ -2,30 +2,27 @@
 
 namespace Siganushka\GenericBundle\Form\Type;
 
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RegionSubjectType extends AbstractType
 {
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add('province', RegionProvinceType::class, array_merge([
+            'city_options' => $options['city_options'],
+            'district_options' => $options['district_options'],
+        ], $options['province_options']));
+    }
+
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'class' => Region::class,
-            'choice_label' => 'name',
-            'placeholder' => 'app.choice_empty',
-            'label' => 'entity.region',
-            'query_builder' => function ($er) {
-                return $er->createQueryBuilder('r')
-                    ->where('r.parent IS NULL')
-                    ->addOrderBy('r.parent', 'ASC')
-                    ->addOrderBy('r.id', 'ASC');
-            },
+            'inherit_data' => true,
+            'province_options' => [],
+            'city_options' => [],
+            'district_options' => [],
         ]);
-    }
-
-    public function getParent()
-    {
-        return EntityType::class;
     }
 }
