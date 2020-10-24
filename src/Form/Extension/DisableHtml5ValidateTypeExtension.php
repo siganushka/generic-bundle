@@ -11,7 +11,8 @@ class DisableHtml5ValidateTypeExtension extends AbstractTypeExtension
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'attr' => ['novalidate' => 'novalidate'],
+            'required' => false,
+            // 'attr' => ['novalidate' => 'novalidate'],
         ]);
     }
 

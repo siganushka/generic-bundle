@@ -2,8 +2,6 @@
 
 namespace Siganushka\GenericBundle\Form\Type;
 
-use Siganushka\GenericBundle\Model\Region;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,10 +11,6 @@ class RegionDistrictType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired('parent');
-        $resolver->setDefaults([
-            'class' => Region::class,
-            'choice_label' => 'name',
-        ]);
 
         $resolver->setNormalizer('query_builder', function (Options $options) {
             $queryBuilder = $options['em']->getRepository($options['class'])
@@ -32,6 +26,6 @@ class RegionDistrictType extends AbstractType
 
     public function getParent()
     {
-        return EntityType::class;
+        return RegionType::class;
     }
 }

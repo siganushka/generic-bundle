@@ -3,22 +3,25 @@
 namespace Siganushka\GenericBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Siganushka\GenericBundle\Event\RegionFilterEvent;
 use Siganushka\GenericBundle\Model\Region;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Serializer\Encoder\JsonEncode;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class RegionController
 {
     private $entityManager;
-    private $serializer;
+    private $dispatcher;
+    private $normalizer;
 
-    public function __construct(EntityManagerInterface $entityManager, SerializerInterface $serializer)
+    public function __construct(EntityManagerInterface $entityManager, EventDispatcherInterface $dispatcher, NormalizerInterface $normalizer)
     {
         $this->entityManager = $entityManager;
-        $this->serializer = $serializer;
+        $this->dispatcher = $dispatcher;
+        $this->normalizer = $normalizer;
     }
 
     public function __invoke(Request $request)
@@ -40,11 +43,13 @@ class RegionController
         $query = $queryBuilder->getQuery();
         $regions = $query->getResult();
 
-        $json = $this->serializer->serialize($regions, 'json', [
-            JsonEncode::OPTIONS => JSON_UNESCAPED_UNICODE,
+        $event = new RegionFilterEvent($regions);
+        $this->dispatcher->dispatch($event);
+
+        $data = $this->normalizer->normalize($event->getRegions(), null, [
             AbstractNormalizer::ATTRIBUTES => ['code', 'name'],
         ]);
 
-        return new JsonResponse($json, 200, [], true);
+        return new JsonResponse($data);
     }
 }

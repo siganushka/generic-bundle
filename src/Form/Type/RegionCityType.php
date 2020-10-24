@@ -2,9 +2,7 @@
 
 namespace Siganushka\GenericBundle\Form\Type;
 
-use Siganushka\GenericBundle\Model\Region;
 use Siganushka\GenericBundle\Model\RegionInterface;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -42,8 +40,6 @@ class RegionCityType extends AbstractType
     {
         $resolver->setRequired('parent');
         $resolver->setDefaults([
-            'class' => Region::class,
-            'choice_label' => 'name',
             'district_options' => [],
         ]);
 
@@ -61,6 +57,6 @@ class RegionCityType extends AbstractType
 
     public function getParent()
     {
-        return EntityType::class;
+        return RegionType::class;
     }
 }
