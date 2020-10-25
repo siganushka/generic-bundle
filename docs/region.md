@@ -1,6 +1,6 @@
 # Features
 
-导入行政区划相关实体，在 `doctrine.orm.mappings` 下新增配置。
+配置行政区划相关实体，在 `doctrine.orm.mappings` 下新增配置。
 
 ```yaml
 # ./config/packages/doctrine.yaml
@@ -12,6 +12,18 @@ doctrine:
                 type: annotation
                 dir: 'Model'
                 prefix: 'Siganushka\GenericBundle\Model'
+```
+
+更新实体映射信息。
+
+```bash
+$ php bin/console doctrine:schema:update --force
+```
+
+更新行政区划数据（来原 Github）
+
+```bash
+$ php bin/console siganushka:region:update
 ```
 
 导入路由，前端获取数据路由名为 `siganushka_generic_region`。
@@ -134,10 +146,4 @@ class RemoveDirectlyRegionSubscriber implements EventSubscriberInterface
         ];
     }
 }
-```
-
-更新行政区划数据（来原 Github）
-
-```bash
-$ php bin/console siganushka:region:update
 ```
