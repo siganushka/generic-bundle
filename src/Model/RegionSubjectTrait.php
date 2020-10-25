@@ -63,4 +63,13 @@ trait RegionSubjectTrait
 
         return $this;
     }
+
+    public function getRegionAsString()
+    {
+        $names = array_map(function (RegionInterface $region) {
+            return $region->getName();
+        }, array_filter([$this->province, $this->city, $this->district]));
+
+        return implode(' » ', $names);
+    }
 }
