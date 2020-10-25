@@ -21,11 +21,6 @@ trait ResourceTrait
         return $this->id;
     }
 
-    public function isNew(): bool
-    {
-        return null === $this->id;
-    }
-
     public function isEqualTo(?ResourceInterface $target): bool
     {
         if (null === $target) {
