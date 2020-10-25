@@ -15,4 +15,6 @@ interface RegionSubjectInterface
     public function getDistrict(): ?RegionInterface;
 
     public function setDistrict(?RegionInterface $district): self;
+
+    public function getRegionAsString(): string;
 }

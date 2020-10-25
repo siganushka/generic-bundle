@@ -64,7 +64,7 @@ trait RegionSubjectTrait
         return $this;
     }
 
-    public function getRegionAsString()
+    public function getRegionAsString(): string
     {
         $names = array_map(function (RegionInterface $region) {
             return $region->getName();
