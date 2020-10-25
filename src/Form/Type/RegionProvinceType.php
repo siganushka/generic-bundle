@@ -39,10 +39,8 @@ class RegionProvinceType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'city_options' => [],
-            'district_options' => [],
-        ]);
+        $resolver->setDefault('city_options', []);
+        $resolver->setDefault('district_options', []);
 
         $resolver->setNormalizer('query_builder', function (Options $options) {
             $queryBuilder = $options['em']->getRepository($options['class'])

@@ -38,10 +38,10 @@ class RegionCityType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired('parent');
-        $resolver->setDefaults([
-            'district_options' => [],
-        ]);
+        $resolver->setDefault('parent', null);
+        $resolver->setDefault('district_options', []);
+
+        $resolver->setAllowedTypes('parent', ['null', RegionInterface::class]);
 
         $resolver->setNormalizer('query_builder', function (Options $options) {
             $queryBuilder = $options['em']->getRepository($options['class'])
