@@ -5,10 +5,13 @@
 ```yaml
 # ./config/packages/doctrine.yaml
 
-SiganushkaGenericBundle:
-    type: annotation
-    dir: 'Model'
-    prefix: 'Siganushka\GenericBundle\Model'
+doctrine:
+    orm:
+        mappings:
+            SiganushkaGenericBundle:
+                type: annotation
+                dir: 'Model'
+                prefix: 'Siganushka\GenericBundle\Model'
 ```
 
 导入路由，前端获取数据路由名为 `siganushka_generic_region`。
@@ -20,7 +23,7 @@ siganushka_generic:
     resource: "@SiganushkaGenericBundle/Resources/config/routing/routes.php"
 ```
 
-为实体添字段
+为实体添字段，默认为省 `province`、市 `city`、区 `district` 三级。
 
 ```php
 // src/Entity/Foo.php
@@ -49,31 +52,29 @@ class TestType extends AbstractType
     {
         $builder
             ->add('region', RegionSubjectType::class)
+
+            // 也可以添加其它参数，比如占位提示和必填
+            //
+            // ->add('region', RegionSubjectType::class, [
+            //     'province_options' => [
+            //         'placeholder' => '--- 请选择 ---',
+            //         'constraints' => new NotBlank(),
+            //     ],
+            //     'city_options' => [
+            //         'placeholder' => '--- 请选择 ---',
+            //         'constraints' => new NotBlank(),
+            //     ],
+            //     'district_options' => [
+            //         'placeholder' => '--- 请选择 ---',
+            //         'constraints' => new NotBlank(),
+            //     ],
+            // ])
+            // ...
         ;
     }
+
+    // ...
 }
-```
-
-添加其参数，比如添加必选和提示字符：
-
-```php
-
-$builder
-    ->add('region', RegionSubjectType::class, [
-        'province_options' => [
-            'placeholder' => '--- 请选择 ---',
-            'constraints' => new NotBlank(),
-        ],
-        'city_options' => [
-            'placeholder' => '--- 请选择 ---',
-            'constraints' => new NotBlank(),
-        ],
-        'district_options' => [
-            'placeholder' => '--- 请选择 ---',
-            'constraints' => new NotBlank(),
-        ],
-    ])
-;
 ```
 
 客户端实现联动效果，以 `jquery` 获取数据为例：
