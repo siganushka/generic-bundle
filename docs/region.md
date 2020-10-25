@@ -51,10 +51,10 @@ class TestType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            // region 为虚拟名称，可随便填写
             ->add('region', RegionSubjectType::class)
 
             // 也可以添加其它参数，比如占位提示和必填
-            //
             // ->add('region', RegionSubjectType::class, [
             //     'province_options' => [
             //         'placeholder' => '--- 请选择 ---',
@@ -81,24 +81,26 @@ class TestType extends AbstractType
 
 ```javascript
 $(function() {
-  $('#PROVINCE_ID,#CITY_ID').on('change', function(event) {
-    var $target = (event.currentTarget.id === 'PROVINCE_ID')
-        ? $('#CITY_ID')
-        : $('#DISTRICT_ID')
+  var $province = $('#{{ form.region.province.vars.id }}')
+  var $city = $('#{{ form.region.city.vars.id }}')
+  var $district = $('#{{ form.region.district.vars.id }}')
 
-    // 占位提示由后端定义，使其保持一致
-    var placeholder = $target.data('placeholder')
-    var data = { parent: event.currentTarget.value }
-
-    $.getJSON('{{ path("siganushka_generic_region") }}', data, function(r) {
-        var options = ['<option value="">'+ placeholder +'</option>']
-
-        $.each(r, function(idx, el) {
-            options.push('<option value="'+ el.code +'">'+ el.name +'</option>')
-        })
-
-        $target.html(options.join('')).trigger('change')
+  var update = function(parent, $target) {
+    $.getJSON('{{ path("siganushka_generic_region") }}', { parent: parent }, function(r) {
+      var options = []
+      $.each(r, function(idx, el) {
+        options.push('<option value="'+ el.code +'">'+ el.name +'</option>')
+      })
+      $target.html(options.join('')).trigger('change')
     })
+  }
+
+  $province.on('change', function (event) {
+    update(event.currentTarget.value, $city)
+  })
+
+  $city.on('change', function (event) {
+    update(event.currentTarget.value, $district)
   })
 })
 ```

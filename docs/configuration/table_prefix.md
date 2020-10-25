@@ -6,5 +6,5 @@
 # ./config/packages/siganushka_generic.yaml
 
 siganushka_generic:
-    table_prefix: tb_ # 可选项，默认为 null，为 null 时不添加表前缀
+    table_prefix: app_ # 可选，默认为 null，为 null 时不添加表前缀
 ```

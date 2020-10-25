@@ -35,6 +35,10 @@ class RegionUpdateCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        // manually assign id
+        $metadata = $this->entityManager->getClassMetadata(Region::class);
+        $metadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_NONE);
+
         $response = $this->httpClient->request('GET', self::URL);
         $contents = $response->getContent();
 
@@ -61,10 +65,6 @@ class RegionUpdateCommand extends Command
         //         ],
         //     ],
         // ];
-
-        // manually assign id
-        $metadata = $this->entityManager->getClassMetadata(Region::class);
-        $metadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_NONE);
 
         $this->import($output, $data);
         $this->entityManager->flush();
