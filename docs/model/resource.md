@@ -17,6 +17,5 @@ class Foo implements ResourceInterface
 
 $foo = new Foo();
 $foo->getId(): ?int;                    // 返回主键 ID
-$foo->isNew(): bool;                    // 检测是否为新实体（没有被持久化）
 $foo->isEqualTo(?self $target): bool;   // 检测是否与另一个实体相等
 ```
