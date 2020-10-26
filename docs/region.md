@@ -1,19 +1,5 @@
 # Features
 
-配置行政区划相关实体，在 `doctrine.orm.mappings` 下新增配置。
-
-```yaml
-# ./config/packages/doctrine.yaml
-
-doctrine:
-    orm:
-        mappings:
-            SiganushkaGenericBundle:
-                type: annotation
-                dir: 'Model'
-                prefix: 'Siganushka\GenericBundle\Model'
-```
-
 更新实体映射信息。
 
 ```bash
