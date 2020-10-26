@@ -122,7 +122,7 @@ class RemoveDirectlyRegionSubscriber implements EventSubscriberInterface
             return !in_array($region->getCode(), self::DIRECTLY_CODES);
         });
 
-        $event->setRegions(array_values($regions));
+        $event->setRegions($regions);
     }
 
     public static function getSubscribedEvents()

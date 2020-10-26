@@ -23,6 +23,6 @@ class RegionFilterEvent extends Event
 
     public function setRegions(array $regions): void
     {
-        $this->regions = $regions;
+        $this->regions = array_values($regions);
     }
 }
