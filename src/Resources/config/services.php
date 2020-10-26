@@ -9,7 +9,6 @@ use Siganushka\GenericBundle\Doctrine\EventSubscriber\SortableSubscriber;
 use Siganushka\GenericBundle\Doctrine\EventSubscriber\TimestampableSubscriber;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 return static function (ContainerConfigurator $container) {
     $container->services()
@@ -25,7 +24,6 @@ return static function (ContainerConfigurator $container) {
         // Region Update Command
         ->set(RegionUpdateCommand::class)
         ->args([
-            service(HttpClientInterface::class),
             service(EntityManagerInterface::class),
         ])
         ->tag('console.command')

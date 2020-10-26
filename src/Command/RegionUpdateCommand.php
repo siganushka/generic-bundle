@@ -9,7 +9,7 @@ use Siganushka\GenericBundle\Model\RegionInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Component\HttpClient\HttpClient;
 
 class RegionUpdateCommand extends Command
 {
@@ -20,9 +20,13 @@ class RegionUpdateCommand extends Command
     private $httpClient;
     private $entityManager;
 
-    public function __construct(HttpClientInterface $httpClient, EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->httpClient = $httpClient;
+        if (!class_exists(HttpClient::class)) {
+            throw new \LogicException(sprintf('The "%s" class requires the "HttpClient" component. Try running "composer require symfony/http-client".', self::class));
+        }
+
+        $this->httpClient = HttpClient::create();
         $this->entityManager = $entityManager;
 
         parent::__construct();
