@@ -4,7 +4,6 @@ namespace Siganushka\GenericBundle\Validator\Constraints;
 
 use Composer\Semver\VersionParser;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Exception\LogicException;
 
 /**
  * @Annotation
@@ -22,7 +21,7 @@ class Semver extends Constraint
     public function __construct($options = null)
     {
         if (!class_exists(VersionParser::class)) {
-            throw new LogicException('The semantic version is required to use the Semver constraint. Try running "composer require composer/semver".');
+            throw new \LogicException(sprintf('The "%s" class requires the "Semver" component. Try running "composer require composer/semver".', self::class));
         }
 
         parent::__construct($options);
