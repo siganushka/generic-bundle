@@ -27,6 +27,7 @@ class Region implements ResourceInterface, RegionInterface
 
     /**
      * @ORM\OneToMany(targetEntity=Region::class, mappedBy="parent", cascade={"all"})
+     * @ORM\OrderBy({"parent": "ASC", "id": "ASC"})
      */
     private $children;
 
