@@ -35,14 +35,14 @@ class RegionUpdateCommand extends Command
 
         $json = \dirname($reflection->getFileName()).'/Resources/data/pca-code.json';
         if (!file_exists($json)) {
-            throw new InvalidArgumentException(sprintf('File "%s" is not found', $json));
+            throw new \InvalidArgumentException(sprintf('File "%s" is not found', $json));
         }
 
         $json = file_get_contents($json);
         $data = json_decode($json, true);
 
         if (JSON_ERROR_NONE !== json_last_error()) {
-            throw new UnexpectedValueException(json_last_error_msg());
+            throw new \UnexpectedValueException(json_last_error_msg());
         }
 
         // Manually assign id
