@@ -6,27 +6,19 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Siganushka\GenericBundle\Model\Region;
 use Siganushka\GenericBundle\Model\RegionInterface;
+use Siganushka\GenericBundle\SiganushkaGenericBundle;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\HttpClient\HttpClient;
 
 class RegionUpdateCommand extends Command
 {
-    const URL = 'https://raw.githubusercontent.com/modood/Administrative-divisions-of-China/master/dist/pca-code.json';
-
     protected static $defaultName = 'siganushka:region:update';
 
-    private $httpClient;
     private $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
     {
-        if (!class_exists(HttpClient::class)) {
-            throw new \LogicException(sprintf('The "%s" class requires the "HttpClient" component. Try running "composer require symfony/http-client".', self::class));
-        }
-
-        $this->httpClient = HttpClient::create();
         $this->entityManager = $entityManager;
 
         parent::__construct();
@@ -39,36 +31,23 @@ class RegionUpdateCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        // manually assign id
-        $metadata = $this->entityManager->getClassMetadata(Region::class);
-        $metadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_NONE);
+        $reflection = new \ReflectionClass(SiganushkaGenericBundle::class);
 
-        $response = $this->httpClient->request('GET', self::URL);
-        $contents = $response->getContent();
-
-        $data = json_decode($contents, true);
-        if (JSON_ERROR_NONE !== json_last_error()) {
-            throw new \UnexpectedValueException(json_last_error_msg());
+        $json = \dirname($reflection->getFileName()).'/Resources/data/pca-code.json';
+        if (!file_exists($json)) {
+            throw new InvalidArgumentException(sprintf('File "%s" is not found', $json));
         }
 
-        // $data = [
-        //     [
-        //         'code' => 1,
-        //         'name' => 'foo1',
-        //         'children' => [
-        //             [
-        //                 'code' => 11,
-        //                 'name' => 'foo11',
-        //                 'children' => [
-        //                     [
-        //                         'code' => 1111,
-        //                         'name' => 'foo1111'
-        //                     ]
-        //                 ]
-        //             ]
-        //         ],
-        //     ],
-        // ];
+        $json = file_get_contents($json);
+        $data = json_decode($json, true);
+
+        if (JSON_ERROR_NONE !== json_last_error()) {
+            throw new UnexpectedValueException(json_last_error_msg());
+        }
+
+        // Manually assign id
+        $metadata = $this->entityManager->getClassMetadata(Region::class);
+        $metadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_NONE);
 
         $this->import($output, $data);
         $this->entityManager->flush();
