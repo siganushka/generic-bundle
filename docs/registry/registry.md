@@ -52,8 +52,8 @@ $registry->register(new BarChannel());
 
 $registry->get(FooChannel::class);  // return instanceof FooChannel
 $registry->has(BarChannel::class);  // return true
-$registry->values();                // return array of instanceof ChannelInterface
-$registry->keys();                  // return ['App\Channel\FooChannel', 'App\Channel\BarChannel']
+$registry->getValues();             // return array of instanceof ChannelInterface
+$registry->getKeys();               // return ['App\Channel\FooChannel', 'App\Channel\BarChannel']
 ```
 
 ### AliasableInterface
@@ -99,6 +99,6 @@ $registry->register(new BarChannel());
 
 $registry->get('foo');  // return instanceof FooChannel
 $registry->has('bar');  // return true
-$registry->values();    // return array of instanceof ChannelInterface
-$registry->keys();      // return ['foo', 'bar']
+$registry->getValues(); // return array of instanceof ChannelInterface
+$registry->getKeys();   // return ['foo', 'bar']
 ```
