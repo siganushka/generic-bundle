@@ -43,10 +43,10 @@ interface RegistryInterface
     /**
      * Return key of services from registry.
      */
-    public function keys(): array;
+    public function getKeys(): array;
 
     /**
      * Return services from registry.
      */
-    public function values(): array;
+    public function getValues(): array;
 }

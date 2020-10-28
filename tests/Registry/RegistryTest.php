@@ -27,8 +27,8 @@ class RegistryTest extends TestCase
         $registry->register($bar);
         $registry->register($aliasableBaz);
 
-        $this->assertCount(3, $registry->values());
-        $this->assertEquals(['FooService', 'BarService', 'baz'], $registry->keys());
+        $this->assertCount(3, $registry->getValues());
+        $this->assertEquals(['FooService', 'BarService', 'baz'], $registry->getKeys());
 
         $this->assertTrue($registry->has('FooService'));
         $this->assertTrue($registry->has('BarService'));
@@ -40,13 +40,13 @@ class RegistryTest extends TestCase
 
         $registry->remove('FooService');
 
-        $this->assertCount(2, $registry->values());
-        $this->assertEquals(['BarService', 'baz'], $registry->keys());
+        $this->assertCount(2, $registry->getValues());
+        $this->assertEquals(['BarService', 'baz'], $registry->getKeys());
 
         $registry->clear();
 
-        $this->assertCount(0, $registry->values());
-        $this->assertCount(0, $registry->keys());
+        $this->assertCount(0, $registry->getValues());
+        $this->assertCount(0, $registry->getKeys());
     }
 
     public function testAbstractionNotFoundException()

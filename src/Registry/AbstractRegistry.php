@@ -79,12 +79,12 @@ abstract class AbstractRegistry implements RegistryInterface
         $this->services = [];
     }
 
-    public function keys(): array
+    public function getKeys(): array
     {
         return array_keys($this->services);
     }
 
-    public function values(): array
+    public function getValues(): array
     {
         return $this->services;
     }
