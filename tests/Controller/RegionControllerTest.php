@@ -3,12 +3,10 @@
 namespace Siganushka\GenericBundle\Tests\Controller;
 
 use Doctrine\ORM\AbstractQuery;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
 use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\Controller\RegionController;
 use Siganushka\GenericBundle\Model\Region;
+use Siganushka\GenericBundle\Repository\RegionRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
@@ -29,31 +27,11 @@ class RegionControllerTest extends TestCase
             ->method('getResult')
             ->willReturn([$region]);
 
-        $queryBuilder = $this->createMock(QueryBuilder::class);
+        $repository = $this->createMock(RegionRepository::class);
 
-        $queryBuilder->expects($this->any())
-            ->method('where')
-            ->willReturn($queryBuilder);
-
-        $queryBuilder->expects($this->any())
-            ->method('addOrderBy')
-            ->willReturn($queryBuilder);
-
-        $queryBuilder->expects($this->any())
+        $repository->expects($this->any())
             ->method('getQuery')
             ->willReturn($query);
-
-        $regionRepository = $this->createMock(EntityRepository::class);
-
-        $regionRepository->expects($this->any())
-            ->method('createQueryBuilder')
-            ->willReturn($queryBuilder);
-
-        $entityManager = $this->createMock(EntityManagerInterface::class);
-
-        $entityManager->expects($this->any())
-            ->method('getRepository')
-            ->willReturn($regionRepository);
 
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $normalizer = $this->createMock(NormalizerInterface::class);
@@ -66,10 +44,10 @@ class RegionControllerTest extends TestCase
             ->method('normalize')
             ->willReturn([$regionAsArray]);
 
-        $controller = new RegionController($entityManager, $eventDispatcher, $normalizer);
+        $controller = new RegionController($eventDispatcher, $normalizer);
 
         $request = new Request();
-        $response = $controller->__invoke($request);
+        $response = $controller->__invoke($request, $repository);
 
         $this->assertStringContainsString('code', $response->getContent());
         $this->assertStringContainsString('name', $response->getContent());

@@ -9,7 +9,7 @@ use Siganushka\GenericBundle\DataStructure\TreeNodeInterface;
 use Siganushka\GenericBundle\Exception\TreeDescendantConflictException;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Siganushka\GenericBundle\Repository\RegionRepository")
  */
 class Region implements ResourceInterface, RegionInterface
 {

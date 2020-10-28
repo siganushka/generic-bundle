@@ -2,9 +2,8 @@
 
 namespace Siganushka\GenericBundle\Controller;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Siganushka\GenericBundle\Event\RegionFilterEvent;
-use Siganushka\GenericBundle\Model\Region;
+use Siganushka\GenericBundle\Repository\RegionRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -13,34 +12,20 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class RegionController
 {
-    private $entityManager;
     private $dispatcher;
     private $normalizer;
 
-    public function __construct(EntityManagerInterface $entityManager, EventDispatcherInterface $dispatcher, NormalizerInterface $normalizer)
+    public function __construct(EventDispatcherInterface $dispatcher, NormalizerInterface $normalizer)
     {
-        $this->entityManager = $entityManager;
         $this->dispatcher = $dispatcher;
         $this->normalizer = $normalizer;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request, RegionRepository $repository)
     {
-        $queryBuilder = $this->entityManager->getRepository(Region::class)
-            ->createQueryBuilder('r')
-            ->where('r.parent IS null')
-            ->addOrderBy('r.parent', 'ASC')
-            ->addOrderBy('r.id', 'ASC')
-        ;
+        $parent = $request->query->get('parent', null);
 
-        if ($request->query->has('parent')) {
-            $queryBuilder
-                ->where('r.parent = :parent')
-                ->setParameter('parent', $request->query->get('parent'))
-            ;
-        }
-
-        $query = $queryBuilder->getQuery();
+        $query = $repository->getQuery($parent);
         $regions = $query->getResult();
 
         $event = new RegionFilterEvent($regions);
