@@ -4,6 +4,11 @@
     cacheResult="false"
     colors="true"
     bootstrap="vendor/autoload.php">
+
+    <php>
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak" />
+    </php>
+
     <testsuites>
         <testsuite name="Siganushka GenericBundle Test Suite">
             <directory>tests</directory>
