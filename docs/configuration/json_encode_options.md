@@ -8,5 +8,5 @@
 # ./config/packages/siganushka_generic.yaml
 
 siganushka_generic:
-    json_encode_options: 271 # 默认值支持中文编码
+    json_encode_options: 271 # 可选，默认值为 271，支持中文编码
 ```

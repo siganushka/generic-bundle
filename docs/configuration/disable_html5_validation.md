@@ -6,5 +6,5 @@
 # ./config/packages/siganushka_generic.yaml
 
 siganushka_generic:
-    disable_html5_validation: true # 可选项，默认为 true，为 false 时开启 HTML5 验证
+    disable_html5_validation: true # 可选，默认值为 true，为 false 时开启 HTML5 验证
 ```
