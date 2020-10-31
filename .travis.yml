@@ -1,9 +1,9 @@
 language: php
 
-php:
-    - 7.2
-    - 7.3
-    - 7.4
+# php:
+#     - 7.2
+#     - 7.3
+#     - 7.4
 
 matrix:
     fast_finish: true
@@ -20,13 +20,12 @@ matrix:
 before_script:
     - rm -rf composer.lock
     - composer install
+    - php vendor/bin/simple-phpunit --debug
 
 script:
-    - php vendor/bin/simple-phpunit --debug
-    - composer create-project "symfony/skeleton:${SKELETON_VERSION}" flex
-    - cd flex
+    - composer create-project "symfony/skeleton:${SKELETON_VERSION}" "${SKELETON_VERSION}"
+    - cd "${SKELETON_VERSION}"
     - composer require siganushka/generic-bundle
-    - ls -la
 
 notifications:
     email: false
