@@ -6,7 +6,6 @@ php:
     - 7.4
 
 before_script:
-    - rm -rf composer.lock
     - composer install
     - ls -la
 
