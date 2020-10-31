@@ -13,7 +13,7 @@ $ php bin/console siganushka:region:update
 ```
 
 默认情况下由 `Symfony Flex` 自动导入路由，导入文件为 `./config/routes/siganushka_generic.php`，
-如果未正常导入，可选择手动导入，前端获取数据路由名为 `siganushka_generic_region`。
+如果未正常导入，可选择手动导入，路由名称为 `siganushka_generic_region`。
 
 ```yaml
 # ./config/routes.yaml
@@ -51,24 +51,21 @@ class TestType extends AbstractType
     {
         $builder
             // region 为虚拟名称，可随便填写
-            ->add('region', RegionSubjectType::class)
-
-            // 也可以添加其它参数，比如占位提示和必填
-            // ->add('region', RegionSubjectType::class, [
-            //     'province_options' => [
-            //         'placeholder' => '--- 请选择 ---',
-            //         'constraints' => new NotBlank(),
-            //     ],
-            //     'city_options' => [
-            //         'placeholder' => '--- 请选择 ---',
-            //         'constraints' => new NotBlank(),
-            //     ],
-            //     'district_options' => [
-            //         'placeholder' => '--- 请选择 ---',
-            //         'constraints' => new NotBlank(),
-            //     ],
-            // ])
-            // ...
+            ->add('region', RegionSubjectType::class, [
+                // 也可以添加其它参数，比如占位提示和必填
+                // 'province_options' => [
+                //     'placeholder' => '--- 请选择 ---',
+                //     'constraints' => new NotBlank(),
+                // ],
+                // 'city_options' => [
+                //     'placeholder' => '--- 请选择 ---',
+                //     'constraints' => new NotBlank(),
+                //  ],
+                // 'district_options' => [
+                //     'placeholder' => '--- 请选择 ---',
+                //     'constraints' => new NotBlank(),
+                // ],
+            ])
         ;
     }
 
