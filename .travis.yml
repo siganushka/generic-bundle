@@ -5,12 +5,28 @@ php:
     - 7.3
     - 7.4
 
+matrix:
+    fast_finish: true
+    include:
+        - php: 7.2
+          env: SKELETON_VERSION="4.3.*"
+        - php: 7.3
+          env: SKELETON_VERSION="4.4.*"
+        - php: 7.3
+          env: SKELETON_VERSION="5.0.*"
+        - php: 7.4
+          env: SKELETON_VERSION="5.1.*"
+
 before_script:
     - rm -rf composer.lock
     - composer install
 
 script:
     - php vendor/bin/simple-phpunit --debug
+    - composer create-project "symfony/skeleton:${SKELETON_VERSION}" flex
+    - cd flex
+    - composer require siganushka/generic-bundle
+    - ls -la
 
 notifications:
     email: false
