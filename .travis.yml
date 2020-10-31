@@ -5,9 +5,13 @@ php:
     - 7.3
     - 7.4
 
+env:
+  matrix:
+    - PREFER_LOWEST="--prefer-lowest"
+    - PREFER_LOWEST=""
+
 before_script:
-    - composer install
-    - ls -la
+    - composer install --prefer-source $PREFER_LOWEST
 
 script:
     - php vendor/bin/simple-phpunit --debug
