@@ -71,9 +71,6 @@ class RegionControllerTest extends TestCase
         $request = new Request();
         $response = $controller->__invoke($request);
 
-        $this->assertStringContainsString('code', $response->getContent());
-        $this->assertStringContainsString('name', $response->getContent());
-
         $data = json_decode($response->getContent(), true);
 
         $this->assertSame([$regionAsArray], $data);

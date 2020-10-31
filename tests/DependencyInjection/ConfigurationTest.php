@@ -57,7 +57,6 @@ class ConfigurationTest extends TestCase
     public function testInvalidTablePrefixException(): void
     {
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage('Invalid configuration for path "siganushka_generic.table_prefix": The "1" for table prefix contains illegal character(s).');
 
         $this->processor->processConfiguration($this->configuration, [
             [
@@ -69,7 +68,6 @@ class ConfigurationTest extends TestCase
     public function testInvalidJsonEncodeOptionsException(): void
     {
         $this->expectException(InvalidTypeException::class);
-        $this->expectExceptionMessage('Invalid type for path "siganushka_generic.json_encode_options". Expected "int", but got "bool".');
 
         $this->processor->processConfiguration($this->configuration, [
             [
@@ -81,7 +79,6 @@ class ConfigurationTest extends TestCase
     public function testInvalidDisableHtml5ValidationException(): void
     {
         $this->expectException(InvalidTypeException::class);
-        $this->expectExceptionMessage('Invalid type for path "siganushka_generic.disable_html5_validation". Expected "bool", but got "int".');
 
         $this->processor->processConfiguration($this->configuration, [
             [
