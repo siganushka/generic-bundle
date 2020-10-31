@@ -1,33 +1,17 @@
 language: php
 
-# php:
-#     - 7.2
-#     - 7.3
-#     - 7.4
-
-matrix:
-    fast_finish: true
-    include:
-        - php: 7.2
-          env: SKELETON_VERSION="4.3.*"
-        - php: 7.3
-          env: SKELETON_VERSION="4.4.*"
-        - php: 7.3
-          env: SKELETON_VERSION="5.0.*"
-        - php: 7.4
-          env: SKELETON_VERSION="5.1.*"
+php:
+    - 7.2
+    - 7.3
+    - 7.4
 
 before_script:
+    - rm -rf composer.lock
     - composer install
-    - composer create-project "symfony/skeleton:${SKELETON_VERSION}" "${SKELETON_VERSION}"
+    - ls -la
 
 script:
-    - ls -la
     - php vendor/bin/simple-phpunit --debug
-
-    - cd "${SKELETON_VERSION}"
-    - ls -la
-    - composer require siganushka/generic-bundle
 
 notifications:
     email: false
