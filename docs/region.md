@@ -19,7 +19,7 @@ $ php bin/console siganushka:region:update
 # ./config/routes.yaml
 
 siganushka_generic:
-    resource: "@SiganushkaGenericBundle/Resources/config/routing/routes.php"
+    resource: "@SiganushkaGenericBundle/Resources/config/routing/routes.xml"
 ```
 
 为实体添字段，默认为省 `province`、市 `city`、区 `district` 三级。
