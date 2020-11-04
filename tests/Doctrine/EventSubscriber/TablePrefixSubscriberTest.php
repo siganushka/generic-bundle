@@ -6,6 +6,7 @@ use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
+use Doctrine\Persistence\Mapping\RuntimeReflectionService;
 use Doctrine\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\Doctrine\EventSubscriber\TablePrefixSubscriber;
@@ -17,21 +18,21 @@ class TablePrefixSubscriberTest extends TestCase
         $namingStrategy = new UnderscoreNamingStrategy(CASE_LOWER, true);
 
         // Compatible doctrine/persistence <=2.0
-        if (class_exists('Doctrine\Persistence\Mapping\RuntimeReflectionService')) {
-            $reflection = new \Doctrine\Persistence\Mapping\RuntimeReflectionService();
+        if (interface_exists(ObjectManager::class)) {
+            $objectManager = $this->createMock(ObjectManager::class);
+            $reflectionService = new RuntimeReflectionService();
         } else {
-            $reflection = new \Doctrine\Common\Persistence\Mapping\RuntimeReflectionService();
+            $objectManager = $this->createMock('\Doctrine\Common\Persistence\ObjectManager');
+            $reflectionService = new \Doctrine\Common\Persistence\Mapping\RuntimeReflectionService();
         }
 
         $classMetadata = new ClassMetadata(Foo::class, $namingStrategy);
-        $classMetadata->initializeReflection($reflection);
+        $classMetadata->initializeReflection($reflectionService);
 
         $classMetadata->mapManyToMany([
             'fieldName' => 'bars',
             'targetEntity' => 'Bar',
         ]);
-
-        $objectManager = $this->createMock(ObjectManager::class);
 
         $loadClassMetadataEventArgs = new LoadClassMetadataEventArgs($classMetadata, $objectManager);
 
