@@ -14,15 +14,8 @@ class RegionDistrictType extends AbstractType
         $resolver->setDefault('parent', null);
         $resolver->setAllowedTypes('parent', ['null', RegionInterface::class]);
 
-        $resolver->setNormalizer('query_builder', function (Options $options) {
-            $queryBuilder = $options['em']->getRepository($options['class'])
-                ->createQueryBuilder('r')
-                ->where('r.parent = :parent')
-                ->setParameter('parent', $options['parent'])
-                ->addOrderBy('r.parent', 'ASC')
-                ->addOrderBy('r.id', 'ASC');
-
-            return $queryBuilder;
+        $resolver->setNormalizer('choices', function (Options $options) {
+            return $options['parent'] ? $options['parent']->getChildren() : [];
         });
     }
 
