@@ -18,7 +18,12 @@ class RegionTypeTest extends TypeTestCase
     {
         $em = DoctrineTestHelper::createTestEntityManager();
 
-        $emRegistry = $this->getMockBuilder(ManagerRegistry::class)->getMock();
+        // Compatible doctrine/persistence <=2.0
+        if (interface_exists(ManagerRegistry::class)) {
+            $emRegistry = $this->createMock(ManagerRegistry::class);
+        } else {
+            $emRegistry = $this->createMock('\Doctrine\Common\Persistence\ManagerRegistry');
+        }
 
         $emRegistry->expects($this->any())
             ->method('getManager')
