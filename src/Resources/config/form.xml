@@ -5,10 +5,10 @@
 
     <services>
         <service id="Siganushka\GenericBundle\Form\Type\RegionType">
+            <argument type="service" id="Siganushka\GenericBundle\Manager\RegionManager" />
             <tag name="form.type" />
         </service>
         <service id="Siganushka\GenericBundle\Form\Type\RegionProvinceType">
-            <argument type="service" id="doctrine.orm.entity_manager" />
             <tag name="form.type" />
         </service>
         <service id="Siganushka\GenericBundle\Form\Type\RegionCityType">

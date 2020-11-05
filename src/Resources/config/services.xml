@@ -14,6 +14,9 @@
             <argument type="service" id="serializer" />
             <tag name="controller.service_arguments" />
         </service>
+        <service id="Siganushka\GenericBundle\Manager\RegionManager">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+        </service>
         <service id="Siganushka\GenericBundle\Doctrine\EventSubscriber\TimestampableSubscriber">
             <tag name="doctrine.event_subscriber" />
         </service>
