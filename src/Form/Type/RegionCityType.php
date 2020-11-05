@@ -15,7 +15,11 @@ class RegionCityType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $formModifier = function (FormInterface $form, ?RegionInterface $parent = null) use ($options) {
+        $formModifier = function (?FormInterface $form, ?RegionInterface $parent = null) use ($options) {
+            if (null === $form) {
+                return;
+            }
+
             $form->add('district', RegionDistrictType::class, array_merge([
                 'parent' => $parent,
             ], $options['district_options']));
