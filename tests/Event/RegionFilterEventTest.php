@@ -2,6 +2,7 @@
 
 namespace Siganushka\GenericBundle\Tests\Event;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\Event\RegionFilterEvent;
 use Siganushka\GenericBundle\Model\Region;
@@ -11,29 +12,18 @@ class RegionFilterEventTest extends TestCase
 {
     public function testRegionFilterEvent()
     {
-        $region1 = new Region();
-        $region1->setCode('001');
-        $region1->setName('foo1');
+        $region = new Region();
+        $region->setCode('001');
+        $region->setName('foo1');
 
-        $region2 = new Region();
-        $region2->setCode('002');
-        $region2->setName('foo2');
+        $array = [$region];
+        $arrayCollection = new ArrayCollection($array);
 
-        $region3 = new Region();
-        $region3->setCode('003');
-        $region3->setName('foo3');
+        $event1 = new RegionFilterEvent($array);
+        $event2 = new RegionFilterEvent($arrayCollection);
 
-        $regions = [
-            1 => $region1,
-            3 => $region2,
-            4 => $region3,
-        ];
-
-        $event = new RegionFilterEvent([]);
-        $event->setRegions($regions);
-
-        $this->assertSame([0, 1, 2], array_keys($event->getRegions()));
-        $this->assertSame(array_values($regions), $event->getRegions());
+        $this->assertSame($array, $event1->getRegions());
+        $this->assertSame($array, $event2->getRegions());
     }
 
     public function testRegionFilterEventException()

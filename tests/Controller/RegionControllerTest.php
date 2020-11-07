@@ -2,77 +2,95 @@
 
 namespace Siganushka\GenericBundle\Tests\Controller;
 
-use Doctrine\ORM\AbstractQuery;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
 use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\Controller\RegionController;
 use Siganushka\GenericBundle\Model\Region;
+use Siganushka\GenericBundle\Repository\RegionRepository;
+use Siganushka\GenericBundle\Serializer\Normalizer\RegionNormalizer;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Serializer\Serializer;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class RegionControllerTest extends TestCase
 {
+    private $controller;
+    private $province;
+
+    protected function setUp(): void
+    {
+        $dispatcher = $this->createMock(EventDispatcherInterface::class);
+        $serializer = new Serializer([new RegionNormalizer()]);
+
+        $city = new Region();
+        $city->setCode('100100');
+        $city->setName('bar');
+
+        $province = new Region();
+        $province->setCode('100000');
+        $province->setName('foo');
+        $province->addChild($city);
+
+        $repository = $this->createMock(RegionRepository::class);
+
+        $repository->expects($this->any())
+            ->method('getProvinces')
+            ->willReturn([$province]);
+
+        $repository
+            ->method('find')
+            ->willReturnMap([
+                ['100000', null, null, $province],
+            ]);
+
+        $this->controller = new RegionController($dispatcher, $serializer, $repository);
+        $this->province = $province;
+    }
+
+    protected function tearDown(): void
+    {
+        $this->controller = null;
+        $this->province = null;
+    }
+
     public function testInvoke()
     {
-        $region = new Region();
-        $region->setCode(1);
-        $region->setName('foo');
+        $request = new Request();
+        $response = $this->controller->__invoke($request);
 
-        $query = $this->createMock(AbstractQuery::class);
+        $this->assertSame('[{"code":"100000","name":"foo"}]', $response->getContent());
 
-        $query->expects($this->any())
-            ->method('getResult')
-            ->willReturn([$region]);
+        $request = new Request(['parent' => '100000']);
+        $response = $this->controller->__invoke($request);
 
-        $queryBuilder = $this->createMock(QueryBuilder::class);
+        $this->assertSame('[{"code":"100100","name":"bar"}]', $response->getContent());
+    }
 
-        $queryBuilder->expects($this->any())
-            ->method('where')
-            ->willReturn($queryBuilder);
-
-        $queryBuilder->expects($this->any())
-            ->method('addOrderBy')
-            ->willReturn($queryBuilder);
-
-        $queryBuilder->expects($this->any())
-            ->method('getQuery')
-            ->willReturn($query);
-
-        $regionRepository = $this->createMock(EntityRepository::class);
-
-        $regionRepository->expects($this->any())
-            ->method('createQueryBuilder')
-            ->willReturn($queryBuilder);
-
-        $entityManager = $this->createMock(EntityManagerInterface::class);
-
-        $entityManager->expects($this->any())
-            ->method('getRepository')
-            ->willReturn($regionRepository);
-
-        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $normalizer = $this->createMock(NormalizerInterface::class);
-
-        $regionAsArray = (new GetSetMethodNormalizer())->normalize($region, null, [
-            AbstractNormalizer::ATTRIBUTES => ['code', 'name'],
-        ]);
-
-        $normalizer->expects($this->any())
-            ->method('normalize')
-            ->willReturn([$regionAsArray]);
-
-        $controller = new RegionController($entityManager, $eventDispatcher, $normalizer);
+    public function testGetRegions()
+    {
+        $method = new \ReflectionMethod($this->controller, 'getRegions');
+        $method->setAccessible(true);
 
         $request = new Request();
-        $response = $controller->__invoke($request);
+        $regions = $method->invokeArgs($this->controller, [$request]);
 
-        $data = json_decode($response->getContent(), true);
+        $this->assertSame([$this->province], $regions);
 
-        $this->assertSame([$regionAsArray], $data);
+        $request = new Request(['parent' => '100000']);
+        $regions = $method->invokeArgs($this->controller, [$request]);
+
+        $this->assertSame($this->province->getChildren(), $regions);
+    }
+
+    public function testGetRegionsException()
+    {
+        $this->expectException(NotFoundHttpException::class);
+        $this->expectExceptionMessage('The parent "123" could not be found.');
+
+        $method = new \ReflectionMethod($this->controller, 'getRegions');
+        $method->setAccessible(true);
+
+        $request = new Request(['parent' => '123']);
+        $method->invokeArgs($this->controller, [$request]);
     }
 }

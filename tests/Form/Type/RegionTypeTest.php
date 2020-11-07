@@ -4,15 +4,15 @@ namespace Siganushka\GenericBundle\Tests\Form\Type;
 
 use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\Form\Type\RegionType;
-use Siganushka\GenericBundle\Manager\RegionManagerInterface;
+use Siganushka\GenericBundle\Repository\RegionRepository;
 use Symfony\Component\Form\FormFactoryBuilder;
 
 class RegionTypeTest extends TestCase
 {
     public function testRegionType()
     {
-        $regionManager = $this->createMock(RegionManagerInterface::class);
-        $type = new RegionType($regionManager);
+        $regionRepository = $this->createMock(RegionRepository::class);
+        $type = new RegionType($regionRepository);
 
         $formFactoryBuilder = new FormFactoryBuilder();
         $formFactoryBuilder->addType($type);
@@ -25,6 +25,6 @@ class RegionTypeTest extends TestCase
 
         $this->assertSame('code', $options['choice_value']);
         $this->assertSame('name', $options['choice_label']);
-        $this->assertInstanceOf(RegionManagerInterface::class, $options['region_manager']);
+        $this->assertInstanceOf(RegionRepository::class, $options['region_repository']);
     }
 }

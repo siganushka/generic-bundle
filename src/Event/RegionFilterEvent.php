@@ -12,7 +12,7 @@ class RegionFilterEvent extends Event
      */
     private $regions = [];
 
-    public function __construct(array $regions)
+    public function __construct(iterable $regions)
     {
         foreach ($regions as $region) {
             if (!$region instanceof RegionInterface) {
@@ -30,6 +30,6 @@ class RegionFilterEvent extends Event
 
     public function setRegions(array $regions): void
     {
-        $this->regions = array_values($regions);
+        $this->regions = $regions;
     }
 }

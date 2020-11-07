@@ -2,8 +2,8 @@
 
 namespace Siganushka\GenericBundle\Form\Type;
 
-use Siganushka\GenericBundle\Manager\RegionManagerInterface;
 use Siganushka\GenericBundle\Model\RegionInterface;
+use Siganushka\GenericBundle\Repository\RegionRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -47,11 +47,11 @@ class RegionProvinceType extends AbstractType
         $resolver->setDefault('city_options', []);
         $resolver->setDefault('district_options', []);
 
-        $resolver->setRequired('region_manager');
-        $resolver->setAllowedTypes('region_manager', RegionManagerInterface::class);
+        $resolver->setRequired('region_repository');
+        $resolver->setAllowedTypes('region_repository', RegionRepository::class);
 
         $resolver->setNormalizer('choices', function (Options $options, $b) {
-            return $options['region_manager']->getProvinces();
+            return $options['region_repository']->getProvinces();
         });
     }
 
