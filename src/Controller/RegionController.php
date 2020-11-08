@@ -2,8 +2,9 @@
 
 namespace Siganushka\GenericBundle\Controller;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Siganushka\GenericBundle\Event\RegionFilterEvent;
-use Siganushka\GenericBundle\Repository\RegionRepository;
+use Siganushka\GenericBundle\Model\Region;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -14,13 +15,13 @@ class RegionController
 {
     private $dispatcher;
     private $normalizer;
-    private $regionRepository;
+    private $repository;
 
-    public function __construct(EventDispatcherInterface $dispatcher, NormalizerInterface $normalizer, RegionRepository $regionRepository)
+    public function __construct(EventDispatcherInterface $dispatcher, NormalizerInterface $normalizer, ManagerRegistry $managerRegistry)
     {
         $this->dispatcher = $dispatcher;
         $this->normalizer = $normalizer;
-        $this->regionRepository = $regionRepository;
+        $this->repository = $managerRegistry->getRepository(Region::class);
     }
 
     public function __invoke(Request $request)
@@ -38,11 +39,14 @@ class RegionController
     private function getRegions(Request $request)
     {
         if (!$request->query->has('parent')) {
-            return $this->regionRepository->getProvinces();
+            return $this->repository->findBy(
+                ['parent' => null],
+                ['parent' => 'ASC', 'id' => 'ASC'],
+            );
         }
 
         $parent = $request->query->get('parent');
-        if (!$region = $this->regionRepository->find($parent)) {
+        if (!$region = $this->repository->find($parent)) {
             throw new NotFoundHttpException(sprintf('The parent "%s" could not be found.', $parent));
         }
 

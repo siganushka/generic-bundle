@@ -2,8 +2,8 @@
 
 namespace Siganushka\GenericBundle\Command;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\Persistence\ManagerRegistry;
 use Siganushka\GenericBundle\Model\Region;
 use Siganushka\GenericBundle\Model\RegionInterface;
 use Siganushka\GenericBundle\SiganushkaGenericBundle;
@@ -15,11 +15,11 @@ class RegionUpdateCommand extends Command
 {
     protected static $defaultName = 'siganushka:region:update';
 
-    private $entityManager;
+    private $objectManager;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        $this->entityManager = $entityManager;
+        $this->objectManager = $managerRegistry->getManagerForClass(Region::class);
 
         parent::__construct();
     }
@@ -46,11 +46,11 @@ class RegionUpdateCommand extends Command
         }
 
         // Manually assign id
-        $metadata = $this->entityManager->getClassMetadata(Region::class);
+        $metadata = $this->objectManager->getClassMetadata(Region::class);
         $metadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_NONE);
 
         $this->import($output, $data);
-        $this->entityManager->flush();
+        $this->objectManager->flush();
 
         // Compatible symfony <=5.1
         if (\defined('Symfony\Component\Console\Command\Command::SUCCESS')) {
@@ -70,12 +70,12 @@ class RegionUpdateCommand extends Command
 
             $messages = sprintf('[%d] %s', $region->getCode(), $region->getName());
 
-            $newParent = $this->entityManager->find(Region::class, $region->getCode());
+            $newParent = $this->objectManager->find(Region::class, $region->getCode());
             if ($newParent) {
                 $output->writeln("<comment>{$messages} 存在，已跳过！</comment>");
             } else {
                 $output->writeln("<info>{$messages} 添加成功！</info>");
-                $this->entityManager->persist($region);
+                $this->objectManager->persist($region);
             }
 
             if (isset($value['children'])) {

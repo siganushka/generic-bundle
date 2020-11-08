@@ -2,8 +2,8 @@
 
 namespace Siganushka\GenericBundle\Form\Type;
 
+use Doctrine\Persistence\ObjectRepository;
 use Siganushka\GenericBundle\Model\RegionInterface;
-use Siganushka\GenericBundle\Repository\RegionRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -48,10 +48,13 @@ class RegionProvinceType extends AbstractType
         $resolver->setDefault('district_options', []);
 
         $resolver->setRequired('region_repository');
-        $resolver->setAllowedTypes('region_repository', RegionRepository::class);
+        $resolver->setAllowedTypes('region_repository', ObjectRepository::class);
 
-        $resolver->setNormalizer('choices', function (Options $options, $b) {
-            return $options['region_repository']->getProvinces();
+        $resolver->setNormalizer('choices', function (Options $options) {
+            return $options['region_repository']->findBy(
+                ['parent' => null],
+                ['parent' => 'ASC', 'id' => 'ASC'],
+            );
         });
     }
 

@@ -2,10 +2,11 @@
 
 namespace Siganushka\GenericBundle\Tests\Controller;
 
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectRepository;
 use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\Controller\RegionController;
 use Siganushka\GenericBundle\Model\Region;
-use Siganushka\GenericBundle\Repository\RegionRepository;
 use Siganushka\GenericBundle\Serializer\Normalizer\RegionNormalizer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -19,9 +20,6 @@ class RegionControllerTest extends TestCase
 
     protected function setUp(): void
     {
-        $dispatcher = $this->createMock(EventDispatcherInterface::class);
-        $serializer = new Serializer([new RegionNormalizer()]);
-
         $city = new Region();
         $city->setCode('100100');
         $city->setName('bar');
@@ -31,19 +29,28 @@ class RegionControllerTest extends TestCase
         $province->setName('foo');
         $province->addChild($city);
 
-        $repository = $this->createMock(RegionRepository::class);
+        $objectRepository = $this->createMock(ObjectRepository::class);
 
-        $repository->expects($this->any())
-            ->method('getProvinces')
+        $objectRepository->expects($this->any())
+            ->method('findBy')
             ->willReturn([$province]);
 
-        $repository
+        $objectRepository->expects($this->any())
             ->method('find')
-            ->willReturnMap([
-                ['100000', null, null, $province],
-            ]);
+            ->willReturnCallback(function ($value) use ($province) {
+                return ('100000' == $value) ? $province : null;
+            });
 
-        $this->controller = new RegionController($dispatcher, $serializer, $repository);
+        $managerRegistry = $this->createMock(ManagerRegistry::class);
+
+        $managerRegistry->expects($this->any())
+            ->method('getRepository')
+            ->willReturn($objectRepository);
+
+        $dispatcher = $this->createMock(EventDispatcherInterface::class);
+        $serializer = new Serializer([new RegionNormalizer()]);
+
+        $this->controller = new RegionController($dispatcher, $serializer, $managerRegistry);
         $this->province = $province;
     }
 

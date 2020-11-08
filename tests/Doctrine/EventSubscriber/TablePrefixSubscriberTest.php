@@ -17,17 +17,10 @@ class TablePrefixSubscriberTest extends TestCase
     {
         $namingStrategy = new UnderscoreNamingStrategy(CASE_LOWER, true);
 
-        // Compatible doctrine/persistence <=2.0
-        if (interface_exists(ObjectManager::class)) {
-            $objectManager = $this->createMock(ObjectManager::class);
-            $reflectionService = new RuntimeReflectionService();
-        } else {
-            $objectManager = $this->createMock('\Doctrine\Common\Persistence\ObjectManager');
-            $reflectionService = new \Doctrine\Common\Persistence\Mapping\RuntimeReflectionService();
-        }
+        $objectManager = $this->createMock(ObjectManager::class);
 
         $classMetadata = new ClassMetadata(Foo::class, $namingStrategy);
-        $classMetadata->initializeReflection($reflectionService);
+        $classMetadata->initializeReflection(new RuntimeReflectionService());
 
         $classMetadata->mapManyToMany([
             'fieldName' => 'bars',

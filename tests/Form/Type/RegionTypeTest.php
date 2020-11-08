@@ -2,17 +2,25 @@
 
 namespace Siganushka\GenericBundle\Tests\Form\Type;
 
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectRepository;
 use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\Form\Type\RegionType;
-use Siganushka\GenericBundle\Repository\RegionRepository;
 use Symfony\Component\Form\FormFactoryBuilder;
 
 class RegionTypeTest extends TestCase
 {
     public function testRegionType()
     {
-        $regionRepository = $this->createMock(RegionRepository::class);
-        $type = new RegionType($regionRepository);
+        $objectRepository = $this->createMock(ObjectRepository::class);
+
+        $managerRegistry = $this->createMock(ManagerRegistry::class);
+
+        $managerRegistry->expects($this->any())
+            ->method('getRepository')
+            ->willReturn($objectRepository);
+
+        $type = new RegionType($managerRegistry);
 
         $formFactoryBuilder = new FormFactoryBuilder();
         $formFactoryBuilder->addType($type);
@@ -25,6 +33,6 @@ class RegionTypeTest extends TestCase
 
         $this->assertSame('code', $options['choice_value']);
         $this->assertSame('name', $options['choice_label']);
-        $this->assertInstanceOf(RegionRepository::class, $options['region_repository']);
+        $this->assertInstanceOf(ObjectRepository::class, $options['region_repository']);
     }
 }

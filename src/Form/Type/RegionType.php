@@ -2,18 +2,19 @@
 
 namespace Siganushka\GenericBundle\Form\Type;
 
-use Siganushka\GenericBundle\Repository\RegionRepository;
+use Doctrine\Persistence\ManagerRegistry;
+use Siganushka\GenericBundle\Model\Region;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RegionType extends AbstractType
 {
-    private $regionRepository;
+    private $managerRegistry;
 
-    public function __construct(RegionRepository $regionRepository)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        $this->regionRepository = $regionRepository;
+        $this->managerRegistry = $managerRegistry;
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -21,7 +22,7 @@ class RegionType extends AbstractType
         $resolver->setDefaults([
             'choice_value' => 'code',
             'choice_label' => 'name',
-            'region_repository' => $this->regionRepository,
+            'region_repository' => $this->managerRegistry->getRepository(Region::class),
         ]);
     }
 

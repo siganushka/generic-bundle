@@ -10,9 +10,6 @@
         <service id="Siganushka\GenericBundle\Controller\RegionController" autowire="true">
             <tag name="controller.service_arguments" />
         </service>
-        <service id="Siganushka\GenericBundle\Repository\RegionRepository" autowire="true">
-            <tag name="doctrine.repository_service" />
-        </service>
         <service id="Siganushka\GenericBundle\Doctrine\EventSubscriber\TimestampableSubscriber">
             <tag name="doctrine.event_subscriber" />
         </service>
