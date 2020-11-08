@@ -39,10 +39,7 @@ class RegionController
     private function getRegions(Request $request)
     {
         if (!$request->query->has('parent')) {
-            return $this->repository->findBy(
-                ['parent' => null],
-                ['parent' => 'ASC', 'id' => 'ASC'],
-            );
+            return $this->repository->findBy(['parent' => null], ['parent' => 'ASC', 'id' => 'ASC']);
         }
 
         $parent = $request->query->get('parent');

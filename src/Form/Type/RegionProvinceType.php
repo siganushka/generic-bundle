@@ -51,10 +51,7 @@ class RegionProvinceType extends AbstractType
         $resolver->setAllowedTypes('region_repository', ObjectRepository::class);
 
         $resolver->setNormalizer('choices', function (Options $options) {
-            return $options['region_repository']->findBy(
-                ['parent' => null],
-                ['parent' => 'ASC', 'id' => 'ASC'],
-            );
+            return $options['region_repository']->findBy(['parent' => null], ['parent' => 'ASC', 'id' => 'ASC']);
         });
     }
 
