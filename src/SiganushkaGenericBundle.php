@@ -12,12 +12,12 @@ class SiganushkaGenericBundle extends Bundle
     {
         if (class_exists(DoctrineOrmMappingsPass::class)) {
             $aliasMap = [
-                'SiganushkaGenericBundle' => __NAMESPACE__.'\Model',
+                'SiganushkaGenericBundle' => __NAMESPACE__.'\Entity',
             ];
 
             $compilerPass = DoctrineOrmMappingsPass::createAnnotationMappingDriver(
                 array_values($aliasMap),
-                [$this->getPath().'/Model'],
+                [$this->getPath().'/Entity'],
                 [],
                 false,
                 $aliasMap,

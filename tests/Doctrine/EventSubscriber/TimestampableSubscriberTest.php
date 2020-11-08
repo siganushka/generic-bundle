@@ -7,8 +7,8 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\Doctrine\EventSubscriber\TimestampableSubscriber;
-use Siganushka\GenericBundle\Model\TimestampableInterface;
-use Siganushka\GenericBundle\Model\TimestampableTrait;
+use Siganushka\GenericBundle\Entity\TimestampableInterface;
+use Siganushka\GenericBundle\Entity\TimestampableTrait;
 
 class TimestampableSubscriberTest extends TestCase
 {

@@ -2,7 +2,7 @@
 
 namespace Siganushka\GenericBundle\Event;
 
-use Siganushka\GenericBundle\Model\RegionInterface;
+use Siganushka\GenericBundle\Entity\RegionInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class RegionFilterEvent extends Event

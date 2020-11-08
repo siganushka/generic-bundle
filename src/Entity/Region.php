@@ -1,6 +1,6 @@
 <?php
 
-namespace Siganushka\GenericBundle\Model;
+namespace Siganushka\GenericBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

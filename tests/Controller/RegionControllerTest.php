@@ -6,7 +6,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectRepository;
 use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\Controller\RegionController;
-use Siganushka\GenericBundle\Model\Region;
+use Siganushka\GenericBundle\Entity\Region;
 use Siganushka\GenericBundle\Serializer\Normalizer\RegionNormalizer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

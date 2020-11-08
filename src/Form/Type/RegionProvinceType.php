@@ -3,7 +3,7 @@
 namespace Siganushka\GenericBundle\Form\Type;
 
 use Doctrine\Persistence\ObjectRepository;
-use Siganushka\GenericBundle\Model\RegionInterface;
+use Siganushka\GenericBundle\Entity\RegionInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;

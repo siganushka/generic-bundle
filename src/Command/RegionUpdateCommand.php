@@ -4,8 +4,8 @@ namespace Siganushka\GenericBundle\Command;
 
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Persistence\ManagerRegistry;
-use Siganushka\GenericBundle\Model\Region;
-use Siganushka\GenericBundle\Model\RegionInterface;
+use Siganushka\GenericBundle\Entity\Region;
+use Siganushka\GenericBundle\Entity\RegionInterface;
 use Siganushka\GenericBundle\SiganushkaGenericBundle;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Siganushka\GenericBundle\Model;
+namespace Siganushka\GenericBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;

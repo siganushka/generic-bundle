@@ -4,9 +4,9 @@ namespace Siganushka\GenericBundle\Tests\Event;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
+use Siganushka\GenericBundle\Entity\Region;
+use Siganushka\GenericBundle\Entity\RegionInterface;
 use Siganushka\GenericBundle\Event\RegionFilterEvent;
-use Siganushka\GenericBundle\Model\Region;
-use Siganushka\GenericBundle\Model\RegionInterface;
 
 class RegionFilterEventTest extends TestCase
 {

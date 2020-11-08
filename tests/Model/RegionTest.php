@@ -1,10 +1,10 @@
 <?php
 
-namespace Siganushka\GenericBundle\Tests\Model;
+namespace Siganushka\GenericBundle\Tests\Entity;
 
 use PHPUnit\Framework\TestCase;
+use Siganushka\GenericBundle\Entity\Region;
 use Siganushka\GenericBundle\Exception\TreeDescendantConflictException;
-use Siganushka\GenericBundle\Model\Region;
 
 class RegionTest extends TestCase
 {

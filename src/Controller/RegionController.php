@@ -3,8 +3,8 @@
 namespace Siganushka\GenericBundle\Controller;
 
 use Doctrine\Persistence\ManagerRegistry;
+use Siganushka\GenericBundle\Entity\Region;
 use Siganushka\GenericBundle\Event\RegionFilterEvent;
-use Siganushka\GenericBundle\Model\Region;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

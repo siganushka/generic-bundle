@@ -5,7 +5,7 @@ namespace Siganushka\GenericBundle\Doctrine\EventSubscriber;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
-use Siganushka\GenericBundle\Model\SortableInterface;
+use Siganushka\GenericBundle\Entity\SortableInterface;
 
 class SortableSubscriber implements EventSubscriber
 {

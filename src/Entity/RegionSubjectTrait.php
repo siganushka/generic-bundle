@@ -1,6 +1,6 @@
 <?php
 
-namespace Siganushka\GenericBundle\Model;
+namespace Siganushka\GenericBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -8,21 +8,21 @@ use Symfony\Component\Serializer\Annotation\Groups;
 trait RegionSubjectTrait
 {
     /**
-     * @ORM\ManyToOne(targetEntity="Siganushka\GenericBundle\Model\Region")
+     * @ORM\ManyToOne(targetEntity="Siganushka\GenericBundle\Entity\Region")
      *
      * @Groups({"region"})
      */
     private $province;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Siganushka\GenericBundle\Model\Region")
+     * @ORM\ManyToOne(targetEntity="Siganushka\GenericBundle\Entity\Region")
      *
      * @Groups({"region"})
      */
     private $city;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Siganushka\GenericBundle\Model\Region")
+     * @ORM\ManyToOne(targetEntity="Siganushka\GenericBundle\Entity\Region")
      *
      * @Groups({"region"})
      */

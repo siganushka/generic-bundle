@@ -1,6 +1,6 @@
 <?php
 
-namespace Siganushka\GenericBundle\Model;
+namespace Siganushka\GenericBundle\Entity;
 
 interface VersionableInterface
 {

@@ -7,8 +7,8 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\Doctrine\EventSubscriber\SortableSubscriber;
-use Siganushka\GenericBundle\Model\SortableInterface;
-use Siganushka\GenericBundle\Model\SortableTrait;
+use Siganushka\GenericBundle\Entity\SortableInterface;
+use Siganushka\GenericBundle\Entity\SortableTrait;
 
 class SortableSubscriberTest extends TestCase
 {

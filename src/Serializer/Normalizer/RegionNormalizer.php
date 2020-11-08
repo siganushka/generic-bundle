@@ -2,7 +2,7 @@
 
 namespace Siganushka\GenericBundle\Serializer\Normalizer;
 
-use Siganushka\GenericBundle\Model\RegionInterface;
+use Siganushka\GenericBundle\Entity\RegionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class RegionNormalizer implements NormalizerInterface

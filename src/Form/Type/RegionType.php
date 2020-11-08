@@ -3,7 +3,7 @@
 namespace Siganushka\GenericBundle\Form\Type;
 
 use Doctrine\Persistence\ManagerRegistry;
-use Siganushka\GenericBundle\Model\Region;
+use Siganushka\GenericBundle\Entity\Region;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;

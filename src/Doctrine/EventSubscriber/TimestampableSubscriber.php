@@ -5,7 +5,7 @@ namespace Siganushka\GenericBundle\Doctrine\EventSubscriber;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
-use Siganushka\GenericBundle\Model\TimestampableInterface;
+use Siganushka\GenericBundle\Entity\TimestampableInterface;
 
 class TimestampableSubscriber implements EventSubscriber
 {

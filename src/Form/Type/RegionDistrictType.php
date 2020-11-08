@@ -2,7 +2,7 @@
 
 namespace Siganushka\GenericBundle\Form\Type;
 
-use Siganushka\GenericBundle\Model\RegionInterface;
+use Siganushka\GenericBundle\Entity\RegionInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
