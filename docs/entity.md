@@ -18,8 +18,8 @@ class Foo implements ResourceInterface
 }
 
 $foo = new Foo();
-$foo->getId(): ?int;                    // 返回主键 ID
-$foo->isEqualTo(?self $target): bool;   // 检测是否相等，使用主键比较，未持久化的实体返回 false
+$foo->getId(): ?int;                                // 返回主键 ID
+$foo->isEqualTo(?ResourceInterface $target): bool;  // 检测是否相等，使用主键比较，未持久化的实体返回 false
 ```
 
 ### Enable
