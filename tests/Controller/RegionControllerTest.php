@@ -2,62 +2,33 @@
 
 namespace Siganushka\GenericBundle\Tests\Controller;
 
-use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Persistence\ObjectRepository;
-use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\Controller\RegionController;
-use Siganushka\GenericBundle\Entity\Region;
 use Siganushka\GenericBundle\Serializer\Normalizer\RegionNormalizer;
+use Siganushka\GenericBundle\Tests\Entity\AbstractRegionTest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-class RegionControllerTest extends TestCase
+class RegionControllerTest extends AbstractRegionTest
 {
-    private $controller;
-    private $province;
+    protected $controller;
 
     protected function setUp(): void
     {
-        $city = new Region();
-        $city->setCode('100100');
-        $city->setName('bar');
-
-        $province = new Region();
-        $province->setCode('100000');
-        $province->setName('foo');
-        $province->addChild($city);
-
-        $objectRepository = $this->createMock(ObjectRepository::class);
-
-        $objectRepository->expects($this->any())
-            ->method('findBy')
-            ->willReturn([$province]);
-
-        $objectRepository->expects($this->any())
-            ->method('find')
-            ->willReturnCallback(function ($value) use ($province) {
-                return ('100000' == $value) ? $province : null;
-            });
-
-        $managerRegistry = $this->createMock(ManagerRegistry::class);
-
-        $managerRegistry->expects($this->any())
-            ->method('getRepository')
-            ->willReturn($objectRepository);
+        parent::setUp();
 
         $dispatcher = $this->createMock(EventDispatcherInterface::class);
         $serializer = new Serializer([new RegionNormalizer()]);
 
-        $this->controller = new RegionController($dispatcher, $serializer, $managerRegistry);
-        $this->province = $province;
+        $this->controller = new RegionController($dispatcher, $serializer, $this->managerRegistry);
     }
 
     protected function tearDown(): void
     {
+        parent::tearDown();
+
         $this->controller = null;
-        $this->province = null;
     }
 
     public function testInvoke()
@@ -70,7 +41,7 @@ class RegionControllerTest extends TestCase
         $request = new Request(['parent' => '100000']);
         $response = $this->controller->__invoke($request);
 
-        $this->assertSame('[{"code":"100100","name":"bar"}]', $response->getContent());
+        $this->assertSame('[{"code":"200000","name":"bar"}]', $response->getContent());
     }
 
     public function testGetRegions()

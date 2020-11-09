@@ -36,7 +36,7 @@ class RegionController
         return new JsonResponse($data);
     }
 
-    private function getRegions(Request $request)
+    private function getRegions(Request $request): iterable
     {
         if (!$request->query->has('parent')) {
             return $this->repository->findBy(['parent' => null], ['parent' => 'ASC', 'id' => 'ASC']);

@@ -2,25 +2,16 @@
 
 namespace Siganushka\GenericBundle\Tests\Form\Type;
 
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectRepository;
-use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\Form\Type\RegionType;
+use Siganushka\GenericBundle\Tests\Entity\AbstractRegionTest;
 use Symfony\Component\Form\FormFactoryBuilder;
 
-class RegionTypeTest extends TestCase
+class RegionTypeTest extends AbstractRegionTest
 {
     public function testRegionType()
     {
-        $objectRepository = $this->createMock(ObjectRepository::class);
-
-        $managerRegistry = $this->createMock(ManagerRegistry::class);
-
-        $managerRegistry->expects($this->any())
-            ->method('getRepository')
-            ->willReturn($objectRepository);
-
-        $type = new RegionType($managerRegistry);
+        $type = new RegionType($this->managerRegistry);
 
         $formFactoryBuilder = new FormFactoryBuilder();
         $formFactoryBuilder->addType($type);
@@ -29,10 +20,10 @@ class RegionTypeTest extends TestCase
             ->createBuilder(RegionType::class)
             ->getForm();
 
-        $options = $form->getConfig()->getOptions();
+        $formConfig = $form->getConfig();
 
-        $this->assertSame('code', $options['choice_value']);
-        $this->assertSame('name', $options['choice_label']);
-        $this->assertInstanceOf(ObjectRepository::class, $options['region_repository']);
+        $this->assertSame('code', $formConfig->getOption('choice_value'));
+        $this->assertSame('name', $formConfig->getOption('choice_label'));
+        $this->assertInstanceOf(ObjectRepository::class, $formConfig->getOption('region_repository'));
     }
 }
