@@ -69,7 +69,7 @@ $foo->setSort(Foo::DEFAULT_SORT);   // 设置为默认值
 
 ### Versionable
 
-通用的 `version` 字段，典型的乐观锁版本字段，由 `Doctrine` 自动维护，
+通用的 `version` 字段，典型的乐观锁版本字段，由 `Doctrine` 自动维护。
 
 ```php
 // ./src/Entity/Foo.php
