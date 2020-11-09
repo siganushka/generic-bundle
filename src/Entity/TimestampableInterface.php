@@ -10,5 +10,5 @@ interface TimestampableInterface
 
     public function getCreatedAt(): ?\DateTimeImmutable;
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt);
+    public function setCreatedAt(?\DateTimeImmutable $createdAt);
 }

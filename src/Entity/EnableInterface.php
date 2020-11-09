@@ -6,5 +6,5 @@ interface EnableInterface
 {
     public function isEnabled(): ?bool;
 
-    public function setEnabled(bool $enabled);
+    public function setEnabled(?bool $enabled);
 }

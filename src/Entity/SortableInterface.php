@@ -8,5 +8,5 @@ interface SortableInterface
 
     public function getSort(): ?int;
 
-    public function setSort(int $sort);
+    public function setSort(?int $sort);
 }
