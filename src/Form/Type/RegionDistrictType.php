@@ -15,7 +15,7 @@ class RegionDistrictType extends AbstractType
         $resolver->setAllowedTypes('parent', ['null', RegionInterface::class]);
 
         $resolver->setNormalizer('choices', function (Options $options) {
-            return $options['parent'] ? $options['parent']->getChildren() : [];
+            return $options['parent'] ? $options['parent']->getChildren()->toArray() : [];
         });
     }
 
