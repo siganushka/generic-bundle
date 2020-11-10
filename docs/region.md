@@ -46,7 +46,7 @@ class Foo implements RegionSubjectInterface
 
 use Siganushka\GenericBundle\Form\Type\RegionSubjectType;
 
-class TestType extends AbstractType
+class FooType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
