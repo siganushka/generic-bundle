@@ -9,26 +9,34 @@ class RegionProvinceTypeTest extends AbstractRegionTypeTest
 {
     public function testRegionProvinceType()
     {
+        $form = $this->createFormBuilder(RegionProvinceType::class)
+            ->getForm();
+
+        $this->assertSame([$this->province], $form->getConfig()->getOption('choices'));
+        $this->assertSame([], $form->getConfig()->getOption('city_options'));
+        $this->assertSame([], $form->getConfig()->getOption('district_options'));
+        $this->assertInstanceOf(ObjectRepository::class, $form->getConfig()->getOption('region_repository'));
+
+        $this->assertNull($form->getData());
+        $this->assertFalse($form->isSubmitted());
+
+        $form->submit('100000');
+
+        $this->assertSame($this->province, $form->getData());
+        $this->assertTrue($form->isSubmitted());
+    }
+
+    public function testRegionProvinceTypeWithOptions()
+    {
         $options = [
-            'placeholder' => 'foo',
             'city_options' => ['placeholder' => 'bar'],
             'district_options' => ['placeholder' => 'baz'],
         ];
 
-        $form = $this->createFormBuilder()
-            ->add('province', RegionProvinceType::class, $options)
+        $form = $this->createFormBuilder(RegionProvinceType::class, null, $options)
             ->getForm();
 
-        $this->assertTrue($form->has('province'));
-        $this->assertTrue($form->has('city'));
-        $this->assertTrue($form->has('district'));
-
-        $this->assertSame($options['placeholder'], $form['province']->getConfig()->getOption('placeholder'));
-        $this->assertSame($options['city_options']['placeholder'], $form['city']->getConfig()->getOption('placeholder'));
-        $this->assertSame($options['district_options']['placeholder'], $form['district']->getConfig()->getOption('placeholder'));
-
-        $this->assertInstanceOf(ObjectRepository::class, $form['province']->getConfig()->getOption('region_repository'));
-        $this->assertInstanceOf(ObjectRepository::class, $form['city']->getConfig()->getOption('region_repository'));
-        $this->assertInstanceOf(ObjectRepository::class, $form['district']->getConfig()->getOption('region_repository'));
+        $this->assertSame($options['city_options'], $form->getConfig()->getOption('city_options'));
+        $this->assertSame($options['district_options'], $form->getConfig()->getOption('district_options'));
     }
 }

@@ -11,16 +11,28 @@ class RegionDistrictTypeTest extends AbstractRegionTypeTest
         $form = $this->createFormBuilder(RegionDistrictType::class)
             ->getForm();
 
+        $this->assertSame([], $form->getConfig()->getOption('choices'));
         $this->assertNull($form->getConfig()->getOption('parent'));
     }
 
     public function testRegionDistrictTypeWithOptions()
     {
-        $options = ['parent' => $this->city];
+        $options = [
+            'parent' => $this->city,
+        ];
 
         $form = $this->createFormBuilder(RegionDistrictType::class, null, $options)
             ->getForm();
 
-        $this->assertSame($options['parent'], $form->getConfig()->getOption('parent'));
+        $this->assertSame([$this->district], $form->getConfig()->getOption('choices'));
+        $this->assertSame($this->city, $form->getConfig()->getOption('parent'));
+
+        $this->assertNull($form->getData());
+        $this->assertFalse($form->isSubmitted());
+
+        $form->submit('300000');
+
+        $this->assertSame($this->district, $form->getData());
+        $this->assertTrue($form->isSubmitted());
     }
 }

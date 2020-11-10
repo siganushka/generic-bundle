@@ -20,10 +20,8 @@ class RegionTypeTest extends AbstractRegionTest
             ->createBuilder(RegionType::class)
             ->getForm();
 
-        $formConfig = $form->getConfig();
-
-        $this->assertSame('code', $formConfig->getOption('choice_value'));
-        $this->assertSame('name', $formConfig->getOption('choice_label'));
-        $this->assertInstanceOf(ObjectRepository::class, $formConfig->getOption('region_repository'));
+        $this->assertSame('code', $form->getConfig()->getOption('choice_value'));
+        $this->assertSame('name', $form->getConfig()->getOption('choice_label'));
+        $this->assertInstanceOf(ObjectRepository::class, $form->getConfig()->getOption('region_repository'));
     }
 }
