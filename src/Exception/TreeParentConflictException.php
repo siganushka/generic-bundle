@@ -6,8 +6,8 @@ use Siganushka\GenericBundle\DataStructure\TreeNodeInterface;
 
 class TreeParentConflictException extends \RuntimeException
 {
-    private $current;
-    private $parent;
+    protected $current;
+    protected $parent;
 
     public function __construct(TreeNodeInterface $current, TreeNodeInterface $parent)
     {
