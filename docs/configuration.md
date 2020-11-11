@@ -13,7 +13,7 @@ siganushka_generic:
 
 ### JSON 中文编码
 
-为 `JsonResponse` 提供中文编码，详见：[让 JSON 更懂中文](https://www.laruence.com/2011/10/10/2239.html)
+为 `JsonResponse` 和 `Serializer` 提供中文编码，详见：[让 JSON 更懂中文](https://www.laruence.com/2011/10/10/2239.html)
 
 ```yaml
 # ./config/packages/siganushka_generic.yaml
