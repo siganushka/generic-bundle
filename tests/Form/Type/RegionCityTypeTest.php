@@ -3,6 +3,7 @@
 namespace Siganushka\GenericBundle\Tests\Form\Type;
 
 use Siganushka\GenericBundle\Form\Type\RegionCityType;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 class RegionCityTypeTest extends AbstractRegionTypeTest
 {
@@ -37,5 +38,14 @@ class RegionCityTypeTest extends AbstractRegionTypeTest
 
         $this->assertSame($this->city, $form->getData());
         $this->assertTrue($form->isSubmitted());
+    }
+
+    public function testRegionCityTypeParentException()
+    {
+        $this->expectException(InvalidOptionsException::class);
+
+        $this->createFormBuilder(RegionCityType::class, null, [
+            'parent' => new \stdClass(),
+        ]);
     }
 }
