@@ -5,6 +5,7 @@ namespace Siganushka\GenericBundle\DependencyInjection;
 use Siganushka\GenericBundle\Doctrine\EventSubscriber\TablePrefixSubscriber;
 use Siganushka\GenericBundle\EventSubscriber\JsonResponseSubscriber;
 use Siganushka\GenericBundle\Form\Extension\DisableHtml5ValidateTypeExtension;
+use Siganushka\GenericBundle\Serializer\Encoder\UnicodeJsonEncoder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -39,6 +40,11 @@ class SiganushkaGenericExtension extends Extension
         $container
             ->register(JsonResponseSubscriber::class)
             ->setArgument(0, $config['json_encode_options'])
-            ->addTag('kernel.event_subscriber');
+            ->addTag('kernel.event_subscriber', ['priority' => 16]);
+
+        $container
+            ->register(UnicodeJsonEncoder::class)
+            ->setArgument(0, $config['json_encode_options'])
+            ->addTag('serializer.encoder', ['priority' => 16]);
     }
 }
