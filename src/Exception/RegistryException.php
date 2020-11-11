@@ -6,7 +6,7 @@ use Siganushka\GenericBundle\Registry\RegistryInterface;
 
 class RegistryException extends \RuntimeException
 {
-    private $registry;
+    protected $registry;
 
     public function __construct(RegistryInterface $registry, string $message, int $code = 0, \Throwable $previous = null)
     {
