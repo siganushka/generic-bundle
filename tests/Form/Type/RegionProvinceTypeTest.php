@@ -2,7 +2,6 @@
 
 namespace Siganushka\GenericBundle\Tests\Form\Type;
 
-use Doctrine\Persistence\ObjectRepository;
 use Siganushka\GenericBundle\Form\Type\RegionProvinceType;
 
 class RegionProvinceTypeTest extends AbstractRegionTypeTest
@@ -15,7 +14,6 @@ class RegionProvinceTypeTest extends AbstractRegionTypeTest
         $this->assertSame([$this->province], $form->getConfig()->getOption('choices'));
         $this->assertSame([], $form->getConfig()->getOption('city_options'));
         $this->assertSame([], $form->getConfig()->getOption('district_options'));
-        $this->assertInstanceOf(ObjectRepository::class, $form->getConfig()->getOption('region_repository'));
 
         $this->assertNull($form->getData());
         $this->assertFalse($form->isSubmitted());

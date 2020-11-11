@@ -2,18 +2,26 @@
 
 namespace Siganushka\GenericBundle\Form\Type;
 
-use Doctrine\Persistence\ObjectRepository;
+use Doctrine\Persistence\ManagerRegistry;
+use Siganushka\GenericBundle\Entity\Region;
 use Siganushka\GenericBundle\Entity\RegionInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RegionProvinceType extends AbstractType
 {
+    private $managerRegistry;
+
+    public function __construct(ManagerRegistry $managerRegistry)
+    {
+        $this->managerRegistry = $managerRegistry;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $formModifier = function (?FormInterface $form, ?RegionInterface $parent = null) use ($options) {
@@ -44,19 +52,20 @@ class RegionProvinceType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefault('city_options', []);
-        $resolver->setDefault('district_options', []);
+        $repository = $this->managerRegistry->getRepository(Region::class);
+        $choices = $repository->findBy(['parent' => null], ['parent' => 'ASC', 'id' => 'ASC']);
 
-        $resolver->setRequired('region_repository');
-        $resolver->setAllowedTypes('region_repository', ObjectRepository::class);
-
-        $resolver->setNormalizer('choices', function (Options $options) {
-            return $options['region_repository']->findBy(['parent' => null], ['parent' => 'ASC', 'id' => 'ASC']);
-        });
+        $resolver->setDefaults([
+            'choices' => $choices,
+            'choice_value' => 'code',
+            'choice_label' => 'name',
+            'city_options' => [],
+            'district_options' => [],
+        ]);
     }
 
     public function getParent()
     {
-        return RegionType::class;
+        return ChoiceType::class;
     }
 }

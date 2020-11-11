@@ -4,6 +4,7 @@ namespace Siganushka\GenericBundle\Form\Type;
 
 use Siganushka\GenericBundle\Entity\RegionInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -42,8 +43,12 @@ class RegionCityType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefault('parent', null);
-        $resolver->setDefault('district_options', []);
+        $resolver->setDefaults([
+            'choice_value' => 'code',
+            'choice_label' => 'name',
+            'parent' => null,
+            'district_options' => [],
+        ]);
 
         $resolver->setAllowedTypes('parent', ['null', RegionInterface::class]);
 
@@ -54,6 +59,6 @@ class RegionCityType extends AbstractType
 
     public function getParent()
     {
-        return RegionType::class;
+        return ChoiceType::class;
     }
 }
