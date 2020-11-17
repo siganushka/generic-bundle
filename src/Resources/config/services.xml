@@ -4,20 +4,11 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="Siganushka\GenericBundle\Command\RegionUpdateCommand" autowire="true">
-            <tag name="console.command" />
-        </service>
-        <service id="Siganushka\GenericBundle\Controller\RegionController" autowire="true">
-            <tag name="controller.service_arguments" />
-        </service>
         <service id="Siganushka\GenericBundle\Doctrine\EventSubscriber\TimestampableSubscriber">
             <tag name="doctrine.event_subscriber" />
         </service>
         <service id="Siganushka\GenericBundle\Doctrine\EventSubscriber\SortableSubscriber">
             <tag name="doctrine.event_subscriber" />
-        </service>
-        <service id="Siganushka\GenericBundle\Serializer\Normalizer\RegionNormalizer">
-            <tag name="serializer.normalizer" />
         </service>
     </services>
 </container>

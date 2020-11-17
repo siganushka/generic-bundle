@@ -19,4 +19,3 @@ $ composer require siganushka/generic-bundle
 - [通用实体模型](docs/entity.md)
 - [类型验证](docs/constraint.md)
 - [注册器模式](docs/registry.md)
-- [行政区划](docs/region.md)
