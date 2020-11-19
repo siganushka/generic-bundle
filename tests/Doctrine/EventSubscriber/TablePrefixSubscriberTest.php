@@ -6,8 +6,6 @@ use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
-use Doctrine\Persistence\Mapping\RuntimeReflectionService;
-use Doctrine\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\Doctrine\EventSubscriber\TablePrefixSubscriber;
 
@@ -17,17 +15,28 @@ class TablePrefixSubscriberTest extends TestCase
     {
         $namingStrategy = new UnderscoreNamingStrategy(CASE_LOWER, true);
 
-        $objectManager = $this->createMock(ObjectManager::class);
+        $reflection = new \ReflectionClass(Foo::class);
 
         $classMetadata = new ClassMetadata(Foo::class, $namingStrategy);
-        $classMetadata->initializeReflection(new RuntimeReflectionService());
+        $classMetadata->table['name'] = $namingStrategy->classToTableName(Foo::class);
+        $classMetadata->reflClass = $reflection;
+        $classMetadata->namespace = $reflection->getNamespaceName();
+
+        if ($reflection) {
+            $classMetadata->name = $reflection->getName();
+            $classMetadata->rootEntityName = $reflection->getName();
+        }
 
         $classMetadata->mapManyToMany([
             'fieldName' => 'bars',
             'targetEntity' => 'Bar',
         ]);
 
-        $loadClassMetadataEventArgs = new LoadClassMetadataEventArgs($classMetadata, $objectManager);
+        $loadClassMetadataEventArgs = $this->createMock(LoadClassMetadataEventArgs::class);
+
+        $loadClassMetadataEventArgs->expects($this->any())
+            ->method('getClassMetadata')
+            ->willReturn($classMetadata);
 
         $listener = new TablePrefixSubscriber('app_');
         $listener->loadClassMetadata($loadClassMetadataEventArgs);
