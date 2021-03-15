@@ -8,7 +8,6 @@ use Siganushka\GenericBundle\Doctrine\EventSubscriber\SortableSubscriber;
 use Siganushka\GenericBundle\Doctrine\EventSubscriber\TablePrefixSubscriber;
 use Siganushka\GenericBundle\Doctrine\EventSubscriber\TimestampableSubscriber;
 use Siganushka\GenericBundle\EventSubscriber\JsonResponseSubscriber;
-use Siganushka\GenericBundle\Form\Extension\DisableHtml5ValidateTypeExtension;
 use Siganushka\GenericBundle\Serializer\Encoder\UnicodeJsonEncoder;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -24,7 +23,6 @@ class SiganushkaGenericExtensionTest extends TestCase
         $this->assertTrue($container->has(SortableSubscriber::class));
         $this->assertTrue($container->has(TimestampableSubscriber::class));
         $this->assertTrue($container->has(JsonResponseSubscriber::class));
-        $this->assertTrue($container->has(DisableHtml5ValidateTypeExtension::class));
         $this->assertTrue($container->has(UnicodeJsonEncoder::class));
     }
 
@@ -32,7 +30,6 @@ class SiganushkaGenericExtensionTest extends TestCase
     {
         $configs = [
             'table_prefix' => 'test_',
-            'disable_html5_validation' => false,
         ];
 
         $container = $this->createContainer();
@@ -40,7 +37,6 @@ class SiganushkaGenericExtensionTest extends TestCase
         $container->compile();
 
         $this->assertTrue($container->has(TablePrefixSubscriber::class));
-        $this->assertFalse($container->has(DisableHtml5ValidateTypeExtension::class));
     }
 
     protected function createContainer()

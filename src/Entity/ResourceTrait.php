@@ -21,7 +21,7 @@ trait ResourceTrait
         return $this->id;
     }
 
-    public function isEqualTo(?ResourceInterface $target): bool
+    public function equals(?ResourceInterface $target): bool
     {
         if (null === $target) {
             return false;

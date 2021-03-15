@@ -33,7 +33,6 @@ class ConfigurationTest extends TestCase
         $this->assertSame($config, [
             'table_prefix' => null,
             'json_encode_options' => Configuration::getDefaultJsonEncodeOptions(),
-            'disable_html5_validation' => true,
         ]);
     }
 
@@ -43,14 +42,12 @@ class ConfigurationTest extends TestCase
             [
                 'table_prefix' => 'test_',
                 'json_encode_options' => 0,
-                'disable_html5_validation' => false,
             ],
         ]);
 
         $this->assertSame($config, [
             'table_prefix' => 'test_',
             'json_encode_options' => 0,
-            'disable_html5_validation' => false,
         ]);
     }
 
@@ -72,17 +69,6 @@ class ConfigurationTest extends TestCase
         $this->processor->processConfiguration($this->configuration, [
             [
                 'json_encode_options' => false,
-            ],
-        ]);
-    }
-
-    public function testInvalidDisableHtml5ValidationException(): void
-    {
-        $this->expectException(InvalidTypeException::class);
-
-        $this->processor->processConfiguration($this->configuration, [
-            [
-                'disable_html5_validation' => 1,
             ],
         ]);
     }

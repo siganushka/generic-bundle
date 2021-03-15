@@ -34,9 +34,6 @@ class Configuration implements ConfigurationInterface
                 ->integerNode('json_encode_options')
                     ->defaultValue(self::getDefaultJsonEncodeOptions())
                 ->end()
-                ->booleanNode('disable_html5_validation')
-                    ->defaultTrue()
-                ->end()
             ->end()
         ;
 

@@ -6,5 +6,5 @@ interface ResourceInterface
 {
     public function getId(): ?int;
 
-    public function isEqualTo(?self $target): bool;
+    public function equals(?self $target): bool;
 }

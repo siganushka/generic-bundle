@@ -4,7 +4,6 @@ namespace Siganushka\GenericBundle\DependencyInjection;
 
 use Siganushka\GenericBundle\Doctrine\EventSubscriber\TablePrefixSubscriber;
 use Siganushka\GenericBundle\EventSubscriber\JsonResponseSubscriber;
-use Siganushka\GenericBundle\Form\Extension\DisableHtml5ValidateTypeExtension;
 use Siganushka\GenericBundle\Serializer\Encoder\UnicodeJsonEncoder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -26,13 +25,6 @@ class SiganushkaGenericExtension extends Extension
                 ->register(TablePrefixSubscriber::class)
                 ->setArgument(0, $config['table_prefix'])
                 ->addTag('doctrine.event_subscriber')
-            ;
-        }
-
-        if ($config['disable_html5_validation']) {
-            $container
-                ->register(DisableHtml5ValidateTypeExtension::class)
-                ->addTag('form.type_extension')
             ;
         }
 
