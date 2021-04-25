@@ -13,7 +13,7 @@ class TablePrefixSubscriberTest extends TestCase
 {
     public function testLoadClassMetadata()
     {
-        $namingStrategy = new UnderscoreNamingStrategy(CASE_LOWER, true);
+        $namingStrategy = new UnderscoreNamingStrategy(\CASE_LOWER, true);
 
         $reflection = new \ReflectionClass(Foo::class);
 

@@ -20,7 +20,7 @@ class JsonResponseSubscriberTest extends TestCase
         $httpKernel = $this->createMock(HttpKernelInterface::class);
         $responseEvent = new ResponseEvent($httpKernel, new Request(), HttpKernelInterface::MASTER_REQUEST, $response);
 
-        $listener = new JsonResponseSubscriber(JSON_UNESCAPED_UNICODE);
+        $listener = new JsonResponseSubscriber(\JSON_UNESCAPED_UNICODE);
         $listener->onResponseEvent($responseEvent);
 
         $this->assertEquals('{"message":"你好！"}', $response->getContent());

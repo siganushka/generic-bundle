@@ -11,7 +11,7 @@ class UnicodeJsonEncoderTest extends TestCase
 
     public function testUnicodeJsonEncoder()
     {
-        $encoder = new UnicodeJsonEncoder(JSON_UNESCAPED_UNICODE);
+        $encoder = new UnicodeJsonEncoder(\JSON_UNESCAPED_UNICODE);
 
         $this->assertTrue($encoder->supportsEncoding(self::FORMAT));
         $this->assertEquals('{"message":"你好！"}', $encoder->encode(['message' => '你好！'], self::FORMAT));
