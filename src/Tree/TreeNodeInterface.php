@@ -1,6 +1,6 @@
 <?php
 
-namespace Siganushka\GenericBundle\DataStructure;
+namespace Siganushka\GenericBundle\Tree;
 
 use Doctrine\Common\Collections\Collection;
 
