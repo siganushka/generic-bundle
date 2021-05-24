@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siganushka\GenericBundle\Validator\Constraints;
 
 use Composer\Semver\VersionParser;
@@ -10,7 +12,7 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class SemverValidator extends ConstraintValidator
 {
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof Semver) {
             throw new UnexpectedTypeException($constraint, Semver::class);
@@ -32,7 +34,8 @@ class SemverValidator extends ConstraintValidator
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $this->formatValue($value))
                 ->setCode(Semver::INVALID_ERROR)
-                ->addViolation();
+                ->addViolation()
+            ;
         }
     }
 }

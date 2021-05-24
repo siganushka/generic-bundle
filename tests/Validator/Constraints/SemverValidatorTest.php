@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siganushka\GenericBundle\Tests\Validator\Constraints;
 
 use Composer\Semver\VersionParser;
@@ -7,26 +9,25 @@ use Siganushka\GenericBundle\Validator\Constraints\Semver;
 use Siganushka\GenericBundle\Validator\Constraints\SemverValidator;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
-class SemverValidatorTest extends ConstraintValidatorTestCase
+/**
+ * @internal
+ * @coversNothing
+ */
+final class SemverValidatorTest extends ConstraintValidatorTestCase
 {
     protected function setUp(): void
     {
         if (!class_exists(VersionParser::class)) {
-            $this->markTestSkipped('Skip tests.');
+            static::markTestSkipped('Skip tests.');
         }
 
         parent::setUp();
     }
 
-    protected function createValidator()
-    {
-        return new SemverValidator();
-    }
-
     /**
      *  @dataProvider getValidSemvers
      */
-    public function testValid(?string $version)
+    public function testValid(?string $version): void
     {
         $constraint = new Semver();
 
@@ -37,7 +38,7 @@ class SemverValidatorTest extends ConstraintValidatorTestCase
     /**
      * @dataProvider getInvalidSemvers
      */
-    public function testInvalid(string $version)
+    public function testInvalid(string $version): void
     {
         $constraint = new Semver();
 
@@ -46,7 +47,8 @@ class SemverValidatorTest extends ConstraintValidatorTestCase
         $this->buildViolation($constraint->message)
             ->setParameter('{{ value }}', sprintf('"%s"', $version))
             ->setCode(Semver::INVALID_ERROR)
-            ->assertRaised();
+            ->assertRaised()
+        ;
     }
 
     public function getValidSemvers()
@@ -68,5 +70,10 @@ class SemverValidatorTest extends ConstraintValidatorTestCase
             ['1.0.0-foo'],
             ['1.0.0+foo bar'],
         ];
+    }
+
+    protected function createValidator()
+    {
+        return new SemverValidator();
     }
 }

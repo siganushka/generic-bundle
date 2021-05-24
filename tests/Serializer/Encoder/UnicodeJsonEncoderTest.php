@@ -1,19 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siganushka\GenericBundle\Tests\Serializer\Encoder;
 
 use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\Serializer\Encoder\UnicodeJsonEncoder;
 
-class UnicodeJsonEncoderTest extends TestCase
+/**
+ * @internal
+ * @coversNothing
+ */
+final class UnicodeJsonEncoderTest extends TestCase
 {
-    const FORMAT = 'json';
+    public const FORMAT = 'json';
 
-    public function testUnicodeJsonEncoder()
+    public function testUnicodeJsonEncoder(): void
     {
-        $encoder = new UnicodeJsonEncoder(\JSON_UNESCAPED_UNICODE);
+        $encoder = new UnicodeJsonEncoder(JSON_UNESCAPED_UNICODE);
 
-        $this->assertTrue($encoder->supportsEncoding(self::FORMAT));
-        $this->assertEquals('{"message":"你好！"}', $encoder->encode(['message' => '你好！'], self::FORMAT));
+        static::assertTrue($encoder->supportsEncoding(self::FORMAT));
+        static::assertSame('{"message":"你好！"}', $encoder->encode(['message' => '你好！'], self::FORMAT));
     }
 }

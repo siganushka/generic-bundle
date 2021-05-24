@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siganushka\GenericBundle\Tests\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
@@ -11,19 +13,23 @@ use Siganushka\GenericBundle\EventSubscriber\JsonResponseSubscriber;
 use Siganushka\GenericBundle\Serializer\Encoder\UnicodeJsonEncoder;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class SiganushkaGenericExtensionTest extends TestCase
+/**
+ * @internal
+ * @coversNothing
+ */
+final class SiganushkaGenericExtensionTest extends TestCase
 {
-    public function testLoadDefaultConfig()
+    public function testLoadDefaultConfig(): void
     {
         $container = $this->createContainer();
         $container->loadFromExtension('siganushka_generic');
         $container->compile();
 
-        $this->assertFalse($container->has(TablePrefixSubscriber::class));
-        $this->assertTrue($container->has(SortableSubscriber::class));
-        $this->assertTrue($container->has(TimestampableSubscriber::class));
-        $this->assertTrue($container->has(JsonResponseSubscriber::class));
-        $this->assertTrue($container->has(UnicodeJsonEncoder::class));
+        static::assertFalse($container->has(TablePrefixSubscriber::class));
+        static::assertTrue($container->has(SortableSubscriber::class));
+        static::assertTrue($container->has(TimestampableSubscriber::class));
+        static::assertTrue($container->has(JsonResponseSubscriber::class));
+        static::assertTrue($container->has(UnicodeJsonEncoder::class));
     }
 
     public function testWithConfigs(): void
@@ -36,7 +42,7 @@ class SiganushkaGenericExtensionTest extends TestCase
         $container->loadFromExtension('siganushka_generic', $configs);
         $container->compile();
 
-        $this->assertTrue($container->has(TablePrefixSubscriber::class));
+        static::assertTrue($container->has(TablePrefixSubscriber::class));
     }
 
     protected function createContainer()

@@ -1,22 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siganushka\GenericBundle\Tests\Validator\Constraints;
 
 use Siganushka\GenericBundle\Validator\Constraints\PhoneNumber;
 use Siganushka\GenericBundle\Validator\Constraints\PhoneNumberValidator;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
-class PhoneNumberValidatorTest extends ConstraintValidatorTestCase
+/**
+ * @internal
+ * @coversNothing
+ */
+final class PhoneNumberValidatorTest extends ConstraintValidatorTestCase
 {
-    protected function createValidator()
-    {
-        return new PhoneNumberValidator();
-    }
-
     /**
      * @dataProvider getValidPhoneNubmers
      */
-    public function testValid(?string $phoneNumber)
+    public function testValid(?string $phoneNumber): void
     {
         $constraint = new PhoneNumber();
 
@@ -27,7 +28,7 @@ class PhoneNumberValidatorTest extends ConstraintValidatorTestCase
     /**
      * @dataProvider getInvalidPhoneNubmers
      */
-    public function testInvalid(string $phoneNumber)
+    public function testInvalid(string $phoneNumber): void
     {
         $constraint = new PhoneNumber();
 
@@ -36,7 +37,8 @@ class PhoneNumberValidatorTest extends ConstraintValidatorTestCase
         $this->buildViolation($constraint->message)
             ->setParameter('{{ value }}', sprintf('"%s"', $phoneNumber))
             ->setCode(PhoneNumber::INVALID_ERROR)
-            ->assertRaised();
+            ->assertRaised()
+        ;
     }
 
     public function getValidPhoneNubmers()
@@ -62,5 +64,10 @@ class PhoneNumberValidatorTest extends ConstraintValidatorTestCase
             ['12222222222'],
             ['1333333333a'],
         ];
+    }
+
+    protected function createValidator()
+    {
+        return new PhoneNumberValidator();
     }
 }

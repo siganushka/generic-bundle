@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siganushka\GenericBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
@@ -9,7 +11,7 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class PhoneNumberValidator extends ConstraintValidator
 {
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof PhoneNumber) {
             throw new UnexpectedTypeException($constraint, PhoneNumber::class);
@@ -29,7 +31,8 @@ class PhoneNumberValidator extends ConstraintValidator
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $this->formatValue($value))
                 ->setCode(PhoneNumber::INVALID_ERROR)
-                ->addViolation();
+                ->addViolation()
+            ;
         }
     }
 }

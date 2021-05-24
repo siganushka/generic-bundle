@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siganushka\GenericBundle\Exception;
 
 use Siganushka\GenericBundle\Registry\RegistryInterface;

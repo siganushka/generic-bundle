@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siganushka\GenericBundle\Tests\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
@@ -10,7 +12,11 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
 use Symfony\Component\Config\Definition\Processor;
 
-class ConfigurationTest extends TestCase
+/**
+ * @internal
+ * @coversNothing
+ */
+final class ConfigurationTest extends TestCase
 {
     private $configuration;
     private $processor;
@@ -25,12 +31,12 @@ class ConfigurationTest extends TestCase
     {
         $treeBuilder = $this->configuration->getConfigTreeBuilder();
 
-        $this->assertInstanceOf(ConfigurationInterface::class, $this->configuration);
-        $this->assertInstanceOf(TreeBuilder::class, $treeBuilder);
+        static::assertInstanceOf(ConfigurationInterface::class, $this->configuration);
+        static::assertInstanceOf(TreeBuilder::class, $treeBuilder);
 
         $config = $this->processor->processConfiguration($this->configuration, []);
 
-        $this->assertSame($config, [
+        static::assertSame($config, [
             'table_prefix' => null,
             'json_encode_options' => Configuration::getDefaultJsonEncodeOptions(),
         ]);
@@ -45,7 +51,7 @@ class ConfigurationTest extends TestCase
             ],
         ]);
 
-        $this->assertSame($config, [
+        static::assertSame($config, [
             'table_prefix' => 'test_',
             'json_encode_options' => 0,
         ]);

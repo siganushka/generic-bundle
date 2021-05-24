@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siganushka\GenericBundle\Tests\Doctrine\EventSubscriber;
 
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
@@ -9,11 +11,15 @@ use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\Doctrine\EventSubscriber\TablePrefixSubscriber;
 
-class TablePrefixSubscriberTest extends TestCase
+/**
+ * @internal
+ * @coversNothing
+ */
+final class TablePrefixSubscriberTest extends TestCase
 {
-    public function testLoadClassMetadata()
+    public function testLoadClassMetadata(): void
     {
-        $namingStrategy = new UnderscoreNamingStrategy(\CASE_LOWER, true);
+        $namingStrategy = new UnderscoreNamingStrategy(CASE_LOWER, true);
 
         $reflection = new \ReflectionClass(Foo::class);
 
@@ -34,15 +40,16 @@ class TablePrefixSubscriberTest extends TestCase
 
         $loadClassMetadataEventArgs = $this->createMock(LoadClassMetadataEventArgs::class);
 
-        $loadClassMetadataEventArgs->expects($this->any())
+        $loadClassMetadataEventArgs->expects(static::any())
             ->method('getClassMetadata')
-            ->willReturn($classMetadata);
+            ->willReturn($classMetadata)
+        ;
 
         $listener = new TablePrefixSubscriber('app_');
         $listener->loadClassMetadata($loadClassMetadataEventArgs);
 
-        $this->assertSame('app_foo', $classMetadata->getTableName());
-        $this->assertSame('app_foo_bar', $classMetadata->associationMappings['bars']['joinTable']['name']);
+        static::assertSame('app_foo', $classMetadata->getTableName());
+        static::assertSame('app_foo_bar', $classMetadata->associationMappings['bars']['joinTable']['name']);
     }
 }
 

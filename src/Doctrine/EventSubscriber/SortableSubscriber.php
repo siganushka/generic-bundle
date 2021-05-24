@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siganushka\GenericBundle\Doctrine\EventSubscriber;
 
 use Doctrine\Common\EventSubscriber;
@@ -17,7 +19,7 @@ class SortableSubscriber implements EventSubscriber
         ];
     }
 
-    public function prePersist(LifecycleEventArgs $args)
+    public function prePersist(LifecycleEventArgs $args): void
     {
         $entity = $args->getEntity();
         if (!$entity instanceof SortableInterface) {
@@ -27,7 +29,7 @@ class SortableSubscriber implements EventSubscriber
         $this->setSortIfNotSet($entity);
     }
 
-    public function preUpdate(PreUpdateEventArgs $args)
+    public function preUpdate(PreUpdateEventArgs $args): void
     {
         $entity = $args->getEntity();
         if (!$entity instanceof SortableInterface) {
@@ -37,7 +39,7 @@ class SortableSubscriber implements EventSubscriber
         $this->setSortIfNotSet($entity);
     }
 
-    private function setSortIfNotSet(SortableInterface $entity)
+    private function setSortIfNotSet(SortableInterface $entity): void
     {
         if (null === $entity->getSort()) {
             $entity->setSort(SortableInterface::DEFAULT_SORT);

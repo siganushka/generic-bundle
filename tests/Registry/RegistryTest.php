@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siganushka\GenericBundle\Tests\Registry;
 
 use PHPUnit\Framework\TestCase;
@@ -10,46 +12,51 @@ use Siganushka\GenericBundle\Exception\ServiceUnsupportedException;
 use Siganushka\GenericBundle\Registry\AbstractRegistry;
 use Siganushka\GenericBundle\Registry\AliasableInterface;
 
-class RegistryTest extends TestCase
+/**
+ * @internal
+ * @coversNothing
+ */
+final class RegistryTest extends TestCase
 {
-    public function testAll()
+    public function testAll(): void
     {
         $foo = $this->getMockForAbstractClass(RegistrySubjectInterface::class, [], 'FooService');
         $bar = $this->getMockForAbstractClass(RegistrySubjectInterface::class, [], 'BarService');
 
         $aliasableBaz = $this->getMockForAbstractClass(AliasableRegistrySubjectInterface::class, [], 'AliasableBazService');
-        $aliasableBaz->expects($this->any())
+        $aliasableBaz->expects(static::any())
             ->method('getAlias')
-            ->willReturn('baz');
+            ->willReturn('baz')
+        ;
 
         $registry = $this->getMockForAbstractClass(AbstractRegistry::class, [RegistrySubjectInterface::class], 'ServiceRegistry');
         $registry->register($foo);
         $registry->register($bar);
         $registry->register($aliasableBaz);
 
-        $this->assertCount(3, $registry->getValues());
-        $this->assertEquals(['FooService', 'BarService', 'baz'], $registry->getKeys());
+        static::assertCount(3, $registry->getValues());
+        static::assertSame(['FooService', 'BarService', 'baz'], $registry->getKeys());
 
-        $this->assertTrue($registry->has('FooService'));
-        $this->assertTrue($registry->has('BarService'));
-        $this->assertTrue($registry->has('baz'));
+        static::assertTrue($registry->has('FooService'));
+        static::assertTrue($registry->has('BarService'));
+        static::assertTrue($registry->has('baz'));
 
-        $this->assertEquals($foo, $registry->get('FooService'));
-        $this->assertEquals($bar, $registry->get('BarService'));
-        $this->assertEquals($aliasableBaz, $registry->get('baz'));
+        static::assertSame($foo, $registry->get('FooService'));
+        static::assertSame($bar, $registry->get('BarService'));
+        static::assertSame($aliasableBaz, $registry->get('baz'));
 
         $registry->remove('FooService');
 
-        $this->assertCount(2, $registry->getValues());
-        $this->assertEquals(['BarService', 'baz'], $registry->getKeys());
+        static::assertCount(2, $registry->getValues());
+        static::assertSame(['BarService', 'baz'], $registry->getKeys());
 
         $registry->clear();
 
-        $this->assertCount(0, $registry->getValues());
-        $this->assertCount(0, $registry->getKeys());
+        static::assertCount(0, $registry->getValues());
+        static::assertCount(0, $registry->getKeys());
     }
 
-    public function testAbstractionNotFoundException()
+    public function testAbstractionNotFoundException(): void
     {
         $this->expectException(AbstractionNotFoundException::class);
         $this->expectExceptionMessage('Abstraction NotFoundInterface for ServiceRegistry could not be found.');
@@ -57,7 +64,7 @@ class RegistryTest extends TestCase
         $this->getMockForAbstractClass(AbstractRegistry::class, ['NotFoundInterface'], 'ServiceRegistry');
     }
 
-    public function testRegisterServiceUnsupportedException()
+    public function testRegisterServiceUnsupportedException(): void
     {
         $this->expectException(ServiceUnsupportedException::class);
         $this->expectExceptionMessage('Service stdClass for registry ServiceRegistry is unsupported.');
@@ -66,7 +73,7 @@ class RegistryTest extends TestCase
         $registry->register(new \stdClass());
     }
 
-    public function testRegisterServiceExistingException()
+    public function testRegisterServiceExistingException(): void
     {
         $this->expectException(ServiceExistingException::class);
         $this->expectExceptionMessage('Service FooService for registry ServiceRegistry already exists.');
@@ -78,7 +85,7 @@ class RegistryTest extends TestCase
         $registry->register($foo);
     }
 
-    public function testRegisterNonExistingException()
+    public function testRegisterNonExistingException(): void
     {
         $this->expectException(ServiceNonExistingException::class);
         $this->expectExceptionMessage('Service NotFoundService for registry ServiceRegistry does not exist.');

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siganushka\GenericBundle\Registry;
 
 use Siganushka\GenericBundle\Exception\ServiceExistingException;

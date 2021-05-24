@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siganushka\GenericBundle\Entity;
 
 interface SortableInterface
 {
-    const DEFAULT_SORT = 0;
+    public const DEFAULT_SORT = 0;
 
     public function getSort(): ?int;
 

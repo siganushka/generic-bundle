@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siganushka\GenericBundle\DependencyInjection;
 
 use Siganushka\GenericBundle\Doctrine\EventSubscriber\TablePrefixSubscriber;
@@ -12,7 +14,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class SiganushkaGenericExtension extends Extension
 {
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new XmlFileLoader($container, new FileLocator(\dirname(__DIR__).'/Resources/config'));
         $loader->load('services.xml');
@@ -31,11 +33,13 @@ class SiganushkaGenericExtension extends Extension
         $container
             ->register(JsonResponseSubscriber::class)
             ->setArgument(0, $config['json_encode_options'])
-            ->addTag('kernel.event_subscriber', ['priority' => 16]);
+            ->addTag('kernel.event_subscriber', ['priority' => 16])
+        ;
 
         $container
             ->register(UnicodeJsonEncoder::class)
             ->setArgument(0, $config['json_encode_options'])
-            ->addTag('serializer.encoder', ['priority' => 16]);
+            ->addTag('serializer.encoder', ['priority' => 16])
+        ;
     }
 }

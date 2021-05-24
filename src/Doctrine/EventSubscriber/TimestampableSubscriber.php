@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siganushka\GenericBundle\Doctrine\EventSubscriber;
 
 use Doctrine\Common\EventSubscriber;
@@ -17,7 +19,7 @@ class TimestampableSubscriber implements EventSubscriber
         ];
     }
 
-    public function prePersist(LifecycleEventArgs $args)
+    public function prePersist(LifecycleEventArgs $args): void
     {
         $entity = $args->getEntity();
         if (!$entity instanceof TimestampableInterface) {
@@ -27,7 +29,7 @@ class TimestampableSubscriber implements EventSubscriber
         $entity->setCreatedAt(new \DateTimeImmutable());
     }
 
-    public function preUpdate(PreUpdateEventArgs $args)
+    public function preUpdate(PreUpdateEventArgs $args): void
     {
         $entity = $args->getEntity();
         if (!$entity instanceof TimestampableInterface) {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siganushka\GenericBundle\Tests\Doctrine\EventSubscriber;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -10,7 +12,11 @@ use Siganushka\GenericBundle\Doctrine\EventSubscriber\TimestampableSubscriber;
 use Siganushka\GenericBundle\Entity\TimestampableInterface;
 use Siganushka\GenericBundle\Entity\TimestampableTrait;
 
-class TimestampableSubscriberTest extends TestCase
+/**
+ * @internal
+ * @coversNothing
+ */
+final class TimestampableSubscriberTest extends TestCase
 {
     private $entityManager;
     private $listener;
@@ -27,31 +33,31 @@ class TimestampableSubscriberTest extends TestCase
         $this->listener = null;
     }
 
-    public function testPrePersist()
+    public function testPrePersist(): void
     {
         $foo = new TimestampableFoo();
 
-        $this->assertInstanceOf(TimestampableInterface::class, $foo);
-        $this->assertNull($foo->getCreatedAt());
+        static::assertInstanceOf(TimestampableInterface::class, $foo);
+        static::assertNull($foo->getCreatedAt());
 
         $lifecycleEventArgs = new LifecycleEventArgs($foo, $this->entityManager);
         $this->listener->prePersist($lifecycleEventArgs);
 
-        $this->assertInstanceOf(\DateTimeImmutable::class, $foo->getCreatedAt());
+        static::assertInstanceOf(\DateTimeImmutable::class, $foo->getCreatedAt());
     }
 
-    public function testPreUpdate()
+    public function testPreUpdate(): void
     {
         $foo = new TimestampableFoo();
 
-        $this->assertInstanceOf(TimestampableInterface::class, $foo);
-        $this->assertNull($foo->getUpdatedAt());
+        static::assertInstanceOf(TimestampableInterface::class, $foo);
+        static::assertNull($foo->getUpdatedAt());
 
         $changeSet = [];
         $preUpdateEventArgs = new PreUpdateEventArgs($foo, $this->entityManager, $changeSet);
         $this->listener->preUpdate($preUpdateEventArgs);
 
-        $this->assertInstanceOf(\DateTimeInterface::class, $foo->getUpdatedAt());
+        static::assertInstanceOf(\DateTimeInterface::class, $foo->getUpdatedAt());
     }
 }
 

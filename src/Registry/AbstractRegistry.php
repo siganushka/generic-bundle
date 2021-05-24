@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siganushka\GenericBundle\Registry;
 
 use Siganushka\GenericBundle\Exception\AbstractionNotFoundException;
@@ -10,18 +12,17 @@ use Siganushka\GenericBundle\Exception\ServiceUnsupportedException;
 abstract class AbstractRegistry implements RegistryInterface
 {
     /**
-     * Abstraction that services need to implement.
-     *
-     * @var string
-     */
-    private $abstraction;
-
-    /**
      * Services for registry.
      *
      * @var array
      */
     protected $services = [];
+    /**
+     * Abstraction that services need to implement.
+     *
+     * @var string
+     */
+    private $abstraction;
 
     /**
      * Abstraction interface for construct.

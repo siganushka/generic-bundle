@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siganushka\GenericBundle\Tree;
 
 use Doctrine\Common\Collections\Collection;

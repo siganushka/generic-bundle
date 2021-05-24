@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siganushka\GenericBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
@@ -9,13 +11,13 @@ use Symfony\Component\Validator\Constraint;
  */
 class PhoneNumber extends Constraint
 {
-    const INVALID_ERROR = 'a177cf42-f1a9-4f75-9053-895b67224530';
+    public const INVALID_ERROR = 'a177cf42-f1a9-4f75-9053-895b67224530';
+
+    public $message = 'This value is not a valid phone number.';
 
     protected static $errorNames = [
         self::INVALID_ERROR => 'INVALID_ERROR',
     ];
-
-    public $message = 'This value is not a valid phone number.';
 
     public function validatedBy()
     {

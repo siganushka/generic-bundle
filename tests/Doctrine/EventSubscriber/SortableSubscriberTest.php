@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siganushka\GenericBundle\Tests\Doctrine\EventSubscriber;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -10,7 +12,11 @@ use Siganushka\GenericBundle\Doctrine\EventSubscriber\SortableSubscriber;
 use Siganushka\GenericBundle\Entity\SortableInterface;
 use Siganushka\GenericBundle\Entity\SortableTrait;
 
-class SortableSubscriberTest extends TestCase
+/**
+ * @internal
+ * @coversNothing
+ */
+final class SortableSubscriberTest extends TestCase
 {
     private $entityManager;
     private $listener;
@@ -27,43 +33,43 @@ class SortableSubscriberTest extends TestCase
         $this->listener = null;
     }
 
-    public function testPrePersist()
+    public function testPrePersist(): void
     {
         $foo = new SortableFoo();
 
-        $this->assertInstanceOf(SortableInterface::class, $foo);
-        $this->assertNull($foo->getSort());
+        static::assertInstanceOf(SortableInterface::class, $foo);
+        static::assertNull($foo->getSort());
 
         $lifecycleEventArgs = new LifecycleEventArgs($foo, $this->entityManager);
         $this->listener->prePersist($lifecycleEventArgs);
 
-        $this->assertEquals(SortableFoo::DEFAULT_SORT, $foo->getSort());
+        static::assertSame(SortableFoo::DEFAULT_SORT, $foo->getSort());
 
         // set value if not set
         $foo->setSort(128);
         $this->listener->prePersist($lifecycleEventArgs);
 
-        $this->assertEquals(128, $foo->getSort());
+        static::assertSame(128, $foo->getSort());
     }
 
-    public function testPreUpdate()
+    public function testPreUpdate(): void
     {
         $foo = new SortableFoo();
 
-        $this->assertInstanceOf(SortableInterface::class, $foo);
-        $this->assertNull($foo->getSort());
+        static::assertInstanceOf(SortableInterface::class, $foo);
+        static::assertNull($foo->getSort());
 
         $changeSet = [];
         $preUpdateEventArgs = new PreUpdateEventArgs($foo, $this->entityManager, $changeSet);
         $this->listener->preUpdate($preUpdateEventArgs);
 
-        $this->assertEquals(SortableFoo::DEFAULT_SORT, $foo->getSort());
+        static::assertSame(SortableFoo::DEFAULT_SORT, $foo->getSort());
 
         // set value if not set
         $foo->setSort(128);
         $this->listener->preUpdate($preUpdateEventArgs);
 
-        $this->assertEquals(128, $foo->getSort());
+        static::assertSame(128, $foo->getSort());
     }
 }
 

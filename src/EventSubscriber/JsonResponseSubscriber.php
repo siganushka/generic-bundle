@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siganushka\GenericBundle\EventSubscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -20,7 +22,7 @@ class JsonResponseSubscriber implements EventSubscriberInterface
         return [ResponseEvent::class => 'onResponseEvent'];
     }
 
-    public function onResponseEvent(ResponseEvent $event)
+    public function onResponseEvent(ResponseEvent $event): void
     {
         $response = $event->getResponse();
         if ($response instanceof JsonResponse) {
