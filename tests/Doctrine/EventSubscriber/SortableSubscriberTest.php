@@ -38,18 +38,18 @@ final class SortableSubscriberTest extends TestCase
         $foo = new SortableFoo();
 
         static::assertInstanceOf(SortableInterface::class, $foo);
-        static::assertNull($foo->getSort());
+        static::assertNull($foo->getSorted());
 
         $lifecycleEventArgs = new LifecycleEventArgs($foo, $this->entityManager);
         $this->listener->prePersist($lifecycleEventArgs);
 
-        static::assertSame(SortableFoo::DEFAULT_SORT, $foo->getSort());
+        static::assertSame(SortableFoo::DEFAULT_SORTED, $foo->getSorted());
 
         // set value if not set
-        $foo->setSort(128);
+        $foo->setSorted(128);
         $this->listener->prePersist($lifecycleEventArgs);
 
-        static::assertSame(128, $foo->getSort());
+        static::assertSame(128, $foo->getSorted());
     }
 
     public function testPreUpdate(): void
@@ -57,19 +57,19 @@ final class SortableSubscriberTest extends TestCase
         $foo = new SortableFoo();
 
         static::assertInstanceOf(SortableInterface::class, $foo);
-        static::assertNull($foo->getSort());
+        static::assertNull($foo->getSorted());
 
         $changeSet = [];
         $preUpdateEventArgs = new PreUpdateEventArgs($foo, $this->entityManager, $changeSet);
         $this->listener->preUpdate($preUpdateEventArgs);
 
-        static::assertSame(SortableFoo::DEFAULT_SORT, $foo->getSort());
+        static::assertSame(SortableFoo::DEFAULT_SORTED, $foo->getSorted());
 
         // set value if not set
-        $foo->setSort(128);
+        $foo->setSorted(128);
         $this->listener->preUpdate($preUpdateEventArgs);
 
-        static::assertSame(128, $foo->getSort());
+        static::assertSame(128, $foo->getSorted());
     }
 }
 

@@ -26,7 +26,7 @@ class SortableSubscriber implements EventSubscriber
             return;
         }
 
-        $this->setSortIfNotSet($entity);
+        $this->setSortedIfNotSet($entity);
     }
 
     public function preUpdate(PreUpdateEventArgs $args): void
@@ -36,13 +36,13 @@ class SortableSubscriber implements EventSubscriber
             return;
         }
 
-        $this->setSortIfNotSet($entity);
+        $this->setSortedIfNotSet($entity);
     }
 
-    private function setSortIfNotSet(SortableInterface $entity): void
+    private function setSortedIfNotSet(SortableInterface $entity): void
     {
-        if (null === $entity->getSort()) {
-            $entity->setSort(SortableInterface::DEFAULT_SORT);
+        if (null === $entity->getSorted()) {
+            $entity->setSorted(SortableInterface::DEFAULT_SORTED);
         }
     }
 }

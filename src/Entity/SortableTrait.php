@@ -14,16 +14,16 @@ trait SortableTrait
      *
      * @Groups({"sortable"})
      */
-    private $sort;
+    private $sorted;
 
-    public function getSort(): ?int
+    public function getSorted(): ?int
     {
-        return $this->sort;
+        return $this->sorted;
     }
 
-    public function setSort(?int $sort)
+    public function setSorted(?int $sorted)
     {
-        $this->sort = $sort;
+        $this->sorted = $sorted;
 
         return $this;
     }

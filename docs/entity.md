@@ -46,7 +46,7 @@ $foo->setEnabled(?bool $enabled);   // 设置状态、是否有效
 
 ### Sortable
 
-通用的 `sort` 字段，抽象于常用的排序、显示顺序等场景。
+通用的 `sorted` 字段，抽象于常用的排序、显示顺序等场景。
 
 ```php
 // ./src/Entity/Foo.php
@@ -62,9 +62,9 @@ class Foo implements SortableInterface
 }
 
 $foo = new Foo();
-$foo->getSort(): ?int;              // 返回排序值
-$foo->setSort(?int $sort);          // 设置排序值
-$foo->setSort(Foo::DEFAULT_SORT);   // 设置为默认值
+$foo->getSorted(): ?int;                // 返回排序值
+$foo->setSorted(?int $sorted);          // 设置排序值
+$foo->setSorted(Foo::DEFAULT_SORTED);   // 设置为默认值
 ```
 
 ### Versionable

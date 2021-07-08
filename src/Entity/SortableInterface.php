@@ -6,9 +6,9 @@ namespace Siganushka\GenericBundle\Entity;
 
 interface SortableInterface
 {
-    public const DEFAULT_SORT = 0;
+    public const DEFAULT_SORTED = 0;
 
-    public function getSort(): ?int;
+    public function getSorted(): ?int;
 
-    public function setSort(?int $sort);
+    public function setSorted(?int $sorted);
 }
