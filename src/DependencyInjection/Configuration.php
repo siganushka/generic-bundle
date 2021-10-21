@@ -16,26 +16,26 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-            ->scalarNode('table_prefix')
-            ->defaultNull()
-            ->validate()
-            ->ifTrue(function ($v) {
-                if (null === $v) {
-                    return false;
-                }
+                ->scalarNode('table_prefix')
+                ->defaultNull()
+                    ->validate()
+                        ->ifTrue(function ($v) {
+                            if (null === $v) {
+                                return false;
+                            }
 
-                if (!\is_string($v)) {
-                    return true;
-                }
+                            if (!\is_string($v)) {
+                                return true;
+                            }
 
-                return !preg_match('/^[a-zA-Z0-9_]+$/', $v);
-            })
-            ->thenInvalid('The "%s" for table prefix contains illegal character(s).')
-            ->end()
-            ->end()
-            ->integerNode('json_encode_options')
-            ->defaultValue(self::getDefaultJsonEncodeOptions())
-            ->end()
+                            return !preg_match('/^[a-zA-Z0-9_]+$/', $v);
+                        })
+                        ->thenInvalid('The "%s" for table prefix contains illegal character(s).')
+                    ->end()
+                ->end()
+                ->integerNode('json_encode_options')
+                    ->defaultValue(self::getDefaultJsonEncodeOptions())
+                ->end()
             ->end()
         ;
 
