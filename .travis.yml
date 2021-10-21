@@ -12,6 +12,7 @@ env:
     - PREFER_LOWEST=""
 
 before_script:
+    - composer clearcache
     - composer update $PREFER_LOWEST
 
 script:

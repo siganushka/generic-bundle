@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\Tree\Exception;
 
-use Siganushka\GenericBundle\DataStructure\TreeNodeInterface;
+use Siganushka\GenericBundle\Tree\TreeNodeInterface;
 
 class DescendantConflictException extends \RuntimeException
 {
