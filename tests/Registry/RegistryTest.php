@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Siganushka\GenericBundle\Tests\Registry;
 
 use PHPUnit\Framework\TestCase;
-use Siganushka\GenericBundle\Exception\AbstractionNotFoundException;
-use Siganushka\GenericBundle\Exception\ServiceExistingException;
-use Siganushka\GenericBundle\Exception\ServiceNonExistingException;
-use Siganushka\GenericBundle\Exception\ServiceUnsupportedException;
 use Siganushka\GenericBundle\Registry\AbstractRegistry;
 use Siganushka\GenericBundle\Registry\AliasableInterface;
+use Siganushka\GenericBundle\Registry\Exception\AbstractionNotFoundException;
+use Siganushka\GenericBundle\Registry\Exception\ServiceExistingException;
+use Siganushka\GenericBundle\Registry\Exception\ServiceNonExistingException;
+use Siganushka\GenericBundle\Registry\Exception\ServiceUnsupportedException;
 
 /**
  * @internal

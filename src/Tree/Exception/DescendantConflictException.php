@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Siganushka\GenericBundle\Exception;
+namespace Siganushka\GenericBundle\Tree\Exception;
 
 use Siganushka\GenericBundle\DataStructure\TreeNodeInterface;
 
-class TreeDescendantConflictException extends \RuntimeException
+class DescendantConflictException extends \RuntimeException
 {
     protected $current;
     protected $parent;

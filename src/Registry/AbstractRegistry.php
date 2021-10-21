@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\Registry;
 
-use Siganushka\GenericBundle\Exception\AbstractionNotFoundException;
-use Siganushka\GenericBundle\Exception\ServiceExistingException;
-use Siganushka\GenericBundle\Exception\ServiceNonExistingException;
-use Siganushka\GenericBundle\Exception\ServiceUnsupportedException;
+use Siganushka\GenericBundle\Registry\Exception\AbstractionNotFoundException;
+use Siganushka\GenericBundle\Registry\Exception\ServiceExistingException;
+use Siganushka\GenericBundle\Registry\Exception\ServiceNonExistingException;
+use Siganushka\GenericBundle\Registry\Exception\ServiceUnsupportedException;
 
 abstract class AbstractRegistry implements RegistryInterface
 {
@@ -17,6 +17,7 @@ abstract class AbstractRegistry implements RegistryInterface
      * @var array
      */
     protected $services = [];
+
     /**
      * Abstraction that services need to implement.
      *
@@ -38,7 +39,7 @@ abstract class AbstractRegistry implements RegistryInterface
         $this->abstraction = $abstraction;
     }
 
-    public function register(object $service): void
+    public function register(object $service): RegistryInterface
     {
         $serviceId = $this->getServiceId($service);
         if (!$service instanceof $this->abstraction) {
@@ -50,11 +51,13 @@ abstract class AbstractRegistry implements RegistryInterface
         }
 
         $this->services[$serviceId] = $service;
+
+        return $this;
     }
 
     public function has(string $serviceId): bool
     {
-        return isset($this->services[$serviceId]);
+        return array_key_exists($serviceId, $this->services);
     }
 
     public function get(string $serviceId): object
@@ -90,7 +93,7 @@ abstract class AbstractRegistry implements RegistryInterface
         return $this->services;
     }
 
-    protected function getServiceId($service)
+    protected function getServiceId(object $service): string
     {
         if ($service instanceof AliasableInterface) {
             return $service->getAlias();

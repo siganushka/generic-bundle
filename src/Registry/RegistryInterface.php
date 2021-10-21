@@ -11,12 +11,12 @@ use Siganushka\GenericBundle\Exception\ServiceUnsupportedException;
 interface RegistryInterface
 {
     /**
-     * The service for registry.
+     * Register service for registry.
      *
      * @throws ServiceUnsupportedException
      * @throws ServiceExistingException
      */
-    public function register(object $service): void;
+    public function register(object $service): self;
 
     /**
      * Check service if exists.
