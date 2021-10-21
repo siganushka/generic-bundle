@@ -1,25 +1,16 @@
 <?php
 
-$finder = PhpCsFixer\Finder::create()
+$finder = (new PhpCsFixer\Finder())
     ->in([
         __DIR__.'/src',
         __DIR__.'/tests',
     ])
 ;
 
-$config = new PhpCsFixer\Config();
-$config
-    ->setRiskyAllowed(true)
+return (new PhpCsFixer\Config())
     ->setRules([
-        '@PHP71Migration:risky' => true,
-        '@PHPUnit75Migration:risky' => true,
-        '@PhpCsFixer' => true,
-        '@PhpCsFixer:risky' => true,
-        'general_phpdoc_annotation_remove' => ['annotations' => ['expectedDeprecation']],
+        '@Symfony' => true,
     ])
-    ->setRiskyAllowed(true)
-    ->setUsingCache(false)
     ->setFinder($finder)
+    ->setUsingCache(false)
 ;
-
-return $config;
