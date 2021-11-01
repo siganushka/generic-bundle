@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Siganushka\GenericBundle\Tests\Doctrine\EventSubscriber;
+namespace Siganushka\GenericBundle\Tests\Doctrine\EventListener;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use PHPUnit\Framework\TestCase;
-use Siganushka\GenericBundle\Doctrine\EventSubscriber\SortableSubscriber;
+use Siganushka\GenericBundle\Doctrine\EventListener\SortableListener;
 use Siganushka\GenericBundle\Entity\SortableInterface;
 use Siganushka\GenericBundle\Entity\SortableTrait;
 
@@ -16,7 +16,7 @@ use Siganushka\GenericBundle\Entity\SortableTrait;
  * @internal
  * @coversNothing
  */
-final class SortableSubscriberTest extends TestCase
+final class SortableListenerTest extends TestCase
 {
     private $entityManager;
     private $listener;
@@ -24,7 +24,7 @@ final class SortableSubscriberTest extends TestCase
     protected function setUp(): void
     {
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
-        $this->listener = new SortableSubscriber();
+        $this->listener = new SortableListener();
     }
 
     protected function tearDown(): void

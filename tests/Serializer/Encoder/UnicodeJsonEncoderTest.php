@@ -17,7 +17,7 @@ final class UnicodeJsonEncoderTest extends TestCase
 
     public function testUnicodeJsonEncoder(): void
     {
-        $encoder = new UnicodeJsonEncoder(JSON_UNESCAPED_UNICODE);
+        $encoder = new UnicodeJsonEncoder(\JSON_UNESCAPED_UNICODE);
 
         static::assertTrue($encoder->supportsEncoding(self::FORMAT));
         static::assertSame('{"message":"你好！"}', $encoder->encode(['message' => '你好！'], self::FORMAT));

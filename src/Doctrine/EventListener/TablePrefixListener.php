@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Siganushka\GenericBundle\Doctrine\EventSubscriber;
+namespace Siganushka\GenericBundle\Doctrine\EventListener;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
-class TablePrefixSubscriber implements EventSubscriber
+class TablePrefixListener implements EventSubscriber
 {
     private $prefix;
 

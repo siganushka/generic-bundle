@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Siganushka\GenericBundle\Doctrine\EventSubscriber;
+namespace Siganushka\GenericBundle\Doctrine\EventListener;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Siganushka\GenericBundle\Entity\SortableInterface;
 
-class SortableSubscriber implements EventSubscriber
+class SortableListener implements EventSubscriber
 {
     public function getSubscribedEvents()
     {

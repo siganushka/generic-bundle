@@ -11,6 +11,7 @@ use Siganushka\GenericBundle\Registry\Exception\AbstractionNotFoundException;
 use Siganushka\GenericBundle\Registry\Exception\ServiceExistingException;
 use Siganushka\GenericBundle\Registry\Exception\ServiceNonExistingException;
 use Siganushka\GenericBundle\Registry\Exception\ServiceUnsupportedException;
+use Siganushka\GenericBundle\Registry\RegistryInterface;
 
 /**
  * @internal
@@ -30,9 +31,13 @@ final class RegistryTest extends TestCase
         ;
 
         $registry = $this->getMockForAbstractClass(AbstractRegistry::class, [RegistrySubjectInterface::class], 'ServiceRegistry');
-        $registry->register($foo);
-        $registry->register($bar);
-        $registry->register($aliasableBaz);
+        $ret1 = $registry->register($foo);
+        $ret2 = $registry->register($bar);
+        $ret3 = $registry->register($aliasableBaz);
+
+        static::assertInstanceOf(RegistryInterface::class, $ret1);
+        static::assertInstanceOf(RegistryInterface::class, $ret2);
+        static::assertInstanceOf(RegistryInterface::class, $ret3);
 
         static::assertCount(3, $registry->getValues());
         static::assertSame(['FooService', 'BarService', 'baz'], $registry->getKeys());

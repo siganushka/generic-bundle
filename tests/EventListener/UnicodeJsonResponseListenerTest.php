@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Siganushka\GenericBundle\Tests\EventSubscriber;
+namespace Siganushka\GenericBundle\Tests\EventListener;
 
 use PHPUnit\Framework\TestCase;
-use Siganushka\GenericBundle\EventSubscriber\JsonResponseSubscriber;
+use Siganushka\GenericBundle\EventListener\UnicodeJsonResponseListener;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
@@ -15,7 +15,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
  * @internal
  * @coversNothing
  */
-final class JsonResponseSubscriberTest extends TestCase
+final class UnicodeJsonResponseListenerTest extends TestCase
 {
     public function testCustomEncodeOptions(): void
     {
@@ -23,11 +23,15 @@ final class JsonResponseSubscriberTest extends TestCase
 
         static::assertSame('{"message":"\u4f60\u597d\uff01"}', $response->getContent());
 
-        $httpKernel = $this->createMock(HttpKernelInterface::class);
-        $responseEvent = new ResponseEvent($httpKernel, new Request(), HttpKernelInterface::MASTER_REQUEST, $response);
+        $requestType = \defined(sprintf('%s::MAIN_REQUEST', HttpKernelInterface::class))
+            ? HttpKernelInterface::MAIN_REQUEST
+            : HttpKernelInterface::MASTER_REQUEST;
 
-        $listener = new JsonResponseSubscriber(JSON_UNESCAPED_UNICODE);
-        $listener->onResponseEvent($responseEvent);
+        $httpKernel = $this->createMock(HttpKernelInterface::class);
+        $responseEvent = new ResponseEvent($httpKernel, new Request(), $requestType, $response);
+
+        $listener = new UnicodeJsonResponseListener(\JSON_UNESCAPED_UNICODE);
+        $listener->onResponse($responseEvent);
 
         static::assertSame('{"message":"你好！"}', $response->getContent());
     }

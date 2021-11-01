@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Siganushka\GenericBundle\Tests\Doctrine\EventSubscriber;
+namespace Siganushka\GenericBundle\Tests\Doctrine\EventListener;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use PHPUnit\Framework\TestCase;
-use Siganushka\GenericBundle\Doctrine\EventSubscriber\TimestampableSubscriber;
+use Siganushka\GenericBundle\Doctrine\EventListener\TimestampableListener;
 use Siganushka\GenericBundle\Entity\TimestampableInterface;
 use Siganushka\GenericBundle\Entity\TimestampableTrait;
 
@@ -16,7 +16,7 @@ use Siganushka\GenericBundle\Entity\TimestampableTrait;
  * @internal
  * @coversNothing
  */
-final class TimestampableSubscriberTest extends TestCase
+final class TimestampableListenerTest extends TestCase
 {
     private $entityManager;
     private $listener;
@@ -24,7 +24,7 @@ final class TimestampableSubscriberTest extends TestCase
     protected function setUp(): void
     {
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
-        $this->listener = new TimestampableSubscriber();
+        $this->listener = new TimestampableListener();
     }
 
     protected function tearDown(): void

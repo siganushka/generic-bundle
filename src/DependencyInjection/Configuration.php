@@ -46,8 +46,8 @@ class Configuration implements ConfigurationInterface
     {
         $jsonEncodeOptions = class_exists('Symfony\Component\HttpFoundation\JsonResponse')
             ? \Symfony\Component\HttpFoundation\JsonResponse::DEFAULT_ENCODING_OPTIONS
-            : JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT;
+            : \JSON_HEX_TAG | \JSON_HEX_APOS | \JSON_HEX_AMP | \JSON_HEX_QUOT;
 
-        return $jsonEncodeOptions | JSON_UNESCAPED_UNICODE;
+        return $jsonEncodeOptions | \JSON_UNESCAPED_UNICODE;
     }
 }

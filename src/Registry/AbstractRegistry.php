@@ -57,7 +57,7 @@ abstract class AbstractRegistry implements RegistryInterface
 
     public function has(string $serviceId): bool
     {
-        return array_key_exists($serviceId, $this->services);
+        return \array_key_exists($serviceId, $this->services);
     }
 
     public function get(string $serviceId): object

@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Siganushka\GenericBundle\Tests\Doctrine\EventSubscriber;
+namespace Siganushka\GenericBundle\Tests\Doctrine\EventListener;
 
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 use PHPUnit\Framework\TestCase;
-use Siganushka\GenericBundle\Doctrine\EventSubscriber\TablePrefixSubscriber;
+use Siganushka\GenericBundle\Doctrine\EventListener\TablePrefixListener;
 
 /**
  * @internal
  * @coversNothing
  */
-final class TablePrefixSubscriberTest extends TestCase
+final class TablePrefixListenerTest extends TestCase
 {
     public function testLoadClassMetadata(): void
     {
-        $namingStrategy = new UnderscoreNamingStrategy(CASE_LOWER, true);
+        $namingStrategy = new UnderscoreNamingStrategy(\CASE_LOWER, true);
 
         $reflection = new \ReflectionClass(Foo::class);
 
@@ -45,7 +45,7 @@ final class TablePrefixSubscriberTest extends TestCase
             ->willReturn($classMetadata)
         ;
 
-        $listener = new TablePrefixSubscriber('app_');
+        $listener = new TablePrefixListener('app_');
         $listener->loadClassMetadata($loadClassMetadataEventArgs);
 
         static::assertSame('app_foo', $classMetadata->getTableName());

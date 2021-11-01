@@ -6,11 +6,6 @@ namespace Siganushka\GenericBundle\Tests\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\DependencyInjection\SiganushkaGenericExtension;
-use Siganushka\GenericBundle\Doctrine\EventSubscriber\SortableSubscriber;
-use Siganushka\GenericBundle\Doctrine\EventSubscriber\TablePrefixSubscriber;
-use Siganushka\GenericBundle\Doctrine\EventSubscriber\TimestampableSubscriber;
-use Siganushka\GenericBundle\EventSubscriber\JsonResponseSubscriber;
-use Siganushka\GenericBundle\Serializer\Encoder\UnicodeJsonEncoder;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -25,11 +20,11 @@ final class SiganushkaGenericExtensionTest extends TestCase
         $container->loadFromExtension('siganushka_generic');
         $container->compile();
 
-        static::assertFalse($container->has(TablePrefixSubscriber::class));
-        static::assertTrue($container->has(SortableSubscriber::class));
-        static::assertTrue($container->has(TimestampableSubscriber::class));
-        static::assertTrue($container->has(JsonResponseSubscriber::class));
-        static::assertTrue($container->has(UnicodeJsonEncoder::class));
+        static::assertFalse($container->hasDefinition('siganushka_generic.doctrine.table_prefix_listener'));
+        static::assertTrue($container->hasDefinition('siganushka_generic.doctrine.timestampable_listener'));
+        static::assertTrue($container->hasDefinition('siganushka_generic.doctrine.sortable_listener'));
+        static::assertTrue($container->hasDefinition('siganushka_generic.unicode_json_response_listener'));
+        static::assertTrue($container->hasDefinition('siganushka_generic.serializer.encoder.unicode_json'));
     }
 
     public function testWithConfigs(): void
@@ -42,7 +37,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
         $container->loadFromExtension('siganushka_generic', $configs);
         $container->compile();
 
-        static::assertTrue($container->has(TablePrefixSubscriber::class));
+        static::assertTrue($container->hasDefinition('siganushka_generic.doctrine.table_prefix_listener'));
     }
 
     protected function createContainer()
