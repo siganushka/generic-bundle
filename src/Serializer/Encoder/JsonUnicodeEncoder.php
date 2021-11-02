@@ -7,7 +7,7 @@ namespace Siganushka\GenericBundle\Serializer\Encoder;
 use Symfony\Component\Serializer\Encoder\JsonEncode;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 
-class UnicodeJsonEncoder extends JsonEncoder
+class JsonUnicodeEncoder extends JsonEncoder
 {
     public function __construct(int $jsonEncodeOptions)
     {

@@ -8,14 +8,11 @@ use Siganushka\GenericBundle\Doctrine\EventListener\SortableListener;
 use Siganushka\GenericBundle\Doctrine\EventListener\TimestampableListener;
 
 return static function (ContainerConfigurator $container) {
-    foreach ([
-        'timestampable' => TimestampableListener::class,
-        'sortable' => SortableListener::class,
-    ] as $alias => $className) {
-        $fullAlias = sprintf('siganushka_generic.doctrine.%s_listener', $alias);
-        $container->services()
-            ->set($fullAlias, $className)
+    $container->services()
+        ->set('siganushka_generic.doctrine.listener.timestampable', TimestampableListener::class)
             ->tag('doctrine.event_subscriber')
-        ;
-    }
+
+        ->set('siganushka_generic.doctrine.listener.sortable', SortableListener::class)
+            ->tag('doctrine.event_subscriber')
+    ;
 };

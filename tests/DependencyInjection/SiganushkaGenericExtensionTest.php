@@ -20,11 +20,11 @@ final class SiganushkaGenericExtensionTest extends TestCase
         $container->loadFromExtension('siganushka_generic');
         $container->compile();
 
-        static::assertFalse($container->hasDefinition('siganushka_generic.doctrine.table_prefix_listener'));
-        static::assertTrue($container->hasDefinition('siganushka_generic.doctrine.timestampable_listener'));
-        static::assertTrue($container->hasDefinition('siganushka_generic.doctrine.sortable_listener'));
-        static::assertTrue($container->hasDefinition('siganushka_generic.unicode_json_response_listener'));
-        static::assertTrue($container->hasDefinition('siganushka_generic.serializer.encoder.unicode_json'));
+        static::assertFalse($container->hasDefinition('siganushka_generic.doctrine.listener.table_prefix'));
+        static::assertTrue($container->hasDefinition('siganushka_generic.doctrine.listener.timestampable'));
+        static::assertTrue($container->hasDefinition('siganushka_generic.doctrine.listener.sortable'));
+        static::assertTrue($container->hasDefinition('siganushka_generic.listener.json_unicode_response'));
+        static::assertTrue($container->hasDefinition('siganushka_generic.serializer.encoder.json_unicode'));
     }
 
     public function testWithConfigs(): void
@@ -37,7 +37,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
         $container->loadFromExtension('siganushka_generic', $configs);
         $container->compile();
 
-        static::assertTrue($container->hasDefinition('siganushka_generic.doctrine.table_prefix_listener'));
+        static::assertTrue($container->hasDefinition('siganushka_generic.doctrine.listener.table_prefix'));
     }
 
     protected function createContainer()
