@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Siganushka\GenericBundle\Tests\EventListener;
 
 use PHPUnit\Framework\TestCase;
-use Siganushka\GenericBundle\EventListener\JsonUnicodeResponseListener;
+use Siganushka\GenericBundle\EventListener\JsonResponseListener;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
@@ -15,9 +15,9 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
  * @internal
  * @coversNothing
  */
-final class JsonUnicodeResponseListenerTest extends TestCase
+final class JsonResponseListenerTest extends TestCase
 {
-    public function testCustomEncodeOptions(): void
+    public function testJsonResponseListener(): void
     {
         $response = new JsonResponse(['message' => '你好！']);
 
@@ -30,7 +30,7 @@ final class JsonUnicodeResponseListenerTest extends TestCase
         $httpKernel = $this->createMock(HttpKernelInterface::class);
         $responseEvent = new ResponseEvent($httpKernel, new Request(), $requestType, $response);
 
-        $listener = new JsonUnicodeResponseListener(\JSON_UNESCAPED_UNICODE);
+        $listener = new JsonResponseListener(\JSON_UNESCAPED_UNICODE);
         $listener->onResponse($responseEvent);
 
         static::assertSame('{"message":"你好！"}', $response->getContent());

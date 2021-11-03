@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\Tests\Doctrine\EventListener;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Event\LifecycleEventArgs;
-use Doctrine\ORM\Event\PreUpdateEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\PreUpdateEventArgs;
+use Doctrine\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\Doctrine\EventListener\TimestampableListener;
 use Siganushka\GenericBundle\Entity\TimestampableInterface;
@@ -18,18 +18,18 @@ use Siganushka\GenericBundle\Entity\TimestampableTrait;
  */
 final class TimestampableListenerTest extends TestCase
 {
-    private $entityManager;
+    private $objectManager;
     private $listener;
 
     protected function setUp(): void
     {
-        $this->entityManager = $this->createMock(EntityManagerInterface::class);
+        $this->objectManager = $this->createMock(ObjectManager::class);
         $this->listener = new TimestampableListener();
     }
 
     protected function tearDown(): void
     {
-        $this->entityManager = null;
+        $this->objectManager = null;
         $this->listener = null;
     }
 
@@ -40,7 +40,7 @@ final class TimestampableListenerTest extends TestCase
         static::assertInstanceOf(TimestampableInterface::class, $foo);
         static::assertNull($foo->getCreatedAt());
 
-        $lifecycleEventArgs = new LifecycleEventArgs($foo, $this->entityManager);
+        $lifecycleEventArgs = new LifecycleEventArgs($foo, $this->objectManager);
         $this->listener->prePersist($lifecycleEventArgs);
 
         static::assertInstanceOf(\DateTimeImmutable::class, $foo->getCreatedAt());
@@ -54,7 +54,7 @@ final class TimestampableListenerTest extends TestCase
         static::assertNull($foo->getUpdatedAt());
 
         $changeSet = [];
-        $preUpdateEventArgs = new PreUpdateEventArgs($foo, $this->entityManager, $changeSet);
+        $preUpdateEventArgs = new PreUpdateEventArgs($foo, $this->objectManager, $changeSet);
         $this->listener->preUpdate($preUpdateEventArgs);
 
         static::assertInstanceOf(\DateTimeInterface::class, $foo->getUpdatedAt());

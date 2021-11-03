@@ -7,6 +7,7 @@ namespace Siganushka\GenericBundle\Tests\DependencyInjection;
 use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\DependencyInjection\SiganushkaGenericExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\Serializer\Serializer;
 
 /**
  * @internal
@@ -21,10 +22,14 @@ final class SiganushkaGenericExtensionTest extends TestCase
         $container->compile();
 
         static::assertFalse($container->hasDefinition('siganushka_generic.doctrine.listener.table_prefix'));
+        static::assertTrue($container->hasDefinition('siganushka_generic.listener.json_response'));
         static::assertTrue($container->hasDefinition('siganushka_generic.doctrine.listener.timestampable'));
         static::assertTrue($container->hasDefinition('siganushka_generic.doctrine.listener.sortable'));
-        static::assertTrue($container->hasDefinition('siganushka_generic.listener.json_unicode_response'));
-        static::assertTrue($container->hasDefinition('siganushka_generic.serializer.encoder.json_unicode'));
+
+        if (class_exists(Serializer::class)) {
+            static::assertTrue($container->hasDefinition('siganushka_generic.serializer.encoder.json'));
+            static::assertTrue($container->hasDefinition('siganushka_generic.serializer.normalizer.datetime'));
+        }
     }
 
     public function testWithConfigs(): void

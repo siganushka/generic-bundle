@@ -38,7 +38,9 @@ final class ConfigurationTest extends TestCase
 
         static::assertSame($config, [
             'table_prefix' => null,
-            'json_encode_options' => Configuration::getDefaultJsonEncodeOptions(),
+            'datetime_format' => Configuration::DATETIME_FORMAT,
+            'datetime_timezone' => null,
+            'json_encode_options' => Configuration::JSON_ENCODE_OPTIONS,
         ]);
     }
 
@@ -47,13 +49,17 @@ final class ConfigurationTest extends TestCase
         $config = $this->processor->processConfiguration($this->configuration, [
             [
                 'table_prefix' => 'test_',
-                'json_encode_options' => 0,
+                'datetime_format' => 'm-d H:i',
+                'datetime_timezone' => 'RPC',
+                'json_encode_options' => 15,
             ],
         ]);
 
         static::assertSame($config, [
             'table_prefix' => 'test_',
-            'json_encode_options' => 0,
+            'datetime_format' => 'm-d H:i',
+            'datetime_timezone' => 'RPC',
+            'json_encode_options' => 15,
         ]);
     }
 

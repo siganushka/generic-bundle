@@ -11,14 +11,14 @@
     ],
     "require": {
         "php": ">=7.2.5",
-        "doctrine/orm": "^2.7",
-        "symfony/framework-bundle": "^4.4|^5.0",
-        "symfony/serializer": "^4.4|^5.0",
-        "symfony/validator": "^4.4|^5.0"
+        "doctrine/orm": "^2.8",
+        "symfony/framework-bundle": "^5.2",
+        "symfony/validator": "^5.2"
     },
     "require-dev": {
-        "composer/semver": "^2.0|^3.0",
-        "symfony/phpunit-bridge": "^4.4|^5.0"
+        "composer/semver": "^3.0",
+        "symfony/phpunit-bridge": "^5.2",
+        "symfony/serializer": "^5.2"
     },
     "autoload": {
         "psr-4": {

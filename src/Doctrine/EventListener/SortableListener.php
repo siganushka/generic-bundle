@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Siganushka\GenericBundle\Doctrine\EventListener;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\LifecycleEventArgs;
-use Doctrine\ORM\Event\PreUpdateEventArgs;
+use Doctrine\ORM\Events;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\PreUpdateEventArgs;
 use Siganushka\GenericBundle\Entity\SortableInterface;
 
 class SortableListener implements EventSubscriber
@@ -14,35 +15,35 @@ class SortableListener implements EventSubscriber
     public function getSubscribedEvents()
     {
         return [
-            'prePersist',
-            'preUpdate',
+            Events::prePersist,
+            Events::preUpdate,
         ];
     }
 
     public function prePersist(LifecycleEventArgs $args): void
     {
-        $entity = $args->getEntity();
-        if (!$entity instanceof SortableInterface) {
+        $object = $args->getObject();
+        if (!$object instanceof SortableInterface) {
             return;
         }
 
-        $this->setSortedIfNotSet($entity);
+        $this->setSortedIfNotSet($object);
     }
 
     public function preUpdate(PreUpdateEventArgs $args): void
     {
-        $entity = $args->getEntity();
-        if (!$entity instanceof SortableInterface) {
+        $object = $args->getObject();
+        if (!$object instanceof SortableInterface) {
             return;
         }
 
-        $this->setSortedIfNotSet($entity);
+        $this->setSortedIfNotSet($object);
     }
 
-    private function setSortedIfNotSet(SortableInterface $entity): void
+    private function setSortedIfNotSet(SortableInterface $object): void
     {
-        if (null === $entity->getSorted()) {
-            $entity->setSorted(SortableInterface::DEFAULT_SORTED);
+        if (null === $object->getSorted()) {
+            $object->setSorted(SortableInterface::DEFAULT_SORTED);
         }
     }
 }

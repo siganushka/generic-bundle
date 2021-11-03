@@ -8,7 +8,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
-class JsonUnicodeResponseListener implements EventSubscriberInterface
+class JsonResponseListener implements EventSubscriberInterface
 {
     protected $jsonEncodeOptions;
 
