@@ -20,9 +20,9 @@ class SortableListener implements EventSubscriber
         ];
     }
 
-    public function prePersist(LifecycleEventArgs $args): void
+    public function prePersist(LifecycleEventArgs $event): void
     {
-        $object = $args->getObject();
+        $object = $event->getObject();
         if (!$object instanceof SortableInterface) {
             return;
         }
@@ -30,9 +30,9 @@ class SortableListener implements EventSubscriber
         $this->setSortedIfNotSet($object);
     }
 
-    public function preUpdate(PreUpdateEventArgs $args): void
+    public function preUpdate(PreUpdateEventArgs $event): void
     {
-        $object = $args->getObject();
+        $object = $event->getObject();
         if (!$object instanceof SortableInterface) {
             return;
         }

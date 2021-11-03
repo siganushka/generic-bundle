@@ -20,23 +20,23 @@ class TimestampableListener implements EventSubscriber
         ];
     }
 
-    public function prePersist(LifecycleEventArgs $args): void
+    public function prePersist(LifecycleEventArgs $event): void
     {
-        $entity = $args->getEntity();
-        if (!$entity instanceof TimestampableInterface) {
+        $object = $event->getObject();
+        if (!$object instanceof TimestampableInterface) {
             return;
         }
 
-        $entity->setCreatedAt(new \DateTimeImmutable());
+        $object->setCreatedAt(new \DateTimeImmutable());
     }
 
-    public function preUpdate(PreUpdateEventArgs $args): void
+    public function preUpdate(PreUpdateEventArgs $event): void
     {
-        $entity = $args->getEntity();
-        if (!$entity instanceof TimestampableInterface) {
+        $object = $event->getObject();
+        if (!$object instanceof TimestampableInterface) {
             return;
         }
 
-        $entity->setUpdatedAt(new \DateTime());
+        $object->setUpdatedAt(new \DateTime());
     }
 }
