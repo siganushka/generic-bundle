@@ -14,14 +14,16 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
 return static function (ContainerConfigurator $container) {
+    $jsonEncodeOptions = param('siganushka_generic.json_encode_options');
+
     $container->services()
+        ->set('siganushka_generic.listener.json_response', JsonResponseListener::class)
+            ->arg(0, $jsonEncodeOptions)
+            ->tag('kernel.event_subscriber')
+
         ->set('siganushka_generic.doctrine.listener.table_prefix', TablePrefixListener::class)
             ->arg(0, param('siganushka_generic.table_prefix'))
-            ->tag('octrine.event_subscriber')
-
-        ->set('siganushka_generic.listener.json_response', JsonResponseListener::class)
-            ->arg(0, param('siganushka_generic.json_encode_options'))
-            ->tag('kernel.event_subscriber')
+            ->tag('doctrine.event_subscriber')
 
         ->set('siganushka_generic.doctrine.listener.timestampable', TimestampableListener::class)
             ->tag('doctrine.event_subscriber')
@@ -31,10 +33,6 @@ return static function (ContainerConfigurator $container) {
     ;
 
     if (class_exists(Serializer::class)) {
-        $jsonEncodeOptions = [
-            JsonEncode::OPTIONS => param('siganushka_generic.json_encode_options'),
-        ];
-
         $dateTimeNormalizerOptions = [
             DateTimeNormalizer::FORMAT_KEY => param('siganushka_generic.datetime_format'),
             DateTimeNormalizer::TIMEZONE_KEY => param('siganushka_generic.datetime_timezone'),
@@ -42,7 +40,7 @@ return static function (ContainerConfigurator $container) {
 
         $container->services()
             ->set('siganushka_generic.serializer.encoder.json', JsonEncoder::class)
-                ->arg(0, inline_service(JsonEncode::class)->arg(0, $jsonEncodeOptions))
+                ->arg(0, inline_service(JsonEncode::class)->arg(0, [JsonEncode::OPTIONS => $jsonEncodeOptions]))
                 ->tag('serializer.encoder', ['priority' => 16])
 
             ->set('siganushka_generic.serializer.normalizer.datetime', DateTimeNormalizer::class)
