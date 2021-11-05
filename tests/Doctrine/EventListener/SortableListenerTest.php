@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Siganushka\GenericBundle\Tests\Doctrine\EventListener;
 
 use Doctrine\Persistence\Event\LifecycleEventArgs;
-use Doctrine\Persistence\Event\PreUpdateEventArgs;
 use Doctrine\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\Doctrine\EventListener\SortableListener;
@@ -59,15 +58,14 @@ final class SortableListenerTest extends TestCase
         static::assertInstanceOf(SortableInterface::class, $foo);
         static::assertNull($foo->getSorted());
 
-        $changeSet = [];
-        $preUpdateEventArgs = new PreUpdateEventArgs($foo, $this->objectManager, $changeSet);
-        $this->listener->preUpdate($preUpdateEventArgs);
+        $lifecycleEventArgs = new LifecycleEventArgs($foo, $this->objectManager);
+        $this->listener->preUpdate($lifecycleEventArgs);
 
         static::assertSame(SortableFoo::DEFAULT_SORTED, $foo->getSorted());
 
         // set value if not set
         $foo->setSorted(128);
-        $this->listener->preUpdate($preUpdateEventArgs);
+        $this->listener->preUpdate($lifecycleEventArgs);
 
         static::assertSame(128, $foo->getSorted());
     }

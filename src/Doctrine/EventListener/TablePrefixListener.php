@@ -6,6 +6,7 @@ namespace Siganushka\GenericBundle\Doctrine\EventListener;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
+use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 class TablePrefixListener implements EventSubscriber
@@ -19,7 +20,9 @@ class TablePrefixListener implements EventSubscriber
 
     public function getSubscribedEvents()
     {
-        return ['loadClassMetadata'];
+        return [
+            Events::loadClassMetadata,
+        ];
     }
 
     public function loadClassMetadata(LoadClassMetadataEventArgs $event): void

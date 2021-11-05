@@ -7,7 +7,6 @@ namespace Siganushka\GenericBundle\Doctrine\EventListener;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
-use Doctrine\Persistence\Event\PreUpdateEventArgs;
 use Siganushka\GenericBundle\Entity\SortableInterface;
 
 class SortableListener implements EventSubscriber
@@ -30,7 +29,7 @@ class SortableListener implements EventSubscriber
         $this->setSortedIfNotSet($object);
     }
 
-    public function preUpdate(PreUpdateEventArgs $event): void
+    public function preUpdate(LifecycleEventArgs $event): void
     {
         $object = $event->getObject();
         if (!$object instanceof SortableInterface) {

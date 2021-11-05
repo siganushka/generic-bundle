@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Siganushka\GenericBundle\Tests\Doctrine\EventListener;
 
 use Doctrine\Persistence\Event\LifecycleEventArgs;
-use Doctrine\Persistence\Event\PreUpdateEventArgs;
 use Doctrine\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\Doctrine\EventListener\TimestampableListener;
@@ -53,9 +52,8 @@ final class TimestampableListenerTest extends TestCase
         static::assertInstanceOf(TimestampableInterface::class, $foo);
         static::assertNull($foo->getUpdatedAt());
 
-        $changeSet = [];
-        $preUpdateEventArgs = new PreUpdateEventArgs($foo, $this->objectManager, $changeSet);
-        $this->listener->preUpdate($preUpdateEventArgs);
+        $lifecycleEventArgs = new LifecycleEventArgs($foo, $this->objectManager);
+        $this->listener->preUpdate($lifecycleEventArgs);
 
         static::assertInstanceOf(\DateTimeInterface::class, $foo->getUpdatedAt());
     }
