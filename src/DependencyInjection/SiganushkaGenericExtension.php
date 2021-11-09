@@ -19,13 +19,17 @@ class SiganushkaGenericExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('siganushka_generic.table_prefix', $config['table_prefix']);
-        $container->setParameter('siganushka_generic.datetime_format', $config['datetime_format']);
-        $container->setParameter('siganushka_generic.datetime_timezone', $config['datetime_timezone']);
-        $container->setParameter('siganushka_generic.json_encode_options', $config['json_encode_options']);
+        $container->setParameter('siganushka_generic.doctrine.table_prefix', $config['doctrine']['table_prefix']);
+        $container->setParameter('siganushka_generic.datetime.format', $config['datetime']['format']);
+        $container->setParameter('siganushka_generic.datetime.timezone', $config['datetime']['timezone']);
+        $container->setParameter('siganushka_generic.json.encoding_options', $config['json']['encoding_options']);
+        $container->setParameter('siganushka_generic.currency.scale', $config['currency']['scale']);
+        $container->setParameter('siganushka_generic.currency.grouping', $config['currency']['grouping']);
+        $container->setParameter('siganushka_generic.currency.rounding_mode', $config['currency']['rounding_mode']);
+        $container->setParameter('siganushka_generic.currency.divisor', $config['currency']['divisor']);
         // dd($container->getParameterBag()->all());
 
-        if (null === $config['table_prefix']) {
+        if (null === $config['doctrine']['table_prefix']) {
             $container->removeDefinition('siganushka_generic.doctrine.listener.table_prefix');
         }
     }
