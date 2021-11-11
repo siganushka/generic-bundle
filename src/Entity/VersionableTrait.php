@@ -13,7 +13,7 @@ trait VersionableTrait
      * @ORM\Column(type="integer", options={"unsigned":true})
      * @ORM\Version()
      *
-     * @Groups({"versionable"})
+     * @Groups({"trait_versionable"})
      */
     private $version;
 

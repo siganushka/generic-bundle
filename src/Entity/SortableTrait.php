@@ -12,7 +12,7 @@ trait SortableTrait
     /**
      * @ORM\Column(type="integer")
      *
-     * @Groups({"sortable"})
+     * @Groups({"trait_sortable"})
      */
     private $sorted;
 

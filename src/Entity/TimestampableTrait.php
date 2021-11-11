@@ -12,14 +12,14 @@ trait TimestampableTrait
     /**
      * @ORM\Column(type="datetime", nullable=true)
      *
-     * @Groups({"timestampable"})
+     * @Groups({"trait_timestampable"})
      */
     private $updatedAt;
 
     /**
      * @ORM\Column(type="datetime_immutable")
      *
-     * @Groups({"timestampable"})
+     * @Groups({"trait_timestampable"})
      */
     private $createdAt;
 

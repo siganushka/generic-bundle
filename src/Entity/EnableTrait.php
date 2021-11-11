@@ -12,7 +12,7 @@ trait EnableTrait
     /**
      * @ORM\Column(type="boolean")
      *
-     * @Groups({"enable"})
+     * @Groups({"trait_enable"})
      */
     private $enabled;
 

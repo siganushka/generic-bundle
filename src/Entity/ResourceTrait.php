@@ -14,7 +14,7 @@ trait ResourceTrait
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer", options={"unsigned":true})
      *
-     * @Groups({"resource"})
+     * @Groups({"trait_resource"})
      */
     private $id;
 
