@@ -8,7 +8,8 @@
 # ./config/packages/siganushka_generic.yaml
 
 siganushka_generic:
-    table_prefix: app_ # 可选，默认值为 null 时不添加表前缀
+    doctrine:
+        table_prefix: test_ # 可选，默认值为 null 时不添加表前缀
 ```
 
 ### 日期格式/时区
@@ -19,8 +20,9 @@ siganushka_generic:
 # ./config/packages/siganushka_generic.yaml
 
 siganushka_generic:
-    datetime_format: 'Y-m-d H:i:s'      # 可选，默认值为 Y-m-d H:i:s
-    datetime_timezone: 'Asia/Shanghai'  # 可选，默认值为 null 时由系统决定当前时区
+    datetime:
+        format: 'Y-m-d H:i:s'      # 可选，默认值为 Y-m-d H:i:s
+        timezone: 'Asia/Shanghai'  # 可选，默认值为 null 时由系统决定当前时区
 ```
 
 ### JSON 中文编码
@@ -33,5 +35,6 @@ siganushka_generic:
 # ./config/packages/siganushka_generic.yaml
 
 siganushka_generic:
-    json_encode_options: 271 # 可选，默认值为 271 时支持中文编码
+    json:
+        encoding_options: 271 # 可选，默认值为 271 时支持中文编码
 ```
