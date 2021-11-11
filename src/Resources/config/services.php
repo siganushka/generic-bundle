@@ -9,6 +9,7 @@ use Siganushka\GenericBundle\Doctrine\EventListener\TablePrefixListener;
 use Siganushka\GenericBundle\Doctrine\EventListener\TimestampableListener;
 use Siganushka\GenericBundle\EventListener\JsonResponseListener;
 use Siganushka\GenericBundle\Utils\CurrencyUtils;
+use Symfony\Component\Form\Extension\Core\DataTransformer\MoneyToLocalizedStringTransformer;
 use Symfony\Component\Serializer\Encoder\JsonEncode;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
@@ -35,16 +36,18 @@ return static function (ContainerConfigurator $container) {
             ->tag('doctrine.event_listener', ['event' => 'preUpdate'])
     ;
 
-    $container->services()
-        ->set('siganushka_generic.utils.currency', CurrencyUtils::class)
-        ->args([
-            param('siganushka_generic.currency.scale'),
-            param('siganushka_generic.currency.grouping'),
-            param('siganushka_generic.currency.rounding_mode'),
-            param('siganushka_generic.currency.divisor'),
-        ])
-        ->alias(CurrencyUtils::class, 'siganushka_generic.utils.currency')
-    ;
+    if (class_exists(MoneyToLocalizedStringTransformer::class)) {
+        $container->services()
+            ->set('siganushka_generic.utils.currency', CurrencyUtils::class)
+            ->args([
+                param('siganushka_generic.currency.scale'),
+                param('siganushka_generic.currency.grouping'),
+                param('siganushka_generic.currency.rounding_mode'),
+                param('siganushka_generic.currency.divisor'),
+            ])
+            ->alias(CurrencyUtils::class, 'siganushka_generic.utils.currency')
+        ;
+    }
 
     if (class_exists(Serializer::class)) {
         $dateTimeNormalizerOptions = [
