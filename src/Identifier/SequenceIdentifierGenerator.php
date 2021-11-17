@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Siganushka\GenericBundle\Sequence;
+namespace Siganushka\GenericBundle\Identifier;
 
-class CustomTimestampSequenceGenerator implements SequenceGeneratorInterface
+class SequenceIdentifierGenerator implements IdentifierGeneratorInterface
 {
     /**
-     * 生成序列编号，单机下重复概率为百万分之一，为保证最小长度和尽可能唯一
+     * 生成序列编号，单机下理论重复概率为百万分之一秒，为保证最小长度和尽可能唯一
      *
      * 生成特征：
      *
-     * - 固定长度（16 位）
      * - 纯数字
+     * - 固定长度（16 位）
      * - 有先后顺序（可排序）
      * - 更直观的体现时间范围（可反向解开对应时间）
      * - 非自增长（避免被采集或暴露业务量）
