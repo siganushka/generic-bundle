@@ -8,8 +8,6 @@ use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\DependencyInjection\Configuration;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
-use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
-use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
 use Symfony\Component\Config\Definition\Processor;
 
 /**
@@ -111,26 +109,4 @@ final class ConfigurationTest extends TestCase
 
         static::assertSame($processedConfig['currency'], $config);
     }
-
-    // public function testInvalidTablePrefixException(): void
-    // {
-    //     $this->expectException(InvalidConfigurationException::class);
-
-    //     $this->processor->processConfiguration($this->configuration, [
-    //         [
-    //             'table_prefix' => 1,
-    //         ],
-    //     ]);
-    // }
-
-    // public function testInvalidJsonEncodeOptionsException(): void
-    // {
-    //     $this->expectException(InvalidTypeException::class);
-
-    //     $this->processor->processConfiguration($this->configuration, [
-    //         [
-    //             'json_encode_options' => false,
-    //         ],
-    //     ]);
-    // }
 }

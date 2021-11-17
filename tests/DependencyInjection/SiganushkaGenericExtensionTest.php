@@ -21,6 +21,15 @@ final class SiganushkaGenericExtensionTest extends TestCase
     {
         $container = $this->createContainerWithConfigs([]);
 
+        static::assertNull($container->getParameter('siganushka_generic.doctrine.table_prefix'));
+        static::assertSame('Y-m-d H:i:s', $container->getParameter('siganushka_generic.datetime.format'));
+        static::assertNull($container->getParameter('siganushka_generic.datetime.timezone'));
+        static::assertSame(271, $container->getParameter('siganushka_generic.json.encoding_options'));
+        static::assertSame(2, $container->getParameter('siganushka_generic.currency.scale'));
+        static::assertTrue($container->getParameter('siganushka_generic.currency.grouping'));
+        static::assertSame(\NumberFormatter::ROUND_HALFUP, $container->getParameter('siganushka_generic.currency.rounding_mode'));
+        static::assertSame(100, $container->getParameter('siganushka_generic.currency.divisor'));
+
         static::assertFalse($container->hasDefinition('siganushka_generic.doctrine.listener.table_prefix'));
         static::assertTrue($container->hasDefinition('siganushka_generic.doctrine.listener.timestampable'));
         static::assertTrue($container->hasDefinition('siganushka_generic.doctrine.listener.sortable'));
@@ -52,6 +61,8 @@ final class SiganushkaGenericExtensionTest extends TestCase
         ];
 
         $container = $this->createContainerWithConfigs([$configs]);
+
+        static::assertSame('test_', $container->getParameter('siganushka_generic.doctrine.table_prefix'));
 
         $tablePrefixDef = $container->getDefinition('siganushka_generic.doctrine.listener.table_prefix');
 
