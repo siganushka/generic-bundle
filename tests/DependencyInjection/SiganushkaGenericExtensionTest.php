@@ -10,6 +10,8 @@ use Siganushka\GenericBundle\Doctrine\EventListener\SortableListener;
 use Siganushka\GenericBundle\Doctrine\EventListener\TablePrefixListener;
 use Siganushka\GenericBundle\Doctrine\EventListener\TimestampableListener;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\Serializer\Encoder\JsonEncode;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 /**
  * @internal
@@ -45,11 +47,31 @@ final class SiganushkaGenericExtensionTest extends TestCase
 
         $timestampableDef = $container->getDefinition('siganushka_generic.doctrine.listener.timestampable');
         $sortableDef = $container->getDefinition('siganushka_generic.doctrine.listener.sortable');
-
         static::assertSame(TimestampableListener::class, $timestampableDef->getClass());
         static::assertSame(SortableListener::class, $sortableDef->getClass());
         static::assertSame($listenerTagAttributes, $timestampableDef->getTag('doctrine.event_listener'));
         static::assertSame($listenerTagAttributes, $sortableDef->getTag('doctrine.event_listener'));
+
+        $jsonResponseDef = $container->getDefinition('siganushka_generic.listener.json_response');
+        static::assertTrue($jsonResponseDef->hasTag('kernel.event_subscriber'));
+        static::assertSame('%siganushka_generic.json.encoding_options%', $jsonResponseDef->getArgument(0));
+
+        $currencyDef = $container->getDefinition('siganushka_generic.utils.currency');
+        static::assertSame('%siganushka_generic.currency.scale%', $currencyDef->getArgument(0));
+        static::assertSame('%siganushka_generic.currency.grouping%', $currencyDef->getArgument(1));
+        static::assertSame('%siganushka_generic.currency.rounding_mode%', $currencyDef->getArgument(2));
+        static::assertSame('%siganushka_generic.currency.divisor%', $currencyDef->getArgument(3));
+
+        $jsonEncoderDef = $container->getDefinition('siganushka_generic.serializer.encoder.json');
+        static::assertTrue($jsonEncoderDef->hasTag('serializer.encoder'));
+        static::assertSame([JsonEncode::OPTIONS => '%siganushka_generic.json.encoding_options%'], $jsonEncoderDef->getArgument(0)->getArgument(0));
+
+        $datetimeNormalizerDef = $container->getDefinition('siganushka_generic.serializer.normalizer.datetime');
+        static::assertTrue($datetimeNormalizerDef->hasTag('serializer.normalizer'));
+        static::assertSame([
+            DateTimeNormalizer::FORMAT_KEY => '%siganushka_generic.datetime.format%',
+            DateTimeNormalizer::TIMEZONE_KEY => '%siganushka_generic.datetime.timezone%',
+        ], $datetimeNormalizerDef->getArgument(0));
     }
 
     public function testWithConfigs(): void
@@ -58,11 +80,30 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'doctrine' => [
                 'table_prefix' => 'test_',
             ],
+            'datetime' => [
+                'format' => 'm-d H:i',
+                'timezone' => 'RPC',
+            ],
+            'json' => [
+                'encoding_options' => 0,
+            ],
+            'currency' => [
+                'scale' => 0,
+                'grouping' => false,
+                'divisor' => 1,
+            ],
         ];
 
         $container = $this->createContainerWithConfigs([$configs]);
 
         static::assertSame('test_', $container->getParameter('siganushka_generic.doctrine.table_prefix'));
+        static::assertSame('m-d H:i', $container->getParameter('siganushka_generic.datetime.format'));
+        static::assertSame('RPC', $container->getParameter('siganushka_generic.datetime.timezone'));
+        static::assertSame(0, $container->getParameter('siganushka_generic.json.encoding_options'));
+        static::assertSame(0, $container->getParameter('siganushka_generic.currency.scale'));
+        static::assertFalse($container->getParameter('siganushka_generic.currency.grouping'));
+        static::assertSame(\NumberFormatter::ROUND_HALFUP, $container->getParameter('siganushka_generic.currency.rounding_mode'));
+        static::assertSame(1, $container->getParameter('siganushka_generic.currency.divisor'));
 
         $tablePrefixDef = $container->getDefinition('siganushka_generic.doctrine.listener.table_prefix');
 

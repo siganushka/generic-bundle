@@ -27,7 +27,6 @@ class SiganushkaGenericExtension extends Extension
         $container->setParameter('siganushka_generic.currency.grouping', $config['currency']['grouping']);
         $container->setParameter('siganushka_generic.currency.rounding_mode', $config['currency']['rounding_mode']);
         $container->setParameter('siganushka_generic.currency.divisor', $config['currency']['divisor']);
-        // dd($container->getParameterBag()->all());
 
         if (null === $config['doctrine']['table_prefix']) {
             $container->removeDefinition('siganushka_generic.doctrine.listener.table_prefix');
