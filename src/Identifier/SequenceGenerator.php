@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\Identifier;
 
-class SequenceIdentifierGenerator implements IdentifierGeneratorInterface
+class SequenceGenerator implements IdentifierGeneratorInterface
 {
     /**
      * 生成序列编号，单机下理论重复概率为百万分之一秒，为保证最小长度和尽可能唯一

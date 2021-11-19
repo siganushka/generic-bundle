@@ -9,6 +9,8 @@ use Siganushka\GenericBundle\DependencyInjection\SiganushkaGenericExtension;
 use Siganushka\GenericBundle\Doctrine\EventListener\SortableListener;
 use Siganushka\GenericBundle\Doctrine\EventListener\TablePrefixListener;
 use Siganushka\GenericBundle\Doctrine\EventListener\TimestampableListener;
+use Siganushka\GenericBundle\Identifier\SequenceGenerator;
+use Siganushka\GenericBundle\Utils\CurrencyUtils;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Serializer\Encoder\JsonEncode;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
@@ -36,7 +38,10 @@ final class SiganushkaGenericExtensionTest extends TestCase
         static::assertTrue($container->hasDefinition('siganushka_generic.doctrine.listener.timestampable'));
         static::assertTrue($container->hasDefinition('siganushka_generic.doctrine.listener.sortable'));
         static::assertTrue($container->hasDefinition('siganushka_generic.listener.json_response'));
+        static::assertTrue($container->hasDefinition('siganushka_generic.identifier.generator.sequence'));
+        static::assertTrue($container->hasAlias(SequenceGenerator::class));
         static::assertTrue($container->hasDefinition('siganushka_generic.utils.currency'));
+        static::assertTrue($container->hasAlias(CurrencyUtils::class));
         static::assertTrue($container->hasDefinition('siganushka_generic.serializer.encoder.json'));
         static::assertTrue($container->hasDefinition('siganushka_generic.serializer.normalizer.datetime'));
 

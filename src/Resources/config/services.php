@@ -8,6 +8,7 @@ use Siganushka\GenericBundle\Doctrine\EventListener\SortableListener;
 use Siganushka\GenericBundle\Doctrine\EventListener\TablePrefixListener;
 use Siganushka\GenericBundle\Doctrine\EventListener\TimestampableListener;
 use Siganushka\GenericBundle\EventListener\JsonResponseListener;
+use Siganushka\GenericBundle\Identifier\SequenceGenerator;
 use Siganushka\GenericBundle\Utils\CurrencyUtils;
 use Symfony\Component\Form\Extension\Core\DataTransformer\MoneyToLocalizedStringTransformer;
 use Symfony\Component\Serializer\Encoder\JsonEncode;
@@ -34,6 +35,9 @@ return static function (ContainerConfigurator $container) {
         ->set('siganushka_generic.doctrine.listener.sortable', SortableListener::class)
             ->tag('doctrine.event_listener', ['event' => 'prePersist'])
             ->tag('doctrine.event_listener', ['event' => 'preUpdate'])
+
+        ->set('siganushka_generic.identifier.generator.sequence', SequenceGenerator::class)
+            ->alias(SequenceGenerator::class, 'siganushka_generic.identifier.generator.sequence')
     ;
 
     if (class_exists(MoneyToLocalizedStringTransformer::class)) {
