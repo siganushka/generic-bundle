@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\Identifier;
 
+/**
+ * Sequence identifier generator.
+ */
 class SequenceGenerator implements IdentifierGeneratorInterface
 {
     /**
