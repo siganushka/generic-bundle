@@ -16,5 +16,5 @@ $ composer require siganushka/generic-bundle
 ### 功能
 
 - [全局配置](docs/configuration.md)
-- [通用实体模型](docs/entity.md)
+- [实体模型](docs/doctrine.md)
 - [类型验证](docs/constraint.md)

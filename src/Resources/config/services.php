@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Siganushka\GenericBundle\Doctrine\EventListener\SortableListener;
-use Siganushka\GenericBundle\Doctrine\EventListener\TablePrefixListener;
-use Siganushka\GenericBundle\Doctrine\EventListener\TimestampableListener;
+use Siganushka\Contracts\Doctrine\EventListener\SortableListener;
+use Siganushka\Contracts\Doctrine\EventListener\TablePrefixListener;
+use Siganushka\Contracts\Doctrine\EventListener\TimestampableListener;
 use Siganushka\GenericBundle\EventListener\JsonResponseListener;
 use Siganushka\GenericBundle\Identifier\SequenceGenerator;
 use Siganushka\GenericBundle\Utils\CurrencyUtils;

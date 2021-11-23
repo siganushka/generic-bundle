@@ -7,8 +7,8 @@
 ```php
 // ./src/Entity/Foo.php
 
-use Siganushka\GenericBundle\Entity\ResourceInterface;
-use Siganushka\GenericBundle\Entity\ResourceTrait;
+use Siganushka\Contracts\Doctrine\ResourceInterface;
+use Siganushka\Contracts\Doctrine\ResourceTrait;
 
 class Foo implements ResourceInterface
 {
@@ -29,8 +29,8 @@ $foo->equals(?ResourceInterface $target): bool; // 检测是否相等，使用�
 ```php
 // ./src/Entity/Foo.php
 
-use Siganushka\GenericBundle\Entity\EnableInterface;
-use Siganushka\GenericBundle\Entity\EnableTrait;
+use Siganushka\Contracts\Doctrine\EnableInterface;
+use Siganushka\Contracts\Doctrine\EnableTrait;
 
 class Foo implements EnableInterface
 {
@@ -51,8 +51,8 @@ $foo->setEnabled(?bool $enabled);   // 设置状态、是否有效
 ```php
 // ./src/Entity/Foo.php
 
-use Siganushka\GenericBundle\Entity\SortableInterface;
-use Siganushka\GenericBundle\Entity\SortableTrait;
+use Siganushka\Contracts\Doctrine\SortableInterface;
+use Siganushka\Contracts\Doctrine\SortableTrait;
 
 class Foo implements SortableInterface
 {
@@ -74,8 +74,8 @@ $foo->setSorted(Foo::DEFAULT_SORTED);   // 设置为默认值
 ```php
 // ./src/Entity/Foo.php
 
-use Siganushka\GenericBundle\Entity\VersionableInterface;
-use Siganushka\GenericBundle\Entity\VersionableTrait;
+use Siganushka\Contracts\Doctrine\VersionableInterface;
+use Siganushka\Contracts\Doctrine\VersionableTrait;
 
 class Foo implements VersionableInterface
 {
@@ -96,8 +96,8 @@ $foo->setVersion(?int $version);    // 设置当前版本，由 Doctrine 自动�
 ```php
 // ./src/Entity/Foo.php
 
-use Siganushka\GenericBundle\Entity\TimestampableInterface;
-use Siganushka\GenericBundle\Entity\TimestampableTrait;
+use Siganushka\Contracts\Doctrine\TimestampableInterface;
+use Siganushka\Contracts\Doctrine\TimestampableTrait;
 
 class Foo implements TimestampableInterface
 {
