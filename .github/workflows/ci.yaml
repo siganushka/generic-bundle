@@ -10,7 +10,7 @@ jobs:
     test:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2
+            - { name: Checkout code,        uses: actions/checkout@v2 }
             - { name: Validate composer,    run: composer validate --strict }
             - { name: Composer clearcache,  run: composer clearcache }
             - { name: Install dependencies, run: composer update }
@@ -19,7 +19,7 @@ jobs:
     test-prefer-lowest:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2
+            - { name: Checkout code,        uses: actions/checkout@v2 }
             - { name: Validate composer,    run: composer validate --strict }
             - { name: Composer clearcache,  run: composer clearcache }
             - { name: Install dependencies, run: composer update --prefer-lowest }
