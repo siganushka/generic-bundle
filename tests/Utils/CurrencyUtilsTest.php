@@ -9,9 +9,6 @@ use Siganushka\GenericBundle\Utils\CurrencyUtils;
 
 class CurrencyUtilsTest extends TestCase
 {
-    private $previousLocale;
-    private $defaultLocale;
-
     protected function setUp(): void
     {
         \Locale::setDefault('zh-CN');
