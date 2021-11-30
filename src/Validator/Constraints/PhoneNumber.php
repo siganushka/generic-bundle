@@ -19,7 +19,7 @@ class PhoneNumber extends Constraint
         self::INVALID_ERROR => 'INVALID_ERROR',
     ];
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return static::class.'Validator';
     }
