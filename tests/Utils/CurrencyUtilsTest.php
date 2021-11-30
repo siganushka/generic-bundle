@@ -14,16 +14,7 @@ class CurrencyUtilsTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->previousLocale = setlocale(\LC_ALL, '0');
-        $this->defaultLocale = \Locale::getDefault();
-    }
-
-    protected function tearDown(): void
-    {
-        var_dump('AAAAAAAAA', $this->defaultLocale);
-
-        setlocale(\LC_ALL, $this->previousLocale);
-        \Locale::setDefault($this->defaultLocale);
+        \Locale::setDefault('zh-CN');
     }
 
     /**
