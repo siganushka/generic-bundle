@@ -15,9 +15,6 @@ class CurrencyUtils
 
     public function __construct(?int $scale = 2, ?bool $grouping = true, ?int $roundingMode = \NumberFormatter::ROUND_HALFUP, ?int $divisor = 100)
     {
-        var_dump(sprintf('NumberFormatter VALUE: %s %d', gettype(\NumberFormatter::ROUND_HALFUP), \NumberFormatter::ROUND_HALFUP));
-
-
         $this->transformer = new MoneyToLocalizedStringTransformer($scale, $grouping, $roundingMode, $divisor);
     }
 
