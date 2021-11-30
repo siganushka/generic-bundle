@@ -9,8 +9,14 @@ on:
 jobs:
     test:
         runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                php-versions: [ 7.2, 7.3, 7.4, 8.0, 8.1 ]
+        name: PHP ${{ matrix.php-versions }}
         steps:
             - { name: Checkout code,        uses: actions/checkout@v2 }
+            - { name: Install PHP,          uses: shivammathur/setup-php@v2, with: { coverage: "none", php-version: "${{ matrix.php-version }}" } }
+            - { name: PHP Version,          run: php --version }
             - { name: Validate composer,    run: composer validate --strict }
             - { name: Composer clearcache,  run: composer clearcache }
             - { name: Install dependencies, run: composer update }
@@ -20,6 +26,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - { name: Checkout code,        uses: actions/checkout@v2 }
+            - { name: PHP Version,          run: php --version }
             - { name: Validate composer,    run: composer validate --strict }
             - { name: Composer clearcache,  run: composer clearcache }
             - { name: Install dependencies, run: composer update --prefer-lowest }
