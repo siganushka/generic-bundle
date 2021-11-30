@@ -1,6 +1,6 @@
 # Generic bundle for symfony
 
-[![Build Status](https://travis-ci.org/siganushka/generic-bundle.svg?branch=master)](https://travis-ci.org/siganushka/generic-bundle)
+[![Build Status](https://github.com/siganushka/generic-bundle/actions/workflows/ci.yaml/badge.svg)](https://github.com/siganushka/generic-bundle/actions/workflows/ci.yaml)
 [![Latest Stable Version](https://poser.pugx.org/siganushka/generic-bundle/v/stable)](https://packagist.org/packages/siganushka/generic-bundle)
 [![Latest Unstable Version](https://poser.pugx.org/siganushka/generic-bundle/v/unstable)](https://packagist.org/packages/siganushka/generic-bundle)
 [![License](https://poser.pugx.org/siganushka/generic-bundle/license)](https://packagist.org/packages/siganushka/generic-bundle)
