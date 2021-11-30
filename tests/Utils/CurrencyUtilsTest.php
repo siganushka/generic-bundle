@@ -14,11 +14,11 @@ class CurrencyUtilsTest extends TestCase
      */
     public function testDefaultOptions(?int $currency, string $formattedCurrency)
     {
-        
-
         $formatter = new CurrencyUtils();
 
         var_dump('AAAAAAAAAAAA', $formatter->format(2147483647));
+        var_dump('AAAAAAAAAAAA222', $formatter->format(2147483646));
+        var_dump('AAAAAAAAAAAA222', $formatter->format(2147483645));
         var_dump('BBBBBBBBBBBB', $formatter->format(65536));
         var_dump('CCCCCCCCCCCC', $formatter->format(1024));
         static::assertSame($formattedCurrency, $formatter->format($currency));

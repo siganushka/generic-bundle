@@ -8,11 +8,12 @@ on:
 
 jobs:
     test:
-        name: Tests with PHP ${{ matrix.php-versions }}
-        runs-on: ubuntu-latest
+        name: Tests ${{ matrix.os }} / PHP ${{ matrix.php-versions }}
+        runs-on: ${{ matrix.os }}
         strategy:
             fail-fast: false
             matrix:
+                os: [ubuntu-18.04, ubuntu-20.04]
                 php-versions: [ 7.2, 7.3, 7.4, 8.0, 8.1 ]
         steps:
             - { name: Checkout code,        uses: actions/checkout@v2 }
