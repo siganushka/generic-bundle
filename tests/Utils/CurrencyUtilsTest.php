@@ -21,6 +21,8 @@ class CurrencyUtilsTest extends TestCase
         var_dump('AAAAAAAAAAAA222', $formatter->format(2147483645));
         var_dump('BBBBBBBBBBBB', $formatter->format(65536));
         var_dump('CCCCCCCCCCCC', $formatter->format(1024));
+
+        var_dump('ZZZZZZZZZZZZ', number_format(2147483647 / 100, 2));
         static::assertSame($formattedCurrency, $formatter->format($currency));
     }
 
