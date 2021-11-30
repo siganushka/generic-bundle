@@ -9,20 +9,29 @@ use Siganushka\GenericBundle\Utils\CurrencyUtils;
 
 class CurrencyUtilsTest extends TestCase
 {
+    private $previousLocale;
+    private $defaultLocale;
+
+    protected function setUp(): void
+    {
+        $this->previousLocale = setlocale(\LC_ALL, '0');
+        $this->defaultLocale = \Locale::getDefault();
+    }
+
+    protected function tearDown(): void
+    {
+        var_dump('AAAAAAAAA', $this->defaultLocale);
+
+        setlocale(\LC_ALL, $this->previousLocale);
+        \Locale::setDefault($this->defaultLocale);
+    }
+
     /**
      * @dataProvider getCentsOfCurrencies
      */
     public function testDefaultOptions(?int $currency, string $formattedCurrency)
     {
         $formatter = new CurrencyUtils();
-
-        var_dump('AAAAAAAAAAAA', $formatter->format(2147483647));
-        var_dump('AAAAAAAAAAAA222', $formatter->format(2147483646));
-        var_dump('AAAAAAAAAAAA222', $formatter->format(2147483645));
-        var_dump('BBBBBBBBBBBB', $formatter->format(65536));
-        var_dump('CCCCCCCCCCCC', $formatter->format(1024));
-
-        var_dump('ZZZZZZZZZZZZ', number_format(2147483647 / 100, 2));
         static::assertSame($formattedCurrency, $formatter->format($currency));
     }
 
