@@ -35,7 +35,7 @@ class EntityToIdentifierTransformerTest extends TestCase
     {
         $transformer = $this->createEntityToIdentifierTransformer(Foo::class, 'id');
 
-        static::assertSame($this->foo->id, $transformer->transform($this->foo));
+        static::assertEquals($this->foo->id, $transformer->transform($this->foo));
     }
 
     public function testTransformInvalidValueException(): void

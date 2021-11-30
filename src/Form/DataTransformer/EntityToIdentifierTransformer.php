@@ -23,10 +23,10 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
         $this->identifierField = $identifierField;
     }
 
-    public function transform($value)
+    public function transform($value): string
     {
         if (null === $value) {
-            return null;
+            return '';
         }
 
         if (!$value instanceof $this->className) {
@@ -41,13 +41,13 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
             throw new TransformationFailedException($th->getMessage(), 0, $th);
         }
 
-        return $result;
+        return (string) $result;
     }
 
-    public function reverseTransform($value)
+    public function reverseTransform($value): ?object
     {
         if (null === $value || '' === $value) {
-            return;
+            return null;
         }
 
         if (!is_scalar($value)) {
