@@ -2,19 +2,25 @@ name: CI
 
 on:
     push:
-        branches: [ main, dev ]
+        branches: [ dev ]
     pull_request:
-        branches: [ main, dev ]
+        branches: [ dev ]
 
 jobs:
-    build:
+    test:
         runs-on: ubuntu-latest
-
         steps:
             - uses: actions/checkout@v2
-            - { name: Validate composer,                run: composer validate --strict }
-            - { name: Composer clearcache,              run: composer clearcache }
-            - { name: Install dependencies,             run: composer update }
-            - { name: Run test suite,                   run: php vendor/bin/simple-phpunit --debug }
-            - { name: Install dependencies (lowest),    run: composer update --prefer-lowest }
-            - { name: Run test suite (lowest),          run: php vendor/bin/simple-phpunit --debug }
+            - { name: Validate composer,    run: composer validate --strict }
+            - { name: Composer clearcache,  run: composer clearcache }
+            - { name: Install dependencies, run: composer update }
+            - { name: Run tests,            run: php vendor/bin/simple-phpunit --debug }
+
+    test-prefer-lowest:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - { name: Validate composer,    run: composer validate --strict }
+            - { name: Composer clearcache,  run: composer clearcache }
+            - { name: Install dependencies, run: composer update --prefer-lowest }
+            - { name: Run tests,            run: php vendor/bin/simple-phpunit --debug }
