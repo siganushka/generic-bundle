@@ -1,4 +1,4 @@
-name: CI
+name: CI Test
 
 on:
     push:
@@ -20,5 +20,5 @@ jobs:
             - { name: OS Version,           run: uname -a }
             - { name: PHP Version,          run: php --version }
             - { name: Validate composer,    run: composer validate --strict }
-            - { name: Install dependencies, run: composer update }
+            - { name: Install dependencies, run: composer install }
             - { name: Run tests,            run: php vendor/bin/simple-phpunit --debug }
