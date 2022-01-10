@@ -25,6 +25,12 @@ final class ConfigurationTest extends TestCase
         $this->processor = new Processor();
     }
 
+    protected function tearDown(): void
+    {
+        $this->configuration = null;
+        $this->processor = null;
+    }
+
     public function testDefaultConfig(): void
     {
         $treeBuilder = $this->configuration->getConfigTreeBuilder();
