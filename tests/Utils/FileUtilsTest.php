@@ -12,11 +12,11 @@ class FileUtilsTest extends TestCase
     /**
      * @dataProvider provideMockFiles
      */
-    public function testGetRelativePath(string $publicDir, string $filename, string $filePathForPublic): void
+    public function testGetRelativePath(string $rootDir, string $filename, string $filePathForPublic): void
     {
         $file = new \SplFileInfo($filename);
 
-        $utils = new FileUtils($publicDir);
+        $utils = new FileUtils($rootDir);
         static::assertSame($filePathForPublic, $utils->getRelativePath($file));
     }
 
