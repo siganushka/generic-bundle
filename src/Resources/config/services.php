@@ -9,6 +9,7 @@ use Siganushka\Contracts\Doctrine\EventListener\TablePrefixListener;
 use Siganushka\Contracts\Doctrine\EventListener\TimestampableListener;
 use Siganushka\GenericBundle\EventListener\JsonResponseListener;
 use Siganushka\GenericBundle\EventListener\PublicFileDataListener;
+use Siganushka\GenericBundle\EventListener\ResizeImageListener;
 use Siganushka\GenericBundle\Identifier\SequenceGenerator;
 use Siganushka\GenericBundle\Utils\CurrencyUtils;
 use Siganushka\GenericBundle\Utils\PublicFileUtils;
@@ -28,6 +29,9 @@ return static function (ContainerConfigurator $container) {
 
         ->set('siganushka_generic.listener.public_file_data', PublicFileDataListener::class)
             ->arg(0, service('siganushka_generic.utils.public_file'))
+            ->tag('kernel.event_subscriber')
+
+        ->set('siganushka_generic.listener.resize_image', ResizeImageListener::class)
             ->tag('kernel.event_subscriber')
 
         ->set('siganushka_generic.doctrine.listener.table_prefix', TablePrefixListener::class)

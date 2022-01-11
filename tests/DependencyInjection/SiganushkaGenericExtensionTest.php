@@ -40,6 +40,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
         static::assertTrue($container->hasDefinition('siganushka_generic.doctrine.listener.sortable'));
         static::assertTrue($container->hasDefinition('siganushka_generic.listener.json_response'));
         static::assertTrue($container->hasDefinition('siganushka_generic.listener.public_file_data'));
+        static::assertTrue($container->hasDefinition('siganushka_generic.listener.resize_image'));
         static::assertTrue($container->hasDefinition('siganushka_generic.identifier.generator.sequence'));
         static::assertTrue($container->hasAlias(SequenceGenerator::class));
         static::assertTrue($container->hasDefinition('siganushka_generic.utils.public_file'));
@@ -64,6 +65,13 @@ final class SiganushkaGenericExtensionTest extends TestCase
         $jsonResponseDef = $container->getDefinition('siganushka_generic.listener.json_response');
         static::assertTrue($jsonResponseDef->hasTag('kernel.event_subscriber'));
         static::assertSame('%siganushka_generic.json.encoding_options%', $jsonResponseDef->getArgument(0));
+
+        $publicFileDataDef = $container->getDefinition('siganushka_generic.listener.public_file_data');
+        static::assertTrue($publicFileDataDef->hasTag('kernel.event_subscriber'));
+        static::assertSame('siganushka_generic.utils.public_file', (string) $publicFileDataDef->getArgument(0));
+
+        $resizeImageDef = $container->getDefinition('siganushka_generic.listener.resize_image');
+        static::assertTrue($resizeImageDef->hasTag('kernel.event_subscriber'));
 
         $currencyDef = $container->getDefinition('siganushka_generic.utils.currency');
         static::assertSame('%siganushka_generic.currency.scale%', $currencyDef->getArgument(0));
