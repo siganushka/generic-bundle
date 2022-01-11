@@ -39,6 +39,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
         static::assertTrue($container->hasDefinition('siganushka_generic.doctrine.listener.timestampable'));
         static::assertTrue($container->hasDefinition('siganushka_generic.doctrine.listener.sortable'));
         static::assertTrue($container->hasDefinition('siganushka_generic.listener.json_response'));
+        static::assertTrue($container->hasDefinition('siganushka_generic.listener.public_file_data'));
         static::assertTrue($container->hasDefinition('siganushka_generic.identifier.generator.sequence'));
         static::assertTrue($container->hasAlias(SequenceGenerator::class));
         static::assertTrue($container->hasDefinition('siganushka_generic.utils.public_file'));
