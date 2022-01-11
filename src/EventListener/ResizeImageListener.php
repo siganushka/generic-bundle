@@ -17,6 +17,10 @@ class ResizeImageListener implements EventSubscriberInterface
      */
     public function onResizeImageMaxWidth(ResizeImageMaxWidthEvent $event): void
     {
+        if (!class_exists(\Imagick::class)) {
+            return;
+        }
+
         $file = $event->getFile();
         $maxWidth = $event->getMaxWidth();
 
@@ -39,6 +43,10 @@ class ResizeImageListener implements EventSubscriberInterface
      */
     public function onResizeImageMaxHeight(ResizeImageMaxHeightEvent $event): void
     {
+        if (!class_exists(\Imagick::class)) {
+            return;
+        }
+
         $file = $event->getFile();
         $maxHeight = $event->getMaxHeight();
 
