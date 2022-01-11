@@ -20,7 +20,6 @@ class PublicFileDataListenerTest extends TestCase
     {
         $requestStack = new RequestStack();
         $requestContext = new RequestContext();
-        $requestContext->setHost('example.com');
 
         $this->urlHelper = new UrlHelper($requestStack, $requestContext);
     }
@@ -50,7 +49,7 @@ class PublicFileDataListenerTest extends TestCase
 
         static::assertSame('landscape.jpg', $data['name']);
         static::assertSame('/Mock/landscape.jpg', $data['path']);
-        static::assertSame('http://example.com/Mock/landscape.jpg', $data['url']);
+        static::assertSame('http://localhost/Mock/landscape.jpg', $data['url']);
         static::assertSame('jpg', $data['extension']);
     }
 }
