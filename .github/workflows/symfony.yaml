@@ -22,7 +22,5 @@ jobs:
             - { name: List Files,           run: ls -la }
             - { name: Validate composer,    run: composer validate --strict }
             - { name: Install Symfony,      run: composer create-project symfony/skeleton sf-demo }
-            - { name: List Files,           run: ls -la }
-            - { name: Change Directory,     run: cd ./sf-demo }
-            - { name: List Files,           run: ls -la }
-            - { name: Install dependencies, run: "composer require siganushka/generic-bundle:dev-dev" }
+            - { name: List Files,           run: ls -la, working-directory: ./sf-demo }
+            - { name: Install dependencies, run: "composer require siganushka/generic-bundle:dev-dev", working-directory: ./sf-demo }
