@@ -4,17 +4,31 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\Utils;
 
+use Symfony\Component\HttpFoundation\UrlHelper;
+
 class PublicFileUtils
 {
+    protected $urlHelper;
     protected $publicDir;
 
-    public function __construct(string $publicDir)
+    public function __construct(UrlHelper $urlHelper, string $publicDir)
     {
+        $this->urlHelper = $urlHelper;
         $this->publicDir = realpath($publicDir);
     }
 
-    public function getUrlForPublic()
+    /**
+     * 获取文件访问 URL.
+     *
+     * @return string 文件访问 URL
+     *
+     * @throws \RuntimeException 获取文件路径失败或文件不存在
+     */
+    public function getUrl(\SplFileInfo $file): string
     {
+        $path = $this->getPath($file);
+
+        return $this->urlHelper->getAbsoluteUrl($path);
     }
 
     /**
@@ -28,7 +42,7 @@ class PublicFileUtils
      *
      * @throws \RuntimeException 获取文件路径失败或文件不存在
      */
-    public function getPathForPublic(\SplFileInfo $file): string
+    public function getPath(\SplFileInfo $file): string
     {
         $path = $file->getRealPath();
         if (false === $path) {

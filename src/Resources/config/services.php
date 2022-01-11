@@ -10,6 +10,7 @@ use Siganushka\Contracts\Doctrine\EventListener\TimestampableListener;
 use Siganushka\GenericBundle\EventListener\JsonResponseListener;
 use Siganushka\GenericBundle\Identifier\SequenceGenerator;
 use Siganushka\GenericBundle\Utils\CurrencyUtils;
+use Siganushka\GenericBundle\Utils\PublicFileUtils;
 use Symfony\Component\Form\Extension\Core\DataTransformer\MoneyToLocalizedStringTransformer;
 use Symfony\Component\Serializer\Encoder\JsonEncode;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -38,6 +39,9 @@ return static function (ContainerConfigurator $container) {
 
         ->set('siganushka_generic.identifier.generator.sequence', SequenceGenerator::class)
             ->alias(SequenceGenerator::class, 'siganushka_generic.identifier.generator.sequence')
+
+        ->set('siganushka_generic.utils.public_file', PublicFileUtils::class)
+            ->alias(PublicFileUtils::class, 'siganushka_generic.utils.public_file')
     ;
 
     if (class_exists(MoneyToLocalizedStringTransformer::class)) {

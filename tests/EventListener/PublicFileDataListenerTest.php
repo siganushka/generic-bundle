@@ -37,7 +37,7 @@ class PublicFileDataListenerTest extends TestCase
         static::assertSame($file, $event->getFile());
         static::assertSame([], $event->getData());
 
-        $listener = new PublicFileDataListener($this->urlHelper, new PublicFileUtils('./tests'));
+        $listener = new PublicFileDataListener(new PublicFileUtils($this->urlHelper, './tests'));
         $listener->onPublicFileData($event);
 
         $data = $event->getData();
