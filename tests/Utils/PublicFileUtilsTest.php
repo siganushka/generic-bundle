@@ -18,7 +18,6 @@ class PublicFileUtilsTest extends TestCase
     {
         $requestStack = new RequestStack();
         $requestContext = new RequestContext();
-        $requestContext->setHost('example.com');
 
         $this->urlHelper = new UrlHelper($requestStack, $requestContext);
     }
@@ -36,7 +35,7 @@ class PublicFileUtilsTest extends TestCase
         $file = new \SplFileInfo($filePath);
         $utils = new PublicFileUtils($this->urlHelper, $publicDir);
 
-        static::assertSame('http://example.com'.$filePathForPublic, $utils->getUrl($file));
+        static::assertSame('http://localhost'.$filePathForPublic, $utils->getUrl($file));
     }
 
     /**
@@ -53,7 +52,7 @@ class PublicFileUtilsTest extends TestCase
     public function testGetPathNonExisting()
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Unable to get realpath');
+        $this->expectExceptionMessage('File not found');
 
         $file = new \SplFileInfo('./non_existing_file');
 

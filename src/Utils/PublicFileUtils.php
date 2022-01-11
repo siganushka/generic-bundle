@@ -46,7 +46,7 @@ class PublicFileUtils
     {
         $path = $file->getRealPath();
         if (false === $path) {
-            throw new \RuntimeException('Unable to get realpath.');
+            throw new \RuntimeException('File not found.');
         }
 
         if (str_starts_with($path, $this->publicDir)) {
