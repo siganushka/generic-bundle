@@ -1,6 +1,7 @@
 {
     "name": "siganushka/generic-bundle",
     "description": "Generic bundle for symfony.",
+    "minimum-stability": "dev",
     "type": "symfony-bundle",
     "license": "MIT",
     "authors": [
