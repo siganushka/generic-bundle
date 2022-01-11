@@ -6,6 +6,9 @@ namespace Siganushka\GenericBundle\Utils;
 
 use Symfony\Component\HttpFoundation\UrlHelper;
 
+/**
+ * Public file utils.
+ */
 class PublicFileUtils
 {
     protected $urlHelper;

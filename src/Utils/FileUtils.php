@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\Utils;
 
+/**
+ * File utils.
+ */
 class FileUtils
 {
     /**
