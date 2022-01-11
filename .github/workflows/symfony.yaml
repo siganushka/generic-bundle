@@ -1,0 +1,25 @@
+name: Symfony Test
+
+on:
+    push:
+        branches: [ dev ]
+    pull_request:
+        branches: [ dev ]
+
+jobs:
+    test:
+        name: Tests with PHP ${{ matrix.php-versions }}
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                php-versions: [ 7.2, 7.3, 7.4, 8.0, 8.1 ]
+        steps:
+            - { name: Checkout code,        uses: actions/checkout@v2 }
+            - { name: Install PHP,          uses: shivammathur/setup-php@v2, with: { php-version: "${{ matrix.php-versions }}" } }
+            - { name: OS Version,           run: uname -a }
+            - { name: PHP Version,          run: php --version }
+            - { name: Validate composer,    run: composer validate --strict }
+            - { name: Install Symfony,      run: composer create-project symfony/skeleton sf-demo }
+            - { name: Change Directory,     run: cd ./sf-demo }
+            - { name: Install dependencies, run: composer require siganushka/generic-bundle:dev-dev }
