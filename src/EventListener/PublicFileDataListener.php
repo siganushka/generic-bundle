@@ -6,24 +6,25 @@ namespace Siganushka\GenericBundle\EventListener;
 
 use Siganushka\GenericBundle\Event\PublicFileDataEvent;
 use Siganushka\GenericBundle\Utils\FileUtils;
+use Siganushka\GenericBundle\Utils\PublicFileUtils;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\UrlHelper;
 
 class PublicFileDataListener implements EventSubscriberInterface
 {
     protected $urlHelper;
-    protected $fileUtils;
+    protected $publicFileUtils;
 
-    public function __construct(UrlHelper $urlHelper, FileUtils $fileUtils)
+    public function __construct(UrlHelper $urlHelper, PublicFileUtils $publicFileUtils)
     {
         $this->urlHelper = $urlHelper;
-        $this->fileUtils = $fileUtils;
+        $this->publicFileUtils = $publicFileUtils;
     }
 
     public function onPublicFileData(PublicFileDataEvent $event)
     {
         $file = $event->getFile();
-        $path = $this->fileUtils->getRelativePath($file);
+        $path = $this->publicFileUtils->getPathForPublic($file);
 
         $data = [
             'name' => $file->getFilename(),

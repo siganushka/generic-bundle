@@ -7,7 +7,7 @@ namespace Siganushka\GenericBundle\Tests\EventListener;
 use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\Event\PublicFileDataEvent;
 use Siganushka\GenericBundle\EventListener\PublicFileDataListener;
-use Siganushka\GenericBundle\Utils\FileUtils;
+use Siganushka\GenericBundle\Utils\PublicFileUtils;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\UrlHelper;
 use Symfony\Component\Routing\RequestContext;
@@ -37,7 +37,7 @@ class PublicFileDataListenerTest extends TestCase
         static::assertSame($file, $event->getFile());
         static::assertSame([], $event->getData());
 
-        $listener = new PublicFileDataListener($this->urlHelper, new FileUtils('./tests'));
+        $listener = new PublicFileDataListener($this->urlHelper, new PublicFileUtils('./tests'));
         $listener->onPublicFileData($event);
 
         $data = $event->getData();
