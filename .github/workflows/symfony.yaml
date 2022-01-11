@@ -23,4 +23,4 @@ jobs:
             - { name: Validate composer,    run: composer validate --strict }
             - { name: Install Symfony,      run: composer create-project symfony/skeleton sf-demo }
             - { name: List Files,           run: ls -la, working-directory: ./sf-demo }
-            - { name: Install dependencies, run: "composer require siganushka/generic-bundle:dev-dev", working-directory: ./sf-demo }
+            - { name: Install dependencies, run: "composer require siganushka/generic-bundle:dev-main", working-directory: ./sf-demo }
