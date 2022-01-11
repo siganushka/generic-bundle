@@ -8,6 +8,7 @@ use Siganushka\Contracts\Doctrine\EventListener\SortableListener;
 use Siganushka\Contracts\Doctrine\EventListener\TablePrefixListener;
 use Siganushka\Contracts\Doctrine\EventListener\TimestampableListener;
 use Siganushka\GenericBundle\EventListener\JsonResponseListener;
+use Siganushka\GenericBundle\EventListener\PublicFileDataListener;
 use Siganushka\GenericBundle\Identifier\SequenceGenerator;
 use Siganushka\GenericBundle\Utils\CurrencyUtils;
 use Siganushka\GenericBundle\Utils\PublicFileUtils;
@@ -23,6 +24,10 @@ return static function (ContainerConfigurator $container) {
     $container->services()
         ->set('siganushka_generic.listener.json_response', JsonResponseListener::class)
             ->arg(0, $jsonEncodingOptions)
+            ->tag('kernel.event_subscriber')
+
+        ->set('siganushka_generic.listener.public_file_data', PublicFileDataListener::class)
+            ->arg(0, service('siganushka_generic.utils.public_file'))
             ->tag('kernel.event_subscriber')
 
         ->set('siganushka_generic.doctrine.listener.table_prefix', TablePrefixListener::class)
@@ -41,6 +46,8 @@ return static function (ContainerConfigurator $container) {
             ->alias(SequenceGenerator::class, 'siganushka_generic.identifier.generator.sequence')
 
         ->set('siganushka_generic.utils.public_file', PublicFileUtils::class)
+            ->arg(0, service('url_helper'))
+            ->arg(1, param('kernel.project_dir').'/public')
             ->alias(PublicFileUtils::class, 'siganushka_generic.utils.public_file')
     ;
 

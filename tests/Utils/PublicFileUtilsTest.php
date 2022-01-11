@@ -75,7 +75,8 @@ class PublicFileUtilsTest extends TestCase
     {
         return [
             ['./tests/Utils', './tests/Utils/FileUtilsTest.php', '/FileUtilsTest.php'],
-            ['./tests', './tests/Mock/img.png', '/Mock/img.png'],
+            ['./tests', './tests/Mock/landscape.jpg', '/Mock/landscape.jpg'],
+            ['./tests', './tests/Mock/portrait.jpg', '/Mock/portrait.jpg'],
             ['./', './composer.json', '/composer.json'],
         ];
     }
