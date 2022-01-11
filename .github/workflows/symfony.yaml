@@ -25,4 +25,4 @@ jobs:
             - { name: List Files,           run: ls -la }
             - { name: Change Directory,     run: cd ./sf-demo }
             - { name: List Files,           run: ls -la }
-            - { name: Install dependencies, run: composer require "siganushka/generic-bundle:dev-dev" }
+            - { name: Install dependencies, run: "composer require siganushka/generic-bundle:dev-dev" }
