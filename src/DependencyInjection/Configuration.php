@@ -23,7 +23,7 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    private function addDoctrineSection(ArrayNodeDefinition $rootNode)
+    private function addDoctrineSection(ArrayNodeDefinition $rootNode): void
     {
         $rootNode
             ->children()
@@ -46,15 +46,10 @@ class Configuration implements ConfigurationInterface
                                     return !preg_match('/^[a-zA-Z0-9_]+$/', $v);
                                 })
                                 ->thenInvalid('The "%s" for doctrine.table_prefix contains illegal character(s).')
-                            ->end()
-                        ->end()
-                    ->end()
-                ->end()
-            ->end()
         ;
     }
 
-    private function addDatetimeSection(ArrayNodeDefinition $rootNode)
+    private function addDatetimeSection(ArrayNodeDefinition $rootNode): void
     {
         $rootNode
             ->children()
@@ -75,7 +70,7 @@ class Configuration implements ConfigurationInterface
         ;
     }
 
-    private function addJsonSection(ArrayNodeDefinition $rootNode)
+    private function addJsonSection(ArrayNodeDefinition $rootNode): void
     {
         $rootNode
             ->children()
@@ -92,7 +87,7 @@ class Configuration implements ConfigurationInterface
         ;
     }
 
-    private function addCurrencySection(ArrayNodeDefinition $rootNode)
+    private function addCurrencySection(ArrayNodeDefinition $rootNode): void
     {
         $rootNode
             ->children()

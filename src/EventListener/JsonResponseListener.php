@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 class JsonResponseListener implements EventSubscriberInterface
 {
-    protected $jsonEncodeOptions;
+    protected int $jsonEncodeOptions;
 
     public function __construct(int $jsonEncodeOptions)
     {

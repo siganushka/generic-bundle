@@ -17,7 +17,7 @@ class CurrencyUtilsTest extends TestCase
     /**
      * @dataProvider getCentsOfCurrencies
      */
-    public function testDefaultOptions(?int $currency, string $formattedCurrency)
+    public function testDefaultOptions(?int $currency, string $formattedCurrency): void
     {
         $formatter = new CurrencyUtils();
         static::assertSame($formattedCurrency, $formatter->format($currency));
@@ -26,13 +26,16 @@ class CurrencyUtilsTest extends TestCase
     /**
      * @dataProvider getCurrencies
      */
-    public function testCustomOptions(?int $currency, string $formattedCurrency)
+    public function testCustomOptions(?int $currency, string $formattedCurrency): void
     {
         $formatter = new CurrencyUtils(0, false, null, 1);
         static::assertSame($formattedCurrency, $formatter->format($currency));
     }
 
-    public function getCentsOfCurrencies()
+    /**
+     * @return array<int, array<int, int|string|null>>
+     */
+    public function getCentsOfCurrencies(): array
     {
         return [
             [null, '0.00'],
@@ -45,7 +48,10 @@ class CurrencyUtilsTest extends TestCase
         ];
     }
 
-    public function getCurrencies()
+    /**
+     * @return array<int, array<int, int|string|null>>
+     */
+    public function getCurrencies(): array
     {
         return [
             [null, '0'],

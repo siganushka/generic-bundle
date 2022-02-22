@@ -9,7 +9,7 @@ use Siganushka\GenericBundle\Identifier\SequenceGenerator;
 
 class SequenceGeneratorTest extends TestCase
 {
-    public function testGenerate()
+    public function testGenerate(): void
     {
         $generator = new SequenceGenerator();
         $identifier = $generator->generate();

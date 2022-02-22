@@ -14,7 +14,7 @@ class Semver extends Constraint
 {
     public const INVALID_ERROR = 'adcb534e-6a3c-4859-b449-440f9dc95c60';
 
-    public $message = 'This value is not a valid semantic version.';
+    public string $message = 'This value is not a valid semantic version.';
 
     protected static $errorNames = [
         self::INVALID_ERROR => 'INVALID_ERROR',

@@ -12,7 +12,7 @@ use Symfony\Component\Routing\RequestContext;
 
 class PublicFileUtilsTest extends TestCase
 {
-    protected $urlHelper;
+    protected ?UrlHelper $urlHelper = null;
 
     protected function setUp(): void
     {
@@ -49,7 +49,7 @@ class PublicFileUtilsTest extends TestCase
         static::assertSame($filePathForPublic, $utils->getPath($file));
     }
 
-    public function testGetPathNonExisting()
+    public function testGetPathNonExisting(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('File not found');
@@ -60,7 +60,7 @@ class PublicFileUtilsTest extends TestCase
         $utils->getPath($file);
     }
 
-    public function testGetPathNonExistingForPublicDir()
+    public function testGetPathNonExistingForPublicDir(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('File not found for public directory');
@@ -71,6 +71,9 @@ class PublicFileUtilsTest extends TestCase
         $utils->getPath($file);
     }
 
+    /**
+     * @return array<int, array<string>>
+     */
     public function provideMockFiles(): array
     {
         return [

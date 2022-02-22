@@ -41,7 +41,10 @@ final class PhoneNumberValidatorTest extends ConstraintValidatorTestCase
         ;
     }
 
-    public function getValidPhoneNubmers()
+    /**
+     * @return array<int, array<?string>>
+     */
+    public function getValidPhoneNubmers(): array
     {
         return [
             [null],
@@ -56,7 +59,10 @@ final class PhoneNumberValidatorTest extends ConstraintValidatorTestCase
         ];
     }
 
-    public function getInvalidPhoneNubmers()
+    /**
+     * @return array<int, array<string>>
+     */
+    public function getInvalidPhoneNubmers(): array
     {
         return [
             ['1'],
@@ -66,7 +72,7 @@ final class PhoneNumberValidatorTest extends ConstraintValidatorTestCase
         ];
     }
 
-    protected function createValidator()
+    protected function createValidator(): PhoneNumberValidator
     {
         return new PhoneNumberValidator();
     }

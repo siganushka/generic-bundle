@@ -12,9 +12,9 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class EntityToIdentifierTransformer implements DataTransformerInterface
 {
-    protected $managerRegistry;
-    protected $className;
-    protected $identifierField;
+    protected ManagerRegistry $managerRegistry;
+    protected string $className;
+    protected string $identifierField;
 
     public function __construct(ManagerRegistry $managerRegistry, string $className, string $identifierField)
     {
@@ -58,6 +58,10 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
             $em = $this->managerRegistry->getManagerForClass($this->className);
         } catch (\Throwable $th) {
             throw new TransformationFailedException($th->getMessage(), 0, $th);
+        }
+
+        if (null === $em) {
+            throw new TransformationFailedException('Unable to get manager.');
         }
 
         $metadata = $em->getClassMetadata($this->className);

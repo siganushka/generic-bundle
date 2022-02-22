@@ -14,7 +14,7 @@ use Symfony\Component\Routing\RequestContext;
 
 class PublicFileDataListenerTest extends TestCase
 {
-    private $urlHelper;
+    private ?UrlHelper $urlHelper = null;
 
     protected function setUp(): void
     {

@@ -16,7 +16,7 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
 class EntityToIdentifierTransformerTest extends TestCase
 {
-    private $foo;
+    private ?Foo $foo = null;
 
     protected function setUp(): void
     {
@@ -31,7 +31,7 @@ class EntityToIdentifierTransformerTest extends TestCase
         $this->foo = null;
     }
 
-    public function testTransform()
+    public function testTransform(): void
     {
         $transformer = $this->createEntityToIdentifierTransformer(Foo::class, 'id');
 
@@ -54,7 +54,7 @@ class EntityToIdentifierTransformerTest extends TestCase
         $transformer->transform($this->foo);
     }
 
-    public function testReverseTransform()
+    public function testReverseTransform(): void
     {
         $transformer = $this->createEntityToIdentifierTransformer(Foo::class, 'id');
 
@@ -129,5 +129,5 @@ class EntityToIdentifierTransformerTest extends TestCase
 
 class Foo
 {
-    public $id;
+    public ?int $id = null;
 }

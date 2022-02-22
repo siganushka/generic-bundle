@@ -24,7 +24,7 @@ class ResizeImageListener implements EventSubscriberInterface
         $file = $event->getFile();
         $maxWidth = $event->getMaxWidth();
 
-        [$width, $height] = $this->getImageSize($file);
+        [$width, $height] = self::getImageSize($file);
         if ($width <= $maxWidth) {
             return;
         }
@@ -50,7 +50,7 @@ class ResizeImageListener implements EventSubscriberInterface
         $file = $event->getFile();
         $maxHeight = $event->getMaxHeight();
 
-        [$width, $height] = $this->getImageSize($file);
+        [$width, $height] = self::getImageSize($file);
         if ($width <= $maxHeight) {
             return;
         }
@@ -67,16 +67,17 @@ class ResizeImageListener implements EventSubscriberInterface
      *
      * @param \SplFileInfo $file 图像文件对象
      *
-     * @return array 图像尺寸信息
+     * @return array<mixed> 图像尺寸信息
      *
      * @throws \RuntimeException 文件不存在或不是图像文件
      */
-    private function getImageSize(\SplFileInfo $file): array
+    public static function getImageSize(\SplFileInfo $file): array
     {
         if (!$file->isFile()) {
             throw new \RuntimeException('File not found.');
         }
 
+        /** @var array<mixed> */
         $result = @getimagesize($file->getPathname());
         if (empty($result[0]) || empty($result[1])) {
             throw new \RuntimeException('Unable to access file.');

@@ -10,14 +10,10 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Processor;
 
-/**
- * @internal
- * @coversNothing
- */
 final class ConfigurationTest extends TestCase
 {
-    private $configuration;
-    private $processor;
+    private ?ConfigurationInterface $configuration = null;
+    private ?Processor $processor = null;
 
     protected function setUp(): void
     {

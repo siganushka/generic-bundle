@@ -11,14 +11,14 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class PublicFileDataListener implements EventSubscriberInterface
 {
-    protected $publicFileUtils;
+    protected PublicFileUtils $publicFileUtils;
 
     public function __construct(PublicFileUtils $publicFileUtils)
     {
         $this->publicFileUtils = $publicFileUtils;
     }
 
-    public function onPublicFileData(PublicFileDataEvent $event)
+    public function onPublicFileData(PublicFileDataEvent $event): void
     {
         $file = $event->getFile();
 

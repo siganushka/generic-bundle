@@ -51,7 +51,10 @@ final class SemverValidatorTest extends ConstraintValidatorTestCase
         ;
     }
 
-    public function getValidSemvers()
+    /**
+     * @return array<int, array<?string>>
+     */
+    public function getValidSemvers(): array
     {
         return [
             [null],
@@ -63,7 +66,10 @@ final class SemverValidatorTest extends ConstraintValidatorTestCase
         ];
     }
 
-    public function getInvalidSemvers()
+    /**
+     * @return array<int, array<string>>
+     */
+    public function getInvalidSemvers(): array
     {
         return [
             ['a'],
@@ -72,7 +78,7 @@ final class SemverValidatorTest extends ConstraintValidatorTestCase
         ];
     }
 
-    protected function createValidator()
+    protected function createValidator(): SemverValidator
     {
         return new SemverValidator();
     }

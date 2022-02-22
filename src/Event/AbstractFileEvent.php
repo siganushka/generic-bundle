@@ -8,7 +8,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 abstract class AbstractFileEvent extends Event
 {
-    protected $file;
+    protected \SplFileInfo $file;
 
     public function __construct(\SplFileInfo $file)
     {

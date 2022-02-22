@@ -31,6 +31,9 @@ class FileUtilsTest extends TestCase
         static::assertSame($formatted, FileUtils::formatBytes($bytes));
     }
 
+    /**
+     * @return array<int, array<int, int|string>>
+     */
     public function provideBytes(): array
     {
         return [

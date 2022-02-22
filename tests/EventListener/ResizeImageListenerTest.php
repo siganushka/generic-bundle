@@ -29,28 +29,28 @@ class ResizeImageListenerTest extends TestCase
 
         $file = new \SplFileInfo($targetFile);
 
-        [$width, $height] = getimagesize($file->getPathname());
+        [$width, $height] = ResizeImageListener::getImageSize($file);
         static::assertSame(500, $width);
         static::assertSame(300, $height);
 
         $listener = new ResizeImageListener();
         $listener->onResizeImageMaxWidth(new ResizeImageMaxWidthEvent($file, 500));
 
-        [$width, $height] = getimagesize($file->getPathname());
+        [$width, $height] = ResizeImageListener::getImageSize($file);
         static::assertSame(500, $width);
         static::assertSame(300, $height);
 
         $listener = new ResizeImageListener();
         $listener->onResizeImageMaxWidth(new ResizeImageMaxWidthEvent($file, 250));
 
-        [$width, $height] = getimagesize($file->getPathname());
+        [$width, $height] = ResizeImageListener::getImageSize($file);
         static::assertSame(250, $width);
         static::assertSame(150, $height);
 
         $listener = new ResizeImageListener();
         $listener->onResizeImageMaxWidth(new ResizeImageMaxWidthEvent($file, 50));
 
-        [$width, $height] = getimagesize($file->getPathname());
+        [$width, $height] = ResizeImageListener::getImageSize($file);
         static::assertSame(50, $width);
         static::assertSame(30, $height);
 
@@ -68,28 +68,28 @@ class ResizeImageListenerTest extends TestCase
 
         $file = new \SplFileInfo($targetFile);
 
-        [$width, $height] = getimagesize($file->getPathname());
+        [$width, $height] = ResizeImageListener::getImageSize($file);
         static::assertSame(300, $width);
         static::assertSame(500, $height);
 
         $listener = new ResizeImageListener();
         $listener->onResizeImageMaxHeight(new ResizeImageMaxHeightEvent($file, 500));
 
-        [$width, $height] = getimagesize($file->getPathname());
+        [$width, $height] = ResizeImageListener::getImageSize($file);
         static::assertSame(300, $width);
         static::assertSame(500, $height);
 
         $listener = new ResizeImageListener();
         $listener->onResizeImageMaxHeight(new ResizeImageMaxHeightEvent($file, 250));
 
-        [$width, $height] = getimagesize($file->getPathname());
+        [$width, $height] = ResizeImageListener::getImageSize($file);
         static::assertSame(150, $width);
         static::assertSame(250, $height);
 
         $listener = new ResizeImageListener();
         $listener->onResizeImageMaxHeight(new ResizeImageMaxHeightEvent($file, 50));
 
-        [$width, $height] = getimagesize($file->getPathname());
+        [$width, $height] = ResizeImageListener::getImageSize($file);
         static::assertSame(30, $width);
         static::assertSame(50, $height);
 

@@ -11,13 +11,18 @@ use Symfony\Component\HttpFoundation\UrlHelper;
  */
 class PublicFileUtils
 {
-    protected $urlHelper;
-    protected $publicDir;
+    protected UrlHelper $urlHelper;
+    protected string $publicDir;
 
     public function __construct(UrlHelper $urlHelper, string $publicDir)
     {
+        $publicDir = realpath($publicDir);
+        if (false === $publicDir) {
+            throw new \RuntimeException('Public dir not found.');
+        }
+
         $this->urlHelper = $urlHelper;
-        $this->publicDir = realpath($publicDir);
+        $this->publicDir = $publicDir;
     }
 
     /**

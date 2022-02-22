@@ -16,10 +16,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Serializer\Encoder\JsonEncode;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
-/**
- * @internal
- * @coversNothing
- */
 final class SiganushkaGenericExtensionTest extends TestCase
 {
     public function testLoadDefaultConfig(): void
@@ -128,6 +124,9 @@ final class SiganushkaGenericExtensionTest extends TestCase
         static::assertSame([['event' => 'loadClassMetadata']], $tablePrefixDef->getTag('doctrine.event_listener'));
     }
 
+    /**
+     * @param array<mixed> $configs
+     */
     protected function createContainerWithConfigs(array $configs): ContainerBuilder
     {
         $container = new ContainerBuilder();
