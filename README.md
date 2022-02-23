@@ -10,7 +10,7 @@
 ### 安装
 
 ```bash
-$ composer require siganushka/generic-bundle
+$ composer require siganushka/generic-bundle:dev-main
 ```
 
 ### 功能

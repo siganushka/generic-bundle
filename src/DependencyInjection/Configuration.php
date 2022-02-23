@@ -13,6 +13,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('siganushka_generic');
+        /** @var ArrayNodeDefinition */
         $rootNode = $treeBuilder->getRootNode();
 
         $this->addDoctrineSection($rootNode);
