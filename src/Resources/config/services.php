@@ -16,7 +16,6 @@ use Siganushka\GenericBundle\Utils\PublicFileUtils;
 use Symfony\Component\Form\Extension\Core\DataTransformer\MoneyToLocalizedStringTransformer;
 use Symfony\Component\Serializer\Encoder\JsonEncode;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
 return static function (ContainerConfigurator $container) {
@@ -69,19 +68,10 @@ return static function (ContainerConfigurator $container) {
     }
 
     if (class_exists(Serializer::class)) {
-        $dateTimeNormalizerOptions = [
-            DateTimeNormalizer::FORMAT_KEY => param('siganushka_generic.datetime.format'),
-            DateTimeNormalizer::TIMEZONE_KEY => param('siganushka_generic.datetime.timezone'),
-        ];
-
         $container->services()
             ->set('siganushka_generic.serializer.encoder.json', JsonEncoder::class)
                 ->arg(0, inline_service(JsonEncode::class)->arg(0, [JsonEncode::OPTIONS => $jsonEncodingOptions]))
                 ->tag('serializer.encoder', ['priority' => 16])
-
-            ->set('siganushka_generic.serializer.normalizer.datetime', DateTimeNormalizer::class)
-                ->arg(0, $dateTimeNormalizerOptions)
-                ->tag('serializer.normalizer', ['priority' => 16])
         ;
     }
 };

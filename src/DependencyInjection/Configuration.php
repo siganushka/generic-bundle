@@ -17,7 +17,6 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->getRootNode();
 
         $this->addDoctrineSection($rootNode);
-        $this->addDatetimeSection($rootNode);
         $this->addJsonSection($rootNode);
         $this->addCurrencySection($rootNode);
 
@@ -32,7 +31,6 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->scalarNode('table_prefix')
-                            ->info('Database table prefix configuration, See: https://www.doctrine-project.org/projects/doctrine-orm/en/2.9/cookbook/sql-table-prefixes.html')
                             ->defaultNull()
                             ->validate()
                                 ->ifTrue(function ($v) {
@@ -50,27 +48,6 @@ class Configuration implements ConfigurationInterface
         ;
     }
 
-    private function addDatetimeSection(ArrayNodeDefinition $rootNode): void
-    {
-        $rootNode
-            ->children()
-                ->arrayNode('datetime')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->scalarNode('format')
-                            ->info('Datetime format configuration, See: https://www.php.net/manual/en/datetime.format.php')
-                            ->defaultValue('Y-m-d H:i:s')
-                        ->end()
-                        ->scalarNode('timezone')
-                            ->info('Datetime timezone configuration, See: https://www.php.net/manual/en/timezones.php')
-                            ->defaultNull()
-                        ->end()
-                    ->end()
-                ->end()
-            ->end()
-        ;
-    }
-
     private function addJsonSection(ArrayNodeDefinition $rootNode): void
     {
         $rootNode
@@ -79,7 +56,6 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->integerNode('encoding_options')
-                            ->info('JSON encoding options configuration, See: https://www.php.net/manual/en/function.json-encode.php')
                             ->defaultValue(\JSON_HEX_TAG | \JSON_HEX_APOS | \JSON_HEX_AMP | \JSON_HEX_QUOT | \JSON_UNESCAPED_UNICODE)
                         ->end()
                     ->end()

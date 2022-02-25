@@ -11,19 +11,7 @@ siganushka_generic:
     doctrine:
         table_prefix: test_ # 可选，默认值为 null 时不添加表前缀
 ```
-
-### 日期格式/时区
-
-该参数为 `Serializer` 提供自定义日期格式/时区。
-
-```yaml
-# ./config/packages/siganushka_generic.yaml
-
-siganushka_generic:
-    datetime:
-        format: 'Y-m-d H:i:s'      # 可选，默认值为 Y-m-d H:i:s
-        timezone: 'Asia/Shanghai'  # 可选，默认值为 null 时由系统决定当前时区
-```
+``
 
 ### JSON 中文编码
 

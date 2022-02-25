@@ -14,7 +14,6 @@ use Siganushka\GenericBundle\Utils\CurrencyUtils;
 use Siganushka\GenericBundle\Utils\PublicFileUtils;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Serializer\Encoder\JsonEncode;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 final class SiganushkaGenericExtensionTest extends TestCase
 {
@@ -23,8 +22,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
         $container = $this->createContainerWithConfigs([]);
 
         static::assertNull($container->getParameter('siganushka_generic.doctrine.table_prefix'));
-        static::assertSame('Y-m-d H:i:s', $container->getParameter('siganushka_generic.datetime.format'));
-        static::assertNull($container->getParameter('siganushka_generic.datetime.timezone'));
         static::assertSame(271, $container->getParameter('siganushka_generic.json.encoding_options'));
         static::assertSame(2, $container->getParameter('siganushka_generic.currency.scale'));
         static::assertTrue($container->getParameter('siganushka_generic.currency.grouping'));
@@ -44,7 +41,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
         static::assertTrue($container->hasDefinition('siganushka_generic.utils.currency'));
         static::assertTrue($container->hasAlias(CurrencyUtils::class));
         static::assertTrue($container->hasDefinition('siganushka_generic.serializer.encoder.json'));
-        static::assertTrue($container->hasDefinition('siganushka_generic.serializer.normalizer.datetime'));
 
         $listenerTagAttributes = [
             ['event' => 'prePersist'],
@@ -78,13 +74,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
         $jsonEncoderDef = $container->getDefinition('siganushka_generic.serializer.encoder.json');
         static::assertTrue($jsonEncoderDef->hasTag('serializer.encoder'));
         static::assertSame([JsonEncode::OPTIONS => '%siganushka_generic.json.encoding_options%'], $jsonEncoderDef->getArgument(0)->getArgument(0));
-
-        $datetimeNormalizerDef = $container->getDefinition('siganushka_generic.serializer.normalizer.datetime');
-        static::assertTrue($datetimeNormalizerDef->hasTag('serializer.normalizer'));
-        static::assertSame([
-            DateTimeNormalizer::FORMAT_KEY => '%siganushka_generic.datetime.format%',
-            DateTimeNormalizer::TIMEZONE_KEY => '%siganushka_generic.datetime.timezone%',
-        ], $datetimeNormalizerDef->getArgument(0));
     }
 
     public function testWithConfigs(): void
@@ -92,10 +81,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
         $configs = [
             'doctrine' => [
                 'table_prefix' => 'test_',
-            ],
-            'datetime' => [
-                'format' => 'm-d H:i',
-                'timezone' => 'RPC',
             ],
             'json' => [
                 'encoding_options' => 0,
@@ -110,8 +95,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
         $container = $this->createContainerWithConfigs([$configs]);
 
         static::assertSame('test_', $container->getParameter('siganushka_generic.doctrine.table_prefix'));
-        static::assertSame('m-d H:i', $container->getParameter('siganushka_generic.datetime.format'));
-        static::assertSame('RPC', $container->getParameter('siganushka_generic.datetime.timezone'));
         static::assertSame(0, $container->getParameter('siganushka_generic.json.encoding_options'));
         static::assertSame(0, $container->getParameter('siganushka_generic.currency.scale'));
         static::assertFalse($container->getParameter('siganushka_generic.currency.grouping'));

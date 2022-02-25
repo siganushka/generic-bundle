@@ -23,8 +23,6 @@ class SiganushkaGenericExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $container->setParameter('siganushka_generic.doctrine.table_prefix', $config['doctrine']['table_prefix']);
-        $container->setParameter('siganushka_generic.datetime.format', $config['datetime']['format']);
-        $container->setParameter('siganushka_generic.datetime.timezone', $config['datetime']['timezone']);
         $container->setParameter('siganushka_generic.json.encoding_options', $config['json']['encoding_options']);
         $container->setParameter('siganushka_generic.currency.scale', $config['currency']['scale']);
         $container->setParameter('siganushka_generic.currency.grouping', $config['currency']['grouping']);

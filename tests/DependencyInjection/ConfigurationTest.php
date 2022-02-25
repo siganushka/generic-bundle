@@ -40,10 +40,6 @@ final class ConfigurationTest extends TestCase
             'doctrine' => [
                 'table_prefix' => null,
             ],
-            'datetime' => [
-                'format' => 'Y-m-d H:i:s',
-                'timezone' => null,
-            ],
             'json' => [
                 'encoding_options' => 271,
             ],
@@ -67,20 +63,6 @@ final class ConfigurationTest extends TestCase
         ]);
 
         static::assertSame($processedConfig['doctrine'], $config);
-    }
-
-    public function testCustomDatetime(): void
-    {
-        $config = [
-            'format' => 'm-d H:i',
-            'timezone' => 'RPC',
-        ];
-
-        $processedConfig = $this->processor->processConfiguration($this->configuration, [
-            ['datetime' => $config],
-        ]);
-
-        static::assertSame($processedConfig['datetime'], $config);
     }
 
     public function testCustomJson(): void
