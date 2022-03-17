@@ -6,8 +6,10 @@ namespace Siganushka\GenericBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\Serializer\Encoder\JsonEncode;
 
 class SiganushkaGenericExtension extends Extension
 {
@@ -22,15 +24,30 @@ class SiganushkaGenericExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('siganushka_generic.doctrine.table_prefix', $config['doctrine']['table_prefix']);
-        $container->setParameter('siganushka_generic.json.encoding_options', $config['json']['encoding_options']);
-        $container->setParameter('siganushka_generic.currency.decimals', $config['currency']['decimals']);
-        $container->setParameter('siganushka_generic.currency.dec_point', $config['currency']['dec_point']);
-        $container->setParameter('siganushka_generic.currency.thousands_sep', $config['currency']['thousands_sep']);
-        $container->setParameter('siganushka_generic.currency.divisor', $config['currency']['divisor']);
-
         if (null === $config['doctrine']['table_prefix']) {
             $container->removeDefinition('siganushka_generic.doctrine.listener.table_prefix');
+        } else {
+            $tablePrefixDef = $container->getDefinition('siganushka_generic.doctrine.listener.table_prefix');
+            $tablePrefixDef->setArgument(0, $config['doctrine']['table_prefix']);
         }
+
+        if ($container->hasDefinition('siganushka_generic.serializer.encoder.json')) {
+            $jsonEncodeDef = new Definition(JsonEncode::class);
+            $jsonEncodeDef->setArgument(0, [JsonEncode::OPTIONS => $config['json']['encoding_options']]);
+
+            $jsonEncoderDef = $container->getDefinition('siganushka_generic.serializer.encoder.json');
+            $jsonEncoderDef->setArgument(0, $jsonEncodeDef);
+        }
+
+        $jsonResponseDef = $container->getDefinition('siganushka_generic.listener.json_response');
+        $jsonResponseDef->setArgument(0, $config['json']['encoding_options']);
+
+        $currencyUtilsDef = $container->getDefinition('siganushka_generic.utils.currency');
+        $currencyUtilsDef->setArguments([
+            $config['currency']['decimals'],
+            $config['currency']['dec_point'],
+            $config['currency']['thousands_sep'],
+            $config['currency']['divisor'],
+        ]);
     }
 }

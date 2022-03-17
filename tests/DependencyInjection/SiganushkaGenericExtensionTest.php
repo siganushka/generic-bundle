@@ -21,26 +21,22 @@ final class SiganushkaGenericExtensionTest extends TestCase
     {
         $container = $this->createContainerWithConfigs([]);
 
-        static::assertNull($container->getParameter('siganushka_generic.doctrine.table_prefix'));
-        static::assertSame(271, $container->getParameter('siganushka_generic.json.encoding_options'));
-        static::assertSame(2, $container->getParameter('siganushka_generic.currency.decimals'));
-        static::assertSame('.', $container->getParameter('siganushka_generic.currency.dec_point'));
-        static::assertSame(',', $container->getParameter('siganushka_generic.currency.thousands_sep'));
-        static::assertSame(100, $container->getParameter('siganushka_generic.currency.divisor'));
-
         static::assertFalse($container->hasDefinition('siganushka_generic.doctrine.listener.table_prefix'));
         static::assertTrue($container->hasDefinition('siganushka_generic.doctrine.listener.timestampable'));
         static::assertTrue($container->hasDefinition('siganushka_generic.doctrine.listener.sortable'));
         static::assertTrue($container->hasDefinition('siganushka_generic.listener.json_response'));
         static::assertTrue($container->hasDefinition('siganushka_generic.listener.public_file_data'));
         static::assertTrue($container->hasDefinition('siganushka_generic.listener.resize_image'));
+        static::assertTrue($container->hasDefinition('siganushka_generic.serializer.encoder.json'));
+
         static::assertTrue($container->hasDefinition('siganushka_generic.identifier.generator.sequence'));
         static::assertTrue($container->hasAlias(SequenceGenerator::class));
+
         static::assertTrue($container->hasDefinition('siganushka_generic.utils.public_file'));
         static::assertTrue($container->hasAlias(PublicFileUtils::class));
+
         static::assertTrue($container->hasDefinition('siganushka_generic.utils.currency'));
         static::assertTrue($container->hasAlias(CurrencyUtils::class));
-        static::assertTrue($container->hasDefinition('siganushka_generic.serializer.encoder.json'));
 
         $listenerTagAttributes = [
             ['event' => 'prePersist'],
@@ -48,15 +44,16 @@ final class SiganushkaGenericExtensionTest extends TestCase
         ];
 
         $timestampableDef = $container->getDefinition('siganushka_generic.doctrine.listener.timestampable');
-        $sortableDef = $container->getDefinition('siganushka_generic.doctrine.listener.sortable');
         static::assertSame(TimestampableListener::class, $timestampableDef->getClass());
-        static::assertSame(SortableListener::class, $sortableDef->getClass());
         static::assertSame($listenerTagAttributes, $timestampableDef->getTag('doctrine.event_listener'));
+
+        $sortableDef = $container->getDefinition('siganushka_generic.doctrine.listener.sortable');
+        static::assertSame(SortableListener::class, $sortableDef->getClass());
         static::assertSame($listenerTagAttributes, $sortableDef->getTag('doctrine.event_listener'));
 
         $jsonResponseDef = $container->getDefinition('siganushka_generic.listener.json_response');
         static::assertTrue($jsonResponseDef->hasTag('kernel.event_subscriber'));
-        static::assertSame('%siganushka_generic.json.encoding_options%', $jsonResponseDef->getArgument(0));
+        static::assertSame(271, $jsonResponseDef->getArgument(0));
 
         $publicFileDataDef = $container->getDefinition('siganushka_generic.listener.public_file_data');
         static::assertTrue($publicFileDataDef->hasTag('kernel.event_subscriber'));
@@ -66,14 +63,11 @@ final class SiganushkaGenericExtensionTest extends TestCase
         static::assertTrue($resizeImageDef->hasTag('kernel.event_subscriber'));
 
         $currencyDef = $container->getDefinition('siganushka_generic.utils.currency');
-        static::assertSame('%siganushka_generic.currency.decimals%', $currencyDef->getArgument(0));
-        static::assertSame('%siganushka_generic.currency.dec_point%', $currencyDef->getArgument(1));
-        static::assertSame('%siganushka_generic.currency.thousands_sep%', $currencyDef->getArgument(2));
-        static::assertSame('%siganushka_generic.currency.divisor%', $currencyDef->getArgument(3));
+        static::assertSame([2, '.', ',', 100], $currencyDef->getArguments());
 
         $jsonEncoderDef = $container->getDefinition('siganushka_generic.serializer.encoder.json');
         static::assertTrue($jsonEncoderDef->hasTag('serializer.encoder'));
-        static::assertSame([JsonEncode::OPTIONS => '%siganushka_generic.json.encoding_options%'], $jsonEncoderDef->getArgument(0)->getArgument(0));
+        static::assertSame([JsonEncode::OPTIONS => 271], $jsonEncoderDef->getArgument(0)->getArgument(0));
     }
 
     public function testWithConfigs(): void
@@ -93,17 +87,17 @@ final class SiganushkaGenericExtensionTest extends TestCase
 
         $container = $this->createContainerWithConfigs([$configs]);
 
-        static::assertSame('test_', $container->getParameter('siganushka_generic.doctrine.table_prefix'));
-        static::assertSame(0, $container->getParameter('siganushka_generic.json.encoding_options'));
-        static::assertSame(0, $container->getParameter('siganushka_generic.currency.decimals'));
-        static::assertSame('.', $container->getParameter('siganushka_generic.currency.dec_point'));
-        static::assertSame(',', $container->getParameter('siganushka_generic.currency.thousands_sep'));
-        static::assertSame(1, $container->getParameter('siganushka_generic.currency.divisor'));
-
         $tablePrefixDef = $container->getDefinition('siganushka_generic.doctrine.listener.table_prefix');
-
         static::assertSame(TablePrefixListener::class, $tablePrefixDef->getClass());
         static::assertSame([['event' => 'loadClassMetadata']], $tablePrefixDef->getTag('doctrine.event_listener'));
+        static::assertSame($configs['doctrine']['table_prefix'], $tablePrefixDef->getArgument(0));
+
+        $currencyDef = $container->getDefinition('siganushka_generic.utils.currency');
+        static::assertSame([0, '.', ',', 1], $currencyDef->getArguments());
+
+        $jsonEncoderDef = $container->getDefinition('siganushka_generic.serializer.encoder.json');
+        static::assertTrue($jsonEncoderDef->hasTag('serializer.encoder'));
+        static::assertSame([JsonEncode::OPTIONS => 0], $jsonEncoderDef->getArgument(0)->getArgument(0));
     }
 
     /**
