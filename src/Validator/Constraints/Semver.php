@@ -16,6 +16,9 @@ class Semver extends Constraint
 
     public string $message = 'This value is not a valid semantic version.';
 
+    /**
+     * @var array<string, string>
+     */
     protected static $errorNames = [
         self::INVALID_ERROR => 'INVALID_ERROR',
     ];

@@ -45,6 +45,11 @@ class Configuration implements ConfigurationInterface
                                     return !preg_match('/^[a-zA-Z0-9_]+$/', $v);
                                 })
                                 ->thenInvalid('The "%s" for doctrine.table_prefix contains illegal character(s).')
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
         ;
     }
 

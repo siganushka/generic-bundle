@@ -36,6 +36,7 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
 
         try {
+            /** @var string */
             $result = $propertyAccessor->getValue($value, $this->identifierField);
         } catch (\Throwable $th) {
             throw new TransformationFailedException($th->getMessage(), 0, $th);
