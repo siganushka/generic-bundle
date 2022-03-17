@@ -11,7 +11,7 @@ class CurrencyUtilsTest extends TestCase
 {
     // public function testPerformance(): void
     // {
-    //     $formatter = new CurrencyUtils();
+    //     $formatter = new CurrencyUtils(2, '.', ',', 100);
     //     $time_pre = microtime(true);
 
     //     for ($i = -10; $i < 10000; $i ++) {

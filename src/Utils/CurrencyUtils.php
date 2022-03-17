@@ -29,7 +29,9 @@ class CurrencyUtils
             $number = 0;
         }
 
-        $number /= $this->divisor;
+        if (1 !== $this->divisor) {
+            $number /= $this->divisor;
+        }
 
         return number_format($number, $this->decimals, $this->decPoint, $this->thousandsSep);
     }
