@@ -4,28 +4,33 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\Utils;
 
-use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\Form\Extension\Core\DataTransformer\MoneyToLocalizedStringTransformer;
-
 /**
  * Currency utils.
  */
 class CurrencyUtils
 {
-    protected DataTransformerInterface $transformer;
+    private int $decimals;
+    private string $decPoint;
+    private string $thousandsSep;
+    private int $divisor;
 
-    public function __construct(?int $scale = 2, ?bool $grouping = true, ?int $roundingMode = \NumberFormatter::ROUND_HALFUP, ?int $divisor = 100)
+    public function __construct(int $decimals, string $decPoint, string $thousandsSep, int $divisor)
     {
-        $this->transformer = new MoneyToLocalizedStringTransformer($scale, $grouping, $roundingMode, $divisor);
+        $this->decimals = $decimals;
+        $this->decPoint = $decPoint;
+        $this->thousandsSep = $thousandsSep;
+        $this->divisor = $divisor;
     }
 
-    public function format(?int $num): string
+    public function format(?int $number): string
     {
         // null to 0
-        if (null === $num) {
-            $num = 0;
+        if (null === $number) {
+            $number = 0;
         }
 
-        return $this->transformer->transform($num);
+        $number /= $this->divisor;
+
+        return number_format($number, $this->decimals, $this->decPoint, $this->thousandsSep);
     }
 }

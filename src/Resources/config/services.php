@@ -58,9 +58,9 @@ return static function (ContainerConfigurator $container) {
         $container->services()
             ->set('siganushka_generic.utils.currency', CurrencyUtils::class)
             ->args([
-                param('siganushka_generic.currency.scale'),
-                param('siganushka_generic.currency.grouping'),
-                param('siganushka_generic.currency.rounding_mode'),
+                param('siganushka_generic.currency.decimals'),
+                param('siganushka_generic.currency.dec_point'),
+                param('siganushka_generic.currency.thousands_sep'),
                 param('siganushka_generic.currency.divisor'),
             ])
             ->alias(CurrencyUtils::class, 'siganushka_generic.utils.currency')

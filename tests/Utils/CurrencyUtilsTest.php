@@ -9,17 +9,27 @@ use Siganushka\GenericBundle\Utils\CurrencyUtils;
 
 class CurrencyUtilsTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        \Locale::setDefault('zh-CN');
-    }
+    // public function testPerformance(): void
+    // {
+    //     $formatter = new CurrencyUtils();
+    //     $time_pre = microtime(true);
+
+    //     for ($i = -10; $i < 10000; $i ++) {
+    //         $v = $formatter->format($i);
+    //         // dump($i, $v);
+    //     }
+
+    //     $time_post = microtime(true);
+    //     $exec_time = $time_post - $time_pre;
+    //     dd($exec_time);
+    // }
 
     /**
      * @dataProvider getCentsOfCurrencies
      */
     public function testDefaultOptions(?int $currency, string $formattedCurrency): void
     {
-        $formatter = new CurrencyUtils();
+        $formatter = new CurrencyUtils(2, '.', ',', 100);
         static::assertSame($formattedCurrency, $formatter->format($currency));
     }
 
@@ -28,7 +38,7 @@ class CurrencyUtilsTest extends TestCase
      */
     public function testCustomOptions(?int $currency, string $formattedCurrency): void
     {
-        $formatter = new CurrencyUtils(0, false, null, 1);
+        $formatter = new CurrencyUtils(0, '.', ',', 1);
         static::assertSame($formattedCurrency, $formatter->format($currency));
     }
 
@@ -59,8 +69,8 @@ class CurrencyUtilsTest extends TestCase
             [-1, '-1'],
             [-128, '-128'],
             [100, '100'],
-            [65535, '65535'],
-            [2147483647, '2147483647'],
+            [65535, '65,535'],
+            [2147483647, '2,147,483,647'],
         ];
     }
 }

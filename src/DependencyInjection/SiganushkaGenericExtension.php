@@ -24,9 +24,9 @@ class SiganushkaGenericExtension extends Extension
 
         $container->setParameter('siganushka_generic.doctrine.table_prefix', $config['doctrine']['table_prefix']);
         $container->setParameter('siganushka_generic.json.encoding_options', $config['json']['encoding_options']);
-        $container->setParameter('siganushka_generic.currency.scale', $config['currency']['scale']);
-        $container->setParameter('siganushka_generic.currency.grouping', $config['currency']['grouping']);
-        $container->setParameter('siganushka_generic.currency.rounding_mode', $config['currency']['rounding_mode']);
+        $container->setParameter('siganushka_generic.currency.decimals', $config['currency']['decimals']);
+        $container->setParameter('siganushka_generic.currency.dec_point', $config['currency']['dec_point']);
+        $container->setParameter('siganushka_generic.currency.thousands_sep', $config['currency']['thousands_sep']);
         $container->setParameter('siganushka_generic.currency.divisor', $config['currency']['divisor']);
 
         if (null === $config['doctrine']['table_prefix']) {

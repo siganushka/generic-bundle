@@ -71,20 +71,9 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('currency')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->integerNode('scale')->defaultValue(2)->end()
-                        ->booleanNode('grouping')->defaultTrue()->end()
-                        ->enumNode('rounding_mode')
-                            ->defaultValue(\NumberFormatter::ROUND_HALFUP)
-                            ->values([
-                                \NumberFormatter::ROUND_FLOOR,
-                                \NumberFormatter::ROUND_DOWN,
-                                \NumberFormatter::ROUND_HALFDOWN,
-                                \NumberFormatter::ROUND_HALFEVEN,
-                                \NumberFormatter::ROUND_HALFUP,
-                                \NumberFormatter::ROUND_UP,
-                                \NumberFormatter::ROUND_CEILING,
-                            ])
-                        ->end()
+                        ->integerNode('decimals')->defaultValue(2)->end()
+                        ->scalarNode('dec_point')->defaultValue('.')->end()
+                        ->scalarNode('thousands_sep')->defaultValue(',')->end()
                         ->integerNode('divisor')->defaultValue(100)->end()
                     ->end()
                 ->end()

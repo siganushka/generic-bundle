@@ -23,9 +23,9 @@ final class SiganushkaGenericExtensionTest extends TestCase
 
         static::assertNull($container->getParameter('siganushka_generic.doctrine.table_prefix'));
         static::assertSame(271, $container->getParameter('siganushka_generic.json.encoding_options'));
-        static::assertSame(2, $container->getParameter('siganushka_generic.currency.scale'));
-        static::assertTrue($container->getParameter('siganushka_generic.currency.grouping'));
-        static::assertSame(\NumberFormatter::ROUND_HALFUP, $container->getParameter('siganushka_generic.currency.rounding_mode'));
+        static::assertSame(2, $container->getParameter('siganushka_generic.currency.decimals'));
+        static::assertSame('.', $container->getParameter('siganushka_generic.currency.dec_point'));
+        static::assertSame(',', $container->getParameter('siganushka_generic.currency.thousands_sep'));
         static::assertSame(100, $container->getParameter('siganushka_generic.currency.divisor'));
 
         static::assertFalse($container->hasDefinition('siganushka_generic.doctrine.listener.table_prefix'));
@@ -66,9 +66,9 @@ final class SiganushkaGenericExtensionTest extends TestCase
         static::assertTrue($resizeImageDef->hasTag('kernel.event_subscriber'));
 
         $currencyDef = $container->getDefinition('siganushka_generic.utils.currency');
-        static::assertSame('%siganushka_generic.currency.scale%', $currencyDef->getArgument(0));
-        static::assertSame('%siganushka_generic.currency.grouping%', $currencyDef->getArgument(1));
-        static::assertSame('%siganushka_generic.currency.rounding_mode%', $currencyDef->getArgument(2));
+        static::assertSame('%siganushka_generic.currency.decimals%', $currencyDef->getArgument(0));
+        static::assertSame('%siganushka_generic.currency.dec_point%', $currencyDef->getArgument(1));
+        static::assertSame('%siganushka_generic.currency.thousands_sep%', $currencyDef->getArgument(2));
         static::assertSame('%siganushka_generic.currency.divisor%', $currencyDef->getArgument(3));
 
         $jsonEncoderDef = $container->getDefinition('siganushka_generic.serializer.encoder.json');
@@ -86,8 +86,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
                 'encoding_options' => 0,
             ],
             'currency' => [
-                'scale' => 0,
-                'grouping' => false,
+                'decimals' => 0,
                 'divisor' => 1,
             ],
         ];
@@ -96,9 +95,9 @@ final class SiganushkaGenericExtensionTest extends TestCase
 
         static::assertSame('test_', $container->getParameter('siganushka_generic.doctrine.table_prefix'));
         static::assertSame(0, $container->getParameter('siganushka_generic.json.encoding_options'));
-        static::assertSame(0, $container->getParameter('siganushka_generic.currency.scale'));
-        static::assertFalse($container->getParameter('siganushka_generic.currency.grouping'));
-        static::assertSame(\NumberFormatter::ROUND_HALFUP, $container->getParameter('siganushka_generic.currency.rounding_mode'));
+        static::assertSame(0, $container->getParameter('siganushka_generic.currency.decimals'));
+        static::assertSame('.', $container->getParameter('siganushka_generic.currency.dec_point'));
+        static::assertSame(',', $container->getParameter('siganushka_generic.currency.thousands_sep'));
         static::assertSame(1, $container->getParameter('siganushka_generic.currency.divisor'));
 
         $tablePrefixDef = $container->getDefinition('siganushka_generic.doctrine.listener.table_prefix');

@@ -44,9 +44,9 @@ final class ConfigurationTest extends TestCase
                 'encoding_options' => 271,
             ],
             'currency' => [
-                'scale' => 2,
-                'grouping' => true,
-                'rounding_mode' => 6,
+                'decimals' => 2,
+                'dec_point' => '.',
+                'thousands_sep' => ',',
                 'divisor' => 100,
             ],
         ]);
@@ -81,9 +81,9 @@ final class ConfigurationTest extends TestCase
     public function testCustomJCurrency(): void
     {
         $config = [
-            'scale' => 0,
-            'grouping' => false,
-            'rounding_mode' => 6,
+            'decimals' => 0,
+            'dec_point' => '_',
+            'thousands_sep' => '_',
             'divisor' => 1,
         ];
 
