@@ -51,7 +51,7 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
             return null;
         }
 
-        if (!is_scalar($value)) {
+        if (!\is_scalar($value)) {
             throw new UnexpectedTypeException($value, 'scalar');
         }
 
