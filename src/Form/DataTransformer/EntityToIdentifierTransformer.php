@@ -23,10 +23,10 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
         $this->identifierField = $identifierField;
     }
 
-    public function transform($value): string
+    public function transform($value): ?string
     {
         if (null === $value) {
-            return '';
+            return null;
         }
 
         if (!$value instanceof $this->className) {

@@ -38,6 +38,24 @@ class EntityToIdentifierTransformerTest extends TestCase
         static::assertEquals($this->foo->id, $transformer->transform($this->foo));
     }
 
+    public function testTransformNullValue(): void
+    {
+        $transformer = $this->createEntityToIdentifierTransformer(Foo::class, 'id');
+        static::assertNull($transformer->reverseTransform(null));
+    }
+
+    public function testTransformEmptyValue(): void
+    {
+        $transformer = $this->createEntityToIdentifierTransformer(Foo::class, 'id');
+        static::assertNull($transformer->reverseTransform(''));
+    }
+
+    public function testreverseTransformNullValue(): void
+    {
+        $transformer = $this->createEntityToIdentifierTransformer(Foo::class, 'id');
+        static::assertNull($transformer->transform(null));
+    }
+
     public function testTransformInvalidValueException(): void
     {
         $this->expectException(UnexpectedTypeException::class);
