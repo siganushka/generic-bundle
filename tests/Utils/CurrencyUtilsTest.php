@@ -11,7 +11,7 @@ class CurrencyUtilsTest extends TestCase
 {
     // public function testPerformance(): void
     // {
-    //     $formatter = new CurrencyUtils(2, '.', ',', 100);
+    //     $formatter = new CurrencyUtils();
     //     $time_pre = microtime(true);
 
     //     for ($i = -10; $i < 10000; $i ++) {
@@ -27,23 +27,28 @@ class CurrencyUtilsTest extends TestCase
     /**
      * @dataProvider getCentsOfCurrencies
      */
-    public function testDefaultOptions(?int $currency, string $formattedCurrency): void
+    public function testDefaultOptions(?int $currency, string $formattedCurrency, array $context = []): void
     {
-        $formatter = new CurrencyUtils(2, '.', ',', 100);
-        static::assertSame($formattedCurrency, $formatter->format($currency));
+        $formatter = new CurrencyUtils();
+        static::assertSame($formattedCurrency, $formatter->format($currency, $context));
     }
 
     /**
      * @dataProvider getCurrencies
      */
-    public function testCustomOptions(?int $currency, string $formattedCurrency): void
+    public function testCustomOptions(?int $currency, string $formattedCurrency, array $context = []): void
     {
-        $formatter = new CurrencyUtils(0, '.', ',', 1);
-        static::assertSame($formattedCurrency, $formatter->format($currency));
+        $defaultContext = [
+            CurrencyUtils::DIVISOR => 1,
+            CurrencyUtils::DECIMALS => 0,
+        ];
+
+        $formatter = new CurrencyUtils($defaultContext);
+        static::assertSame($formattedCurrency, $formatter->format($currency, $context));
     }
 
     /**
-     * @return array<int, array<int, int|string|null>>
+     * @return array<int, array<int, int|string|null, ?array<string, mixed>>>
      */
     public function getCentsOfCurrencies(): array
     {
@@ -55,6 +60,7 @@ class CurrencyUtilsTest extends TestCase
             [100, '1.00'],
             [65535, '655.35'],
             [2147483647, '21,474,836.47'],
+            [2147483647, '21474836.47', [CurrencyUtils::THOUSANDS_SEP => '']],
         ];
     }
 
@@ -71,6 +77,7 @@ class CurrencyUtilsTest extends TestCase
             [100, '100'],
             [65535, '65,535'],
             [2147483647, '2,147,483,647'],
+            [2147483647, '2147483647', [CurrencyUtils::THOUSANDS_SEP => '']],
         ];
     }
 }

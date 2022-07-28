@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\DependencyInjection;
 
+use Siganushka\GenericBundle\Utils\CurrencyUtils;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -43,11 +44,11 @@ class SiganushkaGenericExtension extends Extension
         $jsonResponseDef->setArgument(0, $config['json']['encoding_options']);
 
         $currencyUtilsDef = $container->getDefinition('siganushka_generic.utils.currency');
-        $currencyUtilsDef->setArguments([
-            $config['currency']['decimals'],
-            $config['currency']['dec_point'],
-            $config['currency']['thousands_sep'],
-            $config['currency']['divisor'],
+        $currencyUtilsDef->setArgument(0, [
+            CurrencyUtils::DIVISOR => $config['currency']['divisor'],
+            CurrencyUtils::DECIMALS => $config['currency']['decimals'],
+            CurrencyUtils::DEC_POINT => $config['currency']['dec_point'],
+            CurrencyUtils::THOUSANDS_SEP => $config['currency']['thousands_sep'],
         ]);
     }
 }

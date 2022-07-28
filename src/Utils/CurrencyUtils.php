@@ -9,30 +9,64 @@ namespace Siganushka\GenericBundle\Utils;
  */
 class CurrencyUtils
 {
-    private int $decimals;
-    private string $decPoint;
-    private string $thousandsSep;
-    private int $divisor;
+    public const DIVISOR = 'divisor';
+    public const DECIMALS = 'decimals';
+    public const DEC_POINT = 'dec_point';
+    public const THOUSANDS_SEP = 'thousands_sep';
 
-    public function __construct(int $decimals, string $decPoint, string $thousandsSep, int $divisor)
+    /**
+     * @var array{
+     *  divisor: int,
+     *  decimals: int,
+     *  dec_point: string,
+     *  thousands_sep: string
+     * }
+     */
+    private array $defaultContext = [
+        self::DIVISOR => 100,
+        self::DECIMALS => 2,
+        self::DEC_POINT => '.',
+        self::THOUSANDS_SEP => ',',
+    ];
+
+    /**
+     * @param array{
+     *  divisor?: int,
+     *  decimals?: int,
+     *  dec_point?: string,
+     *  thousands_sep?: string
+     * } $defaultContext
+     */
+    public function __construct(array $defaultContext = [])
     {
-        $this->decimals = $decimals;
-        $this->decPoint = $decPoint;
-        $this->thousandsSep = $thousandsSep;
-        $this->divisor = $divisor;
+        $this->defaultContext = array_merge($this->defaultContext, $defaultContext);
     }
 
-    public function format(?int $number): string
+    /**
+     * @param array{
+     *  divisor?: int,
+     *  decimals?: int,
+     *  dec_point?: string,
+     *  thousands_sep?: string
+     * } $context
+     */
+    public function format(?int $number, array $context = []): string
     {
         // null to 0
         if (null === $number) {
             $number = 0;
         }
 
-        if (1 !== $this->divisor) {
-            $number /= $this->divisor;
+        $divisor = $context[self::DIVISOR] ?? $this->defaultContext[self::DIVISOR];
+        if (1 !== $divisor) {
+            $number /= $divisor;
         }
 
-        return number_format($number, $this->decimals, $this->decPoint, $this->thousandsSep);
+        return number_format(
+            $number,
+            $context[self::DECIMALS] ?? $this->defaultContext[self::DECIMALS],
+            $context[self::DEC_POINT] ?? $this->defaultContext[self::DEC_POINT],
+            $context[self::THOUSANDS_SEP] ?? $this->defaultContext[self::THOUSANDS_SEP],
+        );
     }
 }

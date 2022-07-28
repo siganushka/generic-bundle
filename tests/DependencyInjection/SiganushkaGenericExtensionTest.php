@@ -63,7 +63,12 @@ final class SiganushkaGenericExtensionTest extends TestCase
         static::assertTrue($resizeImageDef->hasTag('kernel.event_subscriber'));
 
         $currencyDef = $container->getDefinition('siganushka_generic.utils.currency');
-        static::assertSame([2, '.', ',', 100], $currencyDef->getArguments());
+        static::assertSame([
+            'divisor' => 100,
+            'decimals' => 2,
+            'dec_point' => '.',
+            'thousands_sep' => ',',
+        ], $currencyDef->getArgument(0));
 
         $jsonEncoderDef = $container->getDefinition('siganushka_generic.serializer.encoder.json');
         static::assertTrue($jsonEncoderDef->hasTag('serializer.encoder'));
@@ -80,8 +85,8 @@ final class SiganushkaGenericExtensionTest extends TestCase
                 'encoding_options' => 0,
             ],
             'currency' => [
-                'decimals' => 0,
-                'divisor' => 1,
+                CurrencyUtils::DIVISOR => 1,
+                CurrencyUtils::DECIMALS => 0,
             ],
         ];
 
@@ -93,7 +98,12 @@ final class SiganushkaGenericExtensionTest extends TestCase
         static::assertSame($configs['doctrine']['table_prefix'], $tablePrefixDef->getArgument(0));
 
         $currencyDef = $container->getDefinition('siganushka_generic.utils.currency');
-        static::assertSame([0, '.', ',', 1], $currencyDef->getArguments());
+        static::assertSame([
+            'divisor' => 1,
+            'decimals' => 0,
+            'dec_point' => '.',
+            'thousands_sep' => ',',
+        ], $currencyDef->getArgument(0));
 
         $jsonEncoderDef = $container->getDefinition('siganushka_generic.serializer.encoder.json');
         static::assertTrue($jsonEncoderDef->hasTag('serializer.encoder'));
