@@ -13,9 +13,13 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 class EntityToIdentifierTransformer implements DataTransformerInterface
 {
     protected ManagerRegistry $managerRegistry;
+    /** @var class-string */
     protected string $className;
     protected string $identifierField;
 
+    /**
+     * @param class-string $className
+     */
     public function __construct(ManagerRegistry $managerRegistry, string $className, string $identifierField)
     {
         $this->managerRegistry = $managerRegistry;
