@@ -10,9 +10,11 @@ use Siganushka\Contracts\Doctrine\EventListener\TimestampableListener;
 use Siganushka\GenericBundle\EventListener\JsonResponseListener;
 use Siganushka\GenericBundle\EventListener\PublicFileDataListener;
 use Siganushka\GenericBundle\EventListener\ResizeImageListener;
+use Siganushka\GenericBundle\Form\Extension\DisableHtml5Validation;
 use Siganushka\GenericBundle\Identifier\SequenceGenerator;
 use Siganushka\GenericBundle\Utils\CurrencyUtils;
 use Siganushka\GenericBundle\Utils\PublicFileUtils;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Serializer;
 
@@ -39,8 +41,8 @@ return static function (ContainerConfigurator $container) {
             ->tag('doctrine.event_listener', ['event' => 'prePersist'])
             ->tag('doctrine.event_listener', ['event' => 'preUpdate'])
 
-        ->set('siganushka_generic.identifier.generator.sequence', SequenceGenerator::class)
-            ->alias(SequenceGenerator::class, 'siganushka_generic.identifier.generator.sequence')
+        ->set('siganushka_generic.identifier.sequence', SequenceGenerator::class)
+            ->alias(SequenceGenerator::class, 'siganushka_generic.identifier.sequence')
 
         ->set('siganushka_generic.utils.public_file', PublicFileUtils::class)
             ->arg(0, service('url_helper'))
@@ -50,6 +52,13 @@ return static function (ContainerConfigurator $container) {
         ->set('siganushka_generic.utils.currency', CurrencyUtils::class)
             ->alias(CurrencyUtils::class, 'siganushka_generic.utils.currency')
     ;
+
+    if (class_exists(Form::class)) {
+        $container->services()
+            ->set('siganushka_generic.form.type_extension.disable_html5_validation', DisableHtml5Validation::class)
+                ->tag('form.type_extension')
+        ;
+    }
 
     if (class_exists(Serializer::class)) {
         $container->services()

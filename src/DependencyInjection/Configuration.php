@@ -17,6 +17,7 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->getRootNode();
 
         $this->addDoctrineSection($rootNode);
+        $this->addFormSection($rootNode);
         $this->addJsonSection($rootNode);
         $this->addCurrencySection($rootNode);
 
@@ -46,6 +47,22 @@ class Configuration implements ConfigurationInterface
                                 })
                                 ->thenInvalid('The "%s" for doctrine.table_prefix contains illegal character(s).')
                             ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+    }
+
+    private function addFormSection(ArrayNodeDefinition $rootNode): void
+    {
+        $rootNode
+            ->children()
+                ->arrayNode('form')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->booleanNode('html5_validation')
+                            ->defaultFalse()
                         ->end()
                     ->end()
                 ->end()

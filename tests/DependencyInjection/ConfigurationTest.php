@@ -40,6 +40,9 @@ final class ConfigurationTest extends TestCase
             'doctrine' => [
                 'table_prefix' => null,
             ],
+            'form' => [
+                'html5_validation' => false,
+            ],
             'json' => [
                 'encoding_options' => 271,
             ],
@@ -52,7 +55,7 @@ final class ConfigurationTest extends TestCase
         ]);
     }
 
-    public function testCustomDoctrine(): void
+    public function testCustomDoctrineConfig(): void
     {
         $config = [
             'table_prefix' => 'test_',
@@ -65,7 +68,20 @@ final class ConfigurationTest extends TestCase
         static::assertSame($processedConfig['doctrine'], $config);
     }
 
-    public function testCustomJson(): void
+    public function testCustomFormConfig(): void
+    {
+        $config = [
+            'html5_validation' => true,
+        ];
+
+        $processedConfig = $this->processor->processConfiguration($this->configuration, [
+            ['form' => $config],
+        ]);
+
+        static::assertSame($processedConfig['form'], $config);
+    }
+
+    public function testCustomJsonConfig(): void
     {
         $config = [
             'encoding_options' => 0,
@@ -78,7 +94,7 @@ final class ConfigurationTest extends TestCase
         static::assertSame($processedConfig['json'], $config);
     }
 
-    public function testCustomJCurrency(): void
+    public function testCustomCurrencyConfig(): void
     {
         $config = [
             'decimals' => 0,

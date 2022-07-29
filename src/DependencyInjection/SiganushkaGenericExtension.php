@@ -32,6 +32,10 @@ class SiganushkaGenericExtension extends Extension
             $tablePrefixDef->setArgument(0, $config['doctrine']['table_prefix']);
         }
 
+        if ($config['form']['html5_validation'] && $container->hasDefinition('siganushka_generic.form.type_extension.disable_html5_validation')) {
+            $container->removeDefinition('siganushka_generic.form.type_extension.disable_html5_validation');
+        }
+
         if ($container->hasDefinition('siganushka_generic.serializer.encoder.json')) {
             $jsonEncodeDef = new Definition(JsonEncode::class);
             $jsonEncodeDef->setArgument(0, [JsonEncode::OPTIONS => $config['json']['encoding_options']]);

@@ -27,9 +27,10 @@ final class SiganushkaGenericExtensionTest extends TestCase
         static::assertTrue($container->hasDefinition('siganushka_generic.listener.json_response'));
         static::assertTrue($container->hasDefinition('siganushka_generic.listener.public_file_data'));
         static::assertTrue($container->hasDefinition('siganushka_generic.listener.resize_image'));
+        static::assertTrue($container->hasDefinition('siganushka_generic.form.type_extension.disable_html5_validation'));
         static::assertTrue($container->hasDefinition('siganushka_generic.serializer.encoder.json'));
 
-        static::assertTrue($container->hasDefinition('siganushka_generic.identifier.generator.sequence'));
+        static::assertTrue($container->hasDefinition('siganushka_generic.identifier.sequence'));
         static::assertTrue($container->hasAlias(SequenceGenerator::class));
 
         static::assertTrue($container->hasDefinition('siganushka_generic.utils.public_file'));
@@ -70,6 +71,9 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'thousands_sep' => ',',
         ], $currencyDef->getArgument(0));
 
+        $disableHtml5ValidationDef = $container->getDefinition('siganushka_generic.form.type_extension.disable_html5_validation');
+        static::assertTrue($disableHtml5ValidationDef->hasTag('form.type_extension'));
+
         $jsonEncoderDef = $container->getDefinition('siganushka_generic.serializer.encoder.json');
         static::assertTrue($jsonEncoderDef->hasTag('serializer.encoder'));
         static::assertSame([JsonEncode::OPTIONS => 271], $jsonEncoderDef->getArgument(0)->getArgument(0));
@@ -81,6 +85,9 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'doctrine' => [
                 'table_prefix' => 'test_',
             ],
+            'form' => [
+                'html5_validation' => true,
+            ],
             'json' => [
                 'encoding_options' => 0,
             ],
@@ -91,6 +98,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
         ];
 
         $container = $this->createContainerWithConfigs([$configs]);
+        static::assertFalse($container->hasDefinition('siganushka_generic.form.type_extension.disable_html5_validation'));
 
         $tablePrefixDef = $container->getDefinition('siganushka_generic.doctrine.listener.table_prefix');
         static::assertSame(TablePrefixListener::class, $tablePrefixDef->getClass());
