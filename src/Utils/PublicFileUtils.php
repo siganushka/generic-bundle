@@ -11,8 +11,8 @@ use Symfony\Component\HttpFoundation\UrlHelper;
  */
 class PublicFileUtils
 {
-    protected UrlHelper $urlHelper;
-    protected string $publicDir;
+    private UrlHelper $urlHelper;
+    private string $publicDir;
 
     public function __construct(UrlHelper $urlHelper, string $publicDir)
     {

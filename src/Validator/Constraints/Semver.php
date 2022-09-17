@@ -16,13 +16,13 @@ class Semver extends Constraint
 
     public string $message = 'This value is not a valid semantic version.';
 
-    /**
-     * @var array<string, string>
-     */
     protected static $errorNames = [
         self::INVALID_ERROR => 'INVALID_ERROR',
     ];
 
+    /**
+     * @param mixed $options
+     */
     public function __construct($options = null)
     {
         if (!class_exists(VersionParser::class)) {

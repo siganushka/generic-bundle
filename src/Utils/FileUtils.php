@@ -23,9 +23,6 @@ class FileUtils
     public static function getFormattedSize(\SplFileInfo $file): string
     {
         $bytes = $file->getSize();
-        if (false === $bytes) {
-            throw new \RuntimeException('Unable to get file size.');
-        }
 
         return static::formatBytes($bytes);
     }

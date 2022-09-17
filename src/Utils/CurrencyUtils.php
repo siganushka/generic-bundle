@@ -14,14 +14,6 @@ class CurrencyUtils
     public const DEC_POINT = 'dec_point';
     public const THOUSANDS_SEP = 'thousands_sep';
 
-    /**
-     * @var array{
-     *  divisor: int,
-     *  decimals: int,
-     *  dec_point: string,
-     *  thousands_sep: string
-     * }
-     */
     private array $defaultContext = [
         self::DIVISOR => 100,
         self::DECIMALS => 2,
@@ -29,27 +21,11 @@ class CurrencyUtils
         self::THOUSANDS_SEP => ',',
     ];
 
-    /**
-     * @param array{
-     *  divisor?: int,
-     *  decimals?: int,
-     *  dec_point?: string,
-     *  thousands_sep?: string
-     * } $defaultContext
-     */
     public function __construct(array $defaultContext = [])
     {
         $this->defaultContext = array_merge($this->defaultContext, $defaultContext);
     }
 
-    /**
-     * @param array{
-     *  divisor?: int,
-     *  decimals?: int,
-     *  dec_point?: string,
-     *  thousands_sep?: string
-     * } $context
-     */
     public function format(?int $number, array $context = []): string
     {
         // null to 0

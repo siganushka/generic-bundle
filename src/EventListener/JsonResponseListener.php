@@ -8,9 +8,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
+/**
+ * @see https://www.laruence.com/2011/10/10/2239.html
+ */
 class JsonResponseListener implements EventSubscriberInterface
 {
-    protected int $jsonEncodeOptions;
+    private int $jsonEncodeOptions;
 
     public function __construct(int $jsonEncodeOptions)
     {
@@ -21,7 +24,6 @@ class JsonResponseListener implements EventSubscriberInterface
     {
         $response = $event->getResponse();
         if ($response instanceof JsonResponse) {
-            // @see https://www.laruence.com/2011/10/10/2239.html
             $response->setEncodingOptions($this->jsonEncodeOptions);
         }
     }

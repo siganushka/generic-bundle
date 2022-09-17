@@ -7,10 +7,10 @@ namespace Siganushka\GenericBundle\Identifier;
 /**
  * Sequence identifier generator.
  */
-class SequenceGenerator implements IdentifierGeneratorInterface
+class SequenceGenerator
 {
     /**
-     * 生成序列编号，单机下理论重复概率为百万分之一秒，为保证最小长度和尽可能唯一
+     * 生成序列编号，单机下理论重复概率为百万分之一秒，保证最小长度和唯一性。
      *
      * 生成特征：
      *

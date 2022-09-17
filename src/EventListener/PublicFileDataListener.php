@@ -11,7 +11,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class PublicFileDataListener implements EventSubscriberInterface
 {
-    protected PublicFileUtils $publicFileUtils;
+    private PublicFileUtils $publicFileUtils;
 
     public function __construct(PublicFileUtils $publicFileUtils)
     {
@@ -22,16 +22,14 @@ class PublicFileDataListener implements EventSubscriberInterface
     {
         $file = $event->getFile();
 
-        $data = [
+        $event->setData([
             'name' => $file->getFilename(),
             'path' => $this->publicFileUtils->getPath($file),
             'url' => $this->publicFileUtils->getUrl($file),
             'size' => $file->getSize(),
             'size_format' => FileUtils::getFormattedSize($file),
             'extension' => $file->getExtension(),
-        ];
-
-        $event->setData($data)->stopPropagation();
+        ])->stopPropagation();
     }
 
     public static function getSubscribedEvents(): array

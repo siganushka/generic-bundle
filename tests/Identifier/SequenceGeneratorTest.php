@@ -15,7 +15,6 @@ class SequenceGeneratorTest extends TestCase
         $identifier = $generator->generate();
 
         static::assertNotEmpty($identifier);
-        static::assertIsString($identifier);
         static::assertSame(16, mb_strlen($identifier));
     }
 }

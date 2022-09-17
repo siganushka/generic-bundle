@@ -9,11 +9,7 @@ use Siganushka\GenericBundle\Validator\Constraints\Semver;
 use Siganushka\GenericBundle\Validator\Constraints\SemverValidator;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
-/**
- * @internal
- * @coversNothing
- */
-final class SemverValidatorTest extends ConstraintValidatorTestCase
+class SemverValidatorTest extends ConstraintValidatorTestCase
 {
     protected function setUp(): void
     {
@@ -51,9 +47,6 @@ final class SemverValidatorTest extends ConstraintValidatorTestCase
         ;
     }
 
-    /**
-     * @return array<int, array<?string>>
-     */
     public function getValidSemvers(): array
     {
         return [
@@ -66,9 +59,6 @@ final class SemverValidatorTest extends ConstraintValidatorTestCase
         ];
     }
 
-    /**
-     * @return array<int, array<string>>
-     */
     public function getInvalidSemvers(): array
     {
         return [

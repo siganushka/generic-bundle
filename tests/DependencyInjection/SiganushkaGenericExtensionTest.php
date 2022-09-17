@@ -28,6 +28,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
         static::assertTrue($container->hasDefinition('siganushka_generic.listener.public_file_data'));
         static::assertTrue($container->hasDefinition('siganushka_generic.listener.resize_image'));
         static::assertTrue($container->hasDefinition('siganushka_generic.form.type_extension.disable_html5_validation'));
+        static::assertTrue($container->hasDefinition('siganushka_generic.serializer.normalizer.translatable'));
         static::assertTrue($container->hasDefinition('siganushka_generic.serializer.encoder.json'));
 
         static::assertTrue($container->hasDefinition('siganushka_generic.identifier.sequence'));
@@ -73,6 +74,10 @@ final class SiganushkaGenericExtensionTest extends TestCase
 
         $disableHtml5ValidationDef = $container->getDefinition('siganushka_generic.form.type_extension.disable_html5_validation');
         static::assertTrue($disableHtml5ValidationDef->hasTag('form.type_extension'));
+
+        $translatableNormalizerDef = $container->getDefinition('siganushka_generic.serializer.normalizer.translatable');
+        static::assertTrue($translatableNormalizerDef->hasTag('serializer.normalizer'));
+        static::assertSame('translator', (string) $translatableNormalizerDef->getArgument(0));
 
         $jsonEncoderDef = $container->getDefinition('siganushka_generic.serializer.encoder.json');
         static::assertTrue($jsonEncoderDef->hasTag('serializer.encoder'));

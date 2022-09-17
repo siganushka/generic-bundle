@@ -14,9 +14,6 @@ use Symfony\Component\Serializer\Encoder\JsonEncode;
 
 class SiganushkaGenericExtension extends Extension
 {
-    /**
-     * @param array<mixed> $configs
-     */
     public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new PhpFileLoader($container, new FileLocator(\dirname(__DIR__).'/Resources/config'));
@@ -32,7 +29,7 @@ class SiganushkaGenericExtension extends Extension
             $tablePrefixDef->setArgument(0, $config['doctrine']['table_prefix']);
         }
 
-        if ($config['form']['html5_validation'] && $container->hasDefinition('siganushka_generic.form.type_extension.disable_html5_validation')) {
+        if ($config['form']['html5_validation']) {
             $container->removeDefinition('siganushka_generic.form.type_extension.disable_html5_validation');
         }
 

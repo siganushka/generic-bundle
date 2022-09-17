@@ -6,7 +6,7 @@ namespace Siganushka\GenericBundle\Event;
 
 class ResizeImageMaxHeightEvent extends AbstractFileEvent
 {
-    protected int $maxHeight;
+    private int $maxHeight;
 
     public function __construct(\SplFileInfo $file, int $maxHeight)
     {

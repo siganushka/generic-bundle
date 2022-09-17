@@ -8,11 +8,7 @@ use Siganushka\GenericBundle\Validator\Constraints\PhoneNumber;
 use Siganushka\GenericBundle\Validator\Constraints\PhoneNumberValidator;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
-/**
- * @internal
- * @coversNothing
- */
-final class PhoneNumberValidatorTest extends ConstraintValidatorTestCase
+class PhoneNumberValidatorTest extends ConstraintValidatorTestCase
 {
     /**
      * @dataProvider getValidPhoneNubmers
@@ -41,9 +37,6 @@ final class PhoneNumberValidatorTest extends ConstraintValidatorTestCase
         ;
     }
 
-    /**
-     * @return array<int, array<?string>>
-     */
     public function getValidPhoneNubmers(): array
     {
         return [
@@ -59,9 +52,6 @@ final class PhoneNumberValidatorTest extends ConstraintValidatorTestCase
         ];
     }
 
-    /**
-     * @return array<int, array<string>>
-     */
     public function getInvalidPhoneNubmers(): array
     {
         return [

@@ -106,12 +106,15 @@ class EntityToIdentifierTransformerTest extends TestCase
         $transformer->reverseTransform(0);
     }
 
+    /**
+     * @param class-string $className
+     */
     private function createEntityToIdentifierTransformer(string $className, string $identifierField): DataTransformerInterface
     {
         $classMetadata = $this->createMock(ClassMetadata::class);
         $classMetadata->expects(static::any())
             ->method('hasField')
-            ->willReturnCallback(function ($value) {
+            ->willReturnCallback(function (string $value) {
                 return ('id' === $value) ? true : false;
             })
         ;
@@ -119,7 +122,7 @@ class EntityToIdentifierTransformerTest extends TestCase
         $objectRepository = $this->createMock(ObjectRepository::class);
         $objectRepository->expects(static::any())
             ->method('findOneBy')
-            ->willReturnCallback(function ($value) {
+            ->willReturnCallback(function (array $value) {
                 return $value === ['id' => 128] ? $this->foo : null;
             })
         ;

@@ -12,10 +12,10 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class EntityToIdentifierTransformer implements DataTransformerInterface
 {
-    protected ManagerRegistry $managerRegistry;
+    private ManagerRegistry $managerRegistry;
     /** @var class-string */
-    protected string $className;
-    protected string $identifierField;
+    private string $className;
+    private string $identifierField;
 
     /**
      * @param class-string $className
@@ -40,7 +40,6 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
 
         try {
-            /** @var string */
             $result = $propertyAccessor->getValue($value, $this->identifierField);
         } catch (\Throwable $th) {
             throw new TransformationFailedException($th->getMessage(), 0, $th);
@@ -78,7 +77,7 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
         $result = $repository->findOneBy([$this->identifierField => $value]);
 
         if (null === $result) {
-            throw new TransformationFailedException(sprintf('An object with identifier key "%s" and value "%s" does not exist!', $this->identifierField, $value));
+            throw new TransformationFailedException(sprintf('An object with identifier key "%s" and value "%s" does not exist!', $this->identifierField, (string) $value));
         }
 
         return $result;

@@ -47,9 +47,6 @@ class CurrencyUtilsTest extends TestCase
         static::assertSame($formattedCurrency, $formatter->format($currency, $context));
     }
 
-    /**
-     * @return array<int, array<int, int|string|null, ?array<string, mixed>>>
-     */
     public function getCentsOfCurrencies(): array
     {
         return [
@@ -64,9 +61,6 @@ class CurrencyUtilsTest extends TestCase
         ];
     }
 
-    /**
-     * @return array<int, array<int, int|string|null>>
-     */
     public function getCurrencies(): array
     {
         return [

@@ -12,7 +12,7 @@ use Symfony\Component\Routing\RequestContext;
 
 class PublicFileUtilsTest extends TestCase
 {
-    protected ?UrlHelper $urlHelper = null;
+    private ?UrlHelper $urlHelper = null;
 
     protected function setUp(): void
     {
@@ -71,9 +71,6 @@ class PublicFileUtilsTest extends TestCase
         $utils->getPath($file);
     }
 
-    /**
-     * @return array<int, array<string>>
-     */
     public function provideMockFiles(): array
     {
         return [

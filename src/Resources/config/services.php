@@ -12,9 +12,10 @@ use Siganushka\GenericBundle\EventListener\PublicFileDataListener;
 use Siganushka\GenericBundle\EventListener\ResizeImageListener;
 use Siganushka\GenericBundle\Form\Extension\DisableHtml5Validation;
 use Siganushka\GenericBundle\Identifier\SequenceGenerator;
+use Siganushka\GenericBundle\Serializer\Normalizer\TranslatableNormalizer;
 use Siganushka\GenericBundle\Utils\CurrencyUtils;
 use Siganushka\GenericBundle\Utils\PublicFileUtils;
-use Symfony\Component\Form\Form;
+use Symfony\Component\Form\Forms;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Serializer;
 
@@ -41,6 +42,10 @@ return static function (ContainerConfigurator $container) {
             ->tag('doctrine.event_listener', ['event' => 'prePersist'])
             ->tag('doctrine.event_listener', ['event' => 'preUpdate'])
 
+        ->set('siganushka_generic.serializer.normalizer.translatable', TranslatableNormalizer::class)
+            ->arg(0, service('translator'))
+            ->tag('serializer.normalizer')
+
         ->set('siganushka_generic.identifier.sequence', SequenceGenerator::class)
             ->alias(SequenceGenerator::class, 'siganushka_generic.identifier.sequence')
 
@@ -53,7 +58,7 @@ return static function (ContainerConfigurator $container) {
             ->alias(CurrencyUtils::class, 'siganushka_generic.utils.currency')
     ;
 
-    if (class_exists(Form::class)) {
+    if (class_exists(Forms::class)) {
         $container->services()
             ->set('siganushka_generic.form.type_extension.disable_html5_validation', DisableHtml5Validation::class)
                 ->tag('form.type_extension')

@@ -61,9 +61,7 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('form')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->booleanNode('html5_validation')
-                            ->defaultFalse()
-                        ->end()
+                        ->booleanNode('html5_validation')->defaultFalse()->end()
                     ->end()
                 ->end()
             ->end()
@@ -72,14 +70,14 @@ class Configuration implements ConfigurationInterface
 
     private function addJsonSection(ArrayNodeDefinition $rootNode): void
     {
+        $encodingOptions = \JSON_HEX_TAG | \JSON_HEX_APOS | \JSON_HEX_AMP | \JSON_HEX_QUOT | \JSON_UNESCAPED_UNICODE;
+
         $rootNode
             ->children()
                 ->arrayNode('json')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->integerNode('encoding_options')
-                            ->defaultValue(\JSON_HEX_TAG | \JSON_HEX_APOS | \JSON_HEX_AMP | \JSON_HEX_QUOT | \JSON_UNESCAPED_UNICODE)
-                        ->end()
+                        ->integerNode('encoding_options')->defaultValue($encodingOptions)->end()
                     ->end()
                 ->end()
             ->end()
