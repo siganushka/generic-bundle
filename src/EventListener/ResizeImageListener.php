@@ -4,27 +4,31 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\EventListener;
 
-use Siganushka\GenericBundle\Event\ResizeImageMaxHeightEvent;
-use Siganushka\GenericBundle\Event\ResizeImageMaxWidthEvent;
+use Siganushka\GenericBundle\Event\ResizeImageEvent;
+use Siganushka\GenericBundle\Utils\FileUtils;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ResizeImageListener implements EventSubscriberInterface
 {
-    /**
-     * 按照最大宽度（宽不能超过 maxWidth）等比缩放.
-     *
-     * @param ResizeImageMaxWidthEvent $event 图像事件对象
-     */
-    public function onResizeImageMaxWidth(ResizeImageMaxWidthEvent $event): void
+    public function onResizeImage(ResizeImageEvent $event): void
     {
         if (!class_exists(\Imagick::class)) {
             return;
         }
 
         $file = $event->getFile();
-        $maxWidth = $event->getMaxWidth();
+        if ($maxWidth = $event->getMaxWidth()) {
+            $this->resizeImageMaxWidth($file, $maxWidth);
+        }
 
-        [$width, $height] = self::getImageSize($file);
+        if ($maxHeight = $event->getMaxHeight()) {
+            $this->resizeImageMaxHeight($file, $maxHeight);
+        }
+    }
+
+    private function resizeImageMaxWidth(\SplFileInfo $file, int $maxWidth): void
+    {
+        [$width, $height] = FileUtils::getImageSize($file);
         if ($width <= $maxWidth) {
             return;
         }
@@ -36,21 +40,9 @@ class ResizeImageListener implements EventSubscriberInterface
         $imagick->writeImage($file->getPathname());
     }
 
-    /**
-     * 按照最大宽度（宽不能超过 maxWidth）等比缩放.
-     *
-     * @param ResizeImageMaxHeightEvent $event 图像事件对象
-     */
-    public function onResizeImageMaxHeight(ResizeImageMaxHeightEvent $event): void
+    private function resizeImageMaxHeight(\SplFileInfo $file, int $maxHeight): void
     {
-        if (!class_exists(\Imagick::class)) {
-            return;
-        }
-
-        $file = $event->getFile();
-        $maxHeight = $event->getMaxHeight();
-
-        [$width, $height] = self::getImageSize($file);
+        [$width, $height] = FileUtils::getImageSize($file);
         if ($width <= $maxHeight) {
             return;
         }
@@ -62,35 +54,10 @@ class ResizeImageListener implements EventSubscriberInterface
         $imagick->writeImage($file->getPathname());
     }
 
-    /**
-     * 获取图像尺寸信息.
-     *
-     * @param \SplFileInfo $file 图像文件对象
-     *
-     * @return array<mixed> 图像尺寸信息
-     *
-     * @throws \RuntimeException 文件不存在或不是图像文件
-     */
-    public static function getImageSize(\SplFileInfo $file): array
-    {
-        if (!$file->isFile()) {
-            throw new \RuntimeException('File not found.');
-        }
-
-        /** @var array<mixed> */
-        $result = @getimagesize($file->getPathname());
-        if (empty($result[0]) || empty($result[1])) {
-            throw new \RuntimeException('Unable to access file.');
-        }
-
-        return $result;
-    }
-
     public static function getSubscribedEvents(): array
     {
         return [
-            ResizeImageMaxWidthEvent::class => 'onResizeImageMaxWidth',
-            ResizeImageMaxHeightEvent::class => 'onResizeImageMaxHeight',
+            ResizeImageEvent::class => 'onResizeImage',
         ];
     }
 }

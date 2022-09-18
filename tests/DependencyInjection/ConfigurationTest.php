@@ -47,10 +47,10 @@ final class ConfigurationTest extends TestCase
                 'encoding_options' => 271,
             ],
             'currency' => [
+                'divisor' => 100,
                 'decimals' => 2,
                 'dec_point' => '.',
                 'thousands_sep' => ',',
-                'divisor' => 100,
             ],
         ]);
     }

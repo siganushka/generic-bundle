@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\DependencyInjection;
 
-use Siganushka\GenericBundle\Utils\CurrencyUtils;
+use Doctrine\ORM\Configuration as ORMConfiguration;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Serializer\Encoder\JsonEncode;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Translation\Translator;
 
 class SiganushkaGenericExtension extends Extension
 {
@@ -22,34 +25,43 @@ class SiganushkaGenericExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        if (null === $config['doctrine']['table_prefix']) {
-            $container->removeDefinition('siganushka_generic.doctrine.listener.table_prefix');
-        } else {
-            $tablePrefixDef = $container->getDefinition('siganushka_generic.doctrine.listener.table_prefix');
-            $tablePrefixDef->setArgument(0, $config['doctrine']['table_prefix']);
+        $jsonResponseDef = $container->getDefinition('siganushka_generic.listener.json_response');
+        $jsonResponseDef->setArgument(0, $config['json']['encoding_options']);
+
+        $currencyUtilsDef = $container->getDefinition('siganushka_generic.utils.currency');
+        $currencyUtilsDef->setArgument(0, $config['currency']);
+
+        if ($container::willBeAvailable('doctrine/orm', ORMConfiguration::class, ['siganushka/generic-bundle'])) {
+            $loader->load('doctrine.php');
+
+            if ($config['doctrine']['table_prefix']) {
+                $tablePrefixDef = $container->getDefinition('siganushka_generic.doctrine.listener.table_prefix');
+                $tablePrefixDef->setArgument(0, $config['doctrine']['table_prefix']);
+            } else {
+                $container->removeDefinition('siganushka_generic.doctrine.listener.table_prefix');
+            }
         }
 
-        if ($config['form']['html5_validation']) {
-            $container->removeDefinition('siganushka_generic.form.type_extension.disable_html5_validation');
+        if ($container::willBeAvailable('symfony/form', Form::class, ['siganushka/generic-bundle'])) {
+            $loader->load('form.php');
+
+            if ($config['form']['html5_validation']) {
+                $container->removeDefinition('siganushka_generic.form.type_extension.disable_html5_validation');
+            }
         }
 
-        if ($container->hasDefinition('siganushka_generic.serializer.encoder.json')) {
+        if ($container::willBeAvailable('symfony/serializer', Serializer::class, ['siganushka/generic-bundle'])) {
+            $loader->load('serializer.php');
+
             $jsonEncodeDef = new Definition(JsonEncode::class);
             $jsonEncodeDef->setArgument(0, [JsonEncode::OPTIONS => $config['json']['encoding_options']]);
 
             $jsonEncoderDef = $container->getDefinition('siganushka_generic.serializer.encoder.json');
             $jsonEncoderDef->setArgument(0, $jsonEncodeDef);
+
+            if (!$container::willBeAvailable('symfony/translation', Translator::class, ['siganushka/generic-bundle'])) {
+                $container->removeDefinition('siganushka_generic.serializer.normalizer.translatable');
+            }
         }
-
-        $jsonResponseDef = $container->getDefinition('siganushka_generic.listener.json_response');
-        $jsonResponseDef->setArgument(0, $config['json']['encoding_options']);
-
-        $currencyUtilsDef = $container->getDefinition('siganushka_generic.utils.currency');
-        $currencyUtilsDef->setArgument(0, [
-            CurrencyUtils::DIVISOR => $config['currency']['divisor'],
-            CurrencyUtils::DECIMALS => $config['currency']['decimals'],
-            CurrencyUtils::DEC_POINT => $config['currency']['dec_point'],
-            CurrencyUtils::THOUSANDS_SEP => $config['currency']['thousands_sep'],
-        ]);
     }
 }

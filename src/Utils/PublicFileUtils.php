@@ -26,9 +26,9 @@ class PublicFileUtils
     }
 
     /**
-     * 获取文件访问 URL.
+     * 获取文件 URL.
      *
-     * @return string 文件访问 URL
+     * @return string 文件 URL
      *
      * @throws \RuntimeException 获取文件路径失败或文件不存在
      */

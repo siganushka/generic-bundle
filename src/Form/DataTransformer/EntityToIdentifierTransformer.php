@@ -13,12 +13,12 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 class EntityToIdentifierTransformer implements DataTransformerInterface
 {
     private ManagerRegistry $managerRegistry;
-    /** @var class-string */
+    /** @psalm-var class-string */
     private string $className;
     private string $identifierField;
 
     /**
-     * @param class-string $className
+     * @psalm-param class-string $className
      */
     public function __construct(ManagerRegistry $managerRegistry, string $className, string $identifierField)
     {

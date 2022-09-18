@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\Event;
 
-class PublicFileDataEvent extends AbstractFileEvent
+class PublicFileEvent extends AbstractFileEvent
 {
     private array $data = [];
 

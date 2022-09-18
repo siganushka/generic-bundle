@@ -11,24 +11,29 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TranslatableNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
-    public const LOCALE = 'locale';
+    public const LOCALE_KEY = 'translatable_locale';
+
+    private array $defaultContext = [
+        self::LOCALE_KEY => null,
+    ];
 
     private TranslatorInterface $translator;
 
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(TranslatorInterface $translator, array $defaultContext = [])
     {
         $this->translator = $translator;
+        $this->defaultContext = array_merge($this->defaultContext, $defaultContext);
     }
 
     /**
-     * @param TranslatableInterface $object
+     * @param TranslatableInterface|mixed $object
      */
-    public function normalize($object, $format = null, array $context = []): string
+    public function normalize($object, string $format = null, array $context = []): string
     {
-        return $object->trans($this->translator, $context[self::LOCALE] ?? null);
+        return $object->trans($this->translator, $context[self::LOCALE_KEY] ?? $this->defaultContext[self::LOCALE_KEY]);
     }
 
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, string $format = null): bool
     {
         return $data instanceof TranslatableInterface;
     }

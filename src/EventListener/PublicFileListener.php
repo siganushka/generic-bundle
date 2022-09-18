@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\EventListener;
 
-use Siganushka\GenericBundle\Event\PublicFileDataEvent;
+use Siganushka\GenericBundle\Event\PublicFileEvent;
 use Siganushka\GenericBundle\Utils\FileUtils;
 use Siganushka\GenericBundle\Utils\PublicFileUtils;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class PublicFileDataListener implements EventSubscriberInterface
+class PublicFileListener implements EventSubscriberInterface
 {
     private PublicFileUtils $publicFileUtils;
 
@@ -18,14 +18,16 @@ class PublicFileDataListener implements EventSubscriberInterface
         $this->publicFileUtils = $publicFileUtils;
     }
 
-    public function onPublicFileData(PublicFileDataEvent $event): void
+    public function onPublicFile(PublicFileEvent $event): void
     {
         $file = $event->getFile();
+        $path = $this->publicFileUtils->getPath($file);
+        $url = $this->publicFileUtils->getUrl($file);
 
         $event->setData([
             'name' => $file->getFilename(),
-            'path' => $this->publicFileUtils->getPath($file),
-            'url' => $this->publicFileUtils->getUrl($file),
+            'path' => $path,
+            'url' => $url,
             'size' => $file->getSize(),
             'size_format' => FileUtils::getFormattedSize($file),
             'extension' => $file->getExtension(),
@@ -35,7 +37,7 @@ class PublicFileDataListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            PublicFileDataEvent::class => 'onPublicFileData',
+            PublicFileEvent::class => 'onPublicFile',
         ];
     }
 }

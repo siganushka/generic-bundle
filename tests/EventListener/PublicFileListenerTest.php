@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Siganushka\GenericBundle\Tests\EventListener;
 
 use PHPUnit\Framework\TestCase;
-use Siganushka\GenericBundle\Event\PublicFileDataEvent;
-use Siganushka\GenericBundle\EventListener\PublicFileDataListener;
+use Siganushka\GenericBundle\Event\PublicFileEvent;
+use Siganushka\GenericBundle\EventListener\PublicFileListener;
 use Siganushka\GenericBundle\Utils\PublicFileUtils;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\UrlHelper;
 use Symfony\Component\Routing\RequestContext;
 
-class PublicFileDataListenerTest extends TestCase
+class PublicFileListenerTest extends TestCase
 {
     private ?UrlHelper $urlHelper = null;
 
@@ -29,15 +29,15 @@ class PublicFileDataListenerTest extends TestCase
         $this->urlHelper = null;
     }
 
-    public function testPublicFileDataListener(): void
+    public function testAll(): void
     {
         $file = new \SplFileInfo('./tests/Mock/landscape.jpg');
-        $event = new PublicFileDataEvent($file);
+        $event = new PublicFileEvent($file);
         static::assertSame($file, $event->getFile());
         static::assertSame([], $event->getData());
 
-        $listener = new PublicFileDataListener(new PublicFileUtils($this->urlHelper, './tests'));
-        $listener->onPublicFileData($event);
+        $listener = new PublicFileListener(new PublicFileUtils($this->urlHelper, './tests'));
+        $listener->onPublicFile($event);
 
         $data = $event->getData();
         static::assertArrayHasKey('name', $data);
