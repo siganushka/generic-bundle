@@ -20,8 +20,8 @@ class ResizeImageListenerTest extends TestCase
 
     public function testResizeImageMaxWidth(): void
     {
-        $originFile = './tests/Mock/landscape.jpg';
-        $targetFile = sprintf('./tests/Mock/landscape-%s.jpg', uniqid());
+        $originFile = './tests/Fixtures/landscape.jpg';
+        $targetFile = sprintf('./tests/Fixtures/landscape-%s.jpg', uniqid());
 
         if (!copy($originFile, $targetFile)) {
             static::markTestSkipped('Skip tests (Fail to copy file).');
@@ -59,8 +59,8 @@ class ResizeImageListenerTest extends TestCase
 
     public function testResizeImageMaxHeight(): void
     {
-        $originFile = './tests/Mock/portrait.jpg';
-        $targetFile = sprintf('./tests/Mock/portrait-%s.jpg', uniqid());
+        $originFile = './tests/Fixtures/portrait.jpg';
+        $targetFile = sprintf('./tests/Fixtures/portrait-%s.jpg', uniqid());
 
         if (!copy($originFile, $targetFile)) {
             static::markTestSkipped('Skip tests (Fail to copy file).');

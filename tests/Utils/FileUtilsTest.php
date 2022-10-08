@@ -11,7 +11,7 @@ class FileUtilsTest extends TestCase
 {
     public function testGetFormattedSize(): void
     {
-        $file = new \SplFileInfo('./tests/Mock/landscape.jpg');
+        $file = new \SplFileInfo('./tests/Fixtures/landscape.jpg');
 
         static::assertSame('50.01KB', FileUtils::getFormattedSize($file));
     }

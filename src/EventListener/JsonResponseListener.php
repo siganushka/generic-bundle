@@ -13,18 +13,11 @@ use Symfony\Component\HttpKernel\Event\ResponseEvent;
  */
 class JsonResponseListener implements EventSubscriberInterface
 {
-    private int $jsonEncodeOptions;
-
-    public function __construct(int $jsonEncodeOptions)
-    {
-        $this->jsonEncodeOptions = $jsonEncodeOptions;
-    }
-
     public function onResponse(ResponseEvent $event): void
     {
         $response = $event->getResponse();
         if ($response instanceof JsonResponse) {
-            $response->setEncodingOptions($this->jsonEncodeOptions);
+            $response->setEncodingOptions(\JSON_HEX_TAG | \JSON_HEX_APOS | \JSON_HEX_AMP | \JSON_HEX_QUOT | \JSON_UNESCAPED_UNICODE);
         }
     }
 

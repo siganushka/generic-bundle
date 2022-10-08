@@ -15,6 +15,9 @@ class PhoneNumber extends Constraint
 
     public string $message = 'This value is not a valid phone number.';
 
+    /**
+     * @psalm-suppress MissingPropertyType
+     */
     protected static $errorNames = [
         self::INVALID_ERROR => 'INVALID_ERROR',
     ];

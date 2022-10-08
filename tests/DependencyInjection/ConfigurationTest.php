@@ -43,9 +43,6 @@ final class ConfigurationTest extends TestCase
             'form' => [
                 'html5_validation' => false,
             ],
-            'json' => [
-                'encoding_options' => 271,
-            ],
             'currency' => [
                 'divisor' => 100,
                 'decimals' => 2,
@@ -79,19 +76,6 @@ final class ConfigurationTest extends TestCase
         ]);
 
         static::assertSame($processedConfig['form'], $config);
-    }
-
-    public function testCustomJsonConfig(): void
-    {
-        $config = [
-            'encoding_options' => 0,
-        ];
-
-        $processedConfig = $this->processor->processConfiguration($this->configuration, [
-            ['json' => $config],
-        ]);
-
-        static::assertSame($processedConfig['json'], $config);
     }
 
     public function testCustomCurrencyConfig(): void

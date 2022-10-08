@@ -31,7 +31,7 @@ class PublicFileListenerTest extends TestCase
 
     public function testAll(): void
     {
-        $file = new \SplFileInfo('./tests/Mock/landscape.jpg');
+        $file = new \SplFileInfo('./tests/Fixtures/landscape.jpg');
         $event = new PublicFileEvent($file);
         static::assertSame($file, $event->getFile());
         static::assertSame([], $event->getData());
@@ -48,8 +48,8 @@ class PublicFileListenerTest extends TestCase
         static::assertArrayHasKey('extension', $data);
 
         static::assertSame('landscape.jpg', $data['name']);
-        static::assertSame('/Mock/landscape.jpg', $data['path']);
-        static::assertSame('http://localhost/Mock/landscape.jpg', $data['url']);
+        static::assertSame('/Fixtures/landscape.jpg', $data['path']);
+        static::assertSame('http://localhost/Fixtures/landscape.jpg', $data['url']);
         static::assertSame('jpg', $data['extension']);
     }
 }

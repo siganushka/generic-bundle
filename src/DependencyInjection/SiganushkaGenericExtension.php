@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Siganushka\GenericBundle\DependencyInjection;
 
 use Doctrine\ORM\Configuration as ORMConfiguration;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\Serializer\Encoder\JsonEncode;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Translation\Translator;
 
@@ -24,9 +23,6 @@ class SiganushkaGenericExtension extends Extension
 
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
-
-        $jsonResponseDef = $container->getDefinition('siganushka_generic.listener.json_response');
-        $jsonResponseDef->setArgument(0, $config['json']['encoding_options']);
 
         $currencyUtilsDef = $container->getDefinition('siganushka_generic.utils.currency');
         $currencyUtilsDef->setArgument(0, $config['currency']);
@@ -53,14 +49,12 @@ class SiganushkaGenericExtension extends Extension
         if ($container::willBeAvailable('symfony/serializer', Serializer::class, ['siganushka/generic-bundle'])) {
             $loader->load('serializer.php');
 
-            $jsonEncodeDef = new Definition(JsonEncode::class);
-            $jsonEncodeDef->setArgument(0, [JsonEncode::OPTIONS => $config['json']['encoding_options']]);
-
-            $jsonEncoderDef = $container->getDefinition('siganushka_generic.serializer.encoder.json');
-            $jsonEncoderDef->setArgument(0, $jsonEncodeDef);
-
             if (!$container::willBeAvailable('symfony/translation', Translator::class, ['siganushka/generic-bundle'])) {
                 $container->removeDefinition('siganushka_generic.serializer.normalizer.translatable');
+            }
+
+            if (!$container::willBeAvailable('knplabs/knp-components', PaginatorInterface::class, ['siganushka/generic-bundle'])) {
+                $container->removeDefinition('siganushka_generic.serializer.normalizer.knp_pagination');
             }
         }
     }
