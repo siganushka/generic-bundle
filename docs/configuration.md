@@ -11,4 +11,3 @@ siganushka_generic:
     doctrine:
         table_prefix: test_ # 可选，默认值为 null 时不添加表前缀
 ```
-``
