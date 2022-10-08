@@ -10,7 +10,7 @@ use Siganushka\GenericBundle\Serializer\Normalizer\KnpPaginationNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 /**
- * @psalm-suppress MissingDependency
+ * @psalm-suppress UndefinedClass
  */
 class KnpPaginationNormalizerTest extends TestCase
 {

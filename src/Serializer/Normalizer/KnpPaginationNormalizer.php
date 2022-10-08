@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 /**
- * @psalm-suppress MissingDependency
+ * @psalm-suppress UndefinedClass
  */
 class KnpPaginationNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
