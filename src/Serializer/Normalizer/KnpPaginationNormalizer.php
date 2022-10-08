@@ -28,6 +28,9 @@ class KnpPaginationNormalizer implements NormalizerInterface, CacheableSupportsM
 
     private ObjectNormalizer $normalizer;
 
+    /**
+     * @psalm-suppress MissingDependency
+     */
     public function __construct(ObjectNormalizer $normalizer, array $defaultContext = [])
     {
         $this->normalizer = $normalizer;
