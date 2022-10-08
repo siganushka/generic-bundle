@@ -23,6 +23,9 @@ class Semver extends Constraint
         self::INVALID_ERROR => 'INVALID_ERROR',
     ];
 
+    /**
+     * @param mixed $options
+     */
     public function __construct($options = null)
     {
         if (!class_exists(VersionParser::class)) {
