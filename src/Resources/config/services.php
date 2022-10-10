@@ -11,7 +11,7 @@ use Siganushka\GenericBundle\Identifier\SequenceGenerator;
 use Siganushka\GenericBundle\Utils\CurrencyUtils;
 use Siganushka\GenericBundle\Utils\PublicFileUtils;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $container->services()
         ->set('siganushka_generic.listener.json_response', JsonResponseListener::class)
             ->tag('kernel.event_subscriber')

@@ -8,7 +8,7 @@ use Siganushka\Contracts\Doctrine\EventListener\SortableListener;
 use Siganushka\Contracts\Doctrine\EventListener\TablePrefixListener;
 use Siganushka\Contracts\Doctrine\EventListener\TimestampableListener;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $container->services()
         ->set('siganushka_generic.doctrine.listener.table_prefix', TablePrefixListener::class)
             ->tag('doctrine.event_listener', ['event' => 'loadClassMetadata'])

@@ -114,17 +114,13 @@ class EntityToIdentifierTransformerTest extends TestCase
         $classMetadata = $this->createMock(ClassMetadata::class);
         $classMetadata->expects(static::any())
             ->method('hasField')
-            ->willReturnCallback(function (string $value) {
-                return ('id' === $value) ? true : false;
-            })
+            ->willReturnCallback(fn (string $value) => ('id' === $value) ? true : false)
         ;
 
         $objectRepository = $this->createMock(ObjectRepository::class);
         $objectRepository->expects(static::any())
             ->method('findOneBy')
-            ->willReturnCallback(function (array $value) {
-                return $value === ['id' => 128] ? $this->foo : null;
-            })
+            ->willReturnCallback(fn (array $value) => $value === ['id' => 128] ? $this->foo : null)
         ;
 
         $objectManager = $this->createMock(ObjectManager::class);
