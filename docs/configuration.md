@@ -2,7 +2,7 @@
 
 ### Doctrine 表前缀
 
-该参数为 `Doctrine` 实体添加表前缀。
+为 `Doctrine` 实体添加表前缀，依赖 `siganushka/doctrine-contracts` 组件。
 
 ```yaml
 # ./config/packages/siganushka_generic.yaml
