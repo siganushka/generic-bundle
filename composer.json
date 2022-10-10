@@ -11,11 +11,11 @@
     ],
     "require": {
         "php": ">=7.4",
-        "siganushka/doctrine-contracts": "^0.1",
         "symfony/framework-bundle": "^5.4|^6.0"
     },
     "require-dev": {
         "composer/semver": "^3.0",
+        "siganushka/doctrine-contracts": "^0.1",
         "symfony/form": "^5.4|^6.0",
         "symfony/phpunit-bridge": "^6.0",
         "symfony/serializer": "^5.4|^6.0",

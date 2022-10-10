@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\DependencyInjection;
 
-use Doctrine\ORM\Configuration as ORMConfiguration;
 use Knp\Component\Pager\PaginatorInterface;
+use Siganushka\Contracts\Doctrine\ResourceInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
@@ -27,7 +27,7 @@ class SiganushkaGenericExtension extends Extension
         $currencyUtilsDef = $container->getDefinition('siganushka_generic.utils.currency');
         $currencyUtilsDef->setArgument(0, $config['currency']);
 
-        if ($container::willBeAvailable('doctrine/orm', ORMConfiguration::class, ['siganushka/generic-bundle'])) {
+        if ($container::willBeAvailable('siganushka/doctrine-contracts', ResourceInterface::class, ['siganushka/generic-bundle'])) {
             $loader->load('doctrine.php');
 
             if ($config['doctrine']['table_prefix']) {
