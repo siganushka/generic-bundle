@@ -36,6 +36,13 @@ class SiganushkaGenericExtension extends Extension
             } else {
                 $container->removeDefinition('siganushka_generic.doctrine.listener.table_prefix');
             }
+
+            if ($config['doctrine']['entity_to_superclass']) {
+                $tablePrefixDef = $container->getDefinition('siganushka_generic.doctrine.listener.entity_to_superclass');
+                $tablePrefixDef->setArgument(0, $config['doctrine']['entity_to_superclass']);
+            } else {
+                $container->removeDefinition('siganushka_generic.doctrine.listener.entity_to_superclass');
+            }
         }
 
         if ($container::willBeAvailable('symfony/form', Form::class, ['siganushka/generic-bundle'])) {

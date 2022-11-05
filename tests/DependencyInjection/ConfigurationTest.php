@@ -39,6 +39,7 @@ final class ConfigurationTest extends TestCase
         static::assertSame($processedConfig, [
             'doctrine' => [
                 'table_prefix' => null,
+                'entity_to_superclass' => [],
             ],
             'form' => [
                 'html5_validation' => false,
@@ -56,6 +57,7 @@ final class ConfigurationTest extends TestCase
     {
         $config = [
             'table_prefix' => 'test_',
+            'entity_to_superclass' => ['foo', 'bar', 'baz'],
         ];
 
         $processedConfig = $this->processor->processConfiguration($this->configuration, [

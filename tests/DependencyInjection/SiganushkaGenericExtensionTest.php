@@ -9,6 +9,7 @@ use Siganushka\Contracts\Doctrine\EventListener\SortableListener;
 use Siganushka\Contracts\Doctrine\EventListener\TablePrefixListener;
 use Siganushka\Contracts\Doctrine\EventListener\TimestampableListener;
 use Siganushka\GenericBundle\DependencyInjection\SiganushkaGenericExtension;
+use Siganushka\GenericBundle\Doctrine\EventListener\EntityToSuperclassListener;
 use Siganushka\GenericBundle\Identifier\SequenceGenerator;
 use Siganushka\GenericBundle\Utils\CurrencyUtils;
 use Siganushka\GenericBundle\Utils\PublicFileUtils;
@@ -27,6 +28,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
         static::assertTrue($container->hasDefinition('siganushka_generic.identifier.sequence'));
         static::assertTrue($container->hasDefinition('siganushka_generic.utils.public_file'));
         static::assertTrue($container->hasDefinition('siganushka_generic.utils.currency'));
+        static::assertFalse($container->hasDefinition('siganushka_generic.doctrine.listener.entity_to_superclass'));
         static::assertFalse($container->hasDefinition('siganushka_generic.doctrine.listener.table_prefix'));
         static::assertTrue($container->hasDefinition('siganushka_generic.doctrine.listener.timestampable'));
         static::assertTrue($container->hasDefinition('siganushka_generic.doctrine.listener.sortable'));
@@ -81,6 +83,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
         $configs = [
             'doctrine' => [
                 'table_prefix' => 'test_',
+                'entity_to_superclass' => ['foo', 'bar', 'baz'],
             ],
             'form' => [
                 'html5_validation' => true,
@@ -92,6 +95,11 @@ final class SiganushkaGenericExtensionTest extends TestCase
         ];
 
         $container = $this->createContainerWithConfig($configs);
+
+        $entityToSuperclassDef = $container->getDefinition('siganushka_generic.doctrine.listener.entity_to_superclass');
+        static::assertSame(EntityToSuperclassListener::class, $entityToSuperclassDef->getClass());
+        static::assertSame([['event' => 'loadClassMetadata']], $entityToSuperclassDef->getTag('doctrine.event_listener'));
+        static::assertSame($configs['doctrine']['entity_to_superclass'], $entityToSuperclassDef->getArgument(0));
 
         $tablePrefixDef = $container->getDefinition('siganushka_generic.doctrine.listener.table_prefix');
         static::assertSame(TablePrefixListener::class, $tablePrefixDef->getClass());
