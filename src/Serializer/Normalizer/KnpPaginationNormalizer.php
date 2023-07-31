@@ -9,9 +9,6 @@ use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
-/**
- * @psalm-suppress MissingDependency
- */
 class KnpPaginationNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     public const CURRENT_PAGE_NUMBER_KEY = 'knp_current_page_number';
@@ -28,9 +25,6 @@ class KnpPaginationNormalizer implements NormalizerInterface, CacheableSupportsM
 
     private ObjectNormalizer $normalizer;
 
-    /**
-     * @psalm-suppress MissingDependency
-     */
     public function __construct(ObjectNormalizer $normalizer, array $defaultContext = [])
     {
         $this->normalizer = $normalizer;

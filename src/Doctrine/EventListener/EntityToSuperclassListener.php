@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 class EntityToSuperclassListener
 {
-    private array $entityToSuperclasses;
+    private array $entityToSuperclasses = [];
 
     public function __construct(array $entityToSuperclasses = [])
     {

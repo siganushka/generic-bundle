@@ -28,7 +28,6 @@ class SequenceGenerator
     public function generate(): string
     {
         $now = new \DateTimeImmutable();
-        /** @var \DateTimeImmutable */
         $today = $now->modify('today');
 
         $y = $now->format('y');

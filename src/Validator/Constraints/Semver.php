@@ -16,9 +16,6 @@ class Semver extends Constraint
 
     public string $message = 'This value is not a valid semantic version.';
 
-    /**
-     * @psalm-suppress MissingPropertyType
-     */
     protected static $errorNames = [
         self::INVALID_ERROR => 'INVALID_ERROR',
     ];

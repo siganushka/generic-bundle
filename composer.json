@@ -15,14 +15,14 @@
     },
     "require-dev": {
         "composer/semver": "^3.0",
-        "doctrine/doctrine-bundle": "^2.7",
         "knplabs/knp-components": "^3.0",
         "siganushka/doctrine-contracts": "^0.1",
         "symfony/form": "^5.4|^6.0",
         "symfony/phpunit-bridge": "^6.0",
         "symfony/serializer": "^5.4|^6.0",
         "symfony/translation": "^5.4|^6.0",
-        "symfony/validator": "^5.4|^6.0"
+        "symfony/validator": "^5.4|^6.0",
+        "vimeo/psalm": "^5.14"
     },
     "autoload": {
         "psr-4": {

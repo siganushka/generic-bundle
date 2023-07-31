@@ -1,11 +1,12 @@
 <?xml version="1.0"?>
 <psalm
-    errorLevel="8"
-    resolveFromConfigFile="true"
-    autoloader="vendor/bin/.phpunit/phpunit/vendor/autoload.php"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+    autoloader="vendor/bin/.phpunit/phpunit/vendor/autoload.php"
+    errorLevel="8"
+    findUnusedCode="true"
+    findUnusedBaselineEntry="true"
 >
     <projectFiles>
         <directory name="src" />
@@ -14,4 +15,19 @@
             <directory name="vendor" />
         </ignoreFiles>
     </projectFiles>
+
+    <issueHandlers>
+        <UnusedClass>
+            <errorLevel type="suppress">
+                <directory name="src" />
+                <directory name="tests" />
+            </errorLevel>
+        </UnusedClass>
+        <PossiblyUnusedMethod>
+            <errorLevel type="suppress">
+                <referencedMethod name="Siganushka\GenericBundle\Doctrine\EventListener\EntityToSuperclassListener::__construct" />
+                <referencedMethod name="Siganushka\GenericBundle\Doctrine\EventListener\EntityToSuperclassListener::loadClassMetadata" />
+            </errorLevel>
+        </PossiblyUnusedMethod>
+    </issueHandlers>
 </psalm>

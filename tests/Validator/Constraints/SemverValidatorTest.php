@@ -4,22 +4,12 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\Tests\Validator\Constraints;
 
-use Composer\Semver\VersionParser;
 use Siganushka\GenericBundle\Validator\Constraints\Semver;
 use Siganushka\GenericBundle\Validator\Constraints\SemverValidator;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class SemverValidatorTest extends ConstraintValidatorTestCase
 {
-    protected function setUp(): void
-    {
-        if (!class_exists(VersionParser::class)) {
-            static::markTestSkipped('Skip tests.');
-        }
-
-        parent::setUp();
-    }
-
     /**
      *  @dataProvider getValidSemvers
      */
