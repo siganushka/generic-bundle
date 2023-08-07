@@ -10,6 +10,9 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
+/**
+ * @template-implements DataTransformerInterface<object, string>
+ */
 class EntityToIdentifierTransformer implements DataTransformerInterface
 {
     private ManagerRegistry $managerRegistry;

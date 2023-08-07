@@ -8,6 +8,9 @@ use Siganushka\GenericBundle\Validator\Constraints\PhoneNumber;
 use Siganushka\GenericBundle\Validator\Constraints\PhoneNumberValidator;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
+/**
+ * @template-extends ConstraintValidatorTestCase
+ */
 class PhoneNumberValidatorTest extends ConstraintValidatorTestCase
 {
     /**
