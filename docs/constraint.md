@@ -12,7 +12,7 @@ use Siganushka\GenericBundle\Validator\Constraints\PhoneNumber;
 class User
 {
     /*
-    * @PhoneNumber()
+    * @PhoneNumber
     */
     private $phoneNumber;
 }
@@ -30,7 +30,7 @@ use Siganushka\GenericBundle\Validator\Constraints\Semver;
 class Client
 {
     /*
-    * @Semver()
+    * @Semver
     */
     private $versionName;
 }

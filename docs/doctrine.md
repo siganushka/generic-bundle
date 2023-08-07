@@ -23,7 +23,7 @@ $foo->getId(): ?int; // 返回主键 ID
 
 ### Enable
 
-通用的 `enabled` 字段，抽象于常用的比如状态、是否有效等场景。
+通用的 `enabled` 字段，抽象于常用的比如状态、是否启用等场景。
 
 ```php
 // ./src/Entity/Foo.php
@@ -39,13 +39,13 @@ class Foo implements EnableInterface
 }
 
 $foo = new Foo();
-$foo->isEnabled(): ?bool;           // 返回状态、是否有效
-$foo->setEnabled(?bool $enabled);   // 设置状态、是否有效
+$foo->isEnabled(): ?bool;           // 返回状态、是否启用
+$foo->setEnabled(?bool $enabled);   // 设置状态、是否启用
 ```
 
 ### Sortable
 
-通用的 `sorted` 字段，抽象于常用的排序、显示顺序等场景。
+通用的 `sorted` 字段，抽象于常用的排序、优先级等场景。
 
 ```php
 // ./src/Entity/Foo.php
