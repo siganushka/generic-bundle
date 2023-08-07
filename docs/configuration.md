@@ -9,12 +9,12 @@
 
 siganushka_generic:
     doctrine:
-        table_prefix: test_ # 可选，默认值为 null 时不添加表前缀
+        table_prefix: app_ # 可选，默认值为 null 时不添加表前缀
 ```
 
 ### Doctrine 实体转化为抽象类
 
-此功能将 Doctrine 实体转化为抽象类 `MappedSuperclass` 后并由其它实体继承，常用于实体的可选继承。
+将 `Doctrine` 实体转化为抽象类 `MappedSuperclass` 后并由其它实体继承，常用于实体的可选继承。
 
 ```yaml
 # ./config/packages/siganushka_generic.yaml
@@ -28,7 +28,7 @@ siganushka_generic:
 
 ### 表单 html5 验证
 
-关闭 Form 组件的 html5 验证
+关闭 `Form` 组件的 `html5` 验证
 
 ```yaml
 # ./config/packages/siganushka_generic.yaml
