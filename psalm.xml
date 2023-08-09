@@ -27,7 +27,13 @@
             <errorLevel type="suppress">
                 <referencedMethod name="Siganushka\GenericBundle\Doctrine\EventListener\EntityToSuperclassListener::__construct" />
                 <referencedMethod name="Siganushka\GenericBundle\Doctrine\EventListener\EntityToSuperclassListener::loadClassMetadata" />
+                <referencedMethod name="Siganushka\GenericBundle\Tests\Repository\Foo::__construct" />
             </errorLevel>
         </PossiblyUnusedMethod>
+        <PossiblyUnusedParam>
+            <errorLevel type="suppress">
+                <file name="src/Repository/GenericEntityRepository.php" />
+            </errorLevel>
+        </PossiblyUnusedParam>
     </issueHandlers>
 </psalm>
