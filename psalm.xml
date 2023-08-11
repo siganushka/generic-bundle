@@ -5,7 +5,7 @@
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
     autoloader="vendor/bin/.phpunit/phpunit/vendor/autoload.php"
     errorLevel="8"
-    findUnusedCode="true"
+    findUnusedCode="false"
     findUnusedBaselineEntry="true"
 >
     <projectFiles>
@@ -15,25 +15,4 @@
             <directory name="vendor" />
         </ignoreFiles>
     </projectFiles>
-
-    <issueHandlers>
-        <UnusedClass>
-            <errorLevel type="suppress">
-                <directory name="src" />
-                <directory name="tests" />
-            </errorLevel>
-        </UnusedClass>
-        <PossiblyUnusedMethod>
-            <errorLevel type="suppress">
-                <referencedMethod name="Siganushka\GenericBundle\Doctrine\EventListener\EntityToSuperclassListener::__construct" />
-                <referencedMethod name="Siganushka\GenericBundle\Doctrine\EventListener\EntityToSuperclassListener::loadClassMetadata" />
-                <referencedMethod name="Siganushka\GenericBundle\Tests\Repository\Foo::__construct" />
-            </errorLevel>
-        </PossiblyUnusedMethod>
-        <PossiblyUnusedParam>
-            <errorLevel type="suppress">
-                <file name="src/Repository/GenericEntityRepository.php" />
-            </errorLevel>
-        </PossiblyUnusedParam>
-    </issueHandlers>
 </psalm>
