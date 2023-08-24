@@ -28,9 +28,7 @@ class GenericEntityRepository extends ServiceEntityRepository
      */
     public function createQueryBuilder($alias, $indexBy = null): QueryBuilder
     {
-        $queryBuilder = parent::createQueryBuilder($alias, $indexBy)
-            ->orderBy(sprintf('%s.id', $alias), 'DESC')
-        ;
+        $queryBuilder = parent::createQueryBuilder($alias, $indexBy);
 
         if (is_subclass_of($this->_entityName, SortableInterface::class)) {
             $queryBuilder->addOrderBy(sprintf('%s.sorted', $alias), 'DESC');
@@ -40,7 +38,7 @@ class GenericEntityRepository extends ServiceEntityRepository
             $queryBuilder->addOrderBy(sprintf('%s.createdAt', $alias), 'DESC');
         }
 
-        return $queryBuilder;
+        return $queryBuilder->addOrderBy(sprintf('%s.id', $alias), 'DESC');
     }
 
     /**
