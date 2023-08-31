@@ -38,7 +38,7 @@ class KnpPaginationNormalizer implements NormalizerInterface, CacheableSupportsM
     {
         $items = [];
         foreach ($object->getItems() as $item) {
-            $items[] = \is_scalar($item) ? $item : $this->normalizer->normalize($item, $format, $context);
+            $items[] = \is_object($item) ? $this->normalizer->normalize($item, $format, $context) : $item;
         }
 
         return [

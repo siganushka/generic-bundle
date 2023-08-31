@@ -55,6 +55,9 @@ class GenericEntityRepositoryTest extends TestCase
         $this->createRepository(Bar::class);
     }
 
+    /**
+     * @param class-string $entityClass
+     */
     private function createRepository(string $entityClass): GenericEntityRepository
     {
         $classMetadata = new ClassMetadata($entityClass);
