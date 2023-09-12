@@ -13,7 +13,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 final class JsonResponseListenerTest extends TestCase
 {
-    public function testJsonResponseListener(): void
+    public function testAll(): void
     {
         $response = new JsonResponse(['message' => '你好！']);
         static::assertSame('{"message":"\u4f60\u597d\uff01"}', $response->getContent());
