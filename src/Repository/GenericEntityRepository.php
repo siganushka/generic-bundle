@@ -46,13 +46,6 @@ class GenericEntityRepository extends ServiceEntityRepository
      */
     public function createNew(...$args): ResourceInterface
     {
-        $ref = new \ReflectionClass($this->_entityName);
-
-        /** @var ResourceInterface */
-        $entity = \count($args)
-            ? $ref->newInstance(...$args)
-            : $ref->newInstanceWithoutConstructor();
-
-        return $entity;
+        return (new \ReflectionClass($this->_entityName))->newInstanceArgs($args);
     }
 }

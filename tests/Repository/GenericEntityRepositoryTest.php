@@ -26,26 +26,34 @@ class GenericEntityRepositoryTest extends TestCase
         static::assertInstanceOf(ServiceEntityRepositoryInterface::class, $repository);
 
         /** @var Foo */
-        $entity = $repository->createNew();
+        $entity = $repository->createNew('foo');
         static::assertInstanceOf(Foo::class, $entity);
-        static::assertNull($entity->getArg1());
-        static::assertNull($entity->getArg2());
+        static::assertSame('foo', $entity->getArg1());
+        static::assertSame(128, $entity->getArg2());
 
         /** @var Foo */
-        $entity = $repository->createNew('hello', 256);
+        $entity = $repository->createNew('bar', 256);
         static::assertInstanceOf(Foo::class, $entity);
-        static::assertSame('hello', $entity->getArg1());
+        static::assertSame('bar', $entity->getArg1());
         static::assertSame(256, $entity->getArg2());
 
-        $entity->setArg1('world');
+        $entity->setArg1('baz');
         $entity->setArg2(512);
-        static::assertSame('world', $entity->getArg1());
+        static::assertSame('baz', $entity->getArg1());
         static::assertSame(512, $entity->getArg2());
 
         static::assertSame(
             'SELECT f FROM Siganushka\GenericBundle\Tests\Repository\Foo f ORDER BY f.sorted DESC, f.createdAt DESC, f.id DESC',
             $repository->createQueryBuilder('f')->getDQL()
         );
+    }
+
+    public function testArgumentCountError(): void
+    {
+        $this->expectException(\ArgumentCountError::class);
+
+        $repository = $this->createRepository(Foo::class);
+        $repository->createNew();
     }
 
     public function testUnexpectedValueException(): void
