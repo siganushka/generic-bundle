@@ -26,7 +26,7 @@ class SequenceGeneratorTest extends TestCase
 
         static::assertSame($y, $now->format('y'));
         static::assertSame($z, $now->format('z'));
-        static::assertSame($s, (string) ($now->getTimestamp() - $today->getTimestamp()));
+        static::assertSame($s, sprintf('%05s', $now->getTimestamp() - $today->getTimestamp()));
     }
 
     // public function testPerformance(): void
