@@ -20,6 +20,8 @@ class GenericSortedNormalizer implements NormalizerInterface, CacheableSupportsM
 
     /**
      * @param ResourceInterface|mixed $object
+     *
+     * @return array<string, mixed>
      */
     public function normalize($object, string $format = null, array $context = []): array
     {

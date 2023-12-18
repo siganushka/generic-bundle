@@ -8,6 +8,7 @@ use Knp\Component\Pager\Pagination\SlidingPagination;
 use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\Serializer\Normalizer\KnpPaginationNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 class KnpPaginationNormalizerTest extends TestCase
 {
@@ -26,8 +27,13 @@ class KnpPaginationNormalizerTest extends TestCase
         $pagination->setTotalItemCount(32);
         $pagination->setItems([1, 2, 3, 4]);
 
-        $normalizer = new KnpPaginationNormalizer(new ObjectNormalizer());
-        $normalizerWithContext = new KnpPaginationNormalizer(new ObjectNormalizer(), $context);
+        $serializer = new Serializer([new ObjectNormalizer()]);
+
+        $normalizer = new KnpPaginationNormalizer();
+        $normalizer->setSerializer($serializer);
+
+        $normalizerWithContext = new KnpPaginationNormalizer($context);
+        $normalizerWithContext->setSerializer($serializer);
 
         static::assertSame([
             'currentPageNumber' => $pagination->getCurrentPageNumber(),
@@ -53,7 +59,10 @@ class KnpPaginationNormalizerTest extends TestCase
 
     public function testSupportsNormalization(): void
     {
-        $normalizer = new KnpPaginationNormalizer(new ObjectNormalizer());
+        $serializer = new Serializer([new ObjectNormalizer()]);
+
+        $normalizer = new KnpPaginationNormalizer();
+        $normalizer->setSerializer($serializer);
 
         static::assertFalse($normalizer->supportsNormalization(new \stdClass()));
         static::assertTrue($normalizer->supportsNormalization(new SlidingPagination()));

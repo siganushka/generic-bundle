@@ -15,7 +15,6 @@ return static function (ContainerConfigurator $container): void {
             ->tag('serializer.normalizer')
 
         ->set('siganushka_generic.serializer.normalizer.knp_pagination', KnpPaginationNormalizer::class)
-            ->arg(0, service('serializer.normalizer.object'))
             ->tag('serializer.normalizer')
 
         ->set('siganushka_generic.serializer.normalizer.translatable', TranslatableNormalizer::class)

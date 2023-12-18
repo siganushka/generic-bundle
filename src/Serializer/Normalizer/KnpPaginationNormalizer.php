@@ -7,10 +7,13 @@ namespace Siganushka\GenericBundle\Serializer\Normalizer;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\SerializerAwareInterface;
+use Symfony\Component\Serializer\SerializerAwareTrait;
 
-class KnpPaginationNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+class KnpPaginationNormalizer implements NormalizerInterface, SerializerAwareInterface, CacheableSupportsMethodInterface
 {
+    use SerializerAwareTrait;
+
     public const CURRENT_PAGE_NUMBER_KEY = 'knp_current_page_number';
     public const ITEMS_PER_PAGE_KEY = 'knp_items_per_page';
     public const TOTAL_COUNT_KEY = 'knp_total_count';
@@ -23,11 +26,8 @@ class KnpPaginationNormalizer implements NormalizerInterface, CacheableSupportsM
         self::ITEMS_KEY => 'items',
     ];
 
-    private ObjectNormalizer $normalizer;
-
-    public function __construct(ObjectNormalizer $normalizer, array $defaultContext = [])
+    public function __construct(array $defaultContext = [])
     {
-        $this->normalizer = $normalizer;
         $this->defaultContext = array_merge($this->defaultContext, $defaultContext);
     }
 
@@ -36,9 +36,13 @@ class KnpPaginationNormalizer implements NormalizerInterface, CacheableSupportsM
      */
     public function normalize($object, string $format = null, array $context = []): array
     {
+        if (!$this->serializer instanceof NormalizerInterface) {
+            throw new \LogicException('Cannot normalize because the injected serializer is not a normalizer.');
+        }
+
         $items = [];
         foreach ($object->getItems() as $item) {
-            $items[] = \is_object($item) ? $this->normalizer->normalize($item, $format, $context) : $item;
+            $items[] = \is_object($item) ? $this->serializer->normalize($item, $format, $context) : $item;
         }
 
         return [
