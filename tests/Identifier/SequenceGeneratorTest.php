@@ -24,8 +24,8 @@ class SequenceGeneratorTest extends TestCase
         $now = new \DateTimeImmutable();
         $today = $now->modify('today');
 
-        static::assertSame($y, $now->format('y'));
-        static::assertSame($z, $now->format('z'));
+        static::assertSame($y, sprintf('%02s', $now->format('y')));
+        static::assertSame($z, sprintf('%03s', $now->format('z')));
         static::assertSame($s, sprintf('%05s', $now->getTimestamp() - $today->getTimestamp()));
     }
 
