@@ -1,13 +1,14 @@
-generic.create: 添加
+generic.create: 创建
 generic.update: 更新
 generic.delete: 删除
-generic.remove: 移除
 generic.submit: 提交
-generic.action: 操作
+generic.add: 添加
 generic.edit: 编辑
+generic.remove: 移除
 generic.save: 保存
 generic.reset: 重置
 generic.query: 查询
+generic.action: 操作
 generic.choice: 请选择
 generic.choice_all: 全部
 generic.yes: 是
