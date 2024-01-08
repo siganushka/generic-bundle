@@ -1,5 +1,10 @@
-generic.action: 操作
+generic.create: 添加
+generic.update: 更新
+generic.delete: 删除
+generic.remove: 移除
 generic.submit: 提交
+generic.action: 操作
+generic.edit: 编辑
 generic.save: 保存
 generic.reset: 重置
 generic.query: 查询
