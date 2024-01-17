@@ -11,11 +11,11 @@ class CurrencyUtilsTest extends TestCase
 {
     // public function testPerformance(): void
     // {
-    //     $formatter = new CurrencyUtils();
+    //     $utils = new CurrencyUtils();
     //     $time_pre = microtime(true);
 
     //     for ($i = -10; $i < 10000; $i ++) {
-    //         $v = $formatter->format($i);
+    //         $v = $utils->format($i);
     //         // dump($i, $v);
     //     }
 
@@ -29,8 +29,8 @@ class CurrencyUtilsTest extends TestCase
      */
     public function testDefaultOptions(?int $currency, string $formattedCurrency, array $context = []): void
     {
-        $formatter = new CurrencyUtils();
-        static::assertSame($formattedCurrency, $formatter->format($currency, $context));
+        $utils = new CurrencyUtils();
+        static::assertSame($formattedCurrency, $utils->format($currency, $context));
     }
 
     /**
@@ -43,8 +43,8 @@ class CurrencyUtilsTest extends TestCase
             CurrencyUtils::DECIMALS => 0,
         ];
 
-        $formatter = new CurrencyUtils($defaultContext);
-        static::assertSame($formattedCurrency, $formatter->format($currency, $context));
+        $utils = new CurrencyUtils($defaultContext);
+        static::assertSame($formattedCurrency, $utils->format($currency, $context));
     }
 
     public function getCentsOfCurrencies(): array
