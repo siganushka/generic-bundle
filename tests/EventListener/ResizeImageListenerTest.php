@@ -20,14 +20,14 @@ class ResizeImageListenerTest extends TestCase
 
     public function testResizeImageMaxWidth(): void
     {
-        $originFile = './tests/Fixtures/landscape.jpg';
-        $targetFile = sprintf('./tests/Fixtures/landscape-%s.jpg', uniqid());
+        $origin = './tests/Fixtures/landscape.jpg';
+        $target = sprintf('%s/%s', sys_get_temp_dir(), pathinfo($origin, \PATHINFO_BASENAME));
 
-        if (!copy($originFile, $targetFile)) {
+        if (!copy($origin, $target)) {
             static::markTestSkipped('Skip tests (Fail to copy file).');
         }
 
-        $file = new \SplFileInfo($targetFile);
+        $file = new \SplFileInfo($target);
 
         [$width, $height] = FileUtils::getImageSize($file);
         static::assertSame(500, $width);
@@ -54,19 +54,19 @@ class ResizeImageListenerTest extends TestCase
         static::assertSame(50, $width);
         static::assertSame(30, $height);
 
-        unlink($targetFile);
+        unlink($target);
     }
 
     public function testResizeImageMaxHeight(): void
     {
-        $originFile = './tests/Fixtures/portrait.jpg';
-        $targetFile = sprintf('./tests/Fixtures/portrait-%s.jpg', uniqid());
+        $origin = './tests/Fixtures/portrait.jpg';
+        $target = sprintf('%s/%s', sys_get_temp_dir(), pathinfo($origin, \PATHINFO_BASENAME));
 
-        if (!copy($originFile, $targetFile)) {
+        if (!copy($origin, $target)) {
             static::markTestSkipped('Skip tests (Fail to copy file).');
         }
 
-        $file = new \SplFileInfo($targetFile);
+        $file = new \SplFileInfo($target);
 
         [$width, $height] = FileUtils::getImageSize($file);
         static::assertSame(300, $width);
@@ -93,6 +93,6 @@ class ResizeImageListenerTest extends TestCase
         static::assertSame(30, $width);
         static::assertSame(50, $height);
 
-        unlink($targetFile);
+        unlink($target);
     }
 }

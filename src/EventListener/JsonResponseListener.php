@@ -23,6 +23,8 @@ class JsonResponseListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents(): array
     {
-        return [ResponseEvent::class => 'onResponse'];
+        return [
+            ResponseEvent::class => 'onResponse',
+        ];
     }
 }

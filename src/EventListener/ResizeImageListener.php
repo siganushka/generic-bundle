@@ -17,11 +17,14 @@ class ResizeImageListener implements EventSubscriberInterface
         }
 
         $file = $event->getFile();
-        if ($maxWidth = $event->getMaxWidth()) {
+        $maxWidth = $event->getMaxWidth();
+        $maxHeight = $event->getMaxHeight();
+
+        if (null !== $maxWidth) {
             $this->resizeImageMaxWidth($file, $maxWidth);
         }
 
-        if ($maxHeight = $event->getMaxHeight()) {
+        if (null !== $maxHeight) {
             $this->resizeImageMaxHeight($file, $maxHeight);
         }
     }

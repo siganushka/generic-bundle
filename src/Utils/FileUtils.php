@@ -47,9 +47,12 @@ class FileUtils
      */
     public static function getFormattedSize(\SplFileInfo $file): string
     {
-        $bytes = $file->getSize();
+        $size = $file->getSize();
+        if (false === $size) {
+            throw new \RuntimeException('Unable to access file.');
+        }
 
-        return static::formatBytes($bytes);
+        return static::formatBytes($size);
     }
 
     /**
