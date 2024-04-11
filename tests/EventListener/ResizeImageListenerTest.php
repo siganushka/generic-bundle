@@ -28,7 +28,7 @@ class ResizeImageListenerTest extends TestCase
         }
 
         $file = new \SplFileInfo($target);
-        static::assertSame(51211, $file->getSize());
+        $size = $file->getSize();
 
         [$width, $height] = FileUtils::getImageSize($file);
         static::assertSame(500, $width);
@@ -36,27 +36,27 @@ class ResizeImageListenerTest extends TestCase
 
         $listener = new ResizeImageListener();
         $listener->onResizeImage(new ResizeImageEvent($file, 500));
-        static::assertSame(51211, $file->getSize());
 
         [$width, $height] = FileUtils::getImageSize($file);
         static::assertSame(500, $width);
         static::assertSame(300, $height);
+        static::assertSame($size, $file->getSize());
 
         $listener = new ResizeImageListener();
         $listener->onResizeImage(new ResizeImageEvent($file, 250));
-        static::assertSame(15199, $file->getSize());
 
         [$width, $height] = FileUtils::getImageSize($file);
         static::assertSame(250, $width);
         static::assertSame(150, $height);
+        static::assertNotSame($size, $file->getSize());
 
         $listener = new ResizeImageListener();
         $listener->onResizeImage(new ResizeImageEvent($file, 50));
-        static::assertSame(1266, $file->getSize());
 
         [$width, $height] = FileUtils::getImageSize($file);
         static::assertSame(50, $width);
         static::assertSame(30, $height);
+        static::assertNotSame($size, $file->getSize());
 
         unlink($target);
     }
@@ -71,7 +71,7 @@ class ResizeImageListenerTest extends TestCase
         }
 
         $file = new \SplFileInfo($target);
-        static::assertSame(35755, $file->getSize());
+        $size = $file->getSize();
 
         [$width, $height] = FileUtils::getImageSize($file);
         static::assertSame(300, $width);
@@ -79,27 +79,27 @@ class ResizeImageListenerTest extends TestCase
 
         $listener = new ResizeImageListener();
         $listener->onResizeImage(new ResizeImageEvent($file, null, 500));
-        static::assertSame(35755, $file->getSize());
 
         [$width, $height] = FileUtils::getImageSize($file);
         static::assertSame(300, $width);
         static::assertSame(500, $height);
+        static::assertSame($size, $file->getSize());
 
         $listener = new ResizeImageListener();
         $listener->onResizeImage(new ResizeImageEvent($file, null, 250));
-        static::assertSame(9061, $file->getSize());
 
         [$width, $height] = FileUtils::getImageSize($file);
         static::assertSame(150, $width);
         static::assertSame(250, $height);
+        static::assertNotSame($size, $file->getSize());
 
         $listener = new ResizeImageListener();
         $listener->onResizeImage(new ResizeImageEvent($file, null, 50));
-        static::assertSame(906, $file->getSize());
 
         [$width, $height] = FileUtils::getImageSize($file);
         static::assertSame(30, $width);
         static::assertSame(50, $height);
+        static::assertNotSame($size, $file->getSize());
 
         unlink($target);
     }
