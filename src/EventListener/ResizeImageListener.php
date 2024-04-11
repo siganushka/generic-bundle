@@ -41,6 +41,9 @@ class ResizeImageListener implements EventSubscriberInterface
         $imagick = new \Imagick($file->getPathname());
         $imagick->resizeImage($maxWidth, $newHeight, \Imagick::FILTER_LANCZOS, 0.5);
         $imagick->writeImage($file->getPathname());
+
+        // [important] Clears file status cache
+        clearstatcache(true, $file->getPathname());
     }
 
     private function resizeImageMaxHeight(\SplFileInfo $file, int $maxHeight): void
@@ -55,6 +58,9 @@ class ResizeImageListener implements EventSubscriberInterface
         $imagick = new \Imagick($file->getPathname());
         $imagick->resizeImage($newWidth, $maxHeight, \Imagick::FILTER_LANCZOS, 0.5);
         $imagick->writeImage($file->getPathname());
+
+        // [important] Clears file status cache
+        clearstatcache(true, $file->getPathname());
     }
 
     public static function getSubscribedEvents(): array
