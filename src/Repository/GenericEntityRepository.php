@@ -15,10 +15,6 @@ class GenericEntityRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry, string $entityClass)
     {
-        if (!is_subclass_of($entityClass, ResourceInterface::class)) {
-            throw new \UnexpectedValueException(sprintf('Expected argument of type "%s", "%s" given', ResourceInterface::class, $entityClass));
-        }
-
         parent::__construct($registry, $entityClass);
     }
 
@@ -38,7 +34,11 @@ class GenericEntityRepository extends ServiceEntityRepository
             $queryBuilder->addOrderBy(sprintf('%s.createdAt', $alias), 'DESC');
         }
 
-        return $queryBuilder->addOrderBy(sprintf('%s.id', $alias), 'DESC');
+        if (is_subclass_of($this->_entityName, ResourceInterface::class)) {
+            $queryBuilder->addOrderBy(sprintf('%s.id', $alias), 'DESC');
+        }
+
+        return $queryBuilder;
     }
 
     /**

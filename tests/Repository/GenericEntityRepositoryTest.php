@@ -56,13 +56,6 @@ class GenericEntityRepositoryTest extends TestCase
         $repository->createNew();
     }
 
-    public function testUnexpectedValueException(): void
-    {
-        $this->expectException(\UnexpectedValueException::class);
-
-        $this->createRepository(Bar::class);
-    }
-
     /**
      * @param class-string $entityClass
      */
@@ -129,8 +122,4 @@ class Foo implements ResourceInterface, SortableInterface, TimestampableInterfac
     {
         return $this->arg2;
     }
-}
-
-class Bar
-{
 }
