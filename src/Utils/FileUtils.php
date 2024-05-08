@@ -27,7 +27,7 @@ class FileUtils
         }
 
         $result = @getimagesize($file->getPathname());
-        if (empty($result[0]) || empty($result[1])) {
+        if (false === $result) {
             throw new \RuntimeException('Unable to access file.');
         }
 
