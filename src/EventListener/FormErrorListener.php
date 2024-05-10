@@ -10,14 +10,17 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FormErrorListener implements EventSubscriberInterface
 {
     private NormalizerInterface $normalizer;
+    private TranslatorInterface $translator;
 
-    public function __construct(NormalizerInterface $normalizer)
+    public function __construct(NormalizerInterface $normalizer, TranslatorInterface $translator)
     {
         $this->normalizer = $normalizer;
+        $this->translator = $translator;
     }
 
     public function onException(ExceptionEvent $event): void
@@ -34,7 +37,7 @@ class FormErrorListener implements EventSubscriberInterface
             'type' => 'https://tools.ietf.org/html/rfc2616#section-10',
             'title' => Response::$statusTexts[$statusCode] ?? 'An error occurred',
             'status' => $statusCode,
-            'detail' => $formErrors['errors'][0]['message'] ?? $throwable->getMessage(),
+            'detail' => $formErrors['errors'][0]['message'] ?? $this->translator->trans($throwable->getMessage(), [], 'validators'),
             'errors' => $formErrors['children'],
         ];
 

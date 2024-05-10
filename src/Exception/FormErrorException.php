@@ -16,7 +16,7 @@ class FormErrorException extends HttpException
     {
         $this->form = $form;
 
-        parent::__construct(Response::HTTP_UNPROCESSABLE_ENTITY, 'Validation Failed');
+        parent::__construct(Response::HTTP_UNPROCESSABLE_ENTITY, 'Validation Failed.');
     }
 
     public function getForm(): FormInterface

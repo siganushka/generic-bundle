@@ -23,6 +23,7 @@ return static function (ContainerConfigurator $container): void {
 
         ->set('siganushka_generic.listener.form_error', FormErrorListener::class)
             ->arg(0, service('serializer.normalizer.form_error'))
+            ->arg(1, service('translator'))
             ->tag('kernel.event_subscriber')
 
         ->set('siganushka_generic.listener.public_file', PublicFileListener::class)
