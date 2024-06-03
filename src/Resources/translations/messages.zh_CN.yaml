@@ -1,3 +1,4 @@
+generic.resource: ID
 generic.create: 创建
 generic.update: 更新
 generic.delete: 删除
@@ -28,6 +29,7 @@ generic.state: 状态
 generic.gender: 性别
 generic.gender_male: 男
 generic.gender_female: 女
+generic.delimiter: '-'
 generic.no_items: 没有记录！
 generic.remove_confirmation: 确定移除码？
 generic.delete_confirmation: 该操作不可恢复，确定删除码？
