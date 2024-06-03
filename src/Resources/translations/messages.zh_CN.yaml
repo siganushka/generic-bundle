@@ -11,9 +11,12 @@ generic.back: 返回
 generic.save: 保存
 generic.reset: 重置
 generic.query: 查询
+generic.search: 搜索
+generic.import: 导入
+generic.export: 导出
 generic.action: 操作
-generic.choice: --- 请选择 ---
-generic.choice_all: --- 全部 ---
+generic.choice: '--- 请选择 ---'
+generic.choice_all: '--- 全部 ---'
 generic.yes: 是
 generic.no: 否
 generic.enabled: 启用
