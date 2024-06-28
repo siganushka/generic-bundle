@@ -14,13 +14,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FormErrorListener implements EventSubscriberInterface
 {
-    private NormalizerInterface $normalizer;
-    private TranslatorInterface $translator;
-
-    public function __construct(NormalizerInterface $normalizer, TranslatorInterface $translator)
-    {
-        $this->normalizer = $normalizer;
-        $this->translator = $translator;
+    public function __construct(
+        private NormalizerInterface $normalizer,
+        private TranslatorInterface $translator
+    ) {
     }
 
     public function onException(ExceptionEvent $event): void

@@ -8,11 +8,8 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 abstract class AbstractFileEvent extends Event
 {
-    protected \SplFileInfo $file;
-
-    public function __construct(\SplFileInfo $file)
+    public function __construct(protected \SplFileInfo $file)
     {
-        $this->file = $file;
     }
 
     public function getFile(): \SplFileInfo

@@ -9,11 +9,8 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 
 class EntityToSuperclassListener
 {
-    private array $entityToSuperclasses = [];
-
-    public function __construct(array $entityToSuperclasses = [])
+    public function __construct(private array $entityToSuperclasses = [])
     {
-        $this->entityToSuperclasses = $entityToSuperclasses;
     }
 
     public function loadClassMetadata(LoadClassMetadataEventArgs $event): void

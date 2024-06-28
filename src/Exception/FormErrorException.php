@@ -10,12 +10,8 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class FormErrorException extends HttpException
 {
-    private FormInterface $form;
-
-    public function __construct(FormInterface $form)
+    public function __construct(private FormInterface $form)
     {
-        $this->form = $form;
-
         parent::__construct(Response::HTTP_UNPROCESSABLE_ENTITY, 'Validation Failed.');
     }
 
