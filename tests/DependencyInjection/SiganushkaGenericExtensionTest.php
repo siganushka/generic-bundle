@@ -10,7 +10,6 @@ use Siganushka\Contracts\Doctrine\EventListener\TablePrefixListener;
 use Siganushka\Contracts\Doctrine\EventListener\TimestampableListener;
 use Siganushka\GenericBundle\DependencyInjection\SiganushkaGenericExtension;
 use Siganushka\GenericBundle\Doctrine\EventListener\EntityToSuperclassListener;
-use Siganushka\GenericBundle\Identifier\SequenceGenerator;
 use Siganushka\GenericBundle\Utils\CurrencyUtils;
 use Symfony\Component\DependencyInjection\Compiler\ResolveChildDefinitionsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -23,7 +22,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
 
         static::assertTrue($container->hasDefinition('siganushka_generic.listener.json_response'));
         static::assertTrue($container->hasDefinition('siganushka_generic.listener.resize_image'));
-        static::assertTrue($container->hasDefinition('siganushka_generic.identifier.sequence'));
         static::assertTrue($container->hasDefinition('siganushka_generic.utils.currency'));
         static::assertFalse($container->hasDefinition('siganushka_generic.doctrine.listener.entity_to_superclass'));
         static::assertFalse($container->hasDefinition('siganushka_generic.doctrine.listener.table_prefix'));
@@ -31,7 +29,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
         static::assertTrue($container->hasDefinition('siganushka_generic.doctrine.listener.sortable'));
         static::assertTrue($container->hasDefinition('siganushka_generic.form.type_extension.disable_html5_validation'));
 
-        static::assertTrue($container->hasAlias(SequenceGenerator::class));
         static::assertTrue($container->hasAlias(CurrencyUtils::class));
 
         $jsonResponseDef = $container->getDefinition('siganushka_generic.listener.json_response');
