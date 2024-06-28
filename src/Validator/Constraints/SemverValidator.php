@@ -12,7 +12,10 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class SemverValidator extends ConstraintValidator
 {
-    public function validate($value, Constraint $constraint): void
+    /**
+     * @psalm-param mixed $value
+     */
+    public function validate(mixed $value, Constraint $constraint): void
     {
         if (!$constraint instanceof Semver) {
             throw new UnexpectedTypeException($constraint, Semver::class);
@@ -22,11 +25,14 @@ class SemverValidator extends ConstraintValidator
             return;
         }
 
-        if (!\is_scalar($value) && !(\is_object($value) && method_exists($value, '__toString'))) {
+        if (!\is_scalar($value) && !$value instanceof \Stringable) {
             throw new UnexpectedValueException($value, 'string');
         }
 
         $value = (string) $value;
+        if ('' === $value) {
+            return;
+        }
 
         try {
             (new VersionParser())->normalize($value);

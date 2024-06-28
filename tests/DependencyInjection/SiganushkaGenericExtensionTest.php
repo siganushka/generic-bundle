@@ -12,7 +12,6 @@ use Siganushka\GenericBundle\DependencyInjection\SiganushkaGenericExtension;
 use Siganushka\GenericBundle\Doctrine\EventListener\EntityToSuperclassListener;
 use Siganushka\GenericBundle\Identifier\SequenceGenerator;
 use Siganushka\GenericBundle\Utils\CurrencyUtils;
-use Siganushka\GenericBundle\Utils\PublicFileUtils;
 use Symfony\Component\DependencyInjection\Compiler\ResolveChildDefinitionsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -23,28 +22,20 @@ final class SiganushkaGenericExtensionTest extends TestCase
         $container = $this->createContainerWithConfig([]);
 
         static::assertTrue($container->hasDefinition('siganushka_generic.listener.json_response'));
-        static::assertTrue($container->hasDefinition('siganushka_generic.listener.public_file'));
         static::assertTrue($container->hasDefinition('siganushka_generic.listener.resize_image'));
         static::assertTrue($container->hasDefinition('siganushka_generic.identifier.sequence'));
-        static::assertTrue($container->hasDefinition('siganushka_generic.utils.public_file'));
         static::assertTrue($container->hasDefinition('siganushka_generic.utils.currency'));
         static::assertFalse($container->hasDefinition('siganushka_generic.doctrine.listener.entity_to_superclass'));
         static::assertFalse($container->hasDefinition('siganushka_generic.doctrine.listener.table_prefix'));
         static::assertTrue($container->hasDefinition('siganushka_generic.doctrine.listener.timestampable'));
         static::assertTrue($container->hasDefinition('siganushka_generic.doctrine.listener.sortable'));
         static::assertTrue($container->hasDefinition('siganushka_generic.form.type_extension.disable_html5_validation'));
-        static::assertTrue($container->hasDefinition('siganushka_generic.serializer.normalizer.translatable'));
 
         static::assertTrue($container->hasAlias(SequenceGenerator::class));
-        static::assertTrue($container->hasAlias(PublicFileUtils::class));
         static::assertTrue($container->hasAlias(CurrencyUtils::class));
 
         $jsonResponseDef = $container->getDefinition('siganushka_generic.listener.json_response');
         static::assertTrue($jsonResponseDef->hasTag('kernel.event_subscriber'));
-
-        $publicFileDef = $container->getDefinition('siganushka_generic.listener.public_file');
-        static::assertTrue($publicFileDef->hasTag('kernel.event_subscriber'));
-        static::assertSame('siganushka_generic.utils.public_file', (string) $publicFileDef->getArgument(0));
 
         $resizeImageDef = $container->getDefinition('siganushka_generic.listener.resize_image');
         static::assertTrue($resizeImageDef->hasTag('kernel.event_subscriber'));
@@ -72,10 +63,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
 
         $disableHtml5ValidationDef = $container->getDefinition('siganushka_generic.form.type_extension.disable_html5_validation');
         static::assertTrue($disableHtml5ValidationDef->hasTag('form.type_extension'));
-
-        $translatableNormalizerDef = $container->getDefinition('siganushka_generic.serializer.normalizer.translatable');
-        static::assertTrue($translatableNormalizerDef->hasTag('serializer.normalizer'));
-        static::assertSame('translator', (string) $translatableNormalizerDef->getArgument(0));
     }
 
     public function testWithConfigs(): void

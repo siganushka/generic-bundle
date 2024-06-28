@@ -7,13 +7,18 @@ namespace Siganushka\GenericBundle\Form\DataTransformer;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
-use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
+/**
+ * @implements DataTransformerInterface<object, mixed>
+ */
 class EntityToIdentifierTransformer implements DataTransformerInterface
 {
     private ManagerRegistry $managerRegistry;
-    /** @psalm-var class-string */
+
+    /**
+     * @psalm-var class-string
+     */
     private string $className;
     private string $identifierField;
 
@@ -27,14 +32,14 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
         $this->identifierField = $identifierField;
     }
 
-    public function transform($value): ?string
+    public function transform(mixed $value): ?string
     {
         if (null === $value) {
             return null;
         }
 
         if (!$value instanceof $this->className) {
-            throw new UnexpectedTypeException($value, $this->className);
+            throw new TransformationFailedException('Invalid class name.');
         }
 
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
@@ -48,14 +53,14 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
         return (string) $result;
     }
 
-    public function reverseTransform($value): ?object
+    public function reverseTransform(mixed $value): ?object
     {
         if (null === $value || '' === $value) {
             return null;
         }
 
         if (!\is_scalar($value)) {
-            throw new UnexpectedTypeException($value, 'scalar');
+            throw new TransformationFailedException('Expected a scalar.');
         }
 
         try {

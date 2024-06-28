@@ -18,23 +18,19 @@ class GenericEntityRepository extends ServiceEntityRepository
         parent::__construct($registry, $entityClass);
     }
 
-    /**
-     * @param string      $alias   the alias for the table
-     * @param string|null $indexBy the index for the from
-     */
-    public function createQueryBuilder($alias, $indexBy = null): QueryBuilder
+    public function createQueryBuilder(string $alias, string $indexBy = null): QueryBuilder
     {
         $queryBuilder = parent::createQueryBuilder($alias, $indexBy);
 
-        if (is_subclass_of($this->_entityName, SortableInterface::class)) {
+        if (is_subclass_of($this->getEntityName(), SortableInterface::class)) {
             $queryBuilder->addOrderBy(sprintf('%s.sort', $alias), 'DESC');
         }
 
-        if (is_subclass_of($this->_entityName, TimestampableInterface::class)) {
+        if (is_subclass_of($this->getEntityName(), TimestampableInterface::class)) {
             $queryBuilder->addOrderBy(sprintf('%s.createdAt', $alias), 'DESC');
         }
 
-        if (is_subclass_of($this->_entityName, ResourceInterface::class)) {
+        if (is_subclass_of($this->getEntityName(), ResourceInterface::class)) {
             $queryBuilder->addOrderBy(sprintf('%s.id', $alias), 'DESC');
         }
 
@@ -46,6 +42,6 @@ class GenericEntityRepository extends ServiceEntityRepository
      */
     public function createNew(...$args): ResourceInterface
     {
-        return (new \ReflectionClass($this->_entityName))->newInstanceArgs($args);
+        return (new \ReflectionClass($this->getEntityName()))->newInstanceArgs($args);
     }
 }

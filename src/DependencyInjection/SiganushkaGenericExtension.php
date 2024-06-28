@@ -8,11 +8,10 @@ use Knp\Component\Pager\PaginatorInterface;
 use Siganushka\Contracts\Doctrine\ResourceInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\Form\Form;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Translation\Translator;
 
 class SiganushkaGenericExtension extends Extension
 {
@@ -55,10 +54,6 @@ class SiganushkaGenericExtension extends Extension
 
         if ($container::willBeAvailable('symfony/serializer', Serializer::class, ['siganushka/generic-bundle'])) {
             $loader->load('serializer.php');
-
-            if (!$container::willBeAvailable('symfony/translation', Translator::class, ['siganushka/generic-bundle'])) {
-                $container->removeDefinition('siganushka_generic.serializer.normalizer.translatable');
-            }
 
             if (!$container::willBeAvailable('knplabs/knp-components', PaginatorInterface::class, ['siganushka/generic-bundle'])) {
                 $container->removeDefinition('siganushka_generic.serializer.normalizer.knp_pagination');

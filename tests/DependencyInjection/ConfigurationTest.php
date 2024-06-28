@@ -12,29 +12,16 @@ use Symfony\Component\Config\Definition\Processor;
 
 final class ConfigurationTest extends TestCase
 {
-    private ?ConfigurationInterface $configuration = null;
-    private ?Processor $processor = null;
-
-    protected function setUp(): void
-    {
-        $this->configuration = new Configuration();
-        $this->processor = new Processor();
-    }
-
-    protected function tearDown(): void
-    {
-        $this->configuration = null;
-        $this->processor = null;
-    }
-
     public function testDefaultConfig(): void
     {
-        $treeBuilder = $this->configuration->getConfigTreeBuilder();
+        $configuration = new Configuration();
+        $treeBuilder = $configuration->getConfigTreeBuilder();
 
-        static::assertInstanceOf(ConfigurationInterface::class, $this->configuration);
+        static::assertInstanceOf(ConfigurationInterface::class, $configuration);
         static::assertInstanceOf(TreeBuilder::class, $treeBuilder);
 
-        $processedConfig = $this->processor->processConfiguration($this->configuration, []);
+        $processor = new Processor();
+        $processedConfig = $processor->processConfiguration($configuration, []);
 
         static::assertSame($processedConfig, [
             'doctrine' => [
@@ -60,7 +47,8 @@ final class ConfigurationTest extends TestCase
             'entity_to_superclass' => ['foo', 'bar', 'baz'],
         ];
 
-        $processedConfig = $this->processor->processConfiguration($this->configuration, [
+        $processor = new Processor();
+        $processedConfig = $processor->processConfiguration(new Configuration(), [
             ['doctrine' => $config],
         ]);
 
@@ -73,7 +61,8 @@ final class ConfigurationTest extends TestCase
             'html5_validation' => true,
         ];
 
-        $processedConfig = $this->processor->processConfiguration($this->configuration, [
+        $processor = new Processor();
+        $processedConfig = $processor->processConfiguration(new Configuration(), [
             ['form' => $config],
         ]);
 
@@ -89,7 +78,8 @@ final class ConfigurationTest extends TestCase
             'divisor' => 1,
         ];
 
-        $processedConfig = $this->processor->processConfiguration($this->configuration, [
+        $processor = new Processor();
+        $processedConfig = $processor->processConfiguration(new Configuration(), [
             ['currency' => $config],
         ]);
 

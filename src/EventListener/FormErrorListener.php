@@ -38,7 +38,7 @@ class FormErrorListener implements EventSubscriberInterface
             'title' => Response::$statusTexts[$statusCode] ?? 'An error occurred',
             'status' => $statusCode,
             'detail' => $formErrors['errors'][0]['message'] ?? $this->translator->trans($throwable->getMessage(), [], 'validators'),
-            'errors' => $formErrors['children'],
+            'errors' => $formErrors['children'] ?? [],
         ];
 
         $event->setResponse(new JsonResponse($data));

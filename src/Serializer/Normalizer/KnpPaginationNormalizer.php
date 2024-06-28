@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Siganushka\GenericBundle\Serializer\Normalizer;
 
 use Knp\Component\Pager\Pagination\PaginationInterface;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerAwareTrait;
 
-class KnpPaginationNormalizer implements NormalizerInterface, SerializerAwareInterface, CacheableSupportsMethodInterface
+class KnpPaginationNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
     use SerializerAwareTrait;
 
@@ -31,9 +30,6 @@ class KnpPaginationNormalizer implements NormalizerInterface, SerializerAwareInt
         $this->defaultContext = array_merge($this->defaultContext, $defaultContext);
     }
 
-    /**
-     * @param PaginationInterface|mixed $object
-     */
     public function normalize($object, string $format = null, array $context = []): array
     {
         if (!$this->serializer instanceof NormalizerInterface) {
@@ -53,13 +49,15 @@ class KnpPaginationNormalizer implements NormalizerInterface, SerializerAwareInt
         ];
     }
 
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, string $format = null, array $context = []): bool
     {
         return $data instanceof PaginationInterface;
     }
 
-    public function hasCacheableSupportsMethod(): bool
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return [
+            PaginationInterface::class => true,
+        ];
     }
 }

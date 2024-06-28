@@ -12,7 +12,6 @@ use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\Form\DataTransformer\EntityToIdentifierTransformer;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
-use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
 class EntityToIdentifierTransformerTest extends TestCase
 {
@@ -35,7 +34,7 @@ class EntityToIdentifierTransformerTest extends TestCase
     {
         $transformer = $this->createEntityToIdentifierTransformer(Foo::class, 'id');
 
-        static::assertEquals($this->foo->id, $transformer->transform($this->foo));
+        static::assertEquals($this->foo?->id, $transformer->transform($this->foo));
     }
 
     public function testTransformNullValue(): void
@@ -58,7 +57,7 @@ class EntityToIdentifierTransformerTest extends TestCase
 
     public function testTransformInvalidValueException(): void
     {
-        $this->expectException(UnexpectedTypeException::class);
+        $this->expectException(TransformationFailedException::class);
 
         $transformer = $this->createEntityToIdentifierTransformer(Foo::class, 'id');
         $transformer->transform(new \stdClass());
@@ -84,7 +83,7 @@ class EntityToIdentifierTransformerTest extends TestCase
 
     public function testReverseTransformInvalidValueException(): void
     {
-        $this->expectException(UnexpectedTypeException::class);
+        $this->expectException(TransformationFailedException::class);
 
         $transformer = $this->createEntityToIdentifierTransformer(Foo::class, 'id');
         $transformer->reverseTransform($this->foo);
@@ -107,7 +106,7 @@ class EntityToIdentifierTransformerTest extends TestCase
     }
 
     /**
-     * @param class-string $className
+     * @psalm-param class-string $className
      */
     private function createEntityToIdentifierTransformer(string $className, string $identifierField): DataTransformerInterface
     {

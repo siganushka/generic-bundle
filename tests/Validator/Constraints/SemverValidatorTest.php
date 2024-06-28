@@ -8,6 +8,10 @@ use Siganushka\GenericBundle\Validator\Constraints\Semver;
 use Siganushka\GenericBundle\Validator\Constraints\SemverValidator;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
+/**
+ * @template-extends ConstraintValidatorTestCase<SemverValidator>
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
 class SemverValidatorTest extends ConstraintValidatorTestCase
 {
     /**

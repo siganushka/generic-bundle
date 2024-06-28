@@ -53,11 +53,13 @@ class GenericEntityRepositoryTest extends TestCase
         $this->expectException(\ArgumentCountError::class);
 
         $repository = $this->createRepository(Foo::class);
+
         $repository->createNew();
+        dump('AAA', $repository);
     }
 
     /**
-     * @param class-string $entityClass
+     * @psalm-param class-string $entityClass
      */
     private function createRepository(string $entityClass): GenericEntityRepository
     {

@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 /**
  * @template-extends ConstraintValidatorTestCase<PhoneNumberValidator>
+ * @psalm-suppress PropertyNotSetInConstructor
  */
 class PhoneNumberValidatorTest extends ConstraintValidatorTestCase
 {
