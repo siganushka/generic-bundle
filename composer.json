@@ -1,6 +1,8 @@
 {
     "name": "siganushka/generic-bundle",
     "description": "Generic bundle for symfony.",
+    "keywords": ["generic-bundle"],
+    "homepage": "https://github.com/siganushka/generic-bundle",
     "type": "symfony-bundle",
     "license": "MIT",
     "authors": [
@@ -15,9 +17,9 @@
     },
     "require-dev": {
         "composer/semver": "^3.0",
-        "doctrine/doctrine-bundle": "^2.7",
+        "doctrine/doctrine-bundle": "^2.8",
         "friendsofphp/php-cs-fixer": "^3.0",
-        "knplabs/knp-components": "^4.0",
+        "knplabs/knp-components": "^4.1",
         "siganushka/doctrine-contracts": "dev-main",
         "symfony/form": "^6.4|^7.0",
         "symfony/phpunit-bridge": "^6.4|^7.0",
