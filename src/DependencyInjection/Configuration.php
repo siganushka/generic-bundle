@@ -21,7 +21,6 @@ class Configuration implements ConfigurationInterface
 
         $this->addDoctrineSection($rootNode);
         $this->addFormSection($rootNode);
-        $this->addCurrencySection($rootNode);
 
         return $treeBuilder;
     }
@@ -67,23 +66,6 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->booleanNode('html5_validation')->defaultFalse()->end()
-                    ->end()
-                ->end()
-            ->end()
-        ;
-    }
-
-    private function addCurrencySection(ArrayNodeDefinition $rootNode): void
-    {
-        $rootNode
-            ->children()
-                ->arrayNode('currency')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->integerNode('divisor')->defaultValue(100)->end()
-                        ->integerNode('decimals')->defaultValue(2)->end()
-                        ->scalarNode('dec_point')->defaultValue('.')->end()
-                        ->scalarNode('thousands_sep')->defaultValue(',')->end()
                     ->end()
                 ->end()
             ->end()

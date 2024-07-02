@@ -31,12 +31,6 @@ final class ConfigurationTest extends TestCase
             'form' => [
                 'html5_validation' => false,
             ],
-            'currency' => [
-                'divisor' => 100,
-                'decimals' => 2,
-                'dec_point' => '.',
-                'thousands_sep' => ',',
-            ],
         ]);
     }
 
@@ -67,22 +61,5 @@ final class ConfigurationTest extends TestCase
         ]);
 
         static::assertSame($processedConfig['form'], $config);
-    }
-
-    public function testCustomCurrencyConfig(): void
-    {
-        $config = [
-            'decimals' => 0,
-            'dec_point' => '_',
-            'thousands_sep' => '_',
-            'divisor' => 1,
-        ];
-
-        $processor = new Processor();
-        $processedConfig = $processor->processConfiguration(new Configuration(), [
-            ['currency' => $config],
-        ]);
-
-        static::assertSame($processedConfig['currency'], $config);
     }
 }

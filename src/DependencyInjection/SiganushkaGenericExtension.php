@@ -23,9 +23,6 @@ class SiganushkaGenericExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $currencyUtilsDef = $container->getDefinition('siganushka_generic.utils.currency');
-        $currencyUtilsDef->setArgument(0, $config['currency']);
-
         if ($container::willBeAvailable('siganushka/doctrine-contracts', ResourceInterface::class, ['siganushka/generic-bundle'])) {
             $loader->load('doctrine.php');
 

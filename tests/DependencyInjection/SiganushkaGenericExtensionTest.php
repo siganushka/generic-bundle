@@ -10,7 +10,6 @@ use Siganushka\Contracts\Doctrine\EventListener\TablePrefixListener;
 use Siganushka\Contracts\Doctrine\EventListener\TimestampableListener;
 use Siganushka\GenericBundle\DependencyInjection\SiganushkaGenericExtension;
 use Siganushka\GenericBundle\Doctrine\EventListener\EntityToSuperclassListener;
-use Siganushka\GenericBundle\Utils\CurrencyUtils;
 use Symfony\Component\DependencyInjection\Compiler\ResolveChildDefinitionsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -22,28 +21,17 @@ final class SiganushkaGenericExtensionTest extends TestCase
 
         static::assertTrue($container->hasDefinition('siganushka_generic.listener.json_response'));
         static::assertTrue($container->hasDefinition('siganushka_generic.listener.resize_image'));
-        static::assertTrue($container->hasDefinition('siganushka_generic.utils.currency'));
         static::assertFalse($container->hasDefinition('siganushka_generic.doctrine.listener.entity_to_superclass'));
         static::assertFalse($container->hasDefinition('siganushka_generic.doctrine.listener.table_prefix'));
         static::assertTrue($container->hasDefinition('siganushka_generic.doctrine.listener.timestampable'));
         static::assertTrue($container->hasDefinition('siganushka_generic.doctrine.listener.sortable'));
         static::assertTrue($container->hasDefinition('siganushka_generic.form.type_extension.disable_html5_validation'));
 
-        static::assertTrue($container->hasAlias(CurrencyUtils::class));
-
         $jsonResponseDef = $container->getDefinition('siganushka_generic.listener.json_response');
         static::assertTrue($jsonResponseDef->hasTag('kernel.event_subscriber'));
 
         $resizeImageDef = $container->getDefinition('siganushka_generic.listener.resize_image');
         static::assertTrue($resizeImageDef->hasTag('kernel.event_subscriber'));
-
-        $currencyDef = $container->getDefinition('siganushka_generic.utils.currency');
-        static::assertSame([
-            'divisor' => 100,
-            'decimals' => 2,
-            'dec_point' => '.',
-            'thousands_sep' => ',',
-        ], $currencyDef->getArgument(0));
 
         $listenerTagAttributes = [
             ['event' => 'prePersist'],
@@ -72,10 +60,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'form' => [
                 'html5_validation' => true,
             ],
-            'currency' => [
-                CurrencyUtils::DIVISOR => 1,
-                CurrencyUtils::DECIMALS => 0,
-            ],
         ];
 
         $container = $this->createContainerWithConfig($configs);
@@ -89,14 +73,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
         static::assertSame(TablePrefixListener::class, $tablePrefixDef->getClass());
         static::assertSame([['event' => 'loadClassMetadata']], $tablePrefixDef->getTag('doctrine.event_listener'));
         static::assertSame($configs['doctrine']['table_prefix'], $tablePrefixDef->getArgument(0));
-
-        $currencyDef = $container->getDefinition('siganushka_generic.utils.currency');
-        static::assertSame([
-            'divisor' => 1,
-            'decimals' => 0,
-            'dec_point' => '.',
-            'thousands_sep' => ',',
-        ], $currencyDef->getArgument(0));
 
         static::assertFalse($container->hasDefinition('siganushka_generic.form.type_extension.disable_html5_validation'));
     }
