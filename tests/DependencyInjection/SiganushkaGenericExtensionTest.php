@@ -19,16 +19,25 @@ final class SiganushkaGenericExtensionTest extends TestCase
     {
         $container = $this->createContainerWithConfig([]);
 
+        static::assertTrue($container->hasDefinition('siganushka_generic.listener.json_request'));
         static::assertTrue($container->hasDefinition('siganushka_generic.listener.json_response'));
+        static::assertTrue($container->hasDefinition('siganushka_generic.listener.form_error'));
         static::assertTrue($container->hasDefinition('siganushka_generic.listener.resize_image'));
         static::assertFalse($container->hasDefinition('siganushka_generic.doctrine.listener.entity_to_superclass'));
         static::assertFalse($container->hasDefinition('siganushka_generic.doctrine.listener.table_prefix'));
         static::assertTrue($container->hasDefinition('siganushka_generic.doctrine.listener.timestampable'));
         static::assertTrue($container->hasDefinition('siganushka_generic.doctrine.listener.sortable'));
         static::assertTrue($container->hasDefinition('siganushka_generic.form.type_extension.disable_html5_validation'));
+        static::assertTrue($container->hasDefinition('siganushka_generic.serializer.normalizer.knp_pagination'));
+
+        $jsonRequestDef = $container->getDefinition('siganushka_generic.listener.json_request');
+        static::assertTrue($jsonRequestDef->hasTag('kernel.event_subscriber'));
 
         $jsonResponseDef = $container->getDefinition('siganushka_generic.listener.json_response');
         static::assertTrue($jsonResponseDef->hasTag('kernel.event_subscriber'));
+
+        $formErrorDef = $container->getDefinition('siganushka_generic.listener.form_error');
+        static::assertTrue($formErrorDef->hasTag('kernel.event_subscriber'));
 
         $resizeImageDef = $container->getDefinition('siganushka_generic.listener.resize_image');
         static::assertTrue($resizeImageDef->hasTag('kernel.event_subscriber'));
@@ -48,6 +57,9 @@ final class SiganushkaGenericExtensionTest extends TestCase
 
         $disableHtml5ValidationDef = $container->getDefinition('siganushka_generic.form.type_extension.disable_html5_validation');
         static::assertTrue($disableHtml5ValidationDef->hasTag('form.type_extension'));
+
+        $disableHtml5ValidationDef = $container->getDefinition('siganushka_generic.serializer.normalizer.knp_pagination');
+        static::assertTrue($disableHtml5ValidationDef->hasTag('serializer.normalizer'));
     }
 
     public function testWithConfigs(): void

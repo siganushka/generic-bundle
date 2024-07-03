@@ -26,18 +26,18 @@ class SiganushkaGenericExtension extends Extension
         if ($container::willBeAvailable('siganushka/doctrine-contracts', ResourceInterface::class, ['siganushka/generic-bundle'])) {
             $loader->load('doctrine.php');
 
-            if ($config['doctrine']['table_prefix']) {
-                $tablePrefixDef = $container->getDefinition('siganushka_generic.doctrine.listener.table_prefix');
-                $tablePrefixDef->setArgument(0, $config['doctrine']['table_prefix']);
-            } else {
-                $container->removeDefinition('siganushka_generic.doctrine.listener.table_prefix');
+            $entityToSuperclassDef = $container->findDefinition('siganushka_generic.doctrine.listener.entity_to_superclass');
+            $entityToSuperclassDef->setArgument(0, $config['doctrine']['entity_to_superclass']);
+
+            if (!$config['doctrine']['entity_to_superclass']) {
+                $container->removeDefinition('siganushka_generic.doctrine.listener.entity_to_superclass');
             }
 
-            if ($config['doctrine']['entity_to_superclass']) {
-                $tablePrefixDef = $container->getDefinition('siganushka_generic.doctrine.listener.entity_to_superclass');
-                $tablePrefixDef->setArgument(0, $config['doctrine']['entity_to_superclass']);
-            } else {
-                $container->removeDefinition('siganushka_generic.doctrine.listener.entity_to_superclass');
+            $tablePrefixDef = $container->findDefinition('siganushka_generic.doctrine.listener.table_prefix');
+            $tablePrefixDef->setArgument(0, $config['doctrine']['table_prefix']);
+
+            if (!$config['doctrine']['table_prefix']) {
+                $container->removeDefinition('siganushka_generic.doctrine.listener.table_prefix');
             }
         }
 
@@ -55,6 +55,8 @@ class SiganushkaGenericExtension extends Extension
             if (!$container::willBeAvailable('knplabs/knp-components', PaginatorInterface::class, ['siganushka/generic-bundle'])) {
                 $container->removeDefinition('siganushka_generic.serializer.normalizer.knp_pagination');
             }
+        } else {
+            $container->removeDefinition('siganushka_generic.listener.form_error');
         }
     }
 }

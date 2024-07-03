@@ -13,10 +13,10 @@ class KnpPaginationNormalizer implements NormalizerInterface, SerializerAwareInt
 {
     use SerializerAwareTrait;
 
-    public const string CURRENT_PAGE_NUMBER_KEY = 'knp_current_page_number';
-    public const string ITEMS_PER_PAGE_KEY = 'knp_items_per_page';
-    public const string TOTAL_COUNT_KEY = 'knp_total_count';
-    public const string ITEMS_KEY = 'knp_items';
+    public const CURRENT_PAGE_NUMBER_KEY = 'knp_current_page_number';
+    public const ITEMS_PER_PAGE_KEY = 'knp_items_per_page';
+    public const TOTAL_COUNT_KEY = 'knp_total_count';
+    public const ITEMS_KEY = 'knp_items';
 
     private array $defaultContext = [
         self::CURRENT_PAGE_NUMBER_KEY => 'currentPageNumber',

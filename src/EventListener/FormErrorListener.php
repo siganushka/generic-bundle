@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Siganushka\GenericBundle\EventListener;
 
 use Siganushka\GenericBundle\Exception\FormErrorException;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,10 +15,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class FormErrorListener implements EventSubscriberInterface
 {
     public function __construct(
-        #[Autowire(service: 'serializer.normalizer.form_error')]
         private readonly NormalizerInterface $normalizer,
-        #[Autowire(service: 'translator')]
-        private readonly TranslatorInterface $translator,
+        private readonly ?TranslatorInterface $translator = null,
     ) {
     }
 
@@ -33,11 +30,16 @@ class FormErrorListener implements EventSubscriberInterface
         $formErrors = $this->normalizer->normalize($throwable->getForm());
         $statusCode = $throwable->getStatusCode();
 
+        $message = $throwable->getMessage();
+        if ($this->translator) {
+            $message = $this->translator->trans($message, [], 'validators');
+        }
+
         $data = [
             'type' => 'https://tools.ietf.org/html/rfc2616#section-10',
             'title' => Response::$statusTexts[$statusCode] ?? 'An error occurred',
             'status' => $statusCode,
-            'detail' => $formErrors['errors'][0]['message'] ?? $this->translator->trans($throwable->getMessage(), [], 'validators'),
+            'detail' => $formErrors['errors'][0]['message'] ?? $message,
             'errors' => $formErrors['children'] ?? [],
         ];
 
