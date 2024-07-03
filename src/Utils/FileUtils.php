@@ -16,7 +16,7 @@ class FileUtils
      *
      * @param \SplFileInfo $file 图像文件对象
      *
-     * @return array 图像尺寸信息
+     * @return array{ 0: int, 1: int, 2: int, 3: string, bits?: int, channels?: int, mime: string } 图像尺寸信息
      *
      * @throws \RuntimeException 文件不存在或不是图像文件
      */

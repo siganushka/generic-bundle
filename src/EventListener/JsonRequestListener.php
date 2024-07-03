@@ -25,8 +25,7 @@ class JsonRequestListener implements EventSubscriberInterface
         ) {
             try {
                 $request->request = new InputBag($request->toArray());
-            } catch (\Throwable $th) {
-                // ignore...
+            } catch (\Throwable) {
             }
         }
     }
