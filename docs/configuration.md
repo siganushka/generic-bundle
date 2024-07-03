@@ -37,14 +37,3 @@ siganushka_generic:
     form:
         html5_validation: true # 可选，默认值为 false 时不进行验证
 ```
-
-### 货币格式化助手类
-
-```yaml
-siganushka_generic:
-    currency:
-        divisor: 100        # 金额单位比例，默认为分 (为元时比例为 100)
-        decimals: 2         # 保留小数位数
-        dec_point: '.'      # 小数位分割符
-        thousands_sep: ','  # 千分位分割符
-```
