@@ -18,15 +18,12 @@
     "require-dev": {
         "composer/semver": "^3.0",
         "doctrine/doctrine-bundle": "^2.8",
-        "friendsofphp/php-cs-fixer": "^3.0",
         "knplabs/knp-components": "^4.1",
         "siganushka/doctrine-contracts": "dev-main",
         "symfony/form": "^6.4|^7.0",
-        "symfony/phpunit-bridge": "^6.4|^7.0",
         "symfony/serializer": "^6.4|^7.0",
         "symfony/translation": "^6.4|^7.0",
-        "symfony/validator": "^6.4|^7.0",
-        "vimeo/psalm": "dev-master"
+        "symfony/validator": "^6.4|^7.0"
     },
     "autoload": {
         "psr-4": {
@@ -45,5 +42,12 @@
     },
     "config": {
         "sort-packages": true
+    },
+    "scripts": {
+        "tools:run": [
+            "tools/vendor/bin/php-cs-fixer fix",
+            "tools/vendor/bin/simple-phpunit --debug",
+            "tools/vendor/bin/psalm --show-info=true --no-cache"
+        ]
     }
 }

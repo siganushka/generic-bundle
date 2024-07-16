@@ -21,5 +21,6 @@ jobs:
             - { name: PHP Version,          run: php --version }
             - { name: Validate composer,    run: composer validate --strict }
             - { name: Install dependencies, run: composer install }
-            - { name: Run tests,            run: php vendor/bin/simple-phpunit --debug }
-            - { name: Run Psalm,            run: "php vendor/bin/psalm --show-info=true --php-version=${{ matrix.php-versions }}" }
+            - { name: Install tools,        run: composer install -d tools/ }
+            - { name: Run tests,            run: tools/vendor/bin/simple-phpunit --debug }
+            - { name: Run psalm,            run: "tools/vendor/bin/psalm --show-info=true --no-cache --php-version=${{ matrix.php-versions }}" }
