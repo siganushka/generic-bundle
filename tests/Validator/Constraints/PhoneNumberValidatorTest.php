@@ -35,7 +35,7 @@ class PhoneNumberValidatorTest extends ConstraintValidatorTestCase
         $this->validator->validate($phoneNumber, $constraint);
 
         $this->buildViolation($constraint->message)
-            ->setParameter('{{ value }}', sprintf('"%s"', $phoneNumber))
+            ->setParameter('{{ value }}', \sprintf('"%s"', $phoneNumber))
             ->setCode(PhoneNumber::INVALID_ERROR)
             ->assertRaised()
         ;

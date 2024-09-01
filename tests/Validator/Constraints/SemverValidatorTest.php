@@ -35,7 +35,7 @@ class SemverValidatorTest extends ConstraintValidatorTestCase
         $this->validator->validate($version, $constraint);
 
         $this->buildViolation($constraint->message)
-            ->setParameter('{{ value }}', sprintf('"%s"', $version))
+            ->setParameter('{{ value }}', \sprintf('"%s"', $version))
             ->setCode(Semver::INVALID_ERROR)
             ->assertRaised()
         ;

@@ -35,17 +35,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('table_prefix')
                             ->defaultNull()
                             ->validate()
-                                ->ifTrue(function (mixed $v) {
-                                    if (null === $v) {
-                                        return false;
-                                    }
-
-                                    if (!\is_string($v)) {
-                                        return true;
-                                    }
-
-                                    return !preg_match('/^[a-zA-Z0-9_]+$/', $v);
-                                })
+                                ->ifTrue(static fn (mixed $v): bool => \is_string($v) && !preg_match('/^[a-zA-Z0-9_]+$/', $v))
                                 ->thenInvalid('The "%s" for doctrine.table_prefix contains illegal character(s).')
                             ->end()
                         ->end()

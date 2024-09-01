@@ -67,14 +67,14 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
 
         $metadata = $em->getClassMetadata($this->className);
         if (!$metadata->hasField($this->identifierField)) {
-            throw new TransformationFailedException(sprintf('The field "%s" is not mapped for "%s"!', $this->identifierField, $this->className));
+            throw new TransformationFailedException(\sprintf('The field "%s" is not mapped for "%s"!', $this->identifierField, $this->className));
         }
 
         $repository = $em->getRepository($this->className);
         $result = $repository->findOneBy([$this->identifierField => $value]);
 
         if (null === $result) {
-            throw new TransformationFailedException(sprintf('An object with identifier key "%s" and value "%s" does not exist!', $this->identifierField, (string) $value));
+            throw new TransformationFailedException(\sprintf('An object with identifier key "%s" and value "%s" does not exist!', $this->identifierField, (string) $value));
         }
 
         return $result;

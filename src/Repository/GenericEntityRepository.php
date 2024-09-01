@@ -23,15 +23,15 @@ class GenericEntityRepository extends ServiceEntityRepository
         $queryBuilder = parent::createQueryBuilder($alias, $indexBy);
 
         if (is_subclass_of($this->getEntityName(), SortableInterface::class)) {
-            $queryBuilder->addOrderBy(sprintf('%s.sort', $alias), 'DESC');
+            $queryBuilder->addOrderBy(\sprintf('%s.sort', $alias), 'DESC');
         }
 
         if (is_subclass_of($this->getEntityName(), TimestampableInterface::class)) {
-            $queryBuilder->addOrderBy(sprintf('%s.createdAt', $alias), 'DESC');
+            $queryBuilder->addOrderBy(\sprintf('%s.createdAt', $alias), 'DESC');
         }
 
         if (is_subclass_of($this->getEntityName(), ResourceInterface::class)) {
-            $queryBuilder->addOrderBy(sprintf('%s.id', $alias), 'DESC');
+            $queryBuilder->addOrderBy(\sprintf('%s.id', $alias), 'DESC');
         }
 
         return $queryBuilder;

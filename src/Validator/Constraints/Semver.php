@@ -21,7 +21,7 @@ class Semver extends Constraint
     public function __construct(array $options = null)
     {
         if (!class_exists(VersionParser::class)) {
-            throw new \LogicException(sprintf('The "%s" class requires the "Semver" component. Try running "composer require composer/semver".', self::class));
+            throw new \LogicException(\sprintf('The "%s" class requires the "Semver" component. Try running "composer require composer/semver".', self::class));
         }
 
         parent::__construct($options);
