@@ -39,7 +39,7 @@ class Foo implements EnableInterface
 }
 
 $foo = new Foo();
-$foo->isEnabled(): ?bool;           // 返回状态、是否启用
+$foo->isEnabled(): bool;            // 返回状态、是否启用
 $foo->setEnabled(?bool $enabled);   // 设置状态、是否启用
 ```
 
@@ -61,9 +61,9 @@ class Foo implements SortableInterface
 }
 
 $foo = new Foo();
-$foo->getSorted(): ?int;                // 返回排序值
-$foo->setSorted(?int $sorted);          // 设置排序值
-$foo->setSorted(Foo::DEFAULT_SORTED);   // 设置为默认值
+$foo->getSort(): ?int;              // 返回排序值
+$foo->setSort(?int $sort);          // 设置排序值
+$foo->setSort(Foo::DEFAULT_SORT);   // 设置为默认值
 ```
 
 ### Versionable
@@ -106,7 +106,7 @@ class Foo implements TimestampableInterface
 }
 
 $foo = new Foo();
-$foo->getUpdatedAt(): ?\DateTimeInterface;          // 返回更新时间，为 null 时表明记录从未被修改
+$foo->getUpdatedAt(): ?\DateTimeInterface;          // 返回更新时间，为 null 时表明从未被修改
 $foo->setUpdatedAt(?\DateTimeInterface $updatedAt); // 设置更新时间，由系统自动填充
 $foo->getCreatedAt(): ?\DateTimeImmutable;          // 返回创建时间，该字段在创建后不可修改
 $foo->setCreatedAt(?\DateTimeImmutable $createdAt); // 设置创建时间，由系统自动填充

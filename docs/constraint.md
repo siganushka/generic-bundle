@@ -2,7 +2,7 @@
 
 ### 国内手机号
 
-国内手机号码验证类型约束。
+国内手机号码验证类型约束（仅验手机号证格式，不验证真实性）。
 
 ```php
 // ./src/Entity/User.php
@@ -12,9 +12,9 @@ use Siganushka\GenericBundle\Validator\Constraints\PhoneNumber;
 class User
 {
     /*
-    * @PhoneNumber
-    */
-    private $phoneNumber;
+     * @PhoneNumber
+     */
+    private ?string $phoneNumber = null;
 }
 ```
 
@@ -30,8 +30,8 @@ use Siganushka\GenericBundle\Validator\Constraints\Semver;
 class Client
 {
     /*
-    * @Semver
-    */
-    private $versionName;
+     * @Semver
+     */
+    private ?string $versionName = null;
 }
 ```
