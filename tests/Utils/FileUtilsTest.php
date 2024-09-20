@@ -24,14 +24,14 @@ class FileUtilsTest extends TestCase
     }
 
     /**
-     * @dataProvider provideBytes
+     * @dataProvider bytesProvider
      */
     public function testFormatBytes(string $formatted, int $bytes): void
     {
         static::assertSame($formatted, FileUtils::formatBytes($bytes));
     }
 
-    public function provideBytes(): array
+    public static function bytesProvider(): array
     {
         return [
             ['0B', 0],

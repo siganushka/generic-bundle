@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 class PhoneNumberValidatorTest extends ConstraintValidatorTestCase
 {
     /**
-     * @dataProvider getValidPhoneNubmers
+     * @dataProvider validPhoneNubmersProvider
      */
     public function testValid(?string $phoneNumber): void
     {
@@ -26,7 +26,7 @@ class PhoneNumberValidatorTest extends ConstraintValidatorTestCase
     }
 
     /**
-     * @dataProvider getInvalidPhoneNubmers
+     * @dataProvider invalidPhoneNubmersProvider
      */
     public function testInvalid(string $phoneNumber): void
     {
@@ -41,7 +41,7 @@ class PhoneNumberValidatorTest extends ConstraintValidatorTestCase
         ;
     }
 
-    public function getValidPhoneNubmers(): array
+    public static function validPhoneNubmersProvider(): array
     {
         return [
             [null],
@@ -56,7 +56,7 @@ class PhoneNumberValidatorTest extends ConstraintValidatorTestCase
         ];
     }
 
-    public function getInvalidPhoneNubmers(): array
+    public static function invalidPhoneNubmersProvider(): array
     {
         return [
             ['1'],

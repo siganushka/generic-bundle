@@ -10,14 +10,14 @@ use Siganushka\GenericBundle\Utils\ExcelUtils;
 class ExcelUtilsTest extends TestCase
 {
     /**
-     * @dataProvider getColumnDimension
+     * @dataProvider columnDimensionProvider
      */
     public function testGenerateColumnDimension(int $number, string $columnDimension): void
     {
         static::assertSame($columnDimension, ExcelUtils::generateColumnDimension($number));
     }
 
-    public function getColumnDimension(): array
+    public static function columnDimensionProvider(): array
     {
         return [
             [0, 'A'],

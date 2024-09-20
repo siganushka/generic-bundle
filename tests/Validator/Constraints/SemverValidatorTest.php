@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 class SemverValidatorTest extends ConstraintValidatorTestCase
 {
     /**
-     *  @dataProvider getValidSemvers
+     *  @dataProvider validSemversProvider
      */
     public function testValid(?string $version): void
     {
@@ -26,7 +26,7 @@ class SemverValidatorTest extends ConstraintValidatorTestCase
     }
 
     /**
-     * @dataProvider getInvalidSemvers
+     * @dataProvider invalidSemversProvider
      */
     public function testInvalid(string $version): void
     {
@@ -41,7 +41,7 @@ class SemverValidatorTest extends ConstraintValidatorTestCase
         ;
     }
 
-    public function getValidSemvers(): array
+    public static function validSemversProvider(): array
     {
         return [
             [null],
@@ -53,7 +53,7 @@ class SemverValidatorTest extends ConstraintValidatorTestCase
         ];
     }
 
-    public function getInvalidSemvers(): array
+    public static function invalidSemversProvider(): array
     {
         return [
             ['a'],

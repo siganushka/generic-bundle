@@ -13,7 +13,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 final class JsonRequestListenerTest extends TestCase
 {
     /**
-     * @dataProvider getRequestProvider
+     * @dataProvider requestProvider
      */
     public function testAll(string $method, array $server, ?string $content, array $parameter): void
     {
@@ -26,7 +26,7 @@ final class JsonRequestListenerTest extends TestCase
         static::assertSame($parameter, $request->request->all());
     }
 
-    public function getRequestProvider(): array
+    public static function requestProvider(): array
     {
         return [
             ['GET', [], null, []],
