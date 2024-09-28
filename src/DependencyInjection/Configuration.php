@@ -39,8 +39,34 @@ class Configuration implements ConfigurationInterface
                                 ->thenInvalid('The "%s" for doctrine.table_prefix contains illegal character(s).')
                             ->end()
                         ->end()
-                        ->arrayNode('entity_to_superclass')
-                            ->scalarPrototype()->end()
+                        ->arrayNode('mapping_override')
+                            ->useAttributeAsKey('origin')
+                            ->prototype('scalar')
+                                ->cannotBeEmpty()
+                            ->end()
+                            ->validate()
+                                ->always()
+                                ->then(static function (array $value) {
+                                    foreach ($value as $origin => $target) {
+                                        $origin = (string) $origin;
+                                        $target = (string) $target;
+
+                                        if (!class_exists($origin)) {
+                                            throw new \InvalidArgumentException(\sprintf('Class "%s" does not exists.', $origin));
+                                        }
+
+                                        if (!class_exists($target)) {
+                                            throw new \InvalidArgumentException(\sprintf('Class "%s" does not exists.', $target));
+                                        }
+
+                                        if (!is_a($target, $origin, true)) {
+                                            throw new \InvalidArgumentException(\sprintf('The value must be instanceof '.$origin.', %s given.', $target));
+                                        }
+                                    }
+
+                                    return $value;
+                                })
+                            ->end()
                         ->end()
                     ->end()
                 ->end()

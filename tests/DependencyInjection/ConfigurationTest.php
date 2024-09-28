@@ -6,6 +6,8 @@ namespace Siganushka\GenericBundle\Tests\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\DependencyInjection\Configuration;
+use Siganushka\GenericBundle\Tests\Fixtures\Bar;
+use Siganushka\GenericBundle\Tests\Fixtures\Foo;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Processor;
@@ -26,7 +28,7 @@ final class ConfigurationTest extends TestCase
         static::assertSame($processedConfig, [
             'doctrine' => [
                 'table_prefix' => null,
-                'entity_to_superclass' => [],
+                'mapping_override' => [],
             ],
             'form' => [
                 'html5_validation' => false,
@@ -38,7 +40,9 @@ final class ConfigurationTest extends TestCase
     {
         $config = [
             'table_prefix' => 'test_',
-            'entity_to_superclass' => ['foo', 'bar', 'baz'],
+            'mapping_override' => [
+                Foo::class => Bar::class,
+            ],
         ];
 
         $processor = new Processor();

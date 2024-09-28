@@ -7,9 +7,12 @@ namespace Siganushka\GenericBundle\Doctrine\EventListener;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Mapping\ClassMetadata;
 
-class EntityToSuperclassListener
+class MappingOverrideListener
 {
-    public function __construct(private array $entityToSuperclasses = [])
+    /**
+     * @param array<string, string> $mappingOverride
+     */
+    public function __construct(private readonly array $mappingOverride = [])
     {
     }
 
@@ -17,7 +20,7 @@ class EntityToSuperclassListener
     {
         /** @var ClassMetadata */
         $classMetadata = $event->getClassMetadata();
-        if (\in_array($classMetadata->getName(), $this->entityToSuperclasses)) {
+        if (\array_key_exists($classMetadata->getName(), $this->mappingOverride)) {
             $classMetadata->isMappedSuperclass = true;
             $classMetadata->setCustomRepositoryClass(null);
         }

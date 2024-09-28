@@ -40,7 +40,7 @@ class GenericEntityRepository extends ServiceEntityRepository
     /**
      * @param mixed ...$args
      */
-    public function createNew(...$args): ResourceInterface
+    public function createNew(...$args): object
     {
         return (new \ReflectionClass($this->getEntityName()))->newInstanceArgs($args);
     }

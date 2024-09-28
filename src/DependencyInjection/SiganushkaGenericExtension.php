@@ -9,11 +9,12 @@ use Siganushka\Contracts\Doctrine\ResourceInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Serializer\Serializer;
 
-class SiganushkaGenericExtension extends Extension
+class SiganushkaGenericExtension extends Extension implements PrependExtensionInterface
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
@@ -23,21 +24,18 @@ class SiganushkaGenericExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
+        $container->setParameter('siganushka.doctrine.table_prefix', $config['doctrine']['table_prefix']);
+        $container->setParameter('siganushka.doctrine.mapping_override', $config['doctrine']['mapping_override']);
+
         if ($container::willBeAvailable('siganushka/doctrine-contracts', ResourceInterface::class, ['siganushka/generic-bundle'])) {
             $loader->load('doctrine.php');
 
-            $entityToSuperclassDef = $container->findDefinition('siganushka_generic.doctrine.listener.entity_to_superclass');
-            $entityToSuperclassDef->setArgument(0, $config['doctrine']['entity_to_superclass']);
-
-            if (!$config['doctrine']['entity_to_superclass']) {
-                $container->removeDefinition('siganushka_generic.doctrine.listener.entity_to_superclass');
-            }
-
-            $tablePrefixDef = $container->findDefinition('siganushka_generic.doctrine.listener.table_prefix');
-            $tablePrefixDef->setArgument(0, $config['doctrine']['table_prefix']);
-
             if (!$config['doctrine']['table_prefix']) {
                 $container->removeDefinition('siganushka_generic.doctrine.listener.table_prefix');
+            }
+
+            if (!$config['doctrine']['mapping_override']) {
+                $container->removeDefinition('siganushka_generic.doctrine.listener.mapping_override');
             }
         }
 
@@ -58,5 +56,21 @@ class SiganushkaGenericExtension extends Extension
         } else {
             $container->removeDefinition('siganushka_generic.listener.form_error');
         }
+    }
+
+    public function prepend(ContainerBuilder $container): void
+    {
+        if (!$container->hasExtension('doctrine')) {
+            return;
+        }
+
+        $configs = $container->getExtensionConfig($this->getAlias());
+
+        $configuration = new Configuration();
+        $config = $this->processConfiguration($configuration, $configs);
+
+        $container->prependExtensionConfig('doctrine', [
+            'orm' => ['resolve_target_entities' => $config['doctrine']['mapping_override']],
+        ]);
     }
 }
