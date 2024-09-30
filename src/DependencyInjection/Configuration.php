@@ -52,15 +52,15 @@ class Configuration implements ConfigurationInterface
                                         $target = (string) $target;
 
                                         if (!class_exists($origin)) {
-                                            throw new \InvalidArgumentException(\sprintf('Class "%s" does not exists.', $origin));
+                                            throw new \InvalidArgumentException(\sprintf('Original class "%s" does not exists.', $origin));
                                         }
 
                                         if (!class_exists($target)) {
-                                            throw new \InvalidArgumentException(\sprintf('Class "%s" does not exists.', $target));
+                                            throw new \InvalidArgumentException(\sprintf('Target class "%s" does not exists.', $target));
                                         }
 
                                         if (!is_a($target, $origin, true)) {
-                                            throw new \InvalidArgumentException(\sprintf('The value must be instanceof '.$origin.', %s given.', $target));
+                                            throw new \InvalidArgumentException(\sprintf('Target class must be instanceof '.$origin.', %s given.', $target));
                                         }
                                     }
 

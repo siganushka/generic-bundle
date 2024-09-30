@@ -9,12 +9,11 @@ use Siganushka\Contracts\Doctrine\ResourceInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
-use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Serializer\Serializer;
 
-class SiganushkaGenericExtension extends Extension implements PrependExtensionInterface
+class SiganushkaGenericExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
@@ -56,21 +55,5 @@ class SiganushkaGenericExtension extends Extension implements PrependExtensionIn
         } else {
             $container->removeDefinition('siganushka_generic.listener.form_error');
         }
-    }
-
-    public function prepend(ContainerBuilder $container): void
-    {
-        if (!$container->hasExtension('doctrine')) {
-            return;
-        }
-
-        $configs = $container->getExtensionConfig($this->getAlias());
-
-        $configuration = new Configuration();
-        $config = $this->processConfiguration($configuration, $configs);
-
-        $container->prependExtensionConfig('doctrine', [
-            'orm' => ['resolve_target_entities' => $config['doctrine']['mapping_override']],
-        ]);
     }
 }

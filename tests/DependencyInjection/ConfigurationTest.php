@@ -10,6 +10,7 @@ use Siganushka\GenericBundle\Tests\Fixtures\Bar;
 use Siganushka\GenericBundle\Tests\Fixtures\Foo;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
 
 final class ConfigurationTest extends TestCase
@@ -65,5 +66,56 @@ final class ConfigurationTest extends TestCase
         ]);
 
         static::assertSame($processedConfig['form'], $config);
+    }
+
+    public function testDoctrineMappingOverrideOriginClassInvalidException(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage('Original class "0" does not exists');
+
+        $config = [
+            'mapping_override' => [
+                \stdClass::class,
+            ],
+        ];
+
+        $processor = new Processor();
+        $processor->processConfiguration(new Configuration(), [
+            ['doctrine' => $config],
+        ]);
+    }
+
+    public function testDoctrineMappingOverrideTargetClassInvalidException(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage('Target class "non_exists_class" does not exists');
+
+        $config = [
+            'mapping_override' => [
+                \stdClass::class => 'non_exists_class',
+            ],
+        ];
+
+        $processor = new Processor();
+        $processor->processConfiguration(new Configuration(), [
+            ['doctrine' => $config],
+        ]);
+    }
+
+    public function testDoctrineMappingOverrideTargetClassNonSubclassException(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage(\sprintf('Target class must be instanceof %s, stdClass given', Foo::class));
+
+        $config = [
+            'mapping_override' => [
+                Foo::class => \stdClass::class,
+            ],
+        ];
+
+        $processor = new Processor();
+        $processor->processConfiguration(new Configuration(), [
+            ['doctrine' => $config],
+        ]);
     }
 }

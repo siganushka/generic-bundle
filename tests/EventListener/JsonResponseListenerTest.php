@@ -18,8 +18,8 @@ final class JsonResponseListenerTest extends TestCase
         $response = new JsonResponse(['message' => '你好！']);
         static::assertSame('{"message":"\u4f60\u597d\uff01"}', $response->getContent());
 
-        $httpKernel = $this->createMock(HttpKernelInterface::class);
-        $responseEvent = new ResponseEvent($httpKernel, new Request(), HttpKernelInterface::MAIN_REQUEST, $response);
+        $kernel = $this->createMock(HttpKernelInterface::class);
+        $responseEvent = new ResponseEvent($kernel, new Request(), HttpKernelInterface::MAIN_REQUEST, $response);
 
         $listener = new JsonResponseListener();
         $listener->onResponse($responseEvent);
