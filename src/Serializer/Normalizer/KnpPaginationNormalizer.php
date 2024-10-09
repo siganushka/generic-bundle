@@ -9,6 +9,9 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerAwareTrait;
 
+/**
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
 class KnpPaginationNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
     use SerializerAwareTrait;
