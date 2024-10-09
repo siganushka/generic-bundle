@@ -21,8 +21,8 @@ final class SiganushkaGenericExtensionTest extends TestCase
     {
         $container = $this->createContainerWithConfig([]);
 
-        static::assertSame($container->getParameter('siganushka.doctrine.table_prefix'), null);
-        static::assertSame($container->getParameter('siganushka.doctrine.mapping_override'), []);
+        static::assertSame($container->getParameter('siganushka_generic.doctrine.table_prefix'), null);
+        static::assertSame($container->getParameter('siganushka_generic.doctrine.mapping_override'), []);
 
         static::assertTrue($container->hasDefinition('siganushka_generic.listener.json_request'));
         static::assertTrue($container->hasDefinition('siganushka_generic.listener.json_response'));
@@ -83,19 +83,19 @@ final class SiganushkaGenericExtensionTest extends TestCase
 
         $container = $this->createContainerWithConfig($configs);
 
-        static::assertSame($container->getParameter('siganushka.doctrine.table_prefix'), $configs['doctrine']['table_prefix']);
-        static::assertSame($container->getParameter('siganushka.doctrine.mapping_override'), $configs['doctrine']['mapping_override']);
+        static::assertSame($container->getParameter('siganushka_generic.doctrine.table_prefix'), $configs['doctrine']['table_prefix']);
+        static::assertSame($container->getParameter('siganushka_generic.doctrine.mapping_override'), $configs['doctrine']['mapping_override']);
 
         $tablePrefixDef = $container->getDefinition('siganushka_generic.doctrine.listener.table_prefix');
 
         static::assertSame(TablePrefixListener::class, $tablePrefixDef->getClass());
         static::assertSame([['event' => 'loadClassMetadata']], $tablePrefixDef->getTag('doctrine.event_listener'));
-        static::assertSame('%siganushka.doctrine.table_prefix%', $tablePrefixDef->getArgument(0));
+        static::assertSame('%siganushka_generic.doctrine.table_prefix%', $tablePrefixDef->getArgument(0));
 
         $mappingOverrideDef = $container->getDefinition('siganushka_generic.doctrine.listener.mapping_override');
         static::assertSame(MappingOverrideListener::class, $mappingOverrideDef->getClass());
         static::assertSame([['event' => 'loadClassMetadata']], $mappingOverrideDef->getTag('doctrine.event_listener'));
-        static::assertSame('%siganushka.doctrine.mapping_override%', $mappingOverrideDef->getArgument(0));
+        static::assertSame('%siganushka_generic.doctrine.mapping_override%', $mappingOverrideDef->getArgument(0));
 
         static::assertFalse($container->hasDefinition('siganushka_generic.form.type_extension.disable_html5_validation'));
     }

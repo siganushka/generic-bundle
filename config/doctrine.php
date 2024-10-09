@@ -12,11 +12,11 @@ use Siganushka\GenericBundle\Doctrine\EventListener\MappingOverrideListener;
 return static function (ContainerConfigurator $container): void {
     $container->services()
         ->set('siganushka_generic.doctrine.listener.table_prefix', TablePrefixListener::class)
-            ->arg(0, param('siganushka.doctrine.table_prefix'))
+            ->arg(0, param('siganushka_generic.doctrine.table_prefix'))
             ->tag('doctrine.event_listener', ['event' => 'loadClassMetadata'])
 
         ->set('siganushka_generic.doctrine.listener.mapping_override', MappingOverrideListener::class)
-            ->arg(0, param('siganushka.doctrine.mapping_override'))
+            ->arg(0, param('siganushka_generic.doctrine.mapping_override'))
             ->tag('doctrine.event_listener', ['event' => 'loadClassMetadata'])
 
         ->set('siganushka_generic.doctrine.listener.timestampable', TimestampableListener::class)

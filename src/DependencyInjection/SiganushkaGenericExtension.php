@@ -23,8 +23,8 @@ class SiganushkaGenericExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('siganushka.doctrine.table_prefix', $config['doctrine']['table_prefix']);
-        $container->setParameter('siganushka.doctrine.mapping_override', $config['doctrine']['mapping_override']);
+        $container->setParameter('siganushka_generic.doctrine.table_prefix', $config['doctrine']['table_prefix']);
+        $container->setParameter('siganushka_generic.doctrine.mapping_override', $config['doctrine']['mapping_override']);
 
         if ($container::willBeAvailable('siganushka/doctrine-contracts', ResourceInterface::class, ['siganushka/generic-bundle'])) {
             $loader->load('doctrine.php');

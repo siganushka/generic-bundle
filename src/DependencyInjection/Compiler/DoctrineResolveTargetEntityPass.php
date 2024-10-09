@@ -17,7 +17,7 @@ class DoctrineResolveTargetEntityPass implements CompilerPassInterface
         }
 
         /** @var array<string, string> */
-        $mappingOverride = $container->getParameter('siganushka.doctrine.mapping_override');
+        $mappingOverride = $container->getParameter('siganushka_generic.doctrine.mapping_override');
         if (0 === \count($mappingOverride)) {
             return;
         }
