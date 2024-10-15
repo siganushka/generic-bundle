@@ -22,6 +22,7 @@ return [
     'generic.export' => '导出',
     'generic.action' => '操作',
     'generic.choice' => '请选择',
+    'generic.choice_all' => '全部',
     'generic.yes' => '是',
     'generic.no' => '否',
     'generic.enabled' => '启用',
@@ -35,6 +36,6 @@ return [
     'generic.gender_female' => '女',
     'generic.delimiter' => '-',
     'generic.no_items' => '没有记录！',
-    'generic.remove_confirmation' => '确定移除码？',
-    'generic.delete_confirmation' => '该操作不可恢复，确定删除码？',
+    'generic.remove_confirmation' => '确定移除吗？',
+    'generic.delete_confirmation' => '该操作不可恢复，确定删除吗？',
 ];
