@@ -9,7 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
-class DisableHtml5Validation extends AbstractTypeExtension
+class Html5ValidationTypeExtension extends AbstractTypeExtension
 {
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {

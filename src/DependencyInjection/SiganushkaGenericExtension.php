@@ -42,7 +42,7 @@ class SiganushkaGenericExtension extends Extension
             $loader->load('form.php');
 
             if ($config['form']['html5_validation']) {
-                $container->removeDefinition('siganushka_generic.form.type_extension.disable_html5_validation');
+                $container->removeDefinition('siganushka_generic.form.type_extension.html5_validation');
             }
         }
 

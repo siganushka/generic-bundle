@@ -81,7 +81,7 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('form')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->booleanNode('html5_validation')->defaultFalse()->end()
+                        ->booleanNode('html5_validation')->defaultTrue()->end()
                     ->end()
                 ->end()
             ->end()

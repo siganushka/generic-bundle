@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Siganushka\GenericBundle\Tests\Form\Extension;
 
 use PHPUnit\Framework\TestCase;
-use Siganushka\GenericBundle\Form\Extension\DisableHtml5Validation;
+use Siganushka\GenericBundle\Form\Extension\Html5ValidationTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormFactoryBuilder;
 
-class DisableHtml5ValidationTest extends TestCase
+class Html5ValidationTypeExtensionTest extends TestCase
 {
     public function testDefault(): void
     {
@@ -24,10 +24,10 @@ class DisableHtml5ValidationTest extends TestCase
         static::assertTrue($view->vars['required']);
     }
 
-    public function testDisableHtml5Validation(): void
+    public function testHtml5Validation(): void
     {
         $formFactoryBuilder = new FormFactoryBuilder();
-        $formFactoryBuilder->addTypeExtension(new DisableHtml5Validation());
+        $formFactoryBuilder->addTypeExtension(new Html5ValidationTypeExtension());
 
         $form = $formFactoryBuilder->getFormFactory()
             ->createBuilder(TextType::class)

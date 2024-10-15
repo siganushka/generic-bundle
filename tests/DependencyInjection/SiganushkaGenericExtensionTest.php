@@ -32,7 +32,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
         static::assertFalse($container->hasDefinition('siganushka_generic.doctrine.listener.mapping_override'));
         static::assertTrue($container->hasDefinition('siganushka_generic.doctrine.listener.timestampable'));
         static::assertTrue($container->hasDefinition('siganushka_generic.doctrine.listener.sortable'));
-        static::assertTrue($container->hasDefinition('siganushka_generic.form.type_extension.disable_html5_validation'));
+        static::assertFalse($container->hasDefinition('siganushka_generic.form.type_extension.html5_validation'));
         static::assertTrue($container->hasDefinition('siganushka_generic.serializer.normalizer.knp_pagination'));
 
         $jsonRequestDef = $container->getDefinition('siganushka_generic.listener.json_request');
@@ -60,11 +60,8 @@ final class SiganushkaGenericExtensionTest extends TestCase
         static::assertSame(SortableListener::class, $sortableDef->getClass());
         static::assertSame($listenerTagAttributes, $sortableDef->getTag('doctrine.event_listener'));
 
-        $disableHtml5ValidationDef = $container->getDefinition('siganushka_generic.form.type_extension.disable_html5_validation');
-        static::assertTrue($disableHtml5ValidationDef->hasTag('form.type_extension'));
-
-        $disableHtml5ValidationDef = $container->getDefinition('siganushka_generic.serializer.normalizer.knp_pagination');
-        static::assertTrue($disableHtml5ValidationDef->hasTag('serializer.normalizer'));
+        $knpPaginationDef = $container->getDefinition('siganushka_generic.serializer.normalizer.knp_pagination');
+        static::assertTrue($knpPaginationDef->hasTag('serializer.normalizer'));
     }
 
     public function testWithConfigs(): void
@@ -77,7 +74,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
                 ],
             ],
             'form' => [
-                'html5_validation' => true,
+                'html5_validation' => false,
             ],
         ];
 
@@ -97,7 +94,8 @@ final class SiganushkaGenericExtensionTest extends TestCase
         static::assertSame([['event' => 'loadClassMetadata']], $mappingOverrideDef->getTag('doctrine.event_listener'));
         static::assertSame('%siganushka_generic.doctrine.mapping_override%', $mappingOverrideDef->getArgument(0));
 
-        static::assertFalse($container->hasDefinition('siganushka_generic.form.type_extension.disable_html5_validation'));
+        $html5ValidationDef = $container->getDefinition('siganushka_generic.form.type_extension.html5_validation');
+        static::assertTrue($html5ValidationDef->hasTag('form.type_extension'));
     }
 
     private function createContainerWithConfig(array $config = []): ContainerBuilder

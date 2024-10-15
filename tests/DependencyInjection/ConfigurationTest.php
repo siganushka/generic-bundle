@@ -32,7 +32,7 @@ final class ConfigurationTest extends TestCase
                 'mapping_override' => [],
             ],
             'form' => [
-                'html5_validation' => false,
+                'html5_validation' => true,
             ],
         ]);
     }
@@ -57,7 +57,7 @@ final class ConfigurationTest extends TestCase
     public function testCustomFormConfig(): void
     {
         $config = [
-            'html5_validation' => true,
+            'html5_validation' => false,
         ];
 
         $processor = new Processor();
