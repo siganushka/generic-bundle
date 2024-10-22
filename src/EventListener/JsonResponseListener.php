@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 /**
- * @see https://www.laruence.com/2011/10/10/2239.html
+ * @see @see https://www.laruence.com/2011/10/10/2239.html
  */
 class JsonResponseListener implements EventSubscriberInterface
 {
@@ -17,7 +17,11 @@ class JsonResponseListener implements EventSubscriberInterface
     {
         $response = $event->getResponse();
         if ($response instanceof JsonResponse) {
-            $response->setEncodingOptions(\JSON_HEX_TAG | \JSON_HEX_APOS | \JSON_HEX_AMP | \JSON_HEX_QUOT | \JSON_UNESCAPED_UNICODE);
+            $encodingOptions = $response->getEncodingOptions();
+            // Using bitwise operators to check.
+            if (0 === ($encodingOptions & \JSON_UNESCAPED_UNICODE)) {
+                $response->setEncodingOptions($encodingOptions | \JSON_UNESCAPED_UNICODE);
+            }
         }
     }
 

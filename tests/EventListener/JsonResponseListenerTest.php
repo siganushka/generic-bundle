@@ -16,6 +16,8 @@ final class JsonResponseListenerTest extends TestCase
     public function testAll(): void
     {
         $response = new JsonResponse(['message' => '你好！']);
+
+        static::assertSame(0, $response->getEncodingOptions() & \JSON_UNESCAPED_UNICODE);
         static::assertSame('{"message":"\u4f60\u597d\uff01"}', $response->getContent());
 
         $kernel = $this->createMock(HttpKernelInterface::class);
@@ -24,6 +26,7 @@ final class JsonResponseListenerTest extends TestCase
         $listener = new JsonResponseListener();
         $listener->onResponse($responseEvent);
 
+        static::assertSame(\JSON_UNESCAPED_UNICODE, $response->getEncodingOptions() & \JSON_UNESCAPED_UNICODE);
         static::assertSame('{"message":"你好！"}', $response->getContent());
     }
 }
