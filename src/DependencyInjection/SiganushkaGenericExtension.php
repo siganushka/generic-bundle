@@ -6,14 +6,16 @@ namespace Siganushka\GenericBundle\DependencyInjection;
 
 use Knp\Component\Pager\PaginatorInterface;
 use Siganushka\Contracts\Doctrine\ResourceInterface;
+use Symfony\Component\AssetMapper\AssetMapperInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Serializer\Serializer;
 
-class SiganushkaGenericExtension extends Extension
+class SiganushkaGenericExtension extends Extension implements PrependExtensionInterface
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
@@ -55,5 +57,40 @@ class SiganushkaGenericExtension extends Extension
         } else {
             $container->removeDefinition('siganushka_generic.listener.form_error');
         }
+    }
+
+    public function prepend(ContainerBuilder $container): void
+    {
+        // if ($container->hasExtension('twig')) {
+        //     $container->prependExtensionConfig('twig', [
+        //         'form_themes' => ['@SiganushkaGeneric/form_theme.html.twig'],
+        //     ]);
+        // }
+
+        // @see https://symfony.com/doc/current/frontend/create_ux_bundle.html#specifics-for-asset-mapper
+        if ($this->isAssetMapperAvailable($container)) {
+            $container->prependExtensionConfig('framework', [
+                'asset_mapper' => [
+                    'paths' => [
+                        __DIR__.'/../../assets/dist' => '@siganushka/generic-bundle',
+                    ],
+                ],
+            ]);
+        }
+    }
+
+    private function isAssetMapperAvailable(ContainerBuilder $container): bool
+    {
+        if (!interface_exists(AssetMapperInterface::class)) {
+            return false;
+        }
+
+        /** @var array */
+        $bundlesMetadata = $container->getParameter('kernel.bundles_metadata');
+        if (!isset($bundlesMetadata['FrameworkBundle'])) {
+            return false;
+        }
+
+        return is_file($bundlesMetadata['FrameworkBundle']['path'].'/Resources/config/asset_mapper.php');
     }
 }

@@ -1,7 +1,7 @@
 {
     "name": "siganushka/generic-bundle",
     "description": "Generic bundle for symfony.",
-    "keywords": ["generic-bundle"],
+    "keywords": ["generic-bundle", "symfony-ux"],
     "homepage": "https://github.com/siganushka/generic-bundle",
     "type": "symfony-bundle",
     "license": "MIT",

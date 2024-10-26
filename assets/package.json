@@ -1,0 +1,23 @@
+{
+    "name": "@siganushka/generic-bundle",
+    "description": "Generic bundle integration for Symfony",
+    "license": "MIT",
+    "version": "0.1.0",
+    "symfony": {
+        "controllers": {
+            "collection": {
+                "main": "dist/collection.js",
+                "name": "siganushka-generic-collection",
+                "webpackMode": "eager",
+                "fetch": "lazy",
+                "enabled": true
+            }
+        },
+        "importmap": {
+            "@hotwired/stimulus": "^3.0.0"
+        }
+    },
+    "peerDependencies": {
+        "@hotwired/stimulus": "^3.0.0"
+    }
+}

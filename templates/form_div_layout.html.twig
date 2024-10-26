@@ -1,0 +1,23 @@
+{%- block collection_widget -%}
+  {% if prototype is defined and not prototype.rendered %}
+    {%- set attr = attr|merge({'data-prototype': form_row(prototype) }) -%}
+  {% endif %}
+
+  {{- block('form_widget') -}}
+
+  {%- if add_button is defined and not add_button.rendered -%}
+    <div{% with {attr: add_button.vars.row_attr} %}{{ block('attributes') }}{% endwith %}>
+      {{ form_widget(add_button) }}
+    </div>
+  {%- endif -%}
+{%- endblock collection_widget -%}
+
+{%- block collection_entry_widget -%}
+  {{- block('form_widget') -}}
+
+  {%- if delete_button is defined and not delete_button.rendered -%}
+    <div{% with {attr: delete_button.vars.row_attr} %}{{ block('attributes') }}{% endwith %}>
+      {{ form_widget(delete_button) }}
+    </div>
+  {%- endif -%}
+{%- endblock collection_entry_widget -%}
