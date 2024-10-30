@@ -17,7 +17,7 @@ class CollectionTypeExtension extends AbstractTypeExtension
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         if ($options['controller_name'] && ($options['allow_add'] || $options['allow_delete'])) {
-            $view->vars['attr']["data-{$options['controller_name']}-target"] = 'collection';
+            $view->vars['attr']['data-controller'] = $options['controller_name'];
             $view->vars['attr']['data-prototype-name'] = $options['prototype_name'];
             $view->vars['attr']['data-index'] = $form->count();
         }
@@ -33,10 +33,13 @@ class CollectionTypeExtension extends AbstractTypeExtension
 
         if ($options['controller_name'] && $options['allow_delete']) {
             $button = $factory->createNamed('delete', $options['delete_button_type'], null, $options['delete_button_options']);
-            $view->vars['prototype']->vars['delete_button'] = $button->setParent($form)->createView($view);
+
+            $prototype = $view->vars['prototype'] ?? null;
+            if ($prototype instanceof FormView) {
+                $prototype->vars['delete_button'] = $button->setParent($form)->createView($view);
+            }
 
             foreach ($view as $entryView) {
-                $button = $factory->createNamed('delete', $options['delete_button_type'], null, $options['delete_button_options']);
                 $entryView->vars['delete_button'] = $button->setParent($form)->createView($entryView);
             }
         }
@@ -53,8 +56,6 @@ class CollectionTypeExtension extends AbstractTypeExtension
             // Configure delete button
             'delete_button_type' => ButtonType::class,
             'delete_button_options' => [],
-            'entry_options' => ['label' => false],
-            'by_reference' => false,
         ]);
 
         $resolver->setAllowedTypes('controller_name', ['null', 'string']);
@@ -65,26 +66,22 @@ class CollectionTypeExtension extends AbstractTypeExtension
         $resolver->setAllowedTypes('delete_button_type', 'string');
         $resolver->setAllowedTypes('delete_button_options', 'array');
 
-        $resolver->setNormalizer('row_attr', function (Options $options, array $value) {
-            $value['data-controller'] = $options['controller_name'];
-
-            return $value;
-        });
-
-        $resolver->setNormalizer('entry_options', function (Options $options, array $value) {
-            $value['row_attr']["data-{$options['controller_name']}-target"] = 'entry';
-
-            return $value;
-        });
-
         $resolver->setNormalizer('add_button_options', function (Options $options, array $value) {
+            $value['label'] ??= 'generic.add';
             $value['attr']['data-action'] = \sprintf('click->%s#add', $options['controller_name']);
 
             return $value;
         });
 
         $resolver->setNormalizer('delete_button_options', function (Options $options, array $value) {
+            $value['label'] ??= 'generic.delete';
             $value['attr']['data-action'] = \sprintf('click->%s#delete', $options['controller_name']);
+
+            return $value;
+        });
+
+        $resolver->setNormalizer('entry_options', function (Options $options, array $value) {
+            $value['row_attr']["data-{$options['controller_name']}-target"] = 'entry';
 
             return $value;
         });

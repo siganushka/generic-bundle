@@ -2,18 +2,24 @@ import { Controller } from '@hotwired/stimulus';
 
 /* stimulusFetch: 'lazy' */
 export default class extends Controller {
-  static targets = ['collection', 'entry']
+  static targets = ['entry']
 
   add() {
-    const { prototype, prototypeName, index } = this.collectionTarget.dataset
+    const { prototype, prototypeName, index } = this.element.dataset
     const entry = prototype.replace(new RegExp(prototypeName, 'g'), index)
 
-    const containerEl = 'TABLE' === this.collectionTarget.tagName
-      ? (this.collectionTarget.querySelector('tbody') || this.collectionTarget)
-      : this.collectionTarget
+    const lastEntry = this.entryTargets.pop()
+    if (lastEntry) {
+      lastEntry.insertAdjacentHTML('afterend', entry.trim())
+    } else {
+      const containerEl = 'TABLE' === this.element.tagName
+        ? (this.element.querySelector('tbody') || this.element)
+        : this.element
 
-    containerEl.insertAdjacentHTML('beforeend', entry.trim())
-    this.collectionTarget.dataset.index ++
+      containerEl.insertAdjacentHTML('afterbegin', entry.trim())
+    }
+
+    this.element.dataset.index ++
   }
 
   delete(event) {

@@ -1,0 +1,35 @@
+{# collection widget #}
+{%- block collection_widget -%}
+  {% if prototype is defined and not prototype.rendered %}
+      {%- set attr = attr|merge({'data-prototype': form_widget(prototype) }) -%}
+  {% endif %}
+
+  <table {{ block('widget_container_attributes') }}>
+    {%- for entry in form -%}
+      {{ form_widget(entry) }}
+    {%- endfor -%}
+
+    {% if add_button is defined and not add_button.rendered %}
+    <tr{% with {attr: add_button.vars.row_attr} %}{{ block('attributes') }}{% endwith %}>
+      <td>{{ form_widget(add_button) }}</td>
+    </tr>
+    {% endif %}
+  </table>
+{%- endblock collection_widget -%}
+
+{# collection entry widget #}
+{%- block collection_entry_widget -%}
+  <tr{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %} style="vertical-align: top">
+    {% for entry in compound ? form : [form] %}
+      <td{% with {attr: entry.vars.attr} %}{{ block('attributes') }}{% endwith %}>
+        {{- form_widget(entry, {attr: {placeholder: entry.vars.label}}) -}}
+        {{- form_errors(entry) -}}
+        {{- form_help(entry) -}}
+      </td>
+    {% endfor %}
+
+    {% if delete_button is defined and not delete_button.rendered %}
+      <td{% with {attr: delete_button.vars.row_attr} %}{{ block('attributes') }}{% endwith %}>{{ form_widget(delete_button) }}</td>
+    {% endif %}
+  </tr>
+{%- endblock collection_entry_widget -%}

@@ -61,12 +61,6 @@ class SiganushkaGenericExtension extends Extension implements PrependExtensionIn
 
     public function prepend(ContainerBuilder $container): void
     {
-        // if ($container->hasExtension('twig')) {
-        //     $container->prependExtensionConfig('twig', [
-        //         'form_themes' => ['@SiganushkaGeneric/form_theme.html.twig'],
-        //     ]);
-        // }
-
         // @see https://symfony.com/doc/current/frontend/create_ux_bundle.html#specifics-for-asset-mapper
         if ($this->isAssetMapperAvailable($container)) {
             $container->prependExtensionConfig('framework', [
