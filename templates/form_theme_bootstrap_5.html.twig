@@ -1,0 +1,16 @@
+{% use '@SiganushkaGeneric/form_theme.html.twig' %}
+
+{%- block collection_widget -%}
+  {% set attr = attr|merge({class: (attr.class|default('table table-borderless table-sm') ~ ' m-0')|trim}) %}
+  {{- parent() -}}
+{%- endblock collection_widget -%}
+
+{%- block collection_add_button_widget -%}
+  {% set attr = attr|merge({class: (attr.class|default('btn-outline-primary') ~ ' text-nowrap w-100')|trim}) %}
+  {{- parent() -}}
+{%- endblock collection_add_button_widget -%}
+
+{%- block collection_delete_button_widget -%}
+  {% set attr = attr|merge({class: (attr.class|default('btn-outline-danger') ~ ' text-nowrap')|trim}) %}
+  {{- parent() -}}
+{%- endblock collection_delete_button_widget -%}

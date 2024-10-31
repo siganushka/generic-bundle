@@ -9,7 +9,7 @@
                 "main": "dist/collection.js",
                 "name": "siganushka-generic-collection",
                 "webpackMode": "eager",
-                "fetch": "lazy",
+                "fetch": "eager",
                 "enabled": true
             }
         },
