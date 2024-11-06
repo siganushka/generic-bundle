@@ -15,7 +15,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 class EntityToIdentifierTransformer implements DataTransformerInterface
 {
     /**
-     * @psalm-param class-string $className
+     * @phpstan-param class-string $className
      */
     public function __construct(
         private ManagerRegistry $managerRegistry,
@@ -42,7 +42,11 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
             throw new TransformationFailedException($th->getMessage(), 0, $th);
         }
 
-        return (string) $result;
+        if (\is_scalar($result) || $result instanceof \Stringable) {
+            return (string) $result;
+        }
+
+        throw new TransformationFailedException('Unable to cast value.');
     }
 
     public function reverseTransform(mixed $value): ?object

@@ -79,7 +79,6 @@ class SiganushkaGenericExtension extends Extension implements PrependExtensionIn
             return false;
         }
 
-        /** @var array */
         $bundlesMetadata = $container->getParameter('kernel.bundles_metadata');
         if (!isset($bundlesMetadata['FrameworkBundle'])) {
             return false;

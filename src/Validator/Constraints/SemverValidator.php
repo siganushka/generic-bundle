@@ -12,9 +12,6 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class SemverValidator extends ConstraintValidator
 {
-    /**
-     * @psalm-param mixed $value
-     */
     public function validate(mixed $value, Constraint $constraint): void
     {
         if (!$constraint instanceof Semver) {
@@ -36,7 +33,7 @@ class SemverValidator extends ConstraintValidator
 
         try {
             (new VersionParser())->normalize($value);
-        } catch (\UnexpectedValueException $th) {
+        } catch (\UnexpectedValueException) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $this->formatValue($value))
                 ->setCode(Semver::INVALID_ERROR)

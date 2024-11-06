@@ -6,10 +6,7 @@ namespace Siganushka\GenericBundle\Event;
 
 class ResizeImageEvent extends AbstractFileEvent
 {
-    public function __construct(
-        \SplFileInfo $file,
-        private ?int $maxWidth = null,
-        private ?int $maxHeight = null)
+    public function __construct(\SplFileInfo $file, private ?int $maxWidth = null, private ?int $maxHeight = null)
     {
         parent::__construct($file);
     }

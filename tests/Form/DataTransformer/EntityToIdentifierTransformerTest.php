@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectRepository;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\Form\DataTransformer\EntityToIdentifierTransformer;
 use Symfony\Component\Form\DataTransformerInterface;
@@ -106,7 +107,9 @@ class EntityToIdentifierTransformerTest extends TestCase
     }
 
     /**
-     * @psalm-param class-string $className
+     * @phpstan-param class-string $className
+     *
+     * @return DataTransformerInterface<object, mixed>
      */
     private function createEntityToIdentifierTransformer(string $className, string $identifierField): DataTransformerInterface
     {
@@ -133,6 +136,7 @@ class EntityToIdentifierTransformerTest extends TestCase
             ->willReturn($objectRepository)
         ;
 
+        /** @var MockObject&ManagerRegistry */
         $managerRegistry = $this->createMock(ManagerRegistry::class);
         $managerRegistry->expects(static::any())
             ->method('getManagerForClass')

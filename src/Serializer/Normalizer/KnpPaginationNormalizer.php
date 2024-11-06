@@ -9,9 +9,6 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerAwareTrait;
 
-/**
- * @psalm-suppress PropertyNotSetInConstructor
- */
 class KnpPaginationNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
     use SerializerAwareTrait;
@@ -33,6 +30,9 @@ class KnpPaginationNormalizer implements NormalizerInterface, SerializerAwareInt
         $this->defaultContext = array_merge($this->defaultContext, $defaultContext);
     }
 
+    /**
+     * @param PaginationInterface<mixed, mixed> $object
+     */
     public function normalize($object, string $format = null, array $context = []): array
     {
         if (!$this->serializer instanceof NormalizerInterface) {

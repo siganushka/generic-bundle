@@ -10,7 +10,6 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 /**
  * @template-extends ConstraintValidatorTestCase<SemverValidator>
- * @psalm-suppress PropertyNotSetInConstructor
  */
 class SemverValidatorTest extends ConstraintValidatorTestCase
 {

@@ -17,6 +17,7 @@ final class JsonRequestListenerTest extends TestCase
      */
     public function testAll(string $method, array $server, ?string $content, array $parameter): void
     {
+        /** @var HttpKernelInterface */
         $kernel = $this->createMock(HttpKernelInterface::class);
 
         $request = Request::create('/', $method, [], [], [], $server, $content);

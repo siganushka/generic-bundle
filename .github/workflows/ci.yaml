@@ -23,4 +23,4 @@ jobs:
             - { name: Install dependencies, run: composer install }
             - { name: Install tools,        run: composer install -d tools/ }
             - { name: Run tests,            run: tools/vendor/bin/simple-phpunit --debug }
-            - { name: Run psalm,            run: "tools/vendor/bin/psalm --show-info=true --no-cache --php-version=${{ matrix.php-versions }}" }
+            - { name: Run psalm,            run: tools/vendor/bin/phpstan }

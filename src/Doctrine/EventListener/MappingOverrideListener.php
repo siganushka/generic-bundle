@@ -9,16 +9,13 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 
 class MappingOverrideListener
 {
-    /**
-     * @param array<string, string> $mappingOverride
-     */
     public function __construct(private readonly array $mappingOverride = [])
     {
     }
 
     public function loadClassMetadata(LoadClassMetadataEventArgs $event): void
     {
-        /** @var ClassMetadata */
+        /** @var ClassMetadata<object> */
         $classMetadata = $event->getClassMetadata();
         if (\array_key_exists($classMetadata->getName(), $this->mappingOverride)) {
             $classMetadata->isMappedSuperclass = true;

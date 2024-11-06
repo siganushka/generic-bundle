@@ -22,7 +22,6 @@ class DoctrineResolveTargetEntityPass implements CompilerPassInterface
             return;
         }
 
-        // Define listener manually.
         // @see https://github.com/doctrine/DoctrineBundle/blob/2.13.x/src/DependencyInjection/DoctrineExtension.php#L635
         $definition = $container->findDefinition('doctrine.orm.listeners.resolve_target_entity');
         $definition->addTag('doctrine.event_listener', ['event' => Events::loadClassMetadata]);

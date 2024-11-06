@@ -11,9 +11,6 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class PhoneNumberValidator extends ConstraintValidator
 {
-    /**
-     * @psalm-param mixed $value
-     */
     public function validate(mixed $value, Constraint $constraint): void
     {
         if (!$constraint instanceof PhoneNumber) {

@@ -11,6 +11,10 @@ use Siganushka\Contracts\Doctrine\ResourceInterface;
 use Siganushka\Contracts\Doctrine\SortableInterface;
 use Siganushka\Contracts\Doctrine\TimestampableInterface;
 
+/**
+ * @template T of object
+ * @template-extends ServiceEntityRepository<T>
+ */
 class GenericEntityRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry, string $entityClass)

@@ -19,7 +19,7 @@ class JsonRequestListener implements EventSubscriberInterface
         $request = $event->getRequest();
         $contentType = $request->headers->get('CONTENT_TYPE');
 
-        if (\is_string($contentType)
+        if ($contentType
             && str_starts_with($contentType, 'application/json')
             && \in_array($request->getMethod(), ['POST', 'PUT', 'PATCH', 'DELETE'])
         ) {

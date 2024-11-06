@@ -8,6 +8,7 @@ use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -23,6 +24,17 @@ class CollectionTypeExtension extends AbstractTypeExtension
         }
     }
 
+    /**
+     * @phpstan-param array{
+     *  allow_add: bool,
+     *  allow_delete: bool,
+     *  controller_name: string|null,
+     *  add_button_type: class-string<FormTypeInterface>,
+     *  add_button_options: array,
+     *  delete_button_type: class-string<FormTypeInterface>,
+     *  delete_button_options: array,
+     * } $options
+     */
     public function finishView(FormView $view, FormInterface $form, array $options): void
     {
         $factory = $form->getConfig()->getFormFactory();
@@ -48,12 +60,9 @@ class CollectionTypeExtension extends AbstractTypeExtension
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            // Controller name for "@hotwired/stimulus"
             'controller_name' => 'siganushka-generic-collection',
-            // Configure add button
             'add_button_type' => ButtonType::class,
             'add_button_options' => [],
-            // Configure delete button
             'delete_button_type' => ButtonType::class,
             'delete_button_options' => [],
         ]);
