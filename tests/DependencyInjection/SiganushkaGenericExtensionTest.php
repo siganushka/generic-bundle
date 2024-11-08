@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Siganushka\GenericBundle\Tests\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
-use Siganushka\Contracts\Doctrine\EventListener\SortableListener;
 use Siganushka\Contracts\Doctrine\EventListener\TablePrefixListener;
 use Siganushka\Contracts\Doctrine\EventListener\TimestampableListener;
 use Siganushka\GenericBundle\DependencyInjection\SiganushkaGenericExtension;
@@ -31,7 +30,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
         static::assertFalse($container->hasDefinition('siganushka_generic.doctrine.listener.table_prefix'));
         static::assertFalse($container->hasDefinition('siganushka_generic.doctrine.listener.mapping_override'));
         static::assertTrue($container->hasDefinition('siganushka_generic.doctrine.listener.timestampable'));
-        static::assertTrue($container->hasDefinition('siganushka_generic.doctrine.listener.sortable'));
         static::assertFalse($container->hasDefinition('siganushka_generic.form.type_extension.html5_validation'));
         static::assertTrue($container->hasDefinition('siganushka_generic.serializer.normalizer.knp_pagination'));
 
@@ -55,10 +53,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
         $timestampableDef = $container->getDefinition('siganushka_generic.doctrine.listener.timestampable');
         static::assertSame(TimestampableListener::class, $timestampableDef->getClass());
         static::assertSame($listenerTagAttributes, $timestampableDef->getTag('doctrine.event_listener'));
-
-        $sortableDef = $container->getDefinition('siganushka_generic.doctrine.listener.sortable');
-        static::assertSame(SortableListener::class, $sortableDef->getClass());
-        static::assertSame($listenerTagAttributes, $sortableDef->getTag('doctrine.event_listener'));
 
         $knpPaginationDef = $container->getDefinition('siganushka_generic.serializer.normalizer.knp_pagination');
         static::assertTrue($knpPaginationDef->hasTag('serializer.normalizer'));
