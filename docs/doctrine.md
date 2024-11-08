@@ -40,7 +40,7 @@ class Foo implements EnableInterface
 
 $foo = new Foo();
 $foo->isEnabled(): bool;            // 返回状态、是否启用
-$foo->setEnabled(?bool $enabled);   // 设置状态、是否启用
+$foo->setEnabled(bool $enabled);    // 设置状态、是否启用
 ```
 
 ### Sortable
@@ -61,9 +61,8 @@ class Foo implements SortableInterface
 }
 
 $foo = new Foo();
-$foo->getSort(): ?int;              // 返回排序值
-$foo->setSort(?int $sort);          // 设置排序值
-$foo->setSort(Foo::DEFAULT_SORT);   // 设置为默认值
+$foo->getSort(): int;       // 返回排序值
+$foo->setSort(int $sort);   // 设置排序值
 ```
 
 ### Versionable
