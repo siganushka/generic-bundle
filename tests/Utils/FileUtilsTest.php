@@ -31,18 +31,16 @@ class FileUtilsTest extends TestCase
         static::assertSame($formatted, FileUtils::formatBytes($bytes));
     }
 
-    public static function bytesProvider(): array
+    public static function bytesProvider(): iterable
     {
-        return [
-            ['0B', 0],
-            ['0B', -1],
-            ['1B', 1],
-            ['1023B', 1023],
-            ['1KB', 1024],
-            ['64KB', 65535],
-            ['64MB', 65535 * 1024],
-            ['2GB', 2147483647],
-            ['8EB', \PHP_INT_MAX],
-        ];
+        yield ['0B', 0];
+        yield ['0B', -1];
+        yield ['1B', 1];
+        yield ['1023B', 1023];
+        yield ['1KB', 1024];
+        yield ['64KB', 65535];
+        yield ['64MB', 65535 * 1024];
+        yield ['2GB', 2147483647];
+        yield ['8EB', \PHP_INT_MAX];
     }
 }

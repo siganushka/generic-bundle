@@ -17,16 +17,14 @@ class ExcelUtilsTest extends TestCase
         static::assertSame($columnDimension, ExcelUtils::generateColumnDimension($number));
     }
 
-    public static function columnDimensionProvider(): array
+    public static function columnDimensionProvider(): iterable
     {
-        return [
-            [0, 'A'],
-            [1, 'B'],
-            [2, 'C'],
-            [25, 'Z'],
-            [26, 'AA'],
-            [27, 'AB'],
-            [28, 'AC'],
-        ];
+        yield [0, 'A'];
+        yield [1, 'B'];
+        yield [2, 'C'];
+        yield [25, 'Z'];
+        yield [26, 'AA'];
+        yield [27, 'AB'];
+        yield [28, 'AC'];
     }
 }

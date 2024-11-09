@@ -40,25 +40,21 @@ class SemverValidatorTest extends ConstraintValidatorTestCase
         ;
     }
 
-    public static function validSemversProvider(): array
+    public static function validSemversProvider(): iterable
     {
-        return [
-            [null],
-            [''],
-            ['0.1.0'],
-            ['1.0.0-dev'],
-            ['1.2.3.4'],
-            ['1'],
-        ];
+        yield [null];
+        yield [''];
+        yield ['0.1.0'];
+        yield ['1.0.0-dev'];
+        yield ['1.2.3.4'];
+        yield ['1'];
     }
 
-    public static function invalidSemversProvider(): array
+    public static function invalidSemversProvider(): iterable
     {
-        return [
-            ['a'],
-            ['1.0.0-foo'],
-            ['1.0.0+foo bar'],
-        ];
+        yield ['a'];
+        yield ['1.0.0-foo'];
+        yield ['1.0.0+foo bar'];
     }
 
     protected function createValidator(): SemverValidator

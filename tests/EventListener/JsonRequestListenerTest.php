@@ -27,20 +27,18 @@ final class JsonRequestListenerTest extends TestCase
         static::assertSame($parameter, $request->request->all());
     }
 
-    public static function requestProvider(): array
+    public static function requestProvider(): iterable
     {
-        return [
-            ['GET', [], null, []],
-            ['GET', [], '{"message":"\u4f60\u597d\uff01"}', []],
-            ['GET', ['CONTENT_TYPE' => 'multipart/form-data'], '{"message":"\u4f60\u597d\uff01"}', []],
-            ['GET', ['CONTENT_TYPE' => 'application/x-www-form-urlencoded'], '{"message":"\u4f60\u597d\uff01"}', []],
-            ['GET', ['CONTENT_TYPE' => 'application/json'], '{"message":"\u4f60\u597d\uff01"}', []],
-            ['POST', ['CONTENT_TYPE' => 'multipart/form-data'], '{"message":"\u4f60\u597d\uff01"}', []],
-            ['POST', ['CONTENT_TYPE' => 'application/x-www-form-urlencoded'], '{"message":"\u4f60\u597d\uff01"}', []],
-            ['POST', ['CONTENT_TYPE' => 'application/json'], '{"message":"\u4f60\u597d\uff01"}', ['message' => '你好！']],
-            ['PUT', ['CONTENT_TYPE' => 'application/json'], '{"message":"\u4f60\u597d\uff01"}', ['message' => '你好！']],
-            ['PATCH', ['CONTENT_TYPE' => 'application/json'], '{"message":"\u4f60\u597d\uff01"}', ['message' => '你好！']],
-            ['DELETE', ['CONTENT_TYPE' => 'application/json'], '{"message":"\u4f60\u597d\uff01"}', ['message' => '你好！']],
-        ];
+        yield ['GET', [], null, []];
+        yield ['GET', [], '{"message":"\u4f60\u597d\uff01"}', []];
+        yield ['GET', ['CONTENT_TYPE' => 'multipart/form-data'], '{"message":"\u4f60\u597d\uff01"}', []];
+        yield ['GET', ['CONTENT_TYPE' => 'application/x-www-form-urlencoded'], '{"message":"\u4f60\u597d\uff01"}', []];
+        yield ['GET', ['CONTENT_TYPE' => 'application/json'], '{"message":"\u4f60\u597d\uff01"}', []];
+        yield ['POST', ['CONTENT_TYPE' => 'multipart/form-data'], '{"message":"\u4f60\u597d\uff01"}', []];
+        yield ['POST', ['CONTENT_TYPE' => 'application/x-www-form-urlencoded'], '{"message":"\u4f60\u597d\uff01"}', []];
+        yield ['POST', ['CONTENT_TYPE' => 'application/json'], '{"message":"\u4f60\u597d\uff01"}', ['message' => '你好！']];
+        yield ['PUT', ['CONTENT_TYPE' => 'application/json'], '{"message":"\u4f60\u597d\uff01"}', ['message' => '你好！']];
+        yield ['PATCH', ['CONTENT_TYPE' => 'application/json'], '{"message":"\u4f60\u597d\uff01"}', ['message' => '你好！']];
+        yield ['DELETE', ['CONTENT_TYPE' => 'application/json'], '{"message":"\u4f60\u597d\uff01"}', ['message' => '你好！']];
     }
 }

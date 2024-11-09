@@ -40,29 +40,25 @@ class PhoneNumberValidatorTest extends ConstraintValidatorTestCase
         ;
     }
 
-    public static function validPhoneNubmersProvider(): array
+    public static function validPhoneNubmersProvider(): iterable
     {
-        return [
-            [null],
-            [''],
-            ['13000000000'],
-            ['14000000000'],
-            ['15000000000'],
-            ['16000000000'],
-            ['17000000000'],
-            ['18000000000'],
-            ['19000000000'],
-        ];
+        yield [null];
+        yield [''];
+        yield ['13000000000'];
+        yield ['14000000000'];
+        yield ['15000000000'];
+        yield ['16000000000'];
+        yield ['17000000000'];
+        yield ['18000000000'];
+        yield ['19000000000'];
     }
 
-    public static function invalidPhoneNubmersProvider(): array
+    public static function invalidPhoneNubmersProvider(): iterable
     {
-        return [
-            ['1'],
-            ['11111111111'],
-            ['12222222222'],
-            ['1333333333a'],
-        ];
+        yield ['1'];
+        yield ['11111111111'];
+        yield ['12222222222'];
+        yield ['1333333333a'];
     }
 
     protected function createValidator(): PhoneNumberValidator

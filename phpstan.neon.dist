@@ -6,3 +6,4 @@ parameters:
         - tests
     ignoreErrors:
         - '#no value type specified in iterable type array#'
+        - '#no value type specified in iterable type iterable#'
