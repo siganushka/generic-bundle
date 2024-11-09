@@ -4,6 +4,9 @@ parameters:
         - config
         - src
         - tests
+        - translations
+    bootstrapFiles:
+        - tools/vendor/bin/.phpunit/phpunit/vendor/autoload.php
     ignoreErrors:
         - '#no value type specified in iterable type array#'
         - '#no value type specified in iterable type iterable#'
