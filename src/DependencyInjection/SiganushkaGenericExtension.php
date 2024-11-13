@@ -31,12 +31,12 @@ class SiganushkaGenericExtension extends Extension implements PrependExtensionIn
         if ($container::willBeAvailable('siganushka/doctrine-contracts', ResourceInterface::class, ['siganushka/generic-bundle'])) {
             $loader->load('doctrine.php');
 
-            if (!$config['doctrine']['table_prefix']) {
-                $container->removeDefinition('siganushka_generic.doctrine.listener.table_prefix');
-            }
-
             if (!$config['doctrine']['mapping_override']) {
                 $container->removeDefinition('siganushka_generic.doctrine.listener.mapping_override');
+            }
+
+            if (!$config['doctrine']['table_prefix']) {
+                $container->removeDefinition('siganushka_generic.doctrine.listener.table_prefix');
             }
         }
 
@@ -51,7 +51,7 @@ class SiganushkaGenericExtension extends Extension implements PrependExtensionIn
         if ($container::willBeAvailable('symfony/serializer', Serializer::class, ['siganushka/generic-bundle'])) {
             $loader->load('serializer.php');
 
-            if (!$container::willBeAvailable('knplabs/knp-components', PaginatorInterface::class, ['siganushka/generic-bundle'])) {
+            if (!interface_exists(PaginatorInterface::class)) {
                 $container->removeDefinition('siganushka_generic.serializer.normalizer.knp_pagination');
             }
         } else {

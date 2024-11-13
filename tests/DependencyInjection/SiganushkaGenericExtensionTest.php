@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Siganushka\GenericBundle\Tests\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
-use Siganushka\Contracts\Doctrine\EventListener\TablePrefixListener;
-use Siganushka\Contracts\Doctrine\EventListener\TimestampableListener;
 use Siganushka\GenericBundle\DependencyInjection\SiganushkaGenericExtension;
 use Siganushka\GenericBundle\Doctrine\EventListener\MappingOverrideListener;
+use Siganushka\GenericBundle\Doctrine\EventListener\TablePrefixListener;
+use Siganushka\GenericBundle\Doctrine\EventListener\TimestampableListener;
 use Siganushka\GenericBundle\Tests\Fixtures\Bar;
 use Siganushka\GenericBundle\Tests\Fixtures\Foo;
 use Symfony\Component\DependencyInjection\Compiler\ResolveChildDefinitionsPass;

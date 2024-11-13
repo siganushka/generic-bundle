@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Siganushka\Contracts\Doctrine\EventListener\TablePrefixListener;
-use Siganushka\Contracts\Doctrine\EventListener\TimestampableListener;
 use Siganushka\GenericBundle\Doctrine\EventListener\MappingOverrideListener;
+use Siganushka\GenericBundle\Doctrine\EventListener\TablePrefixListener;
+use Siganushka\GenericBundle\Doctrine\EventListener\TimestampableListener;
 
 return static function (ContainerConfigurator $container): void {
     $container->services()
