@@ -92,6 +92,7 @@ class CollectionTypeExtension extends AbstractTypeExtension
         });
 
         $resolver->setNormalizer('entry_options', function (Options $options, array $value) {
+            $value['error_bubbling'] = false;
             $value['row_attr']["data-{$options['controller_name']}-target"] = 'entry';
 
             return $value;
