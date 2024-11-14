@@ -21,7 +21,7 @@ return [
     'generic.import' => 'Import',
     'generic.export' => 'Export',
     'generic.action' => 'Action',
-    'generic.choice' => 'Please Choose!',
+    'generic.choice' => 'Please Choose',
     'generic.choice_all' => 'All',
     'generic.yes' => 'Yes',
     'generic.no' => 'No',

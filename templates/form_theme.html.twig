@@ -19,7 +19,8 @@
 {%- block collection_entry_row -%}
   <tr{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %} style="vertical-align: top">
     {% for entry in compound ? form : [form] %}
-      <td class="{{ entry.vars.attr['data-collection-class']|default('col-auto') }}">
+      {% set collectionClass = entry.vars.attr['data-collection-class']|default('') %}
+      <td{% if collectionClass %} class="{{ collectionClass }}"{% endif %}>
         {{- form_widget(entry, {attr: {placeholder: entry.vars.label}}) -}}
         {{- form_errors(entry) -}}
         {{- form_help(entry) -}}
