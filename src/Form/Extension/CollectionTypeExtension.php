@@ -15,20 +15,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CollectionTypeExtension extends AbstractTypeExtension
 {
-    public function buildView(FormView $view, FormInterface $form, array $options): void
-    {
-        if ($options['controller_name'] && ($options['allow_add'] || $options['allow_delete'])) {
-            $view->vars['attr']['data-controller'] = $options['controller_name'];
-            $view->vars['attr']['data-prototype-name'] = $options['prototype_name'];
-            $view->vars['attr']['data-index'] = $form->count();
-        }
-    }
-
     /**
      * @phpstan-param array{
      *  allow_add: bool,
      *  allow_delete: bool,
-     *  controller_name: string|null,
+     *  prototype: bool,
      *  add_button_type: class-string<FormTypeInterface>,
      *  add_button_options: array,
      *  delete_button_type: class-string<FormTypeInterface>,
@@ -38,12 +29,12 @@ class CollectionTypeExtension extends AbstractTypeExtension
     public function finishView(FormView $view, FormInterface $form, array $options): void
     {
         $factory = $form->getConfig()->getFormFactory();
-        if ($options['controller_name'] && $options['allow_add']) {
+        if ($options['allow_add'] && $options['prototype']) {
             $button = $factory->createNamed('add', $options['add_button_type'], null, $options['add_button_options']);
             $view->vars['add_button'] = $button->setParent($form)->createView($view);
         }
 
-        if ($options['controller_name'] && $options['allow_delete']) {
+        if ($options['allow_delete']) {
             $button = $factory->createNamed('delete', $options['delete_button_type'], null, $options['delete_button_options']);
 
             $prototype = $view->vars['prototype'] ?? null;
@@ -60,14 +51,11 @@ class CollectionTypeExtension extends AbstractTypeExtension
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'controller_name' => 'siganushka-generic-collection',
             'add_button_type' => ButtonType::class,
             'add_button_options' => [],
             'delete_button_type' => ButtonType::class,
             'delete_button_options' => [],
         ]);
-
-        $resolver->setAllowedTypes('controller_name', ['null', 'string']);
 
         $resolver->setAllowedTypes('add_button_type', 'string');
         $resolver->setAllowedTypes('add_button_options', 'array');
@@ -76,24 +64,15 @@ class CollectionTypeExtension extends AbstractTypeExtension
         $resolver->setAllowedTypes('delete_button_options', 'array');
 
         $resolver->setNormalizer('add_button_options', function (Options $options, array $value) {
-            $value['block_prefix'] ??= 'collection_add_button';
             $value['label'] ??= 'generic.add';
-            $value['attr']['data-action'] = \sprintf('click->%s#add', $options['controller_name']);
+            $value['block_prefix'] ??= 'collection_add_button';
 
             return $value;
         });
 
         $resolver->setNormalizer('delete_button_options', function (Options $options, array $value) {
+            $value['label'] ??= 'generic.remove';
             $value['block_prefix'] ??= 'collection_delete_button';
-            $value['label'] ??= 'generic.delete';
-            $value['attr']['data-action'] = \sprintf('click->%s#delete', $options['controller_name']);
-
-            return $value;
-        });
-
-        $resolver->setNormalizer('entry_options', function (Options $options, array $value) {
-            $value['error_bubbling'] = false;
-            $value['row_attr']["data-{$options['controller_name']}-target"] = 'entry';
 
             return $value;
         });

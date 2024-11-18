@@ -1,7 +1,15 @@
 {# collection widget #}
 {%- block collection_widget -%}
+  {%- if allow_add or allow_delete -%}
+    {%- set attr = attr|merge({'data-controller': 'siganushka-generic-collection'}) -%}
+  {%- endif -%}
+
   {%- if prototype is defined and not prototype.rendered -%}
-    {%- set attr = attr|merge({'data-prototype': form_row(prototype) }) -%}
+    {%- set attr = attr|merge({
+      'data-index': form|length,
+      'data-prototype': form_row(prototype),
+      'data-prototype-name': prototype.vars.name
+    }) -%}
   {%- endif -%}
 
   <table {{ block('widget_container_attributes') }}>
@@ -17,10 +25,9 @@
 
 {# collection entry row #}
 {%- block collection_entry_row -%}
-  <tr{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %} style="vertical-align: top">
+  <tr data-siganushka-generic-collection-target="entry" style="vertical-align: top">
     {% for entry in compound ? form : [form] %}
-      {% set collectionClass = entry.vars.attr['data-collection-class']|default('') %}
-      <td{% if collectionClass %} class="{{ collectionClass }}"{% endif %}>
+      <td{% with {attr: entry.vars.row_attr} %}{{ block('attributes') }}{% endwith %}>
         {{- form_widget(entry, {attr: {placeholder: entry.vars.label}}) -}}
         {{- form_errors(entry) -}}
         {{- form_help(entry) -}}
@@ -35,8 +42,10 @@
 
 {# collection add button row #}
 {%- block collection_add_button_row -%}
-<tr{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
-  <td colspan="999">{{- block('collection_add_button_widget') -}}</td>
+<tr>
+  <td{% with {attr: row_attr|merge({colspan: 999})} %}{{ block('attributes') }}{% endwith %}>
+    {{- block('collection_add_button_widget') -}}
+  </td>
 </tr>
 {%- endblock collection_add_button_row -%}
 
@@ -49,10 +58,12 @@
 
 {# collection add button widget #}
 {%- block collection_add_button_widget -%}
+  {%- set attr = attr|merge({'data-action': 'click->siganushka-generic-collection#add'}) -%}
   {{- block('button_widget') -}}
 {%- endblock collection_add_button_widget -%}
 
 {# collection delete button widget #}
 {%- block collection_delete_button_widget -%}
+  {%- set attr = attr|merge({'data-action': 'click->siganushka-generic-collection#delete'}) -%}
   {{- block('button_widget') -}}
 {%- endblock collection_delete_button_widget -%}
