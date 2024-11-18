@@ -46,6 +46,7 @@
     "scripts": {
         "tools:run": [
             "tools/vendor/bin/php-cs-fixer fix",
+            "tools/vendor/bin/twigcs",
             "tools/vendor/bin/simple-phpunit --debug",
             "tools/vendor/bin/phpstan analyse"
         ]
