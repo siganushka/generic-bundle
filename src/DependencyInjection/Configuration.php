@@ -24,46 +24,44 @@ class Configuration implements ConfigurationInterface
 
     private function addDoctrineSection(ArrayNodeDefinition $rootNode): void
     {
-        $rootNode
-            ->children()
-                ->arrayNode('doctrine')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->scalarNode('table_prefix')
-                            ->defaultNull()
-                            ->validate()
-                                ->ifTrue(static fn (mixed $v): bool => \is_string($v) && !preg_match('/^[a-zA-Z0-9_]+$/', $v))
-                                ->thenInvalid('The "%s" for doctrine.table_prefix contains illegal character(s).')
-                            ->end()
+        $rootNode->children()
+            ->arrayNode('doctrine')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->scalarNode('table_prefix')
+                        ->defaultNull()
+                        ->validate()
+                            ->ifTrue(static fn (mixed $v): bool => \is_string($v) && !preg_match('/^[a-zA-Z0-9_]+$/', $v))
+                            ->thenInvalid('The "%s" for doctrine.table_prefix contains illegal character(s).')
                         ->end()
-                        ->arrayNode('mapping_override')
-                            ->useAttributeAsKey('source')
-                            ->prototype('scalar')
-                                ->cannotBeEmpty()
-                            ->end()
-                            ->validate()
-                                ->always()
-                                ->then(static function (array $value) {
-                                    foreach ($value as $source => $target) {
-                                        $source = (string) $source;
-                                        $target = (string) $target;
+                    ->end()
+                    ->arrayNode('mapping_override')
+                        ->useAttributeAsKey('source')
+                        ->prototype('scalar')
+                            ->cannotBeEmpty()
+                        ->end()
+                        ->validate()
+                            ->always()
+                            ->then(static function (array $value) {
+                                foreach ($value as $source => $target) {
+                                    $source = (string) $source;
+                                    $target = (string) $target;
 
-                                        if (!class_exists($source)) {
-                                            throw new \InvalidArgumentException(\sprintf('The source class "%s" does not exists.', $source));
-                                        }
-
-                                        if (!class_exists($target)) {
-                                            throw new \InvalidArgumentException(\sprintf('The target class "%s" does not exists.', $target));
-                                        }
-
-                                        if (!is_subclass_of($target, $source, true)) {
-                                            throw new \InvalidArgumentException(\sprintf('The target class must be instanceof '.$source.', %s given.', $target));
-                                        }
+                                    if (!class_exists($source)) {
+                                        throw new \InvalidArgumentException(\sprintf('The source class "%s" does not exists.', $source));
                                     }
 
-                                    return $value;
-                                })
-                            ->end()
+                                    if (!class_exists($target)) {
+                                        throw new \InvalidArgumentException(\sprintf('The target class "%s" does not exists.', $target));
+                                    }
+
+                                    if (!is_subclass_of($target, $source, true)) {
+                                        throw new \InvalidArgumentException(\sprintf('The target class must be instanceof '.$source.', %s given.', $target));
+                                    }
+                                }
+
+                                return $value;
+                            })
                         ->end()
                     ->end()
                 ->end()
@@ -73,13 +71,11 @@ class Configuration implements ConfigurationInterface
 
     private function addFormSection(ArrayNodeDefinition $rootNode): void
     {
-        $rootNode
-            ->children()
-                ->arrayNode('form')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->booleanNode('html5_validation')->defaultTrue()->end()
-                    ->end()
+        $rootNode->children()
+            ->arrayNode('form')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->booleanNode('html5_validation')->defaultTrue()->end()
                 ->end()
             ->end()
         ;

@@ -33,29 +33,29 @@ final class SiganushkaGenericExtensionTest extends TestCase
         static::assertFalse($container->hasDefinition('siganushka_generic.form.type_extension.html5_validation'));
         static::assertTrue($container->hasDefinition('siganushka_generic.serializer.normalizer.knp_pagination'));
 
-        $jsonRequestDef = $container->getDefinition('siganushka_generic.listener.json_request');
-        static::assertTrue($jsonRequestDef->hasTag('kernel.event_subscriber'));
+        $jsonRequest = $container->getDefinition('siganushka_generic.listener.json_request');
+        static::assertTrue($jsonRequest->hasTag('kernel.event_subscriber'));
 
-        $jsonResponseDef = $container->getDefinition('siganushka_generic.listener.json_response');
-        static::assertTrue($jsonResponseDef->hasTag('kernel.event_subscriber'));
+        $jsonResponse = $container->getDefinition('siganushka_generic.listener.json_response');
+        static::assertTrue($jsonResponse->hasTag('kernel.event_subscriber'));
 
-        $formErrorDef = $container->getDefinition('siganushka_generic.listener.form_error');
-        static::assertTrue($formErrorDef->hasTag('kernel.event_subscriber'));
+        $formError = $container->getDefinition('siganushka_generic.listener.form_error');
+        static::assertTrue($formError->hasTag('kernel.event_subscriber'));
 
-        $resizeImageDef = $container->getDefinition('siganushka_generic.listener.resize_image');
-        static::assertTrue($resizeImageDef->hasTag('kernel.event_subscriber'));
+        $resizeImage = $container->getDefinition('siganushka_generic.listener.resize_image');
+        static::assertTrue($resizeImage->hasTag('kernel.event_subscriber'));
 
         $listenerTagAttributes = [
             ['event' => 'prePersist'],
             ['event' => 'preUpdate'],
         ];
 
-        $timestampableDef = $container->getDefinition('siganushka_generic.doctrine.listener.timestampable');
-        static::assertSame(TimestampableListener::class, $timestampableDef->getClass());
-        static::assertSame($listenerTagAttributes, $timestampableDef->getTag('doctrine.event_listener'));
+        $timestampable = $container->getDefinition('siganushka_generic.doctrine.listener.timestampable');
+        static::assertSame(TimestampableListener::class, $timestampable->getClass());
+        static::assertSame($listenerTagAttributes, $timestampable->getTag('doctrine.event_listener'));
 
-        $knpPaginationDef = $container->getDefinition('siganushka_generic.serializer.normalizer.knp_pagination');
-        static::assertTrue($knpPaginationDef->hasTag('serializer.normalizer'));
+        $knpPagination = $container->getDefinition('siganushka_generic.serializer.normalizer.knp_pagination');
+        static::assertTrue($knpPagination->hasTag('serializer.normalizer'));
     }
 
     public function testWithConfigs(): void
@@ -77,19 +77,19 @@ final class SiganushkaGenericExtensionTest extends TestCase
         static::assertSame($container->getParameter('siganushka_generic.doctrine.table_prefix'), $configs['doctrine']['table_prefix']);
         static::assertSame($container->getParameter('siganushka_generic.doctrine.mapping_override'), $configs['doctrine']['mapping_override']);
 
-        $tablePrefixDef = $container->getDefinition('siganushka_generic.doctrine.listener.table_prefix');
+        $tablePrefix = $container->getDefinition('siganushka_generic.doctrine.listener.table_prefix');
 
-        static::assertSame(TablePrefixListener::class, $tablePrefixDef->getClass());
-        static::assertSame([['event' => 'loadClassMetadata']], $tablePrefixDef->getTag('doctrine.event_listener'));
-        static::assertSame('%siganushka_generic.doctrine.table_prefix%', $tablePrefixDef->getArgument(0));
+        static::assertSame(TablePrefixListener::class, $tablePrefix->getClass());
+        static::assertSame([['event' => 'loadClassMetadata']], $tablePrefix->getTag('doctrine.event_listener'));
+        static::assertSame('%siganushka_generic.doctrine.table_prefix%', $tablePrefix->getArgument(0));
 
-        $mappingOverrideDef = $container->getDefinition('siganushka_generic.doctrine.listener.mapping_override');
-        static::assertSame(MappingOverrideListener::class, $mappingOverrideDef->getClass());
-        static::assertSame([['event' => 'loadClassMetadata']], $mappingOverrideDef->getTag('doctrine.event_listener'));
-        static::assertSame('%siganushka_generic.doctrine.mapping_override%', $mappingOverrideDef->getArgument(0));
+        $mappingOverride = $container->getDefinition('siganushka_generic.doctrine.listener.mapping_override');
+        static::assertSame(MappingOverrideListener::class, $mappingOverride->getClass());
+        static::assertSame([['event' => 'loadClassMetadata']], $mappingOverride->getTag('doctrine.event_listener'));
+        static::assertSame('%siganushka_generic.doctrine.mapping_override%', $mappingOverride->getArgument(0));
 
-        $html5ValidationDef = $container->getDefinition('siganushka_generic.form.type_extension.html5_validation');
-        static::assertTrue($html5ValidationDef->hasTag('form.type_extension'));
+        $html5Validation = $container->getDefinition('siganushka_generic.form.type_extension.html5_validation');
+        static::assertTrue($html5Validation->hasTag('form.type_extension'));
     }
 
     private function createContainerWithConfig(array $config = []): ContainerBuilder
