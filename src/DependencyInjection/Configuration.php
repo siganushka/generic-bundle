@@ -37,27 +37,27 @@ class Configuration implements ConfigurationInterface
                             ->end()
                         ->end()
                         ->arrayNode('mapping_override')
-                            ->useAttributeAsKey('origin')
+                            ->useAttributeAsKey('source')
                             ->prototype('scalar')
                                 ->cannotBeEmpty()
                             ->end()
                             ->validate()
                                 ->always()
                                 ->then(static function (array $value) {
-                                    foreach ($value as $origin => $target) {
-                                        $origin = (string) $origin;
+                                    foreach ($value as $source => $target) {
+                                        $source = (string) $source;
                                         $target = (string) $target;
 
-                                        if (!class_exists($origin)) {
-                                            throw new \InvalidArgumentException(\sprintf('Original class "%s" does not exists.', $origin));
+                                        if (!class_exists($source)) {
+                                            throw new \InvalidArgumentException(\sprintf('The source class "%s" does not exists.', $source));
                                         }
 
                                         if (!class_exists($target)) {
-                                            throw new \InvalidArgumentException(\sprintf('Target class "%s" does not exists.', $target));
+                                            throw new \InvalidArgumentException(\sprintf('The target class "%s" does not exists.', $target));
                                         }
 
-                                        if (!is_a($target, $origin, true)) {
-                                            throw new \InvalidArgumentException(\sprintf('Target class must be instanceof '.$origin.', %s given.', $target));
+                                        if (!is_subclass_of($target, $source, true)) {
+                                            throw new \InvalidArgumentException(\sprintf('The target class must be instanceof '.$source.', %s given.', $target));
                                         }
                                     }
 

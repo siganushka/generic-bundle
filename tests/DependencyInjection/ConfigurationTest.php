@@ -71,7 +71,7 @@ final class ConfigurationTest extends TestCase
     public function testDoctrineMappingOverrideOriginClassInvalidException(): void
     {
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage('Original class "0" does not exists');
+        $this->expectExceptionMessage('The source class "0" does not exists');
 
         $config = [
             'mapping_override' => [
@@ -88,7 +88,7 @@ final class ConfigurationTest extends TestCase
     public function testDoctrineMappingOverrideTargetClassInvalidException(): void
     {
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage('Target class "non_exists_class" does not exists');
+        $this->expectExceptionMessage('The target class "non_exists_class" does not exists');
 
         $config = [
             'mapping_override' => [
@@ -105,11 +105,28 @@ final class ConfigurationTest extends TestCase
     public function testDoctrineMappingOverrideTargetClassNonSubclassException(): void
     {
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage(\sprintf('Target class must be instanceof %s, stdClass given', Foo::class));
+        $this->expectExceptionMessage(\sprintf('The target class must be instanceof %s, stdClass given', Foo::class));
 
         $config = [
             'mapping_override' => [
                 Foo::class => \stdClass::class,
+            ],
+        ];
+
+        $processor = new Processor();
+        $processor->processConfiguration(new Configuration(), [
+            ['doctrine' => $config],
+        ]);
+    }
+
+    public function testDoctrineMappingOverrideTargetClassNonSubclass2Exception(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage(\sprintf('The target class must be instanceof %s, %s given', Foo::class, Foo::class));
+
+        $config = [
+            'mapping_override' => [
+                Foo::class => Foo::class,
             ],
         ];
 
