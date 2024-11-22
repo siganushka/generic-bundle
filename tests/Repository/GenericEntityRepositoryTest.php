@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\Tests\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -25,7 +24,7 @@ class GenericEntityRepositoryTest extends TestCase
     public function testAll(): void
     {
         $repository = $this->createRepository(Foo::class);
-        static::assertInstanceOf(ServiceEntityRepositoryInterface::class, $repository);
+        static::assertInstanceOf(GenericEntityRepository::class, $repository);
 
         /** @var Foo */
         $entity = $repository->createNew('foo');

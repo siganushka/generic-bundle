@@ -17,7 +17,6 @@
     },
     "require-dev": {
         "composer/semver": "^3.0",
-        "doctrine/doctrine-bundle": "^2.8",
         "knplabs/knp-components": "^4.1",
         "siganushka/doctrine-contracts": "dev-main",
         "symfony/form": "^6.4|^7.0",

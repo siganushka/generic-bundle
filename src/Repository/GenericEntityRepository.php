@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Siganushka\Contracts\Doctrine\ResourceInterface;
@@ -13,13 +14,23 @@ use Siganushka\Contracts\Doctrine\TimestampableInterface;
 
 /**
  * @template T of object
- * @template-extends ServiceEntityRepository<T>
+ * @template-extends EntityRepository<T>
  */
-class GenericEntityRepository extends ServiceEntityRepository
+class GenericEntityRepository extends EntityRepository
 {
+    /**
+     * @param class-string<T> $entityClass
+     */
     public function __construct(ManagerRegistry $registry, string $entityClass)
     {
-        parent::__construct($registry, $entityClass);
+        /** @var EntityManagerInterface|null */
+        $manager = $registry->getManagerForClass($entityClass);
+
+        if (null === $manager) {
+            throw new \LogicException(\sprintf('Could not find the entity manager for class "%s". Check your Doctrine configuration to make sure it is configured to load this entity’s metadata.', $entityClass));
+        }
+
+        parent::__construct($manager, $manager->getClassMetadata($entityClass));
     }
 
     public function createQueryBuilder(string $alias, string $indexBy = null): QueryBuilder
