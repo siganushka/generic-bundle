@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\Repository;
 
+use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -15,6 +16,11 @@ use Siganushka\Contracts\Doctrine\TimestampableInterface;
 /**
  * @template T of object
  * @template-extends EntityRepository<T>
+ *
+ * @method T|null find(mixed $id, LockMode|int|null $lockMode = null, int|null $lockVersion = null)
+ * @method T|null findOneBy(array $criteria, array|null $orderBy = null): object|null
+ * @method T[] findAll()
+ * @method T[] findBy(array $criteria, array|null $orderBy = null, int|null $limit = null, int|null $offset = null)
  */
 class GenericEntityRepository extends EntityRepository
 {
@@ -54,6 +60,8 @@ class GenericEntityRepository extends EntityRepository
 
     /**
      * @param mixed ...$args
+     *
+     * @return T
      */
     public function createNew(...$args): object
     {
