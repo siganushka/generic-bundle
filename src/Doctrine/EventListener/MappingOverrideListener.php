@@ -19,7 +19,6 @@ class MappingOverrideListener
         $classMetadata = $event->getClassMetadata();
         if (\array_key_exists($classMetadata->getName(), $this->mappingOverride)) {
             $classMetadata->isMappedSuperclass = true;
-            $classMetadata->setCustomRepositoryClass(null);
         }
     }
 }

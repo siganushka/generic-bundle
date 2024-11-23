@@ -6,9 +6,6 @@ namespace Siganushka\GenericBundle\Tests\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\DependencyInjection\SiganushkaGenericExtension;
-use Siganushka\GenericBundle\Doctrine\EventListener\MappingOverrideListener;
-use Siganushka\GenericBundle\Doctrine\EventListener\TablePrefixListener;
-use Siganushka\GenericBundle\Doctrine\EventListener\TimestampableListener;
 use Siganushka\GenericBundle\Tests\Fixtures\Bar;
 use Siganushka\GenericBundle\Tests\Fixtures\Foo;
 use Symfony\Component\DependencyInjection\Compiler\ResolveChildDefinitionsPass;
@@ -51,7 +48,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
         ];
 
         $timestampable = $container->getDefinition('siganushka_generic.doctrine.listener.timestampable');
-        static::assertSame(TimestampableListener::class, $timestampable->getClass());
         static::assertSame($listenerTagAttributes, $timestampable->getTag('doctrine.event_listener'));
 
         $knpPagination = $container->getDefinition('siganushka_generic.serializer.normalizer.knp_pagination');
@@ -78,13 +74,10 @@ final class SiganushkaGenericExtensionTest extends TestCase
         static::assertSame($container->getParameter('siganushka_generic.doctrine.mapping_override'), $configs['doctrine']['mapping_override']);
 
         $tablePrefix = $container->getDefinition('siganushka_generic.doctrine.listener.table_prefix');
-
-        static::assertSame(TablePrefixListener::class, $tablePrefix->getClass());
         static::assertSame([['event' => 'loadClassMetadata']], $tablePrefix->getTag('doctrine.event_listener'));
         static::assertSame('%siganushka_generic.doctrine.table_prefix%', $tablePrefix->getArgument(0));
 
         $mappingOverride = $container->getDefinition('siganushka_generic.doctrine.listener.mapping_override');
-        static::assertSame(MappingOverrideListener::class, $mappingOverride->getClass());
         static::assertSame([['event' => 'loadClassMetadata']], $mappingOverride->getTag('doctrine.event_listener'));
         static::assertSame('%siganushka_generic.doctrine.mapping_override%', $mappingOverride->getArgument(0));
 

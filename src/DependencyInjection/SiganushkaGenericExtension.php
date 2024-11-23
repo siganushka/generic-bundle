@@ -6,6 +6,7 @@ namespace Siganushka\GenericBundle\DependencyInjection;
 
 use Knp\Component\Pager\PaginatorInterface;
 use Siganushka\Contracts\Doctrine\ResourceInterface;
+use Siganushka\GenericBundle\Repository\GenericEntityRepository;
 use Symfony\Component\AssetMapper\AssetMapperInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -57,6 +58,10 @@ class SiganushkaGenericExtension extends Extension implements PrependExtensionIn
         } else {
             $container->removeDefinition('siganushka_generic.listener.form_error');
         }
+
+        $container->registerForAutoconfiguration(GenericEntityRepository::class)
+            ->addTag('doctrine.repository_service')
+        ;
     }
 
     public function prepend(ContainerBuilder $container): void

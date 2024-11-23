@@ -19,7 +19,7 @@ final class MappingOverrideListenerTest extends TestCase
         $classMetadata->setCustomRepositoryClass(EntityRepository::class);
 
         static::assertFalse($classMetadata->isMappedSuperclass);
-        static::assertNotNull($classMetadata->customRepositoryClassName);
+        static::assertSame(EntityRepository::class, $classMetadata->customRepositoryClassName);
 
         /** @var MockObject&LoadClassMetadataEventArgs */
         $loadClassMetadataEventArgs = $this->createMock(LoadClassMetadataEventArgs::class);
@@ -32,6 +32,6 @@ final class MappingOverrideListenerTest extends TestCase
         $listener->loadClassMetadata($loadClassMetadataEventArgs);
 
         static::assertTrue($classMetadata->isMappedSuperclass);
-        static::assertNull($classMetadata->customRepositoryClassName);
+        static::assertSame(EntityRepository::class, $classMetadata->customRepositoryClassName);
     }
 }
