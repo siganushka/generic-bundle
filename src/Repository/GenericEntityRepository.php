@@ -39,7 +39,7 @@ class GenericEntityRepository extends EntityRepository
         parent::__construct($manager, $manager->getClassMetadata($entityClass));
     }
 
-    public function createQueryBuilder(string $alias, string $indexBy = null): QueryBuilder
+    public function createQueryBuilder(string $alias, ?string $indexBy = null): QueryBuilder
     {
         $queryBuilder = parent::createQueryBuilder($alias, $indexBy);
 

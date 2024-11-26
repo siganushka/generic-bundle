@@ -33,7 +33,7 @@ class KnpPaginationNormalizer implements NormalizerInterface, SerializerAwareInt
     /**
      * @param PaginationInterface<mixed, mixed> $object
      */
-    public function normalize($object, string $format = null, array $context = []): array
+    public function normalize($object, ?string $format = null, array $context = []): array
     {
         if (!$this->serializer instanceof NormalizerInterface) {
             throw new \LogicException('Cannot normalize because the injected serializer is not a normalizer.');
@@ -52,7 +52,7 @@ class KnpPaginationNormalizer implements NormalizerInterface, SerializerAwareInt
         ];
     }
 
-    public function supportsNormalization($data, string $format = null, array $context = []): bool
+    public function supportsNormalization($data, ?string $format = null, array $context = []): bool
     {
         return $data instanceof PaginationInterface;
     }
