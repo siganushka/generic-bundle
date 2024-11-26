@@ -5,7 +5,7 @@
 [![Latest Unstable Version](https://poser.pugx.org/siganushka/generic-bundle/v/unstable)](https://packagist.org/packages/siganushka/generic-bundle)
 [![License](https://poser.pugx.org/siganushka/generic-bundle/license)](https://packagist.org/packages/siganushka/generic-bundle)
 
-通用的功能性 [Bundle](https://symfony.com/doc/current/bundles.html)，提取于各项目中的可复用代码，可快速实现通用功能。
+通用性 [Bundle](https://symfony.com/doc/current/bundles.html)，提取于各项目中的可复用代码，使用于任何 `Symfony` 项目，可快速实现通用功能。
 
 ### 安装
 
