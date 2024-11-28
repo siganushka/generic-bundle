@@ -26,13 +26,13 @@
 {# collection entry row #}
 {%- block collection_entry_row -%}
   <tr data-siganushka-generic-collection-target="entry" style="vertical-align: top">
-    {% for entry in compound ? form : [form] %}
+    {%- for entry in compound ? form : [form] -%}
       <td{% with {attr: entry.vars.row_attr} %}{{ block('attributes') }}{% endwith %}>
         {{- form_widget(entry, {attr: {placeholder: entry.vars.label}}) -}}
         {{- form_errors(entry) -}}
         {{- form_help(entry) -}}
       </td>
-    {% endfor %}
+    {%- endfor -%}
 
     {%- if delete_button is defined and not delete_button.rendered -%}
       {{- form_row(delete_button) -}}
