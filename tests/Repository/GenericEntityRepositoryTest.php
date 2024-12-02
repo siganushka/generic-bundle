@@ -45,7 +45,7 @@ class GenericEntityRepositoryTest extends TestCase
 
         static::assertSame(
             'SELECT f FROM Siganushka\GenericBundle\Tests\Repository\Foo f ORDER BY f.sort DESC, f.createdAt DESC, f.id DESC',
-            $repository->createQueryBuilder('f')->getDQL()
+            $repository->createQueryBuilderWithOrdered('f')->getDQL()
         );
     }
 
