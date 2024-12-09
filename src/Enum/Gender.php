@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Siganushka\UserBundle\Enum;
+namespace Siganushka\GenericBundle\Enum;
 
 enum Gender: string
 {
