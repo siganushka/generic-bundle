@@ -26,13 +26,11 @@ class GenericEntityRepositoryTest extends TestCase
         $repository = $this->createRepository(Foo::class);
         static::assertInstanceOf(GenericEntityRepository::class, $repository);
 
-        /** @var Foo */
         $entity = $repository->createNew('foo');
         static::assertInstanceOf(Foo::class, $entity);
         static::assertSame('foo', $entity->getArg1());
         static::assertSame(128, $entity->getArg2());
 
-        /** @var Foo */
         $entity = $repository->createNew('bar', 256);
         static::assertInstanceOf(Foo::class, $entity);
         static::assertSame('bar', $entity->getArg1());
@@ -58,9 +56,9 @@ class GenericEntityRepositoryTest extends TestCase
     }
 
     /**
-     * @phpstan-param class-string $entityClass
+     * @param class-string<Foo> $entityClass
      *
-     * @return GenericEntityRepository<object>
+     * @return GenericEntityRepository<Foo>
      */
     private function createRepository(string $entityClass): GenericEntityRepository
     {
