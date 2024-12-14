@@ -23,7 +23,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
         static::assertTrue($container->hasDefinition('siganushka_generic.listener.json_request'));
         static::assertTrue($container->hasDefinition('siganushka_generic.listener.json_response'));
         static::assertTrue($container->hasDefinition('siganushka_generic.listener.form_error'));
-        static::assertTrue($container->hasDefinition('siganushka_generic.listener.resize_image'));
         static::assertFalse($container->hasDefinition('siganushka_generic.doctrine.listener.table_prefix'));
         static::assertFalse($container->hasDefinition('siganushka_generic.doctrine.listener.mapping_override'));
         static::assertTrue($container->hasDefinition('siganushka_generic.doctrine.listener.timestampable'));
@@ -38,9 +37,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
 
         $formError = $container->getDefinition('siganushka_generic.listener.form_error');
         static::assertTrue($formError->hasTag('kernel.event_subscriber'));
-
-        $resizeImage = $container->getDefinition('siganushka_generic.listener.resize_image');
-        static::assertTrue($resizeImage->hasTag('kernel.event_subscriber'));
 
         $listenerTagAttributes = [
             ['event' => 'prePersist'],
