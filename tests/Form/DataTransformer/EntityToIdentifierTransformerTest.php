@@ -11,31 +11,23 @@ use Doctrine\Persistence\ObjectRepository;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\Form\DataTransformer\EntityToIdentifierTransformer;
-use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class EntityToIdentifierTransformerTest extends TestCase
 {
-    private ?Foo $foo = null;
+    protected Foo $foo;
 
     protected function setUp(): void
     {
-        $foo = new Foo();
-        $foo->id = 128;
-
-        $this->foo = $foo;
-    }
-
-    protected function tearDown(): void
-    {
-        $this->foo = null;
+        $this->foo = new Foo();
+        $this->foo->id = 128;
     }
 
     public function testTransform(): void
     {
         $transformer = $this->createEntityToIdentifierTransformer(Foo::class, 'id');
 
-        static::assertEquals($this->foo?->id, $transformer->transform($this->foo));
+        static::assertEquals($this->foo->id, $transformer->transform($this->foo));
     }
 
     public function testTransformNullValue(): void
@@ -50,7 +42,7 @@ class EntityToIdentifierTransformerTest extends TestCase
         static::assertNull($transformer->reverseTransform(''));
     }
 
-    public function testreverseTransformNullValue(): void
+    public function testReverseTransformNullValue(): void
     {
         $transformer = $this->createEntityToIdentifierTransformer(Foo::class, 'id');
         static::assertNull($transformer->transform(null));
@@ -107,11 +99,9 @@ class EntityToIdentifierTransformerTest extends TestCase
     }
 
     /**
-     * @phpstan-param class-string $className
-     *
-     * @return DataTransformerInterface<object, mixed>
+     * @param class-string $className
      */
-    private function createEntityToIdentifierTransformer(string $className, string $identifierField): DataTransformerInterface
+    private function createEntityToIdentifierTransformer(string $className, string $identifierField): EntityToIdentifierTransformer
     {
         $classMetadata = $this->createMock(ClassMetadata::class);
         $classMetadata->expects(static::any())

@@ -15,7 +15,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 class EntityToIdentifierTransformer implements DataTransformerInterface
 {
     /**
-     * @phpstan-param class-string $className
+     * @param class-string $className
      */
     public function __construct(
         private ManagerRegistry $managerRegistry,
