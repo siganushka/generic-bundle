@@ -16,7 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class CollectionTypeExtension extends AbstractTypeExtension
 {
     /**
-     * @phpstan-param array{
+     * @param array{
      *  allow_add: bool,
      *  allow_delete: bool,
      *  prototype: bool,

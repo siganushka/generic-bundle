@@ -18,9 +18,9 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
      * @param class-string $className
      */
     public function __construct(
-        private ManagerRegistry $managerRegistry,
-        private string $className,
-        private string $identifierField)
+        private readonly ManagerRegistry $managerRegistry,
+        private readonly string $className,
+        private readonly string $identifierField)
     {
     }
 
