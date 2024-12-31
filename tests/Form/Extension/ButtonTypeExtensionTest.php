@@ -18,8 +18,8 @@ class ButtonTypeExtensionTest extends TypeTestCase
 
         $buttonView = $button->createView();
         $submitView = $submit->createView();
-        static::assertSame(-16, $buttonView->vars['priority']);
-        static::assertSame(-16, $submitView->vars['priority']);
+        static::assertSame(-128, $buttonView->vars['priority']);
+        static::assertSame(-128, $submitView->vars['priority']);
     }
 
     protected function getTypeExtensions(): array
