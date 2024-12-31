@@ -39,6 +39,8 @@ class SiganushkaGenericExtension extends Extension implements PrependExtensionIn
             if (!$config['doctrine']['table_prefix']) {
                 $container->removeDefinition('siganushka_generic.doctrine.listener.table_prefix');
             }
+        } else {
+            $container->removeDefinition('siganushka_generic.form.type.identifier_entity');
         }
 
         if ($container::willBeAvailable('symfony/form', Form::class, ['siganushka/generic-bundle'])) {
