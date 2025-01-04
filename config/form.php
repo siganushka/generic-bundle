@@ -7,7 +7,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use Siganushka\GenericBundle\Form\Extension\ButtonTypeExtension;
 use Siganushka\GenericBundle\Form\Extension\CollectionTypeExtension;
 use Siganushka\GenericBundle\Form\Extension\Html5ValidationTypeExtension;
-use Siganushka\GenericBundle\Form\Type\IdentifierEntityType;
+use Siganushka\GenericBundle\Form\Type\IdentifiableEntityType;
 
 return static function (ContainerConfigurator $container): void {
     $container->services()
@@ -20,7 +20,7 @@ return static function (ContainerConfigurator $container): void {
         ->set('siganushka_generic.form.type_extension.html5_validation', Html5ValidationTypeExtension::class)
             ->tag('form.type_extension')
 
-        ->set('siganushka_generic.form.type.identifier_entity', IdentifierEntityType::class)
+        ->set('siganushka_generic.form.type.identifier_entity', IdentifiableEntityType::class)
             ->arg(0, service('doctrine'))
             ->tag('form.type')
     ;
