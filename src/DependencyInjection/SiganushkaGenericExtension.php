@@ -57,8 +57,6 @@ class SiganushkaGenericExtension extends Extension implements PrependExtensionIn
             if (!interface_exists(PaginatorInterface::class)) {
                 $container->removeDefinition('siganushka_generic.serializer.normalizer.knp_pagination');
             }
-        } else {
-            $container->removeDefinition('siganushka_generic.listener.form_error');
         }
 
         $container->registerForAutoconfiguration(GenericEntityRepository::class)

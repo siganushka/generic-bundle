@@ -28,7 +28,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'service_container',
             'siganushka_generic.listener.json_request',
             'siganushka_generic.listener.json_response',
-            'siganushka_generic.listener.form_error',
             'siganushka_generic.doctrine.listener.timestampable',
             'siganushka_generic.form.type_extension.collection',
             'siganushka_generic.form.type_extension.button',
@@ -41,9 +40,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
 
         $jsonResponse = $container->getDefinition('siganushka_generic.listener.json_response');
         static::assertTrue($jsonResponse->hasTag('kernel.event_subscriber'));
-
-        $formError = $container->getDefinition('siganushka_generic.listener.form_error');
-        static::assertTrue($formError->hasTag('kernel.event_subscriber'));
 
         $listenerTagAttributes = [
             ['event' => 'prePersist'],
@@ -83,7 +79,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'service_container',
             'siganushka_generic.listener.json_request',
             'siganushka_generic.listener.json_response',
-            'siganushka_generic.listener.form_error',
             'siganushka_generic.doctrine.listener.mapping_override',
             'siganushka_generic.doctrine.listener.table_prefix',
             'siganushka_generic.doctrine.listener.timestampable',
