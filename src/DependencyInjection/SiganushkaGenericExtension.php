@@ -13,6 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Serializer\Serializer;
 
@@ -68,8 +69,7 @@ class SiganushkaGenericExtension extends Extension implements PrependExtensionIn
 
     public function prepend(ContainerBuilder $container): void
     {
-        // @see https://symfony.com/doc/current/frontend/create_ux_bundle.html#specifics-for-asset-mapper
-        if ($this->isAssetMapperAvailable($container)) {
+        if (self::isAssetMapperAvailable($container)) {
             $container->prependExtensionConfig('framework', [
                 'asset_mapper' => [
                     'paths' => [
@@ -80,7 +80,10 @@ class SiganushkaGenericExtension extends Extension implements PrependExtensionIn
         }
     }
 
-    private function isAssetMapperAvailable(ContainerBuilder $container): bool
+    /**
+     * @see https://symfony.com/doc/current/frontend/create_ux_bundle.html#specifics-for-asset-mapper
+     */
+    public static function isAssetMapperAvailable(ContainerBuilder $container): bool
     {
         if (!interface_exists(AssetMapperInterface::class)) {
             return false;
@@ -92,5 +95,26 @@ class SiganushkaGenericExtension extends Extension implements PrependExtensionIn
         }
 
         return is_file($bundlesMetadata['FrameworkBundle']['path'].'/Resources/config/asset_mapper.php');
+    }
+
+    /**
+     * @see https://symfony.com/doc/current/configuration/override_dir_structure.html#override-the-public-directory
+     * @see https://github.com/symfony/framework-bundle/blob/7.2/DependencyInjection/FrameworkExtension.php#L3198
+     */
+    public static function getPublicDirectory(ContainerBuilder $container): string
+    {
+        /** @var string */
+        $projectDir = $container->getParameter('kernel.project_dir');
+        $defaultPublicDir = $projectDir.'/public';
+
+        $composerFilePath = $projectDir.'/composer.json';
+        if (!file_exists($composerFilePath)) {
+            return $defaultPublicDir;
+        }
+
+        /** @var array */
+        $composerConfig = json_decode((new Filesystem())->readFile($composerFilePath), true, flags: \JSON_THROW_ON_ERROR);
+
+        return isset($composerConfig['extra']['public-dir']) ? $projectDir.'/'.trim($composerConfig['extra']['public-dir'], '/') : $defaultPublicDir;
     }
 }
