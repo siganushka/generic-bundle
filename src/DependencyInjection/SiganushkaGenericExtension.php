@@ -13,7 +13,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Serializer\Serializer;
 
@@ -112,8 +111,13 @@ class SiganushkaGenericExtension extends Extension implements PrependExtensionIn
             return $defaultPublicDir;
         }
 
+        $json = file_get_contents($composerFilePath);
+        if (false === $json) {
+            return $defaultPublicDir;
+        }
+
         /** @var array */
-        $composerConfig = json_decode((new Filesystem())->readFile($composerFilePath), true, flags: \JSON_THROW_ON_ERROR);
+        $composerConfig = json_decode($json, true, flags: \JSON_THROW_ON_ERROR);
 
         return isset($composerConfig['extra']['public-dir']) ? $projectDir.'/'.trim($composerConfig['extra']['public-dir'], '/') : $defaultPublicDir;
     }
