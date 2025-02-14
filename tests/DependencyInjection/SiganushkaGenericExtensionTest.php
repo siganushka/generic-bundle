@@ -32,7 +32,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'siganushka_generic.doctrine.listener.timestampable',
             'siganushka_generic.form.type_extension.collection',
             'siganushka_generic.form.type_extension.button',
-            'siganushka_generic.form.type.identifier_entity',
             'siganushka_generic.serializer.normalizer.knp_pagination',
         ], $container->getServiceIds());
 
@@ -90,7 +89,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'siganushka_generic.form.type_extension.collection',
             'siganushka_generic.form.type_extension.button',
             'siganushka_generic.form.type_extension.html5_validation',
-            'siganushka_generic.form.type.identifier_entity',
             'siganushka_generic.serializer.normalizer.knp_pagination',
         ], $container->getServiceIds());
 
