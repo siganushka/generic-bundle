@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Siganushka\GenericBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 class JsonRequestListener implements EventSubscriberInterface
@@ -24,7 +23,7 @@ class JsonRequestListener implements EventSubscriberInterface
             && \in_array($request->getMethod(), ['POST', 'PUT', 'PATCH', 'DELETE'])
         ) {
             try {
-                $request->request = new InputBag($request->toArray());
+                $request->request = $request->getPayload();
             } catch (\Throwable) {
             }
         }
