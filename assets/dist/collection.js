@@ -12,11 +12,8 @@ export default class extends Controller {
     if (lastEntry) {
       lastEntry.insertAdjacentHTML('afterend', entry.trim())
     } else {
-      const containerEl = 'TABLE' === this.element.tagName
-        ? (this.element.querySelector('tbody') || this.element)
-        : this.element
-
-      containerEl.insertAdjacentHTML('afterbegin', entry.trim())
+      const container = this.element.querySelector('tbody') || this.element
+      container.insertAdjacentHTML('afterbegin', entry.trim())
     }
 
     this.element.dataset.index ++
