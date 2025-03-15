@@ -90,6 +90,7 @@ $foo->setVersion(?int $version);    // 设置当前版本，由 Doctrine 自动�
 ### Timestampable
 
 通用的 `updatedAt` 和 `createdAt` 时间字段，并在更新、创建时自动维护，其中 `createdAt` 字段不可修改。
+如果你确认你的实体永远不需要修改（不需要 updatedAt 字段），也可以仅使用 CreatableInterface，
 
 ```php
 // ./src/Entity/Foo.php
@@ -107,6 +108,28 @@ class Foo implements TimestampableInterface
 $foo = new Foo();
 $foo->getUpdatedAt(): ?\DateTimeInterface;          // 返回更新时间，为 null 时表明从未被修改
 $foo->setUpdatedAt(?\DateTimeInterface $updatedAt); // 设置更新时间，由系统自动填充
+$foo->getCreatedAt(): ?\DateTimeImmutable;          // 返回创建时间，该字段在创建后不可修改
+$foo->setCreatedAt(?\DateTimeImmutable $createdAt); // 设置创建时间，由系统自动填充
+```
+
+### CreatableInterface
+
+如果你确认你的实体永远不需要修改（不需要 updatedAt 字段），使用此接口代替 `Timestampable`。
+
+```php
+// ./src/Entity/Foo.php
+
+use Siganushka\Contracts\Doctrine\CreatableInterface;
+use Siganushka\Contracts\Doctrine\CreatableTrait;
+
+class Foo implements CreatableInterface
+{
+    use CreatableTrait;
+
+    // ...
+}
+
+$foo = new Foo();
 $foo->getCreatedAt(): ?\DateTimeImmutable;          // 返回创建时间，该字段在创建后不可修改
 $foo->setCreatedAt(?\DateTimeImmutable $createdAt); // 设置创建时间，由系统自动填充
 ```
