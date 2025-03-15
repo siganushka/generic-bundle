@@ -114,7 +114,7 @@ $foo->setCreatedAt(?\DateTimeImmutable $createdAt); // 设置创建时间，由�
 
 ### CreatableInterface
 
-如果你确认你的实体永远不需要修改（不需要 updatedAt 字段），使用此接口代替 `Timestampable`。
+通用的 `createdAt` 时间字段，如果实体永远不需要修改（不需要 updatedAt 字段），使用此接口代替 `Timestampable`。
 
 ```php
 // ./src/Entity/Foo.php
