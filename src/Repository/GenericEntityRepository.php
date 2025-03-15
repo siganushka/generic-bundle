@@ -10,7 +10,6 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Siganushka\Contracts\Doctrine\ResourceInterface;
 use Siganushka\Contracts\Doctrine\SortableInterface;
-use Siganushka\Contracts\Doctrine\TimestampableInterface;
 
 /**
  * @see https://github.com/bmewburn/vscode-intelephense/issues/2447
@@ -41,10 +40,6 @@ class GenericEntityRepository extends EntityRepository
 
         if (is_subclass_of($this->getEntityName(), SortableInterface::class)) {
             $queryBuilder->addOrderBy(\sprintf('%s.sort', $alias), 'DESC');
-        }
-
-        if (is_subclass_of($this->getEntityName(), TimestampableInterface::class)) {
-            $queryBuilder->addOrderBy(\sprintf('%s.createdAt', $alias), 'DESC');
         }
 
         if (is_subclass_of($this->getEntityName(), ResourceInterface::class)) {

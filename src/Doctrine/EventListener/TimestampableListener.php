@@ -6,6 +6,7 @@ namespace Siganushka\GenericBundle\Doctrine\EventListener;
 
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Persistence\ObjectManager;
+use Siganushka\Contracts\Doctrine\CreatableInterface;
 use Siganushka\Contracts\Doctrine\TimestampableInterface;
 
 class TimestampableListener
@@ -16,7 +17,7 @@ class TimestampableListener
     public function prePersist(LifecycleEventArgs $event): void
     {
         $object = $event->getObject();
-        if ($object instanceof TimestampableInterface) {
+        if ($object instanceof CreatableInterface) {
             $object->setCreatedAt(new \DateTimeImmutable());
         }
     }
