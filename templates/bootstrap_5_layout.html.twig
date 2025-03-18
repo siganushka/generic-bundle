@@ -6,12 +6,13 @@
 {%- endblock collection_widget -%}
 
 {%- block collection_add_button_row -%}
+  {% set row_attr = row_attr|merge({class: (row_attr.class|default('') ~ ' px-0')|trim}) %}
   {% set attr = attr|merge({class: (attr.class|default('btn-outline-primary') ~ ' text-nowrap w-100')|trim}) %}
   {{- parent() -}}
 {%- endblock collection_add_button_row -%}
 
 {%- block collection_delete_button_row -%}
-  {% set row_attr = row_attr|merge({style: row_attr.style|default('width: 1px')}) %}
+  {% set row_attr = row_attr|merge({style: row_attr.style|default('width: 0')}) %}
   {% set attr = attr|merge({class: (attr.class|default('btn-outline-danger') ~ ' text-nowrap')|trim}) %}
   {{- parent() -}}
 {%- endblock collection_delete_button_row -%}
