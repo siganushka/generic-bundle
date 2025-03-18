@@ -64,14 +64,12 @@ class CollectionTypeExtension extends AbstractTypeExtension
         $resolver->setAllowedTypes('delete_button_options', 'array');
 
         $resolver->setNormalizer('add_button_options', function (Options $options, array $value) {
-            $value['label'] ??= 'generic.add';
             $value['block_prefix'] ??= 'collection_add_button';
 
             return $value;
         });
 
         $resolver->setNormalizer('delete_button_options', function (Options $options, array $value) {
-            $value['label'] ??= 'generic.remove';
             $value['block_prefix'] ??= 'collection_delete_button';
 
             return $value;
