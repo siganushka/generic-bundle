@@ -31,7 +31,7 @@ class SleepRequestListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            RequestEvent::class => ['onRequest', -8],
+            RequestEvent::class => 'onRequest',
         ];
     }
 }

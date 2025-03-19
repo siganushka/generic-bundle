@@ -11,12 +11,12 @@ use Siganushka\GenericBundle\EventListener\SleepRequestListener;
 return static function (ContainerConfigurator $container): void {
     $container->services()
         ->set('siganushka_generic.listener.sleep_request', SleepRequestListener::class)
-            ->tag('kernel.event_subscriber', ['priority' => 8])
+            ->tag('kernel.event_subscriber')
 
         ->set('siganushka_generic.listener.json_request', JsonRequestListener::class)
-            ->tag('kernel.event_subscriber', ['priority' => -8])
+            ->tag('kernel.event_subscriber')
 
         ->set('siganushka_generic.listener.json_response', JsonResponseListener::class)
-            ->tag('kernel.event_subscriber', ['priority' => 1024])
+            ->tag('kernel.event_subscriber')
     ;
 };
