@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 return [
-    'generic.resource' => 'ID',
+    'generic.resource' => '序号',
     'generic.create' => '创建',
     'generic.update' => '更新',
     'generic.delete' => '删除',
@@ -26,16 +26,15 @@ return [
     'generic.yes' => '是',
     'generic.no' => '否',
     'generic.enabled' => '启用',
+    'generic.disabled' => '禁用',
     'generic.sort' => '排序',
-    'generic.version' => '版本',
     'generic.created_at' => '创建时间',
     'generic.updated_at' => '更新时间',
     'generic.state' => '状态',
     'generic.gender' => '性别',
     'generic.gender_male' => '男',
     'generic.gender_female' => '女',
-    'generic.delimiter' => '-',
-    'generic.no_items' => '没有记录！',
-    'generic.remove_confirmation' => '确定移除吗？',
-    'generic.delete_confirmation' => '该操作不可恢复，确定删除吗？',
+    'generic.no_result' => '暂无数据',
+    'generic.remove_confirmation' => '确定要移除吗？',
+    'generic.delete_confirmation' => '删除后不可恢复，确定要删除吗？',
 ];
