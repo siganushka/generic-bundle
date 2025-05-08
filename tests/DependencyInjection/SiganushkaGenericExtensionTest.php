@@ -26,7 +26,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
 
         static::assertSame([
             'service_container',
-            'siganushka_generic.listener.sleep_request',
             'siganushka_generic.listener.json_request',
             'siganushka_generic.listener.json_response',
             'siganushka_generic.doctrine.listener.timestampable',
@@ -34,9 +33,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'siganushka_generic.form.type_extension.button',
             'siganushka_generic.serializer.normalizer.knp_pagination',
         ], $container->getServiceIds());
-
-        $sleepRequest = $container->getDefinition('siganushka_generic.listener.sleep_request');
-        static::assertTrue($sleepRequest->hasTag('kernel.event_subscriber'));
 
         $jsonRequest = $container->getDefinition('siganushka_generic.listener.json_request');
         static::assertTrue($jsonRequest->hasTag('kernel.event_subscriber'));
@@ -80,7 +76,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
 
         static::assertSame([
             'service_container',
-            'siganushka_generic.listener.sleep_request',
             'siganushka_generic.listener.json_request',
             'siganushka_generic.listener.json_response',
             'siganushka_generic.doctrine.listener.mapping_override',
