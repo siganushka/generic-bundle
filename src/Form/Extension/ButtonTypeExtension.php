@@ -12,10 +12,7 @@ class ButtonTypeExtension extends AbstractTypeExtension
 {
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
-            'label' => 'generic.submit',
-            'priority' => -128,
-        ]);
+        $resolver->setDefault('priority', -128);
     }
 
     public static function getExtendedTypes(): iterable
