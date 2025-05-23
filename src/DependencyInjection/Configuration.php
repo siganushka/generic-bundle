@@ -17,7 +17,6 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->getRootNode();
 
         $this->addDoctrineSection($rootNode);
-        $this->addFormSection($rootNode);
 
         return $treeBuilder;
     }
@@ -64,18 +63,6 @@ class Configuration implements ConfigurationInterface
                             })
                         ->end()
                     ->end()
-                ->end()
-            ->end()
-        ;
-    }
-
-    private function addFormSection(ArrayNodeDefinition $rootNode): void
-    {
-        $rootNode->children()
-            ->arrayNode('form')
-                ->addDefaultsIfNotSet()
-                ->children()
-                    ->booleanNode('html5_validation')->defaultTrue()->end()
                 ->end()
             ->end()
         ;

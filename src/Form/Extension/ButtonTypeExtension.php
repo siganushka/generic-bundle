@@ -5,20 +5,23 @@ declare(strict_types=1);
 namespace Siganushka\GenericBundle\Form\Extension;
 
 use Symfony\Component\Form\AbstractTypeExtension;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ChoicePlaceholderTypeExtension extends AbstractTypeExtension
+class ButtonTypeExtension extends AbstractTypeExtension
 {
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefault('placeholder', 'generic.choice');
+        $resolver->setDefaults([
+            'label' => 'generic.submit',
+            'priority' => -128,
+        ]);
     }
 
     public static function getExtendedTypes(): iterable
     {
         return [
-            ChoiceType::class,
+            ButtonType::class,
         ];
     }
 }

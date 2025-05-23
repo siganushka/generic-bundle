@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\Tests\Form\Extension;
 
-use Siganushka\GenericBundle\Form\Extension\Html5ValidationTypeExtension;
+use Siganushka\GenericBundle\Form\Extension\FormTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Test\TypeTestCase;
 
-class Html5ValidationTypeExtensionTest extends TypeTestCase
+class FormTypeExtensionTest extends TypeTestCase
 {
     public function testAll(): void
     {
@@ -21,7 +21,7 @@ class Html5ValidationTypeExtensionTest extends TypeTestCase
     protected function getTypeExtensions(): array
     {
         return [
-            new Html5ValidationTypeExtension(),
+            new FormTypeExtension(),
         ];
     }
 }

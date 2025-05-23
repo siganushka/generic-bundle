@@ -25,15 +25,3 @@ siganushka_generic:
             App\Entity\Foo: App\Entity\MyFoo
             App\Entity\Bar: App\Entity\CustomBar
 ```
-
-### 表单 html5 验证
-
-关闭 `Form` 组件的 `HTML5` 验证
-
-```yaml
-# ./config/packages/siganushka_generic.yaml
-
-siganushka_generic:
-    form:
-        html5_validation: true # 为 false 时关闭 HTML5 验证
-```

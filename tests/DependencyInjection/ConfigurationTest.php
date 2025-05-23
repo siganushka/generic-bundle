@@ -31,9 +31,6 @@ final class ConfigurationTest extends TestCase
                 'table_prefix' => null,
                 'mapping_override' => [],
             ],
-            'form' => [
-                'html5_validation' => true,
-            ],
         ]);
     }
 
@@ -52,20 +49,6 @@ final class ConfigurationTest extends TestCase
         ]);
 
         static::assertSame($processedConfig['doctrine'], $config);
-    }
-
-    public function testCustomFormConfig(): void
-    {
-        $config = [
-            'html5_validation' => false,
-        ];
-
-        $processor = new Processor();
-        $processedConfig = $processor->processConfiguration(new Configuration(), [
-            ['form' => $config],
-        ]);
-
-        static::assertSame($processedConfig['form'], $config);
     }
 
     public function testDoctrineMappingOverrideOriginClassInvalidException(): void

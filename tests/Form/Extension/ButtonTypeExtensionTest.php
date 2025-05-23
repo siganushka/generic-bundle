@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\Tests\Form\Extension;
 
-use Siganushka\GenericBundle\Form\Extension\ButtonPriorityTypeExtension;
+use Siganushka\GenericBundle\Form\Extension\ButtonTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Test\TypeTestCase;
 
-class ButtonPriorityTypeExtensionTest extends TypeTestCase
+class ButtonTypeExtensionTest extends TypeTestCase
 {
     public function testAll(): void
     {
@@ -25,7 +25,7 @@ class ButtonPriorityTypeExtensionTest extends TypeTestCase
     protected function getTypeExtensions(): array
     {
         return [
-            new ButtonPriorityTypeExtension(),
+            new ButtonTypeExtension(),
         ];
     }
 }

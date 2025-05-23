@@ -45,10 +45,6 @@ class SiganushkaGenericExtension extends Extension implements PrependExtensionIn
 
         if ($container::willBeAvailable('symfony/form', Form::class, ['siganushka/generic-bundle'])) {
             $loader->load('form.php');
-
-            if ($config['form']['html5_validation']) {
-                $container->removeDefinition('siganushka_generic.form.type_extension.html5_validation');
-            }
         }
 
         if ($container::willBeAvailable('symfony/serializer', Serializer::class, ['siganushka/generic-bundle'])) {

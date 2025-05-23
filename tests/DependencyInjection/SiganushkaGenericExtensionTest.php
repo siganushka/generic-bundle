@@ -29,8 +29,9 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'siganushka_generic.listener.json_request',
             'siganushka_generic.listener.json_response',
             'siganushka_generic.doctrine.listener.timestampable',
-            'siganushka_generic.form.type_extension.button_priority',
-            'siganushka_generic.form.type_extension.choice_placeholder',
+            'siganushka_generic.form.type_extension.form',
+            'siganushka_generic.form.type_extension.button',
+            'siganushka_generic.form.type_extension.choice',
             'siganushka_generic.form.type_extension.collection',
             'siganushka_generic.serializer.normalizer.knp_pagination',
         ], $container->getServiceIds());
@@ -62,9 +63,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
                     Foo::class => Bar::class,
                 ],
             ],
-            'form' => [
-                'html5_validation' => false,
-            ],
         ];
 
         $container = $this->createContainerWithConfig($configs);
@@ -82,10 +80,10 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'siganushka_generic.doctrine.listener.mapping_override',
             'siganushka_generic.doctrine.listener.table_prefix',
             'siganushka_generic.doctrine.listener.timestampable',
-            'siganushka_generic.form.type_extension.button_priority',
-            'siganushka_generic.form.type_extension.choice_placeholder',
+            'siganushka_generic.form.type_extension.form',
+            'siganushka_generic.form.type_extension.button',
+            'siganushka_generic.form.type_extension.choice',
             'siganushka_generic.form.type_extension.collection',
-            'siganushka_generic.form.type_extension.html5_validation',
             'siganushka_generic.serializer.normalizer.knp_pagination',
         ], $container->getServiceIds());
 
@@ -96,9 +94,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
         $tablePrefix = $container->getDefinition('siganushka_generic.doctrine.listener.table_prefix');
         static::assertSame([['event' => 'loadClassMetadata']], $tablePrefix->getTag('doctrine.event_listener'));
         static::assertSame('%siganushka_generic.doctrine.table_prefix%', $tablePrefix->getArgument(0));
-
-        $html5Validation = $container->getDefinition('siganushka_generic.form.type_extension.html5_validation');
-        static::assertTrue($html5Validation->hasTag('form.type_extension'));
     }
 
     public function testGetPublicDirectory(): void
