@@ -21,7 +21,7 @@
       {{- form_row(add_button) -}}
     {%- endif -%}
   </table>
-{%- endblock collection_widget -%}
+{%- endblock -%}
 
 {# collection entry row #}
 {%- block collection_entry_row -%}
@@ -38,7 +38,7 @@
       {{- form_row(delete_button) -}}
     {%- endif -%}
   </tr>
-{%- endblock collection_entry_row -%}
+{%- endblock -%}
 
 {# collection add button row #}
 {%- block collection_add_button_row -%}
@@ -47,23 +47,23 @@
     {{- block('collection_add_button_widget') -}}
   </td>
 </tr>
-{%- endblock collection_add_button_row -%}
+{%- endblock -%}
 
 {# collection delete button row #}
 {%- block collection_delete_button_row -%}
 <td{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
   {{- block('collection_delete_button_widget') -}}
 </td>
-{%- endblock collection_delete_button_row -%}
+{%- endblock -%}
 
 {# collection add button widget #}
 {%- block collection_add_button_widget -%}
   {%- set attr = attr|merge({'data-action': 'click->siganushka-generic-collection#add'}) -%}
   {{- block('button_widget') -}}
-{%- endblock collection_add_button_widget -%}
+{%- endblock -%}
 
 {# collection delete button widget #}
 {%- block collection_delete_button_widget -%}
   {%- set attr = attr|merge({'data-action': 'click->siganushka-generic-collection#delete'}) -%}
   {{- block('button_widget') -}}
-{%- endblock collection_delete_button_widget -%}
+{%- endblock -%}
