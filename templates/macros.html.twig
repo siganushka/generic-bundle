@@ -1,7 +1,0 @@
-{% macro enabled(value, trueLabel='generic.yes', falseLabel='generic.no') %}
-  {% if value %}
-    <span class="badge bg-success">{{ trueLabel|trans }}</span>
-  {% else %}
-    <span class="badge bg-danger">{{ falseLabel|trans }}</span>
-  {% endif %}
-{% endmacro %}
