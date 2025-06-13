@@ -37,6 +37,7 @@ return [
     'generic.gender_male' => '男',
     'generic.gender_female' => '女',
     'generic.no_results' => '暂无数据',
+    'generic.total_results' => '共计 %total_item_count% 条结果',
     'generic.remove_confirmation' => '确定要移除吗？',
     'generic.delete_confirmation' => '删除后不可恢复，确定要删除吗？',
 ];

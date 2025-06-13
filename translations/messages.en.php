@@ -37,6 +37,7 @@ return [
     'generic.gender_male' => 'Male',
     'generic.gender_female' => 'Female',
     'generic.no_results' => 'No results found',
+    'generic.total_results' => 'Total %total_item_count% results',
     'generic.remove_confirmation' => 'Are you sure you want to remove?',
     'generic.delete_confirmation' => 'Are you sure you want to delete?',
 ];
