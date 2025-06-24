@@ -7,8 +7,7 @@ namespace Siganushka\GenericBundle\Tests\Serializer\Normalizer;
 use Knp\Component\Pager\Pagination\SlidingPagination;
 use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\Serializer\Normalizer\KnpPaginationNormalizer;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class KnpPaginationNormalizerTest extends TestCase
 {
@@ -27,13 +26,8 @@ class KnpPaginationNormalizerTest extends TestCase
         $pagination->setTotalItemCount(32);
         $pagination->setItems([1, 2, 3, 4]);
 
-        $serializer = new Serializer([new ObjectNormalizer()]);
-
-        $normalizer = new KnpPaginationNormalizer();
-        $normalizer->setSerializer($serializer);
-
-        $normalizerWithContext = new KnpPaginationNormalizer($context);
-        $normalizerWithContext->setSerializer($serializer);
+        $normalizer = $this->createNormalizerWithContext();
+        $normalizerWithContext = $this->createNormalizerWithContext($context);
 
         static::assertSame([
             'currentPageNumber' => $pagination->getCurrentPageNumber(),
@@ -59,12 +53,24 @@ class KnpPaginationNormalizerTest extends TestCase
 
     public function testSupportsNormalization(): void
     {
-        $serializer = new Serializer([new ObjectNormalizer()]);
-
-        $normalizer = new KnpPaginationNormalizer();
-        $normalizer->setSerializer($serializer);
+        $normalizer = $this->createNormalizerWithContext();
 
         static::assertFalse($normalizer->supportsNormalization(new \stdClass()));
         static::assertTrue($normalizer->supportsNormalization(new SlidingPagination()));
+    }
+
+    protected function createNormalizerWithContext(array $context = []): NormalizerInterface
+    {
+        $innerNormalizer = $this->createMock(NormalizerInterface::class);
+
+        $innerNormalizer->expects(static::any())
+            ->method('normalize')
+            ->willReturnCallback(fn (mixed $items) => $items)
+        ;
+
+        $normalizer = new KnpPaginationNormalizer($context);
+        $normalizer->setNormalizer($innerNormalizer);
+
+        return $normalizer;
     }
 }
