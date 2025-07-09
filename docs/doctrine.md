@@ -90,7 +90,6 @@ $foo->setVersion(?int $version);    // 设置当前版本，由 Doctrine 自动�
 ### Timestampable
 
 通用的 `updatedAt` 和 `createdAt` 时间字段，并在更新、创建时自动维护，其中 `createdAt` 字段不可修改。
-如果你确认你的实体永远不需要修改（不需要 updatedAt 字段），也可以仅使用 CreatableInterface，
 
 ```php
 // ./src/Entity/Foo.php
@@ -114,7 +113,7 @@ $foo->setCreatedAt(?\DateTimeImmutable $createdAt); // 设置创建时间，由�
 
 ### CreatableInterface
 
-通用的 `createdAt` 时间字段，如果实体永远不需要修改（不需要 updatedAt 字段），使用此接口代替 `Timestampable`。
+通用的 `createdAt` 时间字段，如果实体永远不需要修改（不需要 `updatedAt` 字段），使用此接口代替 `Timestampable`。
 
 ```php
 // ./src/Entity/Foo.php
@@ -132,4 +131,26 @@ class Foo implements CreatableInterface
 $foo = new Foo();
 $foo->getCreatedAt(): ?\DateTimeImmutable;          // 返回创建时间，该字段在创建后不可修改
 $foo->setCreatedAt(?\DateTimeImmutable $createdAt); // 设置创建时间，由系统自动填充
+```
+
+### DeletableInterface
+
+通用的 `deletedAt` 逻辑删除（软删除）字段，删除后 `ORM` 查询结果将自动排除已删除数据。
+
+```php
+// ./src/Entity/Foo.php
+
+use Siganushka\Contracts\Doctrine\CreatableInterface;
+use Siganushka\Contracts\Doctrine\CreatableTrait;
+
+class Foo implements DeletableInterface
+{
+    use DeletableTrait;
+
+    // ...
+}
+
+$foo = new Foo();
+$foo->getDeletedAt(): ?\DateTimeImmutable;          // 返回删除时间，为 null 时表明未被删除
+$foo->setDeletedAt(?\DateTimeImmutable $createdAt); // 设置删除时间，使用 EntityManager::remove 删除数据时自动填充
 ```
