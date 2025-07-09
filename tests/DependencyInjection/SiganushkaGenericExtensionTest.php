@@ -29,6 +29,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'siganushka_generic.listener.json_request',
             'siganushka_generic.listener.json_response',
             'siganushka_generic.doctrine.listener.timestampable',
+            'siganushka_generic.doctrine.listener.deletable',
             'siganushka_generic.form.type_extension.form',
             'siganushka_generic.form.type_extension.button',
             'siganushka_generic.form.type_extension.choice',
@@ -42,13 +43,16 @@ final class SiganushkaGenericExtensionTest extends TestCase
         $jsonResponse = $container->getDefinition('siganushka_generic.listener.json_response');
         static::assertTrue($jsonResponse->hasTag('kernel.event_subscriber'));
 
-        $listenerTagAttributes = [
+        $timestampable = $container->getDefinition('siganushka_generic.doctrine.listener.timestampable');
+        static::assertSame([
             ['event' => 'prePersist'],
             ['event' => 'preUpdate'],
-        ];
+        ], $timestampable->getTag('doctrine.event_listener'));
 
-        $timestampable = $container->getDefinition('siganushka_generic.doctrine.listener.timestampable');
-        static::assertSame($listenerTagAttributes, $timestampable->getTag('doctrine.event_listener'));
+        $deletable = $container->getDefinition('siganushka_generic.doctrine.listener.deletable');
+        static::assertSame([
+            ['event' => 'onFlush'],
+        ], $deletable->getTag('doctrine.event_listener'));
 
         $knpPagination = $container->getDefinition('siganushka_generic.serializer.normalizer.knp_pagination');
         static::assertTrue($knpPagination->hasTag('serializer.normalizer'));
@@ -80,6 +84,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'siganushka_generic.doctrine.listener.mapping_override',
             'siganushka_generic.doctrine.listener.table_prefix',
             'siganushka_generic.doctrine.listener.timestampable',
+            'siganushka_generic.doctrine.listener.deletable',
             'siganushka_generic.form.type_extension.form',
             'siganushka_generic.form.type_extension.button',
             'siganushka_generic.form.type_extension.choice',

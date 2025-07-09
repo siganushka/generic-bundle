@@ -6,6 +6,7 @@ namespace Siganushka\GenericBundle\DependencyInjection;
 
 use Knp\Component\Pager\PaginatorInterface;
 use Siganushka\Contracts\Doctrine\ResourceInterface;
+use Siganushka\GenericBundle\Doctrine\Filter\DeletableFilter;
 use Siganushka\GenericBundle\Repository\GenericEntityRepository;
 use Symfony\Component\AssetMapper\AssetMapperInterface;
 use Symfony\Component\Config\FileLocator;
@@ -67,6 +68,19 @@ class SiganushkaGenericExtension extends Extension implements PrependExtensionIn
                 'asset_mapper' => [
                     'paths' => [
                         __DIR__.'/../../assets/dist' => '@siganushka/generic-bundle',
+                    ],
+                ],
+            ]);
+        }
+
+        if ($container::willBeAvailable('siganushka/doctrine-contracts', ResourceInterface::class, ['siganushka/generic-bundle'])) {
+            $container->prependExtensionConfig('doctrine', [
+                'orm' => [
+                    'filters' => [
+                        DeletableFilter::class => [
+                            'class' => DeletableFilter::class,
+                            'enabled' => true,
+                        ],
                     ],
                 ],
             ]);
