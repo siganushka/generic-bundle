@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectRepository;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\Form\DataTransformer\EntityToIdentifierTransformer;
 use Symfony\Component\Form\Exception\TransformationFailedException;
@@ -126,7 +125,6 @@ class EntityToIdentifierTransformerTest extends TestCase
             ->willReturn($objectRepository)
         ;
 
-        /** @var MockObject&ManagerRegistry */
         $managerRegistry = $this->createMock(ManagerRegistry::class);
         $managerRegistry->expects(static::any())
             ->method('getManagerForClass')

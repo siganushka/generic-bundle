@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\Tests\Doctrine\EventListener;
 
-use Doctrine\Persistence\Event\LifecycleEventArgs;
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Event\PrePersistEventArgs;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
 use PHPUnit\Framework\TestCase;
 use Siganushka\Contracts\Doctrine\TimestampableInterface;
 use Siganushka\Contracts\Doctrine\TimestampableTrait;
@@ -16,14 +17,14 @@ final class TimestampableListenerTest extends TestCase
     public function testPrePersist(): void
     {
         $foo = new FooTimestampable();
+
+        static::assertInstanceOf(TimestampableInterface::class, $foo);
         static::assertNull($foo->getCreatedAt());
 
-        /** @var ObjectManager */
-        $objectManager = $this->createMock(ObjectManager::class);
-        $lifecycleEventArgs = new LifecycleEventArgs($foo, $objectManager);
+        $entityManager = $this->createMock(EntityManagerInterface::class);
 
         $listener = new TimestampableListener();
-        $listener->prePersist($lifecycleEventArgs);
+        $listener->prePersist(new PrePersistEventArgs($foo, $entityManager));
 
         static::assertInstanceOf(\DateTimeImmutable::class, $foo->getCreatedAt());
     }
@@ -35,12 +36,11 @@ final class TimestampableListenerTest extends TestCase
         static::assertInstanceOf(TimestampableInterface::class, $foo);
         static::assertNull($foo->getUpdatedAt());
 
-        /** @var ObjectManager */
-        $objectManager = $this->createMock(ObjectManager::class);
-        $lifecycleEventArgs = new LifecycleEventArgs($foo, $objectManager);
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $changeSet = [];
 
         $listener = new TimestampableListener();
-        $listener->preUpdate($lifecycleEventArgs);
+        $listener->preUpdate(new PreUpdateEventArgs($foo, $entityManager, $changeSet));
 
         static::assertInstanceOf(\DateTimeInterface::class, $foo->getUpdatedAt());
     }

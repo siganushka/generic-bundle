@@ -22,10 +22,8 @@ class DeletableListener
             $entity->setDeletedAt(new \DateTimeImmutable());
             $em->persist($entity);
 
-            $deletedAt = [null, $entity->getDeletedAt()];
-
-            $uow->propertyChanged($entity, 'deletedAt', ...$deletedAt);
-            $uow->scheduleExtraUpdate($entity, compact('deletedAt'));
+            // [important] Manually compute changesets for deleted object
+            $uow->recomputeSingleEntityChangeSet($em->getClassMetadata($entity::class), $entity);
         }
     }
 }

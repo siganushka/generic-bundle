@@ -4,17 +4,14 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\Doctrine\EventListener;
 
-use Doctrine\Persistence\Event\LifecycleEventArgs;
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\ORM\Event\PrePersistEventArgs;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Siganushka\Contracts\Doctrine\CreatableInterface;
 use Siganushka\Contracts\Doctrine\TimestampableInterface;
 
 class TimestampableListener
 {
-    /**
-     * @param LifecycleEventArgs<ObjectManager> $event
-     */
-    public function prePersist(LifecycleEventArgs $event): void
+    public function prePersist(PrePersistEventArgs $event): void
     {
         $object = $event->getObject();
         if ($object instanceof CreatableInterface) {
@@ -22,10 +19,7 @@ class TimestampableListener
         }
     }
 
-    /**
-     * @param LifecycleEventArgs<ObjectManager> $event
-     */
-    public function preUpdate(LifecycleEventArgs $event): void
+    public function preUpdate(PreUpdateEventArgs $event): void
     {
         $object = $event->getObject();
         if ($object instanceof TimestampableInterface) {

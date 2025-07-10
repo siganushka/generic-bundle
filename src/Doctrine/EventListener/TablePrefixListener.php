@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Siganushka\GenericBundle\Doctrine\EventListener;
 
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
-use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\JoinTableMapping;
 use Doctrine\ORM\Mapping\ManyToManyOwningSideMapping;
 
@@ -20,7 +19,6 @@ class TablePrefixListener
 
     public function loadClassMetadata(LoadClassMetadataEventArgs $event): void
     {
-        /** @var ClassMetadata<object> */
         $classMetadata = $event->getClassMetadata();
         if (!$classMetadata->isInheritanceTypeSingleTable()
             || $classMetadata->name === $classMetadata->rootEntityName) {

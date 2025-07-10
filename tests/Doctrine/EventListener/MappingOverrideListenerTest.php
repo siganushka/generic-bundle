@@ -7,7 +7,6 @@ namespace Siganushka\GenericBundle\Tests\Doctrine\EventListener;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\Doctrine\EventListener\MappingOverrideListener;
 
@@ -21,7 +20,6 @@ final class MappingOverrideListenerTest extends TestCase
         static::assertFalse($classMetadata->isMappedSuperclass);
         static::assertSame(EntityRepository::class, $classMetadata->customRepositoryClassName);
 
-        /** @var MockObject&LoadClassMetadataEventArgs */
         $loadClassMetadataEventArgs = $this->createMock(LoadClassMetadataEventArgs::class);
         $loadClassMetadataEventArgs->expects(static::any())
             ->method('getClassMetadata')

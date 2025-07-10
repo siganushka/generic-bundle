@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\Tests\Repository;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Siganushka\Contracts\Doctrine\ResourceInterface;
 use Siganushka\Contracts\Doctrine\ResourceTrait;
@@ -64,8 +62,7 @@ class GenericEntityRepositoryTest extends TestCase
     {
         $classMetadata = new ClassMetadata($entityClass);
 
-        /** @var MockObject&EntityManagerInterface */
-        $entityManager = $this->createMock(EntityManager::class);
+        $entityManager = $this->createMock(EntityManagerInterface::class);
         $entityManager->expects(static::any())
             ->method('getClassMetadata')
             ->willReturn($classMetadata)
@@ -76,7 +73,6 @@ class GenericEntityRepositoryTest extends TestCase
             ->willReturn(new QueryBuilder($entityManager))
         ;
 
-        /** @var MockObject&ManagerRegistry */
         $managerRegistry = $this->createMock(ManagerRegistry::class);
         $managerRegistry->expects(static::any())
             ->method('getManagerForClass')

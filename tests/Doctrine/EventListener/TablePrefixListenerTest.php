@@ -8,7 +8,6 @@ use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\JoinTableMapping;
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\Doctrine\EventListener\TablePrefixListener;
 
@@ -32,7 +31,6 @@ final class TablePrefixListenerTest extends TestCase
         static::assertSame('test_case', $classMetadata->getTableName());
         static::assertSame('test_case_bar', $joinTable->name);
 
-        /** @var MockObject&LoadClassMetadataEventArgs */
         $loadClassMetadataEventArgs = $this->createMock(LoadClassMetadataEventArgs::class);
         $loadClassMetadataEventArgs->expects(static::any())
             ->method('getClassMetadata')
