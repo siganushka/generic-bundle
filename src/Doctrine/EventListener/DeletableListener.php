@@ -15,15 +15,13 @@ class DeletableListener
         $uow = $em->getUnitOfWork();
 
         foreach ($uow->getScheduledEntityDeletions() as $entity) {
-            if (!$entity instanceof DeletableInterface) {
-                continue;
+            if ($entity instanceof DeletableInterface) {
+                $entity->setDeletedAt(new \DateTimeImmutable());
+                $em->persist($entity);
+
+                // [important] Recompute the changeset, forcing delete operations to be update.
+                $uow->recomputeSingleEntityChangeSet($em->getClassMetadata($entity::class), $entity);
             }
-
-            $entity->setDeletedAt(new \DateTimeImmutable());
-            $em->persist($entity);
-
-            // [important] Manually compute changesets for deleted object
-            $uow->recomputeSingleEntityChangeSet($em->getClassMetadata($entity::class), $entity);
         }
     }
 }
