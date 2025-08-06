@@ -15,8 +15,8 @@ enum Gender: string implements TranslatableInterface
     public function trans(TranslatorInterface $translator, ?string $locale = null): string
     {
         return match ($this) {
-            self::Male => $translator->trans('generic.gender_male', locale: $locale),
-            self::Female => $translator->trans('generic.gender_female', locale: $locale),
+            self::Male => $translator->trans('generic.gender.male', locale: $locale),
+            self::Female => $translator->trans('generic.gender.female', locale: $locale),
         };
     }
 }
