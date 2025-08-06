@@ -34,6 +34,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'siganushka_generic.form.type_extension.button',
             'siganushka_generic.form.type_extension.choice',
             'siganushka_generic.form.type_extension.collection',
+            'siganushka_generic.serializer.normalizer.form_error',
             'siganushka_generic.serializer.normalizer.knp_pagination',
         ], $container->getServiceIds());
 
@@ -89,6 +90,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'siganushka_generic.form.type_extension.button',
             'siganushka_generic.form.type_extension.choice',
             'siganushka_generic.form.type_extension.collection',
+            'siganushka_generic.serializer.normalizer.form_error',
             'siganushka_generic.serializer.normalizer.knp_pagination',
         ], $container->getServiceIds());
 
