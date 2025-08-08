@@ -35,5 +35,29 @@ class FormErrorNormalizerTest extends TypeTestCase
             'detail' => 'foo',
             'errors' => [],
         ], $normalizer->normalize($form));
+
+        static::assertSame([
+            'type' => 'test type',
+            'title' => 'Bad Request',
+            'status' => 400,
+            'detail' => 'foo',
+            'errors' => [],
+        ], $normalizer->normalize($form, context: [
+            FormErrorNormalizer::TYPE => 'test type',
+            FormErrorNormalizer::STATUS => 400,
+        ]));
+
+        $normalizer = new FormErrorNormalizer([
+            FormErrorNormalizer::TYPE => 'test type aaa',
+            FormErrorNormalizer::STATUS => 400,
+        ]);
+
+        static::assertSame([
+            'type' => 'test type aaa',
+            'title' => 'Bad Request',
+            'status' => 400,
+            'detail' => 'foo',
+            'errors' => [],
+        ], $normalizer->normalize($form));
     }
 }

@@ -10,7 +10,7 @@ use Siganushka\GenericBundle\Serializer\Normalizer\KnpPaginationNormalizer;
 return static function (ContainerConfigurator $container): void {
     $container->services()
         ->set('siganushka_generic.serializer.normalizer.form_error', FormErrorNormalizer::class)
-            ->arg(0, service('translator')->ignoreOnInvalid())
+            ->arg('$translator', service('translator')->ignoreOnInvalid())
             ->tag('serializer.normalizer')
 
         ->set('siganushka_generic.serializer.normalizer.knp_pagination', KnpPaginationNormalizer::class)
