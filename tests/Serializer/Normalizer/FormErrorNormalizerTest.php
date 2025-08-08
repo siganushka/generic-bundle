@@ -9,7 +9,6 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormErrorIterator;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Test\TypeTestCase;
-use Symfony\Component\Serializer\Normalizer\ProblemNormalizer;
 
 class FormErrorNormalizerTest extends TypeTestCase
 {
@@ -30,22 +29,11 @@ class FormErrorNormalizerTest extends TypeTestCase
         $form->method('getErrors')->willReturn($formErrorIterator);
 
         static::assertSame([
-            'type' => 'https://tools.ietf.org/html/rfc2616#section-10',
+            'type' => 'https://symfony.com/errors/form',
             'title' => 'Unprocessable Content',
             'status' => 422,
             'detail' => 'foo',
             'errors' => [],
         ], $normalizer->normalize($form));
-
-        static::assertSame([
-            'type' => 'test type',
-            'title' => 'Bad Request',
-            'status' => 400,
-            'detail' => 'foo',
-            'errors' => [],
-        ], $normalizer->normalize($form, context: [
-            ProblemNormalizer::TYPE => 'test type',
-            ProblemNormalizer::STATUS => 400,
-        ]));
     }
 }
