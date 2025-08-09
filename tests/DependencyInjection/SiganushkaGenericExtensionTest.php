@@ -28,6 +28,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'service_container',
             'siganushka_generic.listener.json_request',
             'siganushka_generic.listener.json_response',
+            'siganushka_generic.doctrine.listener.nestable',
             'siganushka_generic.doctrine.listener.timestampable',
             'siganushka_generic.doctrine.listener.deletable',
             'siganushka_generic.form.type_extension.form',
@@ -43,6 +44,11 @@ final class SiganushkaGenericExtensionTest extends TestCase
 
         $jsonResponse = $container->getDefinition('siganushka_generic.listener.json_response');
         static::assertTrue($jsonResponse->hasTag('kernel.event_subscriber'));
+
+        $nestable = $container->getDefinition('siganushka_generic.doctrine.listener.nestable');
+        static::assertSame([
+            ['event' => 'loadClassMetadata'],
+        ], $nestable->getTag('doctrine.event_listener'));
 
         $timestampable = $container->getDefinition('siganushka_generic.doctrine.listener.timestampable');
         static::assertSame([
@@ -84,6 +90,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'siganushka_generic.listener.json_response',
             'siganushka_generic.doctrine.listener.mapping_override',
             'siganushka_generic.doctrine.listener.table_prefix',
+            'siganushka_generic.doctrine.listener.nestable',
             'siganushka_generic.doctrine.listener.timestampable',
             'siganushka_generic.doctrine.listener.deletable',
             'siganushka_generic.form.type_extension.form',
