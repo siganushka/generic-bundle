@@ -18,14 +18,13 @@ class JsonResponseListener implements EventSubscriberInterface
     {
         $response = $event->getResponse();
         if ($response instanceof JsonResponse) {
-            $encodingOptions = $response->getEncodingOptions();
             /*
              * Using bitwise operators to check.
              *
              * @see https://www.laruence.com/2011/10/10/2239.html
              */
-            if (0 === ($encodingOptions & \JSON_UNESCAPED_UNICODE)) {
-                $response->setEncodingOptions($encodingOptions | \JSON_UNESCAPED_UNICODE);
+            if (0 === ($response->getEncodingOptions() & \JSON_UNESCAPED_UNICODE)) {
+                $response->setEncodingOptions($response->getEncodingOptions() | \JSON_UNESCAPED_UNICODE);
             }
 
             /*
