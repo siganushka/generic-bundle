@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Siganushka\GenericBundle\Repository\NestableRepository;
+use Symfony\Component\Serializer\Attribute\Ignore;
 
 /**
  * @template TNode of Nestable
@@ -92,6 +93,7 @@ abstract class Nestable
         return $this;
     }
 
+    #[Ignore]
     public function getAncestors(bool $includeSelf = false): array
     {
         $ancestors = $includeSelf ? [$this] : [];
@@ -105,6 +107,7 @@ abstract class Nestable
         return $ancestors;
     }
 
+    #[Ignore]
     public function getSiblings(bool $includeSelf = false): array
     {
         $siblings = [];
@@ -117,6 +120,7 @@ abstract class Nestable
         return $siblings;
     }
 
+    #[Ignore]
     public function getDescendants(bool $includeSelf = false): array
     {
         $descendants = $includeSelf ? [$this] : [];
