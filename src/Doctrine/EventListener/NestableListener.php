@@ -16,10 +16,17 @@ class NestableListener
             return;
         }
 
+        $identifier = $metadata->getSingleIdentifierFieldName();
         $metadata->mapManyToOne([
             'targetEntity' => $metadata->getName(),
             'fieldName' => 'parent',
             'inversedBy' => 'children',
+            'joinColumns' => [
+                [
+                    'name' => \sprintf('parent_%s', $identifier),
+                    'referencedColumnName' => $identifier,
+                ],
+            ],
         ]);
 
         $metadata->mapOneToMany([

@@ -14,8 +14,8 @@ abstract class NestableRepository extends GenericEntityRepository
     /**
      * @return array<int, T>
      */
-    public function findAllRootNodes(?array $orderBy = null, ?int $limit = null, ?int $offset = null): array
+    public function findByParent(?string $parent, ?array $orderBy = null, ?int $limit = null, ?int $offset = null): array
     {
-        return $this->findBy(['parent' => null], $orderBy, $limit, $offset);
+        return $this->findBy(compact('parent'), $orderBy, $limit, $offset);
     }
 }
