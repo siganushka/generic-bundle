@@ -28,7 +28,9 @@ class JsonResponseListener implements EventSubscriberInterface
             }
 
             /*
-             * Fix JSON responses with no content.
+             * Fix JSON responses with 204 no content.
+             *
+             * [important] Must have a higher priority than "nelmio/cors-bundle" CourtListener::Kernel Response.
              *
              * @see https://github.com/symfony/symfony/issues/29326
              * @see https://github.com/nodejs/node/issues/24580
@@ -42,7 +44,7 @@ class JsonResponseListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            ResponseEvent::class => 'onResponse',
+            ResponseEvent::class => ['onResponse', 255],
         ];
     }
 }
