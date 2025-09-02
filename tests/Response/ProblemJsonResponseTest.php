@@ -5,19 +5,20 @@ declare(strict_types=1);
 namespace Siganushka\GenericBundle\Tests\Response;
 
 use PHPUnit\Framework\TestCase;
-use Siganushka\GenericBundle\Response\ProblemResponse;
+use Siganushka\GenericBundle\Response\ProblemJsonResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 use function PHPUnit\Framework\assertInstanceOf;
 use function PHPUnit\Framework\assertSame;
 
-class ProblemResponseTest extends TestCase
+class ProblemJsonResponseTest extends TestCase
 {
     public function testConstructor(): void
     {
-        $response = new ProblemResponse('test error', ProblemResponse::HTTP_BAD_REQUEST);
+        $response = new ProblemJsonResponse('test error', ProblemJsonResponse::HTTP_BAD_REQUEST);
         assertInstanceOf(JsonResponse::class, $response);
-        assertSame(ProblemResponse::HTTP_BAD_REQUEST, $response->getStatusCode());
+        assertSame(ProblemJsonResponse::HTTP_BAD_REQUEST, $response->getStatusCode());
+        assertSame('application/problem+json', $response->headers->get('Content-Type'));
 
         static::assertSame([
             'type' => 'about:blank',
@@ -25,6 +26,9 @@ class ProblemResponseTest extends TestCase
             'status' => 400,
             'detail' => 'test error',
         ], json_decode($response->getContent() ?: '', true, \JSON_THROW_ON_ERROR));
+
+        $response = new ProblemJsonResponse('test error', ProblemJsonResponse::HTTP_BAD_REQUEST, headers: ['Content-Type' => 'application/json']);
+        assertSame('application/json', $response->headers->get('Content-Type'));
     }
 
     public function testCreateAsArray(): void
@@ -34,28 +38,28 @@ class ProblemResponseTest extends TestCase
             'title' => 'Bad Request',
             'status' => 400,
             'detail' => 'test error',
-        ], ProblemResponse::createAsArray('test error', ProblemResponse::HTTP_BAD_REQUEST));
+        ], ProblemJsonResponse::createAsArray('test error', ProblemJsonResponse::HTTP_BAD_REQUEST));
 
         static::assertSame([
             'type' => 'about:blank',
             'title' => 'Service Unavailable',
             'status' => 503,
             'detail' => 'test error',
-        ], ProblemResponse::createAsArray('test error', ProblemResponse::HTTP_SERVICE_UNAVAILABLE));
+        ], ProblemJsonResponse::createAsArray('test error', ProblemJsonResponse::HTTP_SERVICE_UNAVAILABLE));
 
         static::assertSame([
             'type' => 'about:blank',
             'title' => 'error title',
             'status' => 401,
             'detail' => 'test error',
-        ], ProblemResponse::createAsArray('test error', ProblemResponse::HTTP_UNAUTHORIZED, title: 'error title'));
+        ], ProblemJsonResponse::createAsArray('test error', ProblemJsonResponse::HTTP_UNAUTHORIZED, title: 'error title'));
 
         static::assertSame([
             'type' => 'http://localhost',
             'title' => 'Bad Request',
             'status' => 400,
             'detail' => 'test error',
-        ], ProblemResponse::createAsArray('test error', ProblemResponse::HTTP_BAD_REQUEST, type: 'http://localhost'));
+        ], ProblemJsonResponse::createAsArray('test error', ProblemJsonResponse::HTTP_BAD_REQUEST, type: 'http://localhost'));
     }
 
     public function testConstructorInvalidArgumentException(): void
@@ -63,7 +67,7 @@ class ProblemResponseTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The status code must be a 4xx or 5xx');
 
-        new ProblemResponse('test error', 10);
+        new ProblemJsonResponse('test error', 10);
     }
 
     public function testCreateAsArrayInvalidArgumentException(): void
@@ -71,6 +75,6 @@ class ProblemResponseTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The status code must be a 4xx or 5xx');
 
-        ProblemResponse::createAsArray('test error', 1024);
+        ProblemJsonResponse::createAsArray('test error', 1024);
     }
 }

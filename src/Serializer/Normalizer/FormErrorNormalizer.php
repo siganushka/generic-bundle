@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\Serializer\Normalizer;
 
-use Siganushka\GenericBundle\Response\ProblemResponse;
+use Siganushka\GenericBundle\Response\ProblemJsonResponse;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -16,7 +16,7 @@ class FormErrorNormalizer implements NormalizerInterface
 
     private array $defaultContext = [
         self::TYPE => 'https://symfony.com/errors/form',
-        self::STATUS => ProblemResponse::HTTP_UNPROCESSABLE_ENTITY,
+        self::STATUS => ProblemJsonResponse::HTTP_UNPROCESSABLE_ENTITY,
     ];
 
     public function __construct(array $defaultContext = [], private readonly ?TranslatorInterface $translator = null)
@@ -35,7 +35,7 @@ class FormErrorNormalizer implements NormalizerInterface
         $status = $context[self::STATUS] ?? $this->defaultContext[self::STATUS];
         $detail = $this->convertFormErrorsToArray($object) ?? $detailClosure('Validation Failed');
 
-        $data = ProblemResponse::createAsArray($detail, $status, type: $type);
+        $data = ProblemJsonResponse::createAsArray($detail, $status, type: $type);
         $data['errors'] = $this->convertFormChildrenToArray($object);
 
         return $data;

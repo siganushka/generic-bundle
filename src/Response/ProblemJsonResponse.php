@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * @see https://datatracker.ietf.org/doc/html/rfc7807
  */
-class ProblemResponse extends JsonResponse
+class ProblemJsonResponse extends JsonResponse
 {
     /**
      * Creates an API Problem Response.
@@ -23,6 +23,9 @@ class ProblemResponse extends JsonResponse
     public function __construct(string $detail, int $status, ?string $title = null, ?string $type = null, array $headers = [])
     {
         self::assertStatus($status);
+
+        // Using problem json for Content-Type.
+        $headers['Content-Type'] ??= 'application/problem+json';
 
         parent::__construct(
             self::createAsArray($detail, $status, $title, $type), $status, $headers,
