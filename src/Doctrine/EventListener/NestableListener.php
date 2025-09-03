@@ -12,7 +12,7 @@ class NestableListener
     public function __invoke(LoadClassMetadataEventArgs $event): void
     {
         $metadata = $event->getClassMetadata();
-        if (!is_subclass_of($metadata->getName(), Nestable::class)) {
+        if (!is_subclass_of($metadata->getName(), Nestable::class) || $metadata->hasAssociation('parent')) {
             return;
         }
 
