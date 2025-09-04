@@ -135,7 +135,7 @@ $foo->setCreatedAt(?\DateTimeImmutable $createdAt); // 设置创建时间，由�
 
 ### DeletableInterface
 
-通用的 `deletedAt` 逻辑删除（软删除）字段，删除后 `ORM` 查询结果将自动排除已删除数据。
+通用的 `deletedAt` 逻辑删除（软删除）字段，删除后 `ORM` 查询结果将自动过滤已删除数据。
 
 ```php
 // ./src/Entity/Foo.php

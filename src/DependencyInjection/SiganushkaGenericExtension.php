@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
-use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Serializer\Serializer;
 
 class SiganushkaGenericExtension extends Extension implements PrependExtensionInterface
@@ -34,25 +34,27 @@ class SiganushkaGenericExtension extends Extension implements PrependExtensionIn
             $loader->load('doctrine.php');
 
             if (!$config['doctrine']['mapping_override']) {
-                $container->removeDefinition('siganushka_generic.doctrine.listener.mapping_override');
+                $container->removeDefinition('siganushka_generic.doctrine.mapping_override_listener');
             }
 
             if (!$config['doctrine']['table_prefix']) {
-                $container->removeDefinition('siganushka_generic.doctrine.listener.table_prefix');
+                $container->removeDefinition('siganushka_generic.doctrine.table_prefix_listener');
             }
-        } else {
-            $container->removeDefinition('siganushka_generic.form.type.identifier_entity');
         }
 
-        if ($container::willBeAvailable('symfony/form', Form::class, ['siganushka/generic-bundle'])) {
+        if ($container::willBeAvailable('symfony/form', FormInterface::class, ['siganushka/generic-bundle'])) {
             $loader->load('form.php');
         }
 
         if ($container::willBeAvailable('symfony/serializer', Serializer::class, ['siganushka/generic-bundle'])) {
             $loader->load('serializer.php');
 
-            if (!interface_exists(PaginatorInterface::class)) {
-                $container->removeDefinition('siganushka_generic.serializer.normalizer.knp_pagination');
+            if (!$config['serializer']['form_error_normalizer'] || !interface_exists(FormInterface::class)) {
+                $container->removeDefinition('siganushka_generic.serializer.form_error_normalizer');
+            }
+
+            if (!$config['serializer']['knp_pagination_normalizer'] || !interface_exists(PaginatorInterface::class)) {
+                $container->removeDefinition('siganushka_generic.serializer.knp_pagination_normalizer');
             }
         }
 

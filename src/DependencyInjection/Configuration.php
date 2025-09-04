@@ -17,6 +17,7 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->getRootNode();
 
         $this->addDoctrineSection($rootNode);
+        $this->addSerializerSection($rootNode);
 
         return $treeBuilder;
     }
@@ -63,6 +64,19 @@ class Configuration implements ConfigurationInterface
                             })
                         ->end()
                     ->end()
+                ->end()
+            ->end()
+        ;
+    }
+
+    private function addSerializerSection(ArrayNodeDefinition $rootNode): void
+    {
+        $rootNode->children()
+            ->arrayNode('serializer')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->booleanNode('form_error_normalizer')->defaultTrue()->end()
+                    ->booleanNode('knp_pagination_normalizer')->defaultTrue()->end()
                 ->end()
             ->end()
         ;

@@ -31,6 +31,10 @@ final class ConfigurationTest extends TestCase
                 'table_prefix' => null,
                 'mapping_override' => [],
             ],
+            'serializer' => [
+                'form_error_normalizer' => true,
+                'knp_pagination_normalizer' => true,
+            ],
         ]);
     }
 
@@ -49,6 +53,21 @@ final class ConfigurationTest extends TestCase
         ]);
 
         static::assertSame($processedConfig['doctrine'], $config);
+    }
+
+    public function testCustomSerializerConfig(): void
+    {
+        $config = [
+            'form_error_normalizer' => false,
+            'knp_pagination_normalizer' => false,
+        ];
+
+        $processor = new Processor();
+        $processedConfig = $processor->processConfiguration(new Configuration(), [
+            ['serializer' => $config],
+        ]);
+
+        static::assertSame($processedConfig['serializer'], $config);
     }
 
     public function testDoctrineMappingOverrideOriginClassInvalidException(): void

@@ -25,3 +25,14 @@ siganushka_generic:
             App\Entity\Foo: App\Entity\MyFoo
             App\Entity\Bar: App\Entity\CustomBar
 ```
+
+### Serializer 序列化器
+
+```yaml
+# ./config/packages/siganushka_generic.yaml
+
+siganushka_generic:
+    serializer:
+        form_error_normalizer: true     # 表单错误序列化器，默认开启
+        knp_pagination_normalizer: true # 分页数据序列化器，默认开启
+```

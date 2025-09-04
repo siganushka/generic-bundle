@@ -11,16 +11,16 @@ use Siganushka\GenericBundle\Form\Extension\FormTypeExtension;
 
 return static function (ContainerConfigurator $container): void {
     $container->services()
-        ->set('siganushka_generic.form.type_extension.form', FormTypeExtension::class)
+        ->set('siganushka_generic.form.form_type_extension', FormTypeExtension::class)
             ->tag('form.type_extension')
 
-        ->set('siganushka_generic.form.type_extension.button', ButtonTypeExtension::class)
+        ->set('siganushka_generic.form.button_type_extension', ButtonTypeExtension::class)
             ->tag('form.type_extension')
 
-        ->set('siganushka_generic.form.type_extension.choice', ChoiceTypeExtension::class)
+        ->set('siganushka_generic.form.choice_type_extension', ChoiceTypeExtension::class)
             ->tag('form.type_extension')
 
-        ->set('siganushka_generic.form.type_extension.collection', CollectionTypeExtension::class)
+        ->set('siganushka_generic.form.collection_type_extension', CollectionTypeExtension::class)
             ->tag('form.type_extension')
     ;
 };

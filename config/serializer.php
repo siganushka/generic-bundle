@@ -9,11 +9,11 @@ use Siganushka\GenericBundle\Serializer\Normalizer\KnpPaginationNormalizer;
 
 return static function (ContainerConfigurator $container): void {
     $container->services()
-        ->set('siganushka_generic.serializer.normalizer.form_error', FormErrorNormalizer::class)
+        ->set('siganushka_generic.serializer.form_error_normalizer', FormErrorNormalizer::class)
             ->arg('$translator', service('translator')->ignoreOnInvalid())
             ->tag('serializer.normalizer')
 
-        ->set('siganushka_generic.serializer.normalizer.knp_pagination', KnpPaginationNormalizer::class)
+        ->set('siganushka_generic.serializer.knp_pagination_normalizer', KnpPaginationNormalizer::class)
             ->tag('serializer.normalizer')
     ;
 };
