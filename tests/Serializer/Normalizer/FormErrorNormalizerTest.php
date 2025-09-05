@@ -60,4 +60,28 @@ class FormErrorNormalizerTest extends TypeTestCase
             'errors' => [],
         ], $normalizer->normalize($form));
     }
+
+    public function testSupportsNormalization(): void
+    {
+        $normalizer = new FormErrorNormalizer();
+        static::assertFalse($normalizer->supportsNormalization(new \stdClass()));
+
+        $form = $this->createMock(FormInterface::class);
+        $form->method('isSubmitted')->willReturn(false);
+        $form->method('isValid')->willReturn(false);
+        static::assertFalse($normalizer->supportsNormalization($form));
+
+        $form = $this->createMock(FormInterface::class);
+        $form->method('isSubmitted')->willReturn(true);
+        $form->method('isValid')->willReturn(false);
+        static::assertTrue($normalizer->supportsNormalization($form));
+    }
+
+    public function testGetSupportedTypes(): void
+    {
+        $normalizer = new FormErrorNormalizer();
+        static::assertSame([
+            FormInterface::class => false,
+        ], $normalizer->getSupportedTypes(null));
+    }
 }
