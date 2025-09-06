@@ -33,7 +33,7 @@ final class JsonResponseListenerTest extends TestCase
         $noContentJsonResponse = new JsonResponse(null, JsonResponse::HTTP_NO_CONTENT);
 
         $event = new ResponseEvent($kernel, $request, HttpKernelInterface::MAIN_REQUEST, $noContentJsonResponse);
-        $listener->onResponse($event);
+        $listener->onResponseForNoContent($event);
 
         $response = $event->getResponse();
         static::assertNotInstanceOf(JsonResponse::class, $response);

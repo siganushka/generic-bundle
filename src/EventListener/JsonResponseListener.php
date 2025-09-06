@@ -9,42 +9,42 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
-/**
- * @see @see https://www.laruence.com/2011/10/10/2239.html
- */
 class JsonResponseListener implements EventSubscriberInterface
 {
+    /**
+     * @see https://www.laruence.com/2011/10/10/2239.html
+     */
     public function onResponse(ResponseEvent $event): void
     {
         $response = $event->getResponse();
-        if ($response instanceof JsonResponse) {
-            /*
-             * Using bitwise operators to check.
-             *
-             * @see https://www.laruence.com/2011/10/10/2239.html
-             */
-            if (0 === ($response->getEncodingOptions() & \JSON_UNESCAPED_UNICODE)) {
-                $response->setEncodingOptions($response->getEncodingOptions() | \JSON_UNESCAPED_UNICODE);
-            }
+        if ($response instanceof JsonResponse && 0 === ($response->getEncodingOptions() & \JSON_UNESCAPED_UNICODE)) {
+            $response->setEncodingOptions($response->getEncodingOptions() | \JSON_UNESCAPED_UNICODE);
+        }
+    }
 
-            /*
-             * Fix JSON responses with 204 no content.
-             *
-             * [important] Must have a higher priority than "nelmio/cors-bundle" CourtListener::Kernel Response.
-             *
-             * @see https://github.com/symfony/symfony/issues/29326
-             * @see https://github.com/nodejs/node/issues/24580
-             */
-            if (Response::HTTP_NO_CONTENT === $response->getStatusCode()) {
-                $event->setResponse(new Response(status: Response::HTTP_NO_CONTENT));
-            }
+    /**
+     * Fix JSON responses with 204 no content.
+     *
+     * [important] Must have a higher priority than "nelmio/cors-bundle" CourtListener::onKernelResponse.
+     *
+     * @see https://github.com/symfony/symfony/issues/29326
+     * @see https://github.com/nodejs/node/issues/24580
+     */
+    public function onResponseForNoContent(ResponseEvent $event): void
+    {
+        $response = $event->getResponse();
+        if ($response instanceof JsonResponse && Response::HTTP_NO_CONTENT === $response->getStatusCode()) {
+            $event->setResponse(new Response(status: Response::HTTP_NO_CONTENT));
         }
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
-            ResponseEvent::class => ['onResponse', 255],
+            ResponseEvent::class => [
+                ['onResponse'],
+                ['onResponseForNoContent', 255],
+            ],
         ];
     }
 }
