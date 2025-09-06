@@ -9,7 +9,7 @@ namespace Siganushka\GenericBundle\Repository;
  *
  * @extends GenericEntityRepository<T>
  */
-abstract class NestableRepository extends GenericEntityRepository
+class NestableRepository extends GenericEntityRepository
 {
     /**
      * @return array<int, T>
