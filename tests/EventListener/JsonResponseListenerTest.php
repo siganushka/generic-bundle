@@ -25,7 +25,7 @@ final class JsonResponseListenerTest extends TestCase
         $request = $this->createMock(Request::class);
 
         $listener = new JsonResponseListener();
-        $listener->onResponse(new ResponseEvent($kernel, $request, HttpKernelInterface::MAIN_REQUEST, $response));
+        $listener->onKernelResponse(new ResponseEvent($kernel, $request, HttpKernelInterface::MAIN_REQUEST, $response));
 
         static::assertSame(\JSON_UNESCAPED_UNICODE, $response->getEncodingOptions() & \JSON_UNESCAPED_UNICODE);
         static::assertSame('{"message":"你好！"}', $response->getContent());
@@ -33,7 +33,7 @@ final class JsonResponseListenerTest extends TestCase
         $noContentJsonResponse = new JsonResponse(null, JsonResponse::HTTP_NO_CONTENT);
 
         $event = new ResponseEvent($kernel, $request, HttpKernelInterface::MAIN_REQUEST, $noContentJsonResponse);
-        $listener->onResponseForNoContent($event);
+        $listener->onKernelResponseForNoContent($event);
 
         $response = $event->getResponse();
         static::assertNotInstanceOf(JsonResponse::class, $response);

@@ -22,7 +22,7 @@ final class JsonRequestListenerTest extends TestCase
         $request = Request::create('/', $method, [], [], [], $server, $content);
 
         $listener = new JsonRequestListener();
-        $listener->onRequest(new RequestEvent($kernel, $request, HttpKernelInterface::MAIN_REQUEST));
+        $listener->onKernelRequest(new RequestEvent($kernel, $request, HttpKernelInterface::MAIN_REQUEST));
         static::assertSame($parameter, $request->request->all());
     }
 
