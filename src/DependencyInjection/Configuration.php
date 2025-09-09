@@ -76,8 +76,8 @@ class Configuration implements ConfigurationInterface
                 ->addDefaultsIfNotSet()
                 ->children()
                     ->booleanNode('entity_normalizer')->defaultFalse()->end()
-                    ->booleanNode('form_error_normalizer')->defaultTrue()->end()
-                    ->booleanNode('knp_pagination_normalizer')->defaultTrue()->end()
+                    ->booleanNode('form_error_normalizer')->defaultFalse()->end()
+                    ->booleanNode('knp_pagination_normalizer')->defaultFalse()->end()
                 ->end()
             ->end()
         ;

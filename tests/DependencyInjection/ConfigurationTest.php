@@ -33,8 +33,8 @@ final class ConfigurationTest extends TestCase
             ],
             'serializer' => [
                 'entity_normalizer' => false,
-                'form_error_normalizer' => true,
-                'knp_pagination_normalizer' => true,
+                'form_error_normalizer' => false,
+                'knp_pagination_normalizer' => false,
             ],
         ]);
     }
@@ -60,8 +60,8 @@ final class ConfigurationTest extends TestCase
     {
         $config = [
             'entity_normalizer' => true,
-            'form_error_normalizer' => false,
-            'knp_pagination_normalizer' => false,
+            'form_error_normalizer' => true,
+            'knp_pagination_normalizer' => true,
         ];
 
         $processor = new Processor();

@@ -35,8 +35,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'siganushka_generic.form.button_type_extension',
             'siganushka_generic.form.choice_type_extension',
             'siganushka_generic.form.collection_type_extension',
-            'siganushka_generic.serializer.form_error_normalizer',
-            'siganushka_generic.serializer.knp_pagination_normalizer',
         ], $container->getServiceIds());
 
         $jsonRequest = $container->getDefinition('siganushka_generic.json_request_listener');
@@ -60,12 +58,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
         static::assertSame([
             ['event' => 'onFlush'],
         ], $deletable->getTag('doctrine.event_listener'));
-
-        $formError = $container->getDefinition('siganushka_generic.serializer.form_error_normalizer');
-        static::assertTrue($formError->hasTag('serializer.normalizer'));
-
-        $knpPagination = $container->getDefinition('siganushka_generic.serializer.knp_pagination_normalizer');
-        static::assertTrue($knpPagination->hasTag('serializer.normalizer'));
     }
 
     public function testWithConfigs(): void
@@ -78,8 +70,9 @@ final class SiganushkaGenericExtensionTest extends TestCase
                 ],
             ],
             'serializer' => [
-                'form_error_normalizer' => false,
-                'knp_pagination_normalizer' => false,
+                'entity_normalizer' => true,
+                'form_error_normalizer' => true,
+                'knp_pagination_normalizer' => true,
             ],
         ];
 
@@ -104,6 +97,9 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'siganushka_generic.form.button_type_extension',
             'siganushka_generic.form.choice_type_extension',
             'siganushka_generic.form.collection_type_extension',
+            'siganushka_generic.serializer.entity_normalizer',
+            'siganushka_generic.serializer.form_error_normalizer',
+            'siganushka_generic.serializer.knp_pagination_normalizer',
         ], $container->getServiceIds());
 
         $mappingOverride = $container->getDefinition('siganushka_generic.doctrine.mapping_override_listener');
@@ -113,6 +109,16 @@ final class SiganushkaGenericExtensionTest extends TestCase
         $tablePrefix = $container->getDefinition('siganushka_generic.doctrine.table_prefix_listener');
         static::assertSame([['event' => 'loadClassMetadata']], $tablePrefix->getTag('doctrine.event_listener'));
         static::assertSame('%siganushka_generic.doctrine.table_prefix%', $tablePrefix->getArgument(0));
+
+        $entity = $container->getDefinition('siganushka_generic.serializer.entity_normalizer');
+        static::assertTrue($entity->hasTag('serializer.normalizer'));
+        static::assertSame([['priority' => -128]], $entity->getTag('serializer.normalizer'));
+
+        $formError = $container->getDefinition('siganushka_generic.serializer.form_error_normalizer');
+        static::assertTrue($formError->hasTag('serializer.normalizer'));
+
+        $knpPagination = $container->getDefinition('siganushka_generic.serializer.knp_pagination_normalizer');
+        static::assertTrue($knpPagination->hasTag('serializer.normalizer'));
     }
 
     private function createContainerWithConfig(array $config = [], string $projectDir = __DIR__): ContainerBuilder
