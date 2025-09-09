@@ -10,7 +10,9 @@ use Siganushka\GenericBundle\Tests\Fixtures\Bar;
 use Siganushka\GenericBundle\Tests\Fixtures\Foo;
 use Symfony\Component\DependencyInjection\Compiler\ResolveChildDefinitionsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\EnvPlaceholderParameterBag;
+use Symfony\Component\DependencyInjection\Reference;
 
 final class SiganushkaGenericExtensionTest extends TestCase
 {
@@ -114,8 +116,21 @@ final class SiganushkaGenericExtensionTest extends TestCase
         static::assertTrue($entity->hasTag('serializer.normalizer'));
         static::assertSame([['priority' => -128]], $entity->getTag('serializer.normalizer'));
 
+        /** @var Reference */
+        $requestStack = $entity->getArgument('$requestStack');
+        static::assertSame('request_stack', (string) $requestStack);
+
+        /** @var Reference */
+        $managerRegistry = $entity->getArgument('$managerRegistry');
+        static::assertSame('doctrine', (string) $managerRegistry);
+
         $formError = $container->getDefinition('siganushka_generic.serializer.form_error_normalizer');
         static::assertTrue($formError->hasTag('serializer.normalizer'));
+
+        /** @var Reference */
+        $translator = $formError->getArgument('$translator');
+        static::assertSame('translator', (string) $translator);
+        static::assertSame(ContainerInterface::IGNORE_ON_INVALID_REFERENCE, $translator->getInvalidBehavior());
 
         $knpPagination = $container->getDefinition('siganushka_generic.serializer.knp_pagination_normalizer');
         static::assertTrue($knpPagination->hasTag('serializer.normalizer'));
