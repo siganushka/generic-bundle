@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use Siganushka\GenericBundle\Serializer\Normalizer\EntityNormalizer;
 use Siganushka\GenericBundle\Serializer\Normalizer\FormErrorNormalizer;
 use Siganushka\GenericBundle\Serializer\Normalizer\KnpPaginationNormalizer;
 
 return static function (ContainerConfigurator $container): void {
     $container->services()
+        ->set('siganushka_generic.serializer.entity_normalizer', EntityNormalizer::class)
+            ->tag('serializer.normalizer', ['priority' => -128])
+
         ->set('siganushka_generic.serializer.form_error_normalizer', FormErrorNormalizer::class)
             ->arg('$translator', service('translator')->ignoreOnInvalid())
             ->tag('serializer.normalizer')
