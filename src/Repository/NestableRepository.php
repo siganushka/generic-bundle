@@ -14,7 +14,7 @@ class NestableRepository extends GenericEntityRepository
     /**
      * @return array<int, T>
      */
-    public function findByParent(?string $parent, ?array $orderBy = null, ?int $limit = null, ?int $offset = null): array
+    public function findByParent(int|string|null $parent, ?array $orderBy = null, ?int $limit = null, ?int $offset = null): array
     {
         return $this->findBy(compact('parent'), $orderBy, $limit, $offset);
     }
