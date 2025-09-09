@@ -75,7 +75,7 @@ class SiganushkaGenericExtension extends Extension implements PrependExtensionIn
             ]);
         }
 
-        if ($container::willBeAvailable('siganushka/doctrine-contracts', ResourceInterface::class, ['siganushka/generic-bundle'])) {
+        if ($container::willBeAvailable('doctrine/orm', \Doctrine\ORM\Configuration::class, ['siganushka/generic-bundle'])) {
             $container->prependExtensionConfig('doctrine', [
                 'orm' => [
                     'filters' => [
@@ -104,31 +104,5 @@ class SiganushkaGenericExtension extends Extension implements PrependExtensionIn
         }
 
         return is_file($bundlesMetadata['FrameworkBundle']['path'].'/Resources/config/asset_mapper.php');
-    }
-
-    /**
-     * @see https://symfony.com/doc/current/configuration/override_dir_structure.html#override-the-public-directory
-     * @see https://github.com/symfony/framework-bundle/blob/7.2/DependencyInjection/FrameworkExtension.php#L3198
-     */
-    public static function getPublicDirectory(ContainerBuilder $container): string
-    {
-        /** @var string */
-        $projectDir = $container->getParameter('kernel.project_dir');
-        $defaultPublicDir = $projectDir.'/public';
-
-        $composerFilePath = $projectDir.'/composer.json';
-        if (!file_exists($composerFilePath)) {
-            return $defaultPublicDir;
-        }
-
-        $json = file_get_contents($composerFilePath);
-        if (false === $json) {
-            return $defaultPublicDir;
-        }
-
-        /** @var array */
-        $composerConfig = json_decode($json, true, flags: \JSON_THROW_ON_ERROR);
-
-        return isset($composerConfig['extra']['public-dir']) ? $projectDir.'/'.trim($composerConfig['extra']['public-dir'], '/') : $defaultPublicDir;
     }
 }

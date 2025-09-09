@@ -115,15 +115,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
         static::assertSame('%siganushka_generic.doctrine.table_prefix%', $tablePrefix->getArgument(0));
     }
 
-    public function testGetPublicDirectory(): void
-    {
-        $publicDirectory = SiganushkaGenericExtension::getPublicDirectory($this->createContainerWithConfig());
-        static::assertSame(__DIR__.'/public', $publicDirectory);
-
-        $publicDirectory = SiganushkaGenericExtension::getPublicDirectory($this->createContainerWithConfig([], __DIR__.'/../Fixtures/app'));
-        static::assertSame(__DIR__.'/../Fixtures/app/html', $publicDirectory);
-    }
-
     private function createContainerWithConfig(array $config = [], string $projectDir = __DIR__): ContainerBuilder
     {
         $extension = new SiganushkaGenericExtension();
