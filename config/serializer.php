@@ -11,7 +11,6 @@ use Siganushka\GenericBundle\Serializer\Normalizer\KnpPaginationNormalizer;
 return static function (ContainerConfigurator $container): void {
     $container->services()
         ->set('siganushka_generic.serializer.entity_normalizer', EntityNormalizer::class)
-            ->arg('$normalizer', service('serializer.normalizer.object'))
             ->arg('$requestStack', service('request_stack'))
             ->arg('$managerRegistry', service('doctrine'))
             ->tag('serializer.normalizer', ['priority' => -128])

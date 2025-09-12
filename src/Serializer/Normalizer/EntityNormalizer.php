@@ -6,6 +6,7 @@ namespace Siganushka\GenericBundle\Serializer\Normalizer;
 
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -20,6 +21,7 @@ class EntityNormalizer implements NormalizerInterface
     private array $supportedTypes;
 
     public function __construct(
+        #[Autowire(service: 'serializer.normalizer.object')]
         private readonly NormalizerInterface $normalizer,
         private readonly RequestStack $requestStack,
         private readonly ManagerRegistry $managerRegistry)
