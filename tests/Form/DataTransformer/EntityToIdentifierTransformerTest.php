@@ -19,31 +19,31 @@ class EntityToIdentifierTransformerTest extends TestCase
     protected function setUp(): void
     {
         $this->foo = new Foo();
-        $this->foo->id = 128;
+        $this->foo->username = 'siganushka';
     }
 
     public function testTransform(): void
     {
-        $transformer = $this->createEntityToIdentifierTransformer(Foo::class, 'id');
+        $transformer = $this->createEntityToIdentifierTransformer(Foo::class, 'username');
 
-        static::assertEquals($this->foo->id, $transformer->transform($this->foo));
+        static::assertEquals($this->foo->username, $transformer->transform($this->foo));
     }
 
     public function testTransformNullValue(): void
     {
-        $transformer = $this->createEntityToIdentifierTransformer(Foo::class, 'id');
+        $transformer = $this->createEntityToIdentifierTransformer(Foo::class, 'username');
         static::assertNull($transformer->reverseTransform(null));
     }
 
     public function testTransformEmptyValue(): void
     {
-        $transformer = $this->createEntityToIdentifierTransformer(Foo::class, 'id');
+        $transformer = $this->createEntityToIdentifierTransformer(Foo::class, 'username');
         static::assertNull($transformer->reverseTransform(''));
     }
 
     public function testReverseTransformNullValue(): void
     {
-        $transformer = $this->createEntityToIdentifierTransformer(Foo::class, 'id');
+        $transformer = $this->createEntityToIdentifierTransformer(Foo::class, 'username');
         static::assertNull($transformer->transform(null));
     }
 
@@ -51,7 +51,7 @@ class EntityToIdentifierTransformerTest extends TestCase
     {
         $this->expectException(TransformationFailedException::class);
 
-        $transformer = $this->createEntityToIdentifierTransformer(Foo::class, 'id');
+        $transformer = $this->createEntityToIdentifierTransformer(Foo::class, 'username');
         $transformer->transform(new \stdClass());
     }
 
@@ -65,20 +65,12 @@ class EntityToIdentifierTransformerTest extends TestCase
 
     public function testReverseTransform(): void
     {
-        $transformer = $this->createEntityToIdentifierTransformer(Foo::class, 'id');
+        $transformer = $this->createEntityToIdentifierTransformer(Foo::class, 'username');
 
         static::assertNull($transformer->reverseTransform(null));
         static::assertNull($transformer->reverseTransform(''));
 
-        static::assertEquals($this->foo, $transformer->reverseTransform(128));
-    }
-
-    public function testReverseTransformInvalidValueException(): void
-    {
-        $this->expectException(TransformationFailedException::class);
-
-        $transformer = $this->createEntityToIdentifierTransformer(Foo::class, 'id');
-        $transformer->reverseTransform($this->foo);
+        static::assertEquals($this->foo, $transformer->reverseTransform('siganushka'));
     }
 
     public function testReverseTransformInvalidIdentifierFieldException(): void
@@ -86,15 +78,15 @@ class EntityToIdentifierTransformerTest extends TestCase
         $this->expectException(TransformationFailedException::class);
 
         $transformer = $this->createEntityToIdentifierTransformer(Foo::class, 'non_existing_field');
-        $transformer->reverseTransform(128);
+        $transformer->reverseTransform('siganushka');
     }
 
     public function testReverseTransformNotFoundException(): void
     {
         $this->expectException(TransformationFailedException::class);
 
-        $transformer = $this->createEntityToIdentifierTransformer(Foo::class, 'id');
-        $transformer->reverseTransform(0);
+        $transformer = $this->createEntityToIdentifierTransformer(Foo::class, 'username');
+        $transformer->reverseTransform('0');
     }
 
     /**
@@ -105,13 +97,13 @@ class EntityToIdentifierTransformerTest extends TestCase
         $classMetadata = $this->createMock(ClassMetadata::class);
         $classMetadata->expects(static::any())
             ->method('hasField')
-            ->willReturnCallback(fn (string $value) => ('id' === $value) ? true : false)
+            ->willReturnCallback(fn (string $value) => ('username' === $value) ? true : false)
         ;
 
         $objectRepository = $this->createMock(ObjectRepository::class);
         $objectRepository->expects(static::any())
             ->method('findOneBy')
-            ->willReturnCallback(fn (array $value) => $value === ['id' => 128] ? $this->foo : null)
+            ->willReturnCallback(fn (array $value) => $value === ['username' => 'siganushka'] ? $this->foo : null)
         ;
 
         $objectManager = $this->createMock(ObjectManager::class);
@@ -137,5 +129,5 @@ class EntityToIdentifierTransformerTest extends TestCase
 
 class Foo
 {
-    public ?int $id = null;
+    public ?string $username = null;
 }

@@ -7,10 +7,11 @@ namespace Siganushka\GenericBundle\Form\DataTransformer;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
+use Symfony\Component\Form\Util\FormUtil;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
- * @implements DataTransformerInterface<object, mixed>
+ * @implements DataTransformerInterface<object, string>
  */
 class EntityToIdentifierTransformer implements DataTransformerInterface
 {
@@ -24,9 +25,9 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
     {
     }
 
-    public function transform(mixed $value): ?string
+    public function transform(mixed $value): mixed
     {
-        if (null === $value) {
+        if (FormUtil::isEmpty($value)) {
             return null;
         }
 
@@ -49,9 +50,9 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
         throw new TransformationFailedException('Unable to cast value.');
     }
 
-    public function reverseTransform(mixed $value): ?object
+    public function reverseTransform(mixed $value): mixed
     {
-        if (null === $value || '' === $value) {
+        if (FormUtil::isEmpty($value)) {
             return null;
         }
 
