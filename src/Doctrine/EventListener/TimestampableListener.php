@@ -14,7 +14,7 @@ class TimestampableListener
     public function prePersist(PrePersistEventArgs $event): void
     {
         $object = $event->getObject();
-        if ($object instanceof CreatableInterface) {
+        if ($object instanceof CreatableInterface && !$object->getCreatedAt()) {
             $object->setCreatedAt(new \DateTimeImmutable());
         }
     }
@@ -22,7 +22,7 @@ class TimestampableListener
     public function preUpdate(PreUpdateEventArgs $event): void
     {
         $object = $event->getObject();
-        if ($object instanceof TimestampableInterface) {
+        if ($object instanceof TimestampableInterface && !$object->getUpdatedAt()) {
             $object->setUpdatedAt(new \DateTime());
         }
     }

@@ -15,7 +15,7 @@ class DeletableListener
         $uow = $em->getUnitOfWork();
 
         foreach ($uow->getScheduledEntityDeletions() as $entity) {
-            if ($entity instanceof DeletableInterface) {
+            if ($entity instanceof DeletableInterface && !$entity->getDeletedAt()) {
                 $entity->setDeletedAt(new \DateTimeImmutable());
                 $em->persist($entity);
 
