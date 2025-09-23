@@ -41,7 +41,12 @@ class GenericEntityRepositoryTest extends TestCase
 
         static::assertSame(
             'SELECT f FROM Siganushka\GenericBundle\Tests\Repository\Foo f ORDER BY f.sort DESC, f.id DESC',
-            $repository->createQueryBuilderWithOrdered('f')->getDQL()
+            $repository->createQueryBuilderWithOrderBy('f')->getDQL()
+        );
+
+        static::assertSame(
+            'SELECT f FROM Siganushka\GenericBundle\Tests\Repository\Foo f ORDER BY f.sort ASC, f.id ASC',
+            $repository->createQueryBuilderWithOrderBy('f', orderBy: 'ASC')->getDQL()
         );
     }
 
@@ -70,7 +75,7 @@ class GenericEntityRepositoryTest extends TestCase
 
         $entityManager->expects(static::any())
             ->method('createQueryBuilder')
-            ->willReturn(new QueryBuilder($entityManager))
+            ->willReturnCallback(fn () => new QueryBuilder($entityManager))
         ;
 
         $managerRegistry = $this->createMock(ManagerRegistry::class);

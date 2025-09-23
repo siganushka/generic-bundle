@@ -34,19 +34,25 @@ class GenericEntityRepository extends EntityRepository
         parent::__construct($manager, $manager->getClassMetadata($entityClass));
     }
 
-    public function createQueryBuilderWithOrdered(string $alias, ?string $indexBy = null): QueryBuilder
+    public function createQueryBuilderWithOrderBy(string $alias, ?string $indexBy = null, string $orderBy = 'DESC'): QueryBuilder
     {
         $queryBuilder = parent::createQueryBuilder($alias, $indexBy);
 
         if (is_subclass_of($this->getEntityName(), SortableInterface::class)) {
-            $queryBuilder->addOrderBy(\sprintf('%s.sort', $alias), 'DESC');
+            $queryBuilder->addOrderBy(\sprintf('%s.sort', $alias), $orderBy);
         }
 
         if (is_subclass_of($this->getEntityName(), ResourceInterface::class)) {
-            $queryBuilder->addOrderBy(\sprintf('%s.id', $alias), 'DESC');
+            $queryBuilder->addOrderBy(\sprintf('%s.id', $alias), $orderBy);
         }
 
         return $queryBuilder;
+    }
+
+    #[\Deprecated('use createQueryBuilderWithOrderBy() instead')]
+    public function createQueryBuilderWithOrdered(string $alias, ?string $indexBy = null): QueryBuilder
+    {
+        return $this->createQueryBuilderWithOrderBy($alias, $indexBy);
     }
 
     /**
