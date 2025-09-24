@@ -49,12 +49,6 @@ class GenericEntityRepository extends EntityRepository
         return $queryBuilder;
     }
 
-    #[\Deprecated('use createQueryBuilderWithOrderBy() instead')]
-    public function createQueryBuilderWithOrdered(string $alias, ?string $indexBy = null): QueryBuilder
-    {
-        return $this->createQueryBuilderWithOrderBy($alias, $indexBy);
-    }
-
     /**
      * @param mixed ...$args
      *
