@@ -72,7 +72,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
                 ],
             ],
             'serializer' => [
-                'entity_normalizer' => true,
                 'form_error_normalizer' => true,
                 'knp_pagination_normalizer' => true,
             ],
@@ -99,7 +98,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'siganushka_generic.form.button_type_extension',
             'siganushka_generic.form.choice_type_extension',
             'siganushka_generic.form.collection_type_extension',
-            'siganushka_generic.serializer.entity_normalizer',
             'siganushka_generic.serializer.form_error_normalizer',
             'siganushka_generic.serializer.knp_pagination_normalizer',
         ], $container->getServiceIds());
@@ -111,18 +109,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
         $tablePrefix = $container->getDefinition('siganushka_generic.doctrine.table_prefix_listener');
         static::assertSame([['event' => 'loadClassMetadata']], $tablePrefix->getTag('doctrine.event_listener'));
         static::assertSame('%siganushka_generic.doctrine.table_prefix%', $tablePrefix->getArgument(0));
-
-        $entity = $container->getDefinition('siganushka_generic.serializer.entity_normalizer');
-        static::assertTrue($entity->hasTag('serializer.normalizer'));
-        static::assertSame([['priority' => -128]], $entity->getTag('serializer.normalizer'));
-
-        /** @var Reference */
-        $requestStack = $entity->getArgument('$requestStack');
-        static::assertSame('request_stack', (string) $requestStack);
-
-        /** @var Reference */
-        $managerRegistry = $entity->getArgument('$managerRegistry');
-        static::assertSame('doctrine', (string) $managerRegistry);
 
         $formError = $container->getDefinition('siganushka_generic.serializer.form_error_normalizer');
         static::assertTrue($formError->hasTag('serializer.normalizer'));

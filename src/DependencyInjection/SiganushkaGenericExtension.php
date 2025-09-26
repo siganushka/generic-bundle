@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\DependencyInjection;
 
-use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
 use Siganushka\Contracts\Doctrine\ResourceInterface;
 use Siganushka\GenericBundle\Doctrine\Filter\DeletableFilter;
@@ -49,10 +48,6 @@ class SiganushkaGenericExtension extends Extension implements PrependExtensionIn
 
         if ($container::willBeAvailable('symfony/serializer', Serializer::class, ['siganushka/generic-bundle'])) {
             $loader->load('serializer.php');
-
-            if (!$config['serializer']['entity_normalizer'] || !interface_exists(ManagerRegistry::class)) {
-                $container->removeDefinition('siganushka_generic.serializer.entity_normalizer');
-            }
 
             if (!$config['serializer']['form_error_normalizer'] || !interface_exists(FormInterface::class)) {
                 $container->removeDefinition('siganushka_generic.serializer.form_error_normalizer');
