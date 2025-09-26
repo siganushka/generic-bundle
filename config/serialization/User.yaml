@@ -1,0 +1,8 @@
+Siganushka\GenericBundle\Entity\Nestable:
+    attributes:
+        ancestors:
+            ignore: true
+        siblings:
+            ignore: true
+        descendants:
+            ignore: true
