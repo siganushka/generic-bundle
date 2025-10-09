@@ -38,10 +38,14 @@ class EntityClassMetadataFactory implements ClassMetadataFactoryInterface
                 continue;
             }
 
+            $nameParts = explode('\\', $entityClass);
+            $shortName = array_pop($nameParts);
+            $snakeName = u($shortName)->snake();
+
             if (\array_key_exists($attribute, $entityMetadata->getAssociationMappings())) {
                 $attributeAsSnake = u($attribute)->snake();
-                $attributeMetadata->addGroup($attributeAsSnake->prepend('item:')->__toString());
-                $attributeMetadata->addGroup($attributeAsSnake->prepend('collection:')->__toString());
+                $attributeMetadata->addGroup(\sprintf('item:%s:%s', $snakeName, $attributeAsSnake));
+                $attributeMetadata->addGroup(\sprintf('collection:%s:%s', $snakeName, $attributeAsSnake));
             } else {
                 $attributeMetadata->addGroup('item');
                 $attributeMetadata->addGroup('collection');
