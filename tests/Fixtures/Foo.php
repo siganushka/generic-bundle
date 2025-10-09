@@ -6,4 +6,6 @@ namespace Siganushka\GenericBundle\Tests\Fixtures;
 
 class Foo
 {
+    public string $x;
+    public int $y;
 }

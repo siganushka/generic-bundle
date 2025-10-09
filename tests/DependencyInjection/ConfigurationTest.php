@@ -32,6 +32,7 @@ final class ConfigurationTest extends TestCase
                 'mapping_override' => [],
             ],
             'serializer' => [
+                'entity_mapping' => false,
                 'form_error_normalizer' => false,
                 'knp_pagination_normalizer' => false,
             ],
@@ -58,6 +59,7 @@ final class ConfigurationTest extends TestCase
     public function testCustomSerializerConfig(): void
     {
         $config = [
+            'entity_mapping' => true,
             'form_error_normalizer' => true,
             'knp_pagination_normalizer' => true,
         ];
