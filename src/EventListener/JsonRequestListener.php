@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Siganushka\GenericBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Exception\JsonException;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -22,7 +23,7 @@ class JsonRequestListener implements EventSubscriberInterface
         if ($isJsonRequest && \in_array($request->getMethod(), ['POST', 'PUT', 'PATCH', 'DELETE'])) {
             try {
                 $request->request = $request->getPayload();
-            } catch (\Throwable) {
+            } catch (JsonException) {
             }
         }
     }
