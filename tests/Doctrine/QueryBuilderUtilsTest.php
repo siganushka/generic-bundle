@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Siganushka\GenericBundle\Tests\Doctrine\Filter;
+namespace Siganushka\GenericBundle\Tests\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use PHPUnit\Framework\TestCase;
-use Siganushka\GenericBundle\Doctrine\Query\QueryBuilderUtils;
+use Siganushka\GenericBundle\Doctrine\QueryBuilderUtils;
 use Siganushka\GenericBundle\Tests\Fixtures\Foo;
 
 class QueryBuilderUtilsTest extends TestCase
@@ -19,7 +19,8 @@ class QueryBuilderUtilsTest extends TestCase
         $queryBuilder = new QueryBuilder($entityManager);
         $queryBuilder->from(Foo::class, 'f')->select('f');
 
-        QueryBuilderUtils::addDateRangeFilter($queryBuilder, null, null);
+        $ret = QueryBuilderUtils::addDateRangeFilter($queryBuilder, null, null);
+        static::assertInstanceOf(QueryBuilder::class, $ret);
         static::assertSame('SELECT f FROM Siganushka\GenericBundle\Tests\Fixtures\Foo f', $queryBuilder->getDQL());
 
         $now = new \DateTime();

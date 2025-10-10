@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Siganushka\GenericBundle\Doctrine\Query;
+namespace Siganushka\GenericBundle\Doctrine;
 
 use Doctrine\ORM\QueryBuilder;
 
