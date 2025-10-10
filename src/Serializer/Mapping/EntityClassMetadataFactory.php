@@ -28,19 +28,21 @@ class EntityClassMetadataFactory implements ClassMetadataFactoryInterface
         /** @var ClassMetadata<object>|null */
         $entityMetadata = $this->managerRegistry->getManagerForClass($entityClass)?->getClassMetadata($entityClass);
 
-        if (!$entityMetadata || $entityMetadata->isMappedSuperclass || $entityMetadata->isEmbeddedClass) {
+        if (!$entityMetadata
+            || $entityMetadata->isMappedSuperclass
+            || $entityMetadata->isEmbeddedClass
+            || ($entityMetadata->reflClass?->isAbstract() ?? false)) {
             return $metadata;
         }
 
-        $metadata = $this->decorated->getMetadataFor($value);
+        $nameParts = explode('\\', $entityClass);
+        $shortName = array_pop($nameParts);
+        $snakeName = u($shortName)->snake();
+
         foreach ($metadata->getAttributesMetadata() as $attribute => $attributeMetadata) {
             if ($attributeMetadata->isIgnored()) {
                 continue;
             }
-
-            $nameParts = explode('\\', $entityClass);
-            $shortName = array_pop($nameParts);
-            $snakeName = u($shortName)->snake();
 
             if (\array_key_exists($attribute, $entityMetadata->getAssociationMappings())) {
                 $attributeAsSnake = u($attribute)->snake();
