@@ -7,7 +7,7 @@ namespace Siganushka\GenericBundle\Dto;
 use Symfony\Component\Validator\Constraints\Positive;
 use Symfony\Component\Validator\Constraints\Range;
 
-trait PaginationDtoTrait
+trait PageQueryDtoTrait
 {
     #[Positive]
     public int $page = 1;
