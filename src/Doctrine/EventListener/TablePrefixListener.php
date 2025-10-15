@@ -28,7 +28,7 @@ class TablePrefixListener
         }
 
         foreach ($classMetadata->getAssociationMappings() as $fieldName => $mapping) {
-            if ($mapping instanceof ManyToManyOwningSideMapping) {
+            if ($mapping instanceof ManyToManyOwningSideMapping && !str_starts_with($mapping->joinTable->name, $this->prefix)) {
                 /** @var JoinTableMapping */
                 $joinTable = $classMetadata->associationMappings[$fieldName]['joinTable'];
                 $joinTable->name = $this->prefix.$mapping->joinTable->name;
