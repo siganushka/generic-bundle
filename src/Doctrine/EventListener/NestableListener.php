@@ -9,7 +9,7 @@ use Siganushka\GenericBundle\Entity\Nestable;
 
 class NestableListener
 {
-    public function __invoke(LoadClassMetadataEventArgs $event): void
+    public function loadClassMetadata(LoadClassMetadataEventArgs $event): void
     {
         $metadata = $event->getClassMetadata();
         if (!is_subclass_of($metadata->getName(), Nestable::class) || $metadata->hasAssociation('parent')) {
