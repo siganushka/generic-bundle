@@ -27,7 +27,11 @@
 {%- block collection_entry_row -%}
   <tr data-siganushka-generic-collection-target="entry" style="vertical-align: top">
     {%- for entry in compound ? form : [form] -%}
-      <td{% with {attr: entry.vars.row_attr} %}{{ block('attributes') }}{% endwith %}>
+      {% set row_attr = entry.vars.row_attr %}
+      {% if 'hidden' in entry.vars.block_prefixes %}
+        {% set row_attr = entry.vars.row_attr|merge({style: (row_attr.style|default('') ~ ' display: none')|trim}) %}
+      {% endif %}
+      <td{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
         {{- form_widget(entry, {attr: {placeholder: entry.vars.label}}) -}}
         {{- form_errors(entry) -}}
         {{- form_help(entry) -}}
