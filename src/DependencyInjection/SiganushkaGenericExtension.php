@@ -34,6 +34,11 @@ class SiganushkaGenericExtension extends Extension implements PrependExtensionIn
         if ($container::willBeAvailable('siganushka/doctrine-contracts', ResourceInterface::class, ['siganushka/generic-bundle'])) {
             $loader->load('doctrine.php');
 
+            if (!$config['doctrine']['schema_resort']) {
+                $container->removeDefinition('siganushka_generic.doctrine.schema_resort_listener');
+                $container->removeDefinition('siganushka_generic.doctrine.schema_resort_command');
+            }
+
             if (!$config['doctrine']['mapping_override']) {
                 $container->removeDefinition('siganushka_generic.doctrine.mapping_override_listener');
             }

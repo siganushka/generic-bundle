@@ -33,39 +33,54 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'siganushka_generic.doctrine.nestable_listener',
             'siganushka_generic.doctrine.timestampable_listener',
             'siganushka_generic.doctrine.deletable_listener',
+            'siganushka_generic.doctrine.schema_resort_listener',
+            'siganushka_generic.doctrine.schema_resort_command',
             'siganushka_generic.form.form_type_extension',
             'siganushka_generic.form.button_type_extension',
             'siganushka_generic.form.choice_type_extension',
             'siganushka_generic.form.collection_type_extension',
         ], $container->getServiceIds());
 
-        $jsonRequest = $container->getDefinition('siganushka_generic.json_request_listener');
-        static::assertTrue($jsonRequest->hasTag('kernel.event_subscriber'));
+        $jsonRequestListener = $container->getDefinition('siganushka_generic.json_request_listener');
+        static::assertTrue($jsonRequestListener->hasTag('kernel.event_subscriber'));
 
-        $jsonResponse = $container->getDefinition('siganushka_generic.json_response_listener');
-        static::assertTrue($jsonResponse->hasTag('kernel.event_subscriber'));
+        $jsonResponseListener = $container->getDefinition('siganushka_generic.json_response_listener');
+        static::assertTrue($jsonResponseListener->hasTag('kernel.event_subscriber'));
 
-        $nestable = $container->getDefinition('siganushka_generic.doctrine.nestable_listener');
+        $nestableListener = $container->getDefinition('siganushka_generic.doctrine.nestable_listener');
         static::assertSame([
             ['event' => 'loadClassMetadata'],
-        ], $nestable->getTag('doctrine.event_listener'));
+        ], $nestableListener->getTag('doctrine.event_listener'));
 
-        $timestampable = $container->getDefinition('siganushka_generic.doctrine.timestampable_listener');
+        $timestampableListener = $container->getDefinition('siganushka_generic.doctrine.timestampable_listener');
         static::assertSame([
             ['event' => 'prePersist'],
             ['event' => 'preUpdate'],
-        ], $timestampable->getTag('doctrine.event_listener'));
+        ], $timestampableListener->getTag('doctrine.event_listener'));
 
-        $deletable = $container->getDefinition('siganushka_generic.doctrine.deletable_listener');
+        $deletableListener = $container->getDefinition('siganushka_generic.doctrine.deletable_listener');
         static::assertSame([
             ['event' => 'onFlush'],
-        ], $deletable->getTag('doctrine.event_listener'));
+        ], $deletableListener->getTag('doctrine.event_listener'));
+
+        $schemaResortListener = $container->getDefinition('siganushka_generic.doctrine.schema_resort_listener');
+        static::assertSame([
+            ['event' => 'postGenerateSchemaTable'],
+        ], $schemaResortListener->getTag('doctrine.event_listener'));
+
+        $schemaResortCommand = $container->getDefinition('siganushka_generic.doctrine.schema_resort_command');
+        static::assertTrue($schemaResortCommand->hasTag('console.command'));
+
+        /** @var Reference */
+        $managerRegistry = $schemaResortCommand->getArgument(0);
+        static::assertSame('doctrine', (string) $managerRegistry);
     }
 
     public function testWithConfigs(): void
     {
         $configs = [
             'doctrine' => [
+                'schema_resort' => false,
                 'table_prefix' => 'test_',
                 'mapping_override' => [
                     Foo::class => Bar::class,
@@ -104,13 +119,13 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'siganushka_generic.serializer.knp_pagination_normalizer',
         ], $container->getServiceIds());
 
-        $mappingOverride = $container->getDefinition('siganushka_generic.doctrine.mapping_override_listener');
-        static::assertSame([['event' => 'loadClassMetadata']], $mappingOverride->getTag('doctrine.event_listener'));
-        static::assertSame('%siganushka_generic.doctrine.mapping_override%', $mappingOverride->getArgument(0));
+        $mappingOverrideListener = $container->getDefinition('siganushka_generic.doctrine.mapping_override_listener');
+        static::assertSame([['event' => 'loadClassMetadata']], $mappingOverrideListener->getTag('doctrine.event_listener'));
+        static::assertSame('%siganushka_generic.doctrine.mapping_override%', $mappingOverrideListener->getArgument(0));
 
-        $tablePrefix = $container->getDefinition('siganushka_generic.doctrine.table_prefix_listener');
-        static::assertSame([['event' => 'loadClassMetadata']], $tablePrefix->getTag('doctrine.event_listener'));
-        static::assertSame('%siganushka_generic.doctrine.table_prefix%', $tablePrefix->getArgument(0));
+        $tablePrefixListener = $container->getDefinition('siganushka_generic.doctrine.table_prefix_listener');
+        static::assertSame([['event' => 'loadClassMetadata']], $tablePrefixListener->getTag('doctrine.event_listener'));
+        static::assertSame('%siganushka_generic.doctrine.table_prefix%', $tablePrefixListener->getArgument(0));
 
         $entityMapping = $container->getDefinition('siganushka_generic.serializer.entity_mapping');
         static::assertSame(['serializer.mapping.class_metadata_factory', null, 0], $entityMapping->getDecoratedService());
@@ -123,16 +138,16 @@ final class SiganushkaGenericExtensionTest extends TestCase
         $managerRegistry = $entityMapping->getArgument('$managerRegistry');
         static::assertSame('doctrine', (string) $managerRegistry);
 
-        $formError = $container->getDefinition('siganushka_generic.serializer.form_error_normalizer');
-        static::assertTrue($formError->hasTag('serializer.normalizer'));
+        $formErrorNormalizer = $container->getDefinition('siganushka_generic.serializer.form_error_normalizer');
+        static::assertTrue($formErrorNormalizer->hasTag('serializer.normalizer'));
 
         /** @var Reference */
-        $translator = $formError->getArgument('$translator');
+        $translator = $formErrorNormalizer->getArgument('$translator');
         static::assertSame('translator', (string) $translator);
         static::assertSame(ContainerInterface::IGNORE_ON_INVALID_REFERENCE, $translator->getInvalidBehavior());
 
-        $knpPagination = $container->getDefinition('siganushka_generic.serializer.knp_pagination_normalizer');
-        static::assertTrue($knpPagination->hasTag('serializer.normalizer'));
+        $knpPaginationNormalizer = $container->getDefinition('siganushka_generic.serializer.knp_pagination_normalizer');
+        static::assertTrue($knpPaginationNormalizer->hasTag('serializer.normalizer'));
     }
 
     private function createContainerWithConfig(array $config = [], string $projectDir = __DIR__): ContainerBuilder

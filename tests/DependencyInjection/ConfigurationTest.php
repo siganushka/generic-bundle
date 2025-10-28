@@ -28,6 +28,7 @@ final class ConfigurationTest extends TestCase
 
         static::assertSame($processedConfig, [
             'doctrine' => [
+                'schema_resort' => true,
                 'table_prefix' => null,
                 'mapping_override' => [],
             ],
@@ -42,6 +43,7 @@ final class ConfigurationTest extends TestCase
     public function testCustomDoctrineConfig(): void
     {
         $config = [
+            'schema_resort' => false,
             'table_prefix' => 'test_',
             'mapping_override' => [
                 Foo::class => Bar::class,

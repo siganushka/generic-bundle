@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Doctrine\ORM\Events;
+use Doctrine\ORM\Tools\ToolEvents;
+use Siganushka\GenericBundle\Command\SchemaResortCommand;
 use Siganushka\GenericBundle\Doctrine\EventListener\DeletableListener;
 use Siganushka\GenericBundle\Doctrine\EventListener\MappingOverrideListener;
 use Siganushka\GenericBundle\Doctrine\EventListener\NestableListener;
+use Siganushka\GenericBundle\Doctrine\EventListener\SchemaResortListener;
 use Siganushka\GenericBundle\Doctrine\EventListener\TablePrefixListener;
 use Siganushka\GenericBundle\Doctrine\EventListener\TimestampableListener;
 
@@ -30,5 +33,12 @@ return static function (ContainerConfigurator $container): void {
 
         ->set('siganushka_generic.doctrine.deletable_listener', DeletableListener::class)
             ->tag('doctrine.event_listener', ['event' => Events::onFlush])
+
+        ->set('siganushka_generic.doctrine.schema_resort_listener', SchemaResortListener::class)
+            ->tag('doctrine.event_listener', ['event' => ToolEvents::postGenerateSchemaTable])
+
+        ->set('siganushka_generic.doctrine.schema_resort_command', SchemaResortCommand::class)
+            ->arg(0, service('doctrine'))
+            ->tag('console.command')
     ;
 };
