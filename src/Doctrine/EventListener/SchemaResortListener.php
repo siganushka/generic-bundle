@@ -56,12 +56,18 @@ class SchemaResortListener
     {
         $unqualifiedName = fn (UnqualifiedName $name): string => $name->getIdentifier()->getValue();
 
-        $primaryKey = $table->getPrimaryKeyConstraint()?->getColumnNames() ?? [];
-        $primaryKeyNames = array_map($unqualifiedName, $primaryKey);
+        // Compatible Doctrine DBAL 4.2.5
+        $primaryKeyNames = method_exists($table, 'getPrimaryKeyConstraint')
+            ? array_map($unqualifiedName, $table->getPrimaryKeyConstraint()?->getColumnNames() ?? [])
+            : $table->getPrimaryKey()?->getColumns() ?? [];
 
         $foreignKeyNames = [];
         foreach ($table->getForeignKeys() as $item) {
-            array_push($foreignKeyNames, ...array_map($unqualifiedName, $item->getReferencingColumnNames()));
+            $foreignColumns = method_exists($item, 'getReferencingColumnNames')
+                ? array_map($unqualifiedName, $item->getReferencingColumnNames())
+                : $item->getLocalColumns();
+
+            array_push($foreignKeyNames, ...$foreignColumns);
         }
 
         return [...$primaryKeyNames, ...$foreignKeyNames];

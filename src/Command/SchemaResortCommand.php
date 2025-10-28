@@ -55,6 +55,10 @@ class SchemaResortCommand extends Command
         $platform = $connection->getDatabasePlatform();
         $introspectSchema = $connection->createSchemaManager()->introspectSchema();
 
+        $quoteCallback = fn (string $identifier): string => method_exists($connection, 'quoteSingleIdentifier')
+                ? $connection->quoteSingleIdentifier($identifier)
+                : $connection->quoteIdentifier($identifier);
+
         $sqls = [];
         foreach ($allMetadata as $metadata) {
             if (\array_key_exists($metadata->name, $sqls)
@@ -92,15 +96,15 @@ class SchemaResortCommand extends Command
                     continue;
                 }
 
-                $declarationSQL = $platform->getColumnDeclarationSQL($connection->quoteSingleIdentifier($columnName), $column->toArray());
+                $declarationSQL = $platform->getColumnDeclarationSQL($quoteCallback($columnName), $column->toArray());
                 if ($lastName = ($columnNames[$index - 1] ?? null)) {
-                    $sqlParts[] = \sprintf('MODIFY COLUMN %s AFTER %s', $declarationSQL, $connection->quoteSingleIdentifier($lastName));
+                    $sqlParts[] = \sprintf('MODIFY COLUMN %s AFTER %s', $declarationSQL, $quoteCallback($lastName));
                 } else {
                     $sqlParts[] = \sprintf('MODIFY COLUMN %s FIRST', $declarationSQL);
                 }
             }
 
-            $sqls[$metadata->name] = \sprintf('ALTER TABLE %s %s', $connection->quoteSingleIdentifier($table->getName()), implode(', ', $sqlParts));
+            $sqls[$metadata->name] = \sprintf('ALTER TABLE %s %s', $quoteCallback($table->getName()), implode(', ', $sqlParts));
         }
 
         $io = new SymfonyStyle($input, $output);
