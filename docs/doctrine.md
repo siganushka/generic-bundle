@@ -154,3 +154,28 @@ $foo = new Foo();
 $foo->getDeletedAt(): ?\DateTimeImmutable;          // 返回删除时间，为 null 时表明未被删除
 $foo->setDeletedAt(?\DateTimeImmutable $createdAt); // 设置删除时间，使用 EntityManager::remove 删除数据时自动填充
 ```
+
+### Nestable
+
+通用的嵌套结构 `MappedSuperclass`，用于实现任何树形结构，比如无限级分类、菜单等。
+
+```php
+// ./src/Entity/Tree.php
+
+use Siganushka\GenericBundle\Entity\Nestable;
+
+class Tree extends Nestable
+{
+    // ...
+}
+
+$foo = new Tree();
+$foo->getParent(): ?self;       // 获取父节点
+$foo->getChildren(): Collection;    // 获取直接子节点
+$foo->getAncestors(): array;        // 获取所有祖先节点
+$foo->getSiblings(): array;         // 获取所有同级节点（兄弟节点）
+$foo->getDescendants(): array;      // 获取所有后代节点
+$foo->getDepth(): int;              // 获取节点深度
+$foo->isRoot(): bool;               // 是否为根节点
+$foo->isLeaf(): bool;               // 是否为叶子节点
+```

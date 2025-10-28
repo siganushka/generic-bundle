@@ -130,6 +130,11 @@ abstract class Nestable
         return $descendants;
     }
 
+    public function getDepth(): int
+    {
+        return $this->parent ? $this->parent->getDepth() + 1 : 0;
+    }
+
     public function isRoot(): bool
     {
         return null === $this->parent;
@@ -138,10 +143,5 @@ abstract class Nestable
     public function isLeaf(): bool
     {
         return $this->children->isEmpty();
-    }
-
-    public function getDepth(): int
-    {
-        return $this->parent ? $this->parent->getDepth() + 1 : 0;
     }
 }
