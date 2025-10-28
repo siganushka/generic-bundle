@@ -113,7 +113,7 @@ $foo->setCreatedAt(?\DateTimeImmutable $createdAt); // 设置创建时间，由�
 
 ### CreatableInterface
 
-通用的 `createdAt` 时间字段，如果实体永远不需要修改（不需要 `updatedAt` 字段），使用此接口代替 `Timestampable`。
+通用的 `createdAt` 时间字段，如果实体永远不需要修改（不需要 `updatedAt` 字段），使用此接口代替 `TimestampableInterface`。
 
 ```php
 // ./src/Entity/Foo.php
@@ -162,6 +162,7 @@ $foo->setDeletedAt(?\DateTimeImmutable $createdAt); // 设置删除时间，使�
 ```php
 // ./src/Entity/Tree.php
 
+use Doctrine\Common\Collections\Collection;
 use Siganushka\GenericBundle\Entity\Nestable;
 
 class Tree extends Nestable
@@ -171,7 +172,7 @@ class Tree extends Nestable
 
 $foo = new Tree();
 $foo->getParent(): ?self;       // 获取父节点
-$foo->getChildren(): Collection;    // 获取直接子节点
+$foo->getChildren(): Collection;    // 获取子节点
 $foo->getAncestors(): array;        // 获取所有祖先节点
 $foo->getSiblings(): array;         // 获取所有同级节点（兄弟节点）
 $foo->getDescendants(): array;      // 获取所有后代节点
