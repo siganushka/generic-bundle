@@ -33,6 +33,8 @@ class NestableListener
             'targetEntity' => $metadata->getName(),
             'fieldName' => 'children',
             'mappedBy' => 'parent',
+            'cascade' => ['all'],
+            'orphanRemoval' => true,
         ]);
     }
 }
