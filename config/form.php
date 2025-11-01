@@ -8,10 +8,14 @@ use Siganushka\GenericBundle\Form\Extension\ButtonTypeExtension;
 use Siganushka\GenericBundle\Form\Extension\ChoiceTypeExtension;
 use Siganushka\GenericBundle\Form\Extension\CollectionTypeExtension;
 use Siganushka\GenericBundle\Form\Extension\FormTypeExtension;
+use Siganushka\GenericBundle\Form\Extension\MoneyTypeExtension;
 
 return static function (ContainerConfigurator $container): void {
     $container->services()
         ->set('siganushka_generic.form.form_type_extension', FormTypeExtension::class)
+            ->tag('form.type_extension')
+
+        ->set('siganushka_generic.form.money_type_extension', MoneyTypeExtension::class)
             ->tag('form.type_extension')
 
         ->set('siganushka_generic.form.button_type_extension', ButtonTypeExtension::class)
