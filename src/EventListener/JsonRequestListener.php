@@ -18,9 +18,7 @@ class JsonRequestListener implements EventSubscriberInterface
         }
 
         $request = $event->getRequest();
-        $isJsonRequest = str_contains($request->getRequestFormat() ?? '', 'json') || str_contains($request->getContentTypeFormat() ?? '', 'json');
-
-        if ($isJsonRequest && \in_array($request->getMethod(), ['POST', 'PUT', 'PATCH', 'DELETE'])) {
+        if ('json' === $request->getContentTypeFormat() && \in_array($request->getMethod(), ['POST', 'PUT', 'PATCH', 'DELETE'])) {
             try {
                 $request->request = $request->getPayload();
             } catch (JsonException) {

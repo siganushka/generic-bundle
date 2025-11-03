@@ -36,7 +36,7 @@ final class JsonRequestListenerTest extends TestCase
         yield ['POST', ['CONTENT_TYPE' => 'multipart/form-data'], '{"message":"\u4f60\u597d\uff01"}', []];
         yield ['POST', ['CONTENT_TYPE' => 'application/x-www-form-urlencoded'], '{"message":"\u4f60\u597d\uff01"}', []];
         yield ['POST', ['CONTENT_TYPE' => 'application/json'], '{"message":"\u4f60\u597d\uff01"}', ['message' => '你好！']];
-        yield ['PUT', ['CONTENT_TYPE' => 'application/json'], '{"message":"\u4f60\u597d\uff01"}', ['message' => '你好！']];
+        yield ['PUT', ['CONTENT_TYPE' => 'application/x-json'], '{"message":"\u4f60\u597d\uff01"}', ['message' => '你好！']];
         yield ['PATCH', ['CONTENT_TYPE' => 'application/json'], '{"message":"\u4f60\u597d\uff01"}', ['message' => '你好！']];
         yield ['DELETE', ['CONTENT_TYPE' => 'application/json'], '{"message":"\u4f60\u597d\uff01"}', ['message' => '你好！']];
     }
