@@ -88,7 +88,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
                 ],
             ],
             'serializer' => [
-                'entity_mapping' => true,
+                'entity_class_metadata_factory' => true,
                 'form_error_normalizer' => true,
                 'knp_pagination_normalizer' => true,
             ],
@@ -116,7 +116,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'siganushka_generic.form.button_type_extension',
             'siganushka_generic.form.choice_type_extension',
             'siganushka_generic.form.collection_type_extension',
-            'siganushka_generic.serializer.entity_mapping',
+            'siganushka_generic.serializer.entity_class_metadata_factory',
             'siganushka_generic.serializer.form_error_normalizer',
             'siganushka_generic.serializer.knp_pagination_normalizer',
         ], $container->getServiceIds());
@@ -129,12 +129,12 @@ final class SiganushkaGenericExtensionTest extends TestCase
         static::assertSame([['event' => 'loadClassMetadata']], $tablePrefixListener->getTag('doctrine.event_listener'));
         static::assertSame('%siganushka_generic.doctrine.table_prefix%', $tablePrefixListener->getArgument(0));
 
-        $entityMapping = $container->getDefinition('siganushka_generic.serializer.entity_mapping');
+        $entityMapping = $container->getDefinition('siganushka_generic.serializer.entity_class_metadata_factory');
         static::assertSame(['serializer.mapping.class_metadata_factory', null, 0], $entityMapping->getDecoratedService());
 
         /** @var Reference */
         $decorated = $entityMapping->getArgument('$decorated');
-        static::assertSame('siganushka_generic.serializer.entity_mapping.inner', (string) $decorated);
+        static::assertSame('siganushka_generic.serializer.entity_class_metadata_factory.inner', (string) $decorated);
 
         /** @var Reference */
         $managerRegistry = $entityMapping->getArgument('$managerRegistry');

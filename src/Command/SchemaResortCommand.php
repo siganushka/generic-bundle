@@ -43,7 +43,6 @@ class SchemaResortCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $configuration = $this->entityManager->getConfiguration();
         $connection = $this->entityManager->getConnection();
         $factory = $this->entityManager->getMetadataFactory();
 
@@ -64,8 +63,7 @@ class SchemaResortCommand extends Command
             if (\array_key_exists($metadata->name, $sqls)
                 || $metadata->isMappedSuperclass
                 || $metadata->isEmbeddedClass
-                || ($metadata->isInheritanceTypeSingleTable() && $metadata->name !== $metadata->rootEntityName)
-                || \in_array($metadata->name, $configuration->getSchemaIgnoreClasses())) {
+                || ($metadata->isInheritanceTypeSingleTable() && $metadata->name !== $metadata->rootEntityName)) {
                 continue;
             }
 

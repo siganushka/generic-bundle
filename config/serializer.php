@@ -10,8 +10,8 @@ use Siganushka\GenericBundle\Serializer\Normalizer\KnpPaginationNormalizer;
 
 return static function (ContainerConfigurator $container): void {
     $container->services()
-        ->set('siganushka_generic.serializer.entity_mapping', EntityClassMetadataFactory::class)
-            ->arg('$decorated', service('siganushka_generic.serializer.entity_mapping.inner'))
+        ->set('siganushka_generic.serializer.entity_class_metadata_factory', EntityClassMetadataFactory::class)
+            ->arg('$decorated', service('siganushka_generic.serializer.entity_class_metadata_factory.inner'))
             ->arg('$managerRegistry', service('doctrine'))
             ->decorate('serializer.mapping.class_metadata_factory')
 

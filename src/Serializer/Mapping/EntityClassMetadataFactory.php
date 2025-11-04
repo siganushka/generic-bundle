@@ -56,10 +56,6 @@ class EntityClassMetadataFactory implements ClassMetadataFactoryInterface
             return $metadata;
         }
 
-        $nameParts = explode('\\', $entityClass);
-        $shortName = array_pop($nameParts);
-        $snakeName = u($shortName)->snake();
-
         $firstAttributes = array_flip($this->getSortedAttributes($entityMetadata, self::FIRST_ATTRIBUTES));
         $lastAttributes = array_flip($this->getSortedAttributes($entityMetadata, self::LAST_ATTRIBUTES));
 
@@ -80,8 +76,8 @@ class EntityClassMetadataFactory implements ClassMetadataFactoryInterface
 
             if (\array_key_exists($attribute, $entityMetadata->getAssociationMappings())) {
                 $attributeAsSnake = u($attribute)->snake();
-                $attributeMetadata->addGroup(\sprintf('item:%s:%s', $snakeName, $attributeAsSnake));
-                $attributeMetadata->addGroup(\sprintf('collection:%s:%s', $snakeName, $attributeAsSnake));
+                $attributeMetadata->addGroup(\sprintf('item:%s', $attributeAsSnake));
+                $attributeMetadata->addGroup(\sprintf('collection:%s', $attributeAsSnake));
             } else {
                 $attributeMetadata->addGroup('item');
                 $attributeMetadata->addGroup('collection');
