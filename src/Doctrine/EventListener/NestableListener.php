@@ -12,7 +12,7 @@ class NestableListener
     public function loadClassMetadata(LoadClassMetadataEventArgs $event): void
     {
         $metadata = $event->getClassMetadata();
-        if (!is_subclass_of($metadata->getName(), Nestable::class) || $metadata->hasAssociation('parent')) {
+        if ($metadata->isMappedSuperclass || !is_subclass_of($metadata->getName(), Nestable::class)) {
             return;
         }
 
