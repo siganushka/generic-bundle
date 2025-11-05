@@ -29,11 +29,11 @@ class FormErrorNormalizer implements NormalizerInterface
      */
     public function normalize(mixed $object, ?string $format = null, array $context = []): array
     {
-        $detailClosure = fn (string $detail): string => $this->translator?->trans($detail, domain: 'validators') ?? $detail;
+        $detailCallback = fn (string $detail): string => $this->translator?->trans($detail, domain: 'validators') ?? $detail;
 
         $type = $context[self::TYPE] ?? $this->defaultContext[self::TYPE];
         $status = $context[self::STATUS] ?? $this->defaultContext[self::STATUS];
-        $detail = $this->convertFormErrorsToArray($object) ?? $detailClosure('Validation Failed');
+        $detail = $this->convertFormErrorsToArray($object) ?? $detailCallback('Validation Failed');
 
         $data = ProblemJsonResponse::createAsArray($detail, $status, type: $type);
         $data['errors'] = $this->convertFormChildrenToArray($object);
