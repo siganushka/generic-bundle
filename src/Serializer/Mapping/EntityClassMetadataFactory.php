@@ -74,11 +74,17 @@ class EntityClassMetadataFactory implements ClassMetadataFactoryInterface
                 default => $index++,
             };
 
-            if ($attributeMetadata->isIgnored()) {
+            if ($attributeMetadata->isIgnored() || \count($attributeMetadata->getGroups())) {
                 continue;
             }
 
-            if (\array_key_exists($attribute, $entityMetadata->getAssociationMappings())) {
+            /*
+             * Group naming strategy:
+             *
+             * association                  => {entity_name}:{association_name}
+             * field/getter/hasser/isser    => item/collection
+             */
+            if ($entityMetadata->hasAssociation($attribute)) {
                 $attributeMetadata->addGroup(\sprintf('%s:%s', $resourceName, u($attribute)->snake()));
             } else {
                 $attributeMetadata->addGroup('item');

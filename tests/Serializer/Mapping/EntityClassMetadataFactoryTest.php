@@ -24,8 +24,13 @@ class EntityClassMetadataFactoryTest extends TestCase
 
         $bar = $this->createMock(ClassMetadata::class);
         $bar->expects(static::any())
-            ->method('getAssociationMappings')
-            ->willReturn(['testSnakeName' => true])
+            ->method('hasField')
+            ->willReturnCallback(fn (string $fieldName) => \in_array($fieldName, ['x', 'y']))
+        ;
+
+        $bar->expects(static::any())
+            ->method('hasAssociation')
+            ->willReturnCallback(fn (string $fieldName) => 'testSnakeName' === $fieldName)
         ;
 
         $objectManager = $this->createMock(ObjectManager::class);
@@ -48,8 +53,10 @@ class EntityClassMetadataFactoryTest extends TestCase
         static::assertSame([], $fooMetadata['y']->getGroups());
 
         $barMetadata = $factory->getMetadataFor(Bar::class)->getAttributesMetadata();
-        static::assertSame(['item', 'collection'], $barMetadata['x']->getGroups());
+        static::assertSame(['group_x'], $barMetadata['x']->getGroups());
         static::assertSame(['item', 'collection'], $barMetadata['y']->getGroups());
+        static::assertSame(['item', 'collection'], $barMetadata['custom']->getGroups());
+        static::assertSame(['group_custom'], $barMetadata['customWithGroups']->getGroups());
         static::assertSame(['bar:test_snake_name'], $barMetadata['testSnakeName']->getGroups());
         static::assertSame([], $barMetadata['testIgnore']->getGroups());
         static::assertTrue($barMetadata['testIgnore']->isIgnored());
