@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  <ol>
+    {% for alias, item in types %}
+      <li><a href="{{ path('siganushka_generic_form', {alias}) }}">{{ constant('class', item) }}</a></li>
+    {% else %}
+      <li>No forms.</li>
+    {% endfor %}
+  </ol>
+  {% if form %}
+    <div class="border bg-light p-3">
+      {{ form(form) }}
+    </div>
+  {% endif %}
+{% endblock %}

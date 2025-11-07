@@ -18,6 +18,7 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Intl\Intl;
 use Symfony\Component\Serializer\Serializer;
+use Twig\Environment;
 
 class SiganushkaGenericExtension extends Extension implements PrependExtensionInterface
 {
@@ -51,6 +52,10 @@ class SiganushkaGenericExtension extends Extension implements PrependExtensionIn
 
         if ($container::willBeAvailable('symfony/form', FormInterface::class, ['siganushka/generic-bundle'])) {
             $loader->load('form.php');
+
+            if (!class_exists(Environment::class)) {
+                $container->removeDefinition('siganushka_generic.form.controller');
+            }
 
             if (!class_exists(Intl::class)) {
                 $container->removeDefinition('siganushka_generic.form.money_type_extension');

@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\DependencyInjection\SiganushkaGenericExtension;
 use Siganushka\GenericBundle\Tests\Fixtures\Bar;
 use Siganushka\GenericBundle\Tests\Fixtures\Foo;
+use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
 use Symfony\Component\DependencyInjection\Compiler\ResolveChildDefinitionsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -35,6 +36,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'siganushka_generic.doctrine.deletable_listener',
             'siganushka_generic.doctrine.schema_resort_listener',
             'siganushka_generic.doctrine.schema_resort_command',
+            'siganushka_generic.form.controller',
             'siganushka_generic.form.form_type_extension',
             'siganushka_generic.form.money_type_extension',
             'siganushka_generic.form.button_type_extension',
@@ -73,8 +75,15 @@ final class SiganushkaGenericExtensionTest extends TestCase
         static::assertTrue($schemaResortCommand->hasTag('console.command'));
 
         /** @var Reference */
-        $managerRegistry = $schemaResortCommand->getArgument(0);
-        static::assertSame('doctrine', (string) $managerRegistry);
+        $argument0 = $schemaResortCommand->getArgument(0);
+        static::assertSame('doctrine', (string) $argument0);
+
+        $formController = $container->getDefinition('siganushka_generic.form.controller');
+        static::assertTrue($formController->hasTag('controller.service_arguments'));
+
+        $argument0 = $formController->getArgument(0);
+        static::assertInstanceOf(TaggedIteratorArgument::class, $argument0);
+        static::assertSame('form.type', $argument0->getTag());
     }
 
     public function testWithConfigs(): void
@@ -111,6 +120,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'siganushka_generic.doctrine.nestable_listener',
             'siganushka_generic.doctrine.timestampable_listener',
             'siganushka_generic.doctrine.deletable_listener',
+            'siganushka_generic.form.controller',
             'siganushka_generic.form.form_type_extension',
             'siganushka_generic.form.money_type_extension',
             'siganushka_generic.form.button_type_extension',
