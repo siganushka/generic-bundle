@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\Controller;
 
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -58,7 +59,7 @@ class FormController
         }
 
         $form = $factory->create($type::class);
-        if ($form->getConfig()->getOption('compound')) {
+        if ($form->getConfig()->getOption('compound') && CollectionType::class !== $type->getParent()) {
             return $form;
         }
 
