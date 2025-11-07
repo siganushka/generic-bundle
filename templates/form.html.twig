@@ -2,7 +2,7 @@
 
 {% block body %}
   <div class="row">
-    <div class="col-12 col-md-5 text-truncate">
+    <div class="col text-truncate">
       <ol>
         {% for alias, item in types %}
           <li>
@@ -13,10 +13,12 @@
         {% endfor %}
       </ol>
     </div>
-    <div class="col">
-      <div class="border rounded bg-light p-3 flex-grow-1">
-        {{ form(form) }}
+    {% if form %}
+      <div class="col-12 col-md-7">
+        <div class="border rounded bg-light p-3 flex-grow-1">
+          {{ form(form) }}
+        </div>
       </div>
-    </div>
+    {% endif %}
   </div>
 {% endblock %}
