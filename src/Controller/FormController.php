@@ -43,12 +43,16 @@ class FormController
             }
         }
 
+        $status = $request->isMethod('POST')
+            ? Response::HTTP_UNPROCESSABLE_ENTITY
+            : Response::HTTP_OK;
+
         $content = $twig->render('@SiganushkaGeneric/form.html.twig', [
             'types' => $this->types,
             'form' => $form?->createView(),
         ]);
 
-        return new Response($content);
+        return new Response($content, $status);
     }
 
     private function createForm(Request $request, FormFactoryInterface $factory): ?FormInterface
