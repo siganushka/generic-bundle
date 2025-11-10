@@ -10,7 +10,10 @@
                 "name": "siganushka-generic-collection",
                 "webpackMode": "eager",
                 "fetch": "eager",
-                "enabled": true
+                "enabled": true,
+                "autoimport": {
+                    "@siganushka/generic-bundle/dist/collection.css": true
+                }
             }
         },
         "importmap": {
