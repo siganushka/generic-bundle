@@ -32,7 +32,7 @@ final class TimestampableListenerTest extends TestCase
         $fooWithCreatedAt->setCreatedAt($previousCreatedAt = new \DateTimeImmutable('1970-01-01 00:00:00'));
 
         $listener->prePersist(new PrePersistEventArgs($fooWithCreatedAt, $entityManager));
-        static::assertSame($previousCreatedAt, $fooWithCreatedAt->getCreatedAt());
+        static::assertNotSame($previousCreatedAt, $fooWithCreatedAt->getCreatedAt());
     }
 
     public function testPreUpdate(): void
@@ -48,13 +48,13 @@ final class TimestampableListenerTest extends TestCase
         $listener = new TimestampableListener();
         $listener->preUpdate(new PreUpdateEventArgs($foo, $entityManager, $changeSet));
 
-        static::assertInstanceOf(\DateTimeInterface::class, $foo->getUpdatedAt());
+        static::assertInstanceOf(\DateTimeImmutable::class, $foo->getUpdatedAt());
 
         $fooWithUpdatedAt = new FooTimestampable();
         $fooWithUpdatedAt->setUpdatedAt($previousUpdatedAt = new \DateTimeImmutable('1970-01-01 00:00:00'));
 
-        $listener->prePersist(new PrePersistEventArgs($fooWithUpdatedAt, $entityManager));
-        static::assertSame($previousUpdatedAt, $fooWithUpdatedAt->getUpdatedAt());
+        $listener->preUpdate(new PreUpdateEventArgs($fooWithUpdatedAt, $entityManager, $changeSet));
+        static::assertNotSame($previousUpdatedAt, $fooWithUpdatedAt->getUpdatedAt());
     }
 }
 

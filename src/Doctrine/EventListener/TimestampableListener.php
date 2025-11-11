@@ -7,14 +7,14 @@ namespace Siganushka\GenericBundle\Doctrine\EventListener;
 use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Siganushka\Contracts\Doctrine\CreatableInterface;
-use Siganushka\Contracts\Doctrine\TimestampableInterface;
+use Siganushka\Contracts\Doctrine\UpdatableInterface;
 
 class TimestampableListener
 {
     public function prePersist(PrePersistEventArgs $event): void
     {
         $object = $event->getObject();
-        if ($object instanceof CreatableInterface && !$object->getCreatedAt()) {
+        if ($object instanceof CreatableInterface) {
             $object->setCreatedAt(new \DateTimeImmutable());
         }
     }
@@ -22,8 +22,8 @@ class TimestampableListener
     public function preUpdate(PreUpdateEventArgs $event): void
     {
         $object = $event->getObject();
-        if ($object instanceof TimestampableInterface && !$object->getUpdatedAt()) {
-            $object->setUpdatedAt(new \DateTime());
+        if ($object instanceof UpdatableInterface) {
+            $object->setUpdatedAt(new \DateTimeImmutable());
         }
     }
 }

@@ -21,10 +21,10 @@
         "siganushka/doctrine-contracts": "dev-main",
         "symfony/form": "^6.4|^7.0|^8.0",
         "symfony/http-foundation": "^6.4|^7.0|^8.0",
+        "symfony/intl": "^6.4|^7.0|^8.0",
         "symfony/serializer": "^6.4|^7.0|^8.0",
         "symfony/translation": "^6.4|^7.0|^8.0",
         "symfony/validator": "^6.4|^7.0|^8.0",
-        "symfony/intl": "^6.4|^7.0|^8.0",
         "twig/twig": "^3.12"
     },
     "autoload": {
