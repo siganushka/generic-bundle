@@ -4,9 +4,9 @@
   <div class="row">
     <div class="col text-truncate">
       <ol>
-        {% for alias, item in types %}
+        {% for class, type in types %}
           <li>
-            <a href="{{ path('siganushka_generic_form', {alias}) }}" title="{{ constant('class', item) }}">{{ constant('class', item) }}</a>
+            <a href="{{ path('siganushka_generic_form', {class}) }}" title="{{ constant('class', type) }}">{{ constant('class', type) }}</a>
           </li>
         {% else %}
           <li>No forms.</li>

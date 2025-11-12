@@ -28,7 +28,7 @@ class FormController
     {
         foreach ($formTypes as $type) {
             if (!str_starts_with($type::class, 'Symfony\\')) {
-                $this->types[$type->getBlockPrefix()] = $type;
+                $this->types[$type::class] = $type;
             }
         }
     }
@@ -57,8 +57,8 @@ class FormController
 
     private function createForm(Request $request, FormFactoryInterface $factory): ?FormInterface
     {
-        $alias = $request->query->getString('alias');
-        if (!$type = $this->types[$alias] ?? null) {
+        $class = $request->query->getString('class');
+        if (!$type = $this->types[$class] ?? null) {
             return null;
         }
 
