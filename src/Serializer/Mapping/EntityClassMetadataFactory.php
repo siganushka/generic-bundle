@@ -13,7 +13,6 @@ use Siganushka\Contracts\Doctrine\ResourceInterface;
 use Siganushka\Contracts\Doctrine\SortableInterface;
 use Siganushka\Contracts\Doctrine\TimestampableInterface;
 use Siganushka\Contracts\Doctrine\VersionableInterface;
-use Symfony\Component\Serializer\Mapping\ClassMetadata;
 use Symfony\Component\Serializer\Mapping\ClassMetadataInterface;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
 
@@ -94,9 +93,10 @@ class EntityClassMetadataFactory implements ClassMetadataFactoryInterface
 
         array_multisort($attributesToSort, \SORT_ASC, \SORT_NUMERIC, $attributes);
 
-        if ($metadata instanceof ClassMetadata) {
-            $metadata->attributesMetadata = $attributes;
-        }
+        $ref = new \ReflectionProperty($metadata, 'attributesMetadata');
+        $ref->setAccessible(true);
+        $ref->setValue($metadata, $attributes);
+        $ref->setAccessible(false);
 
         return $metadata;
     }
