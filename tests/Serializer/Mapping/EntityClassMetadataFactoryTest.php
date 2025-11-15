@@ -54,8 +54,8 @@ class EntityClassMetadataFactoryTest extends TestCase
 
         $barMetadata = $factory->getMetadataFor(Bar::class)->getAttributesMetadata();
         static::assertSame(['group_x'], $barMetadata['x']->getGroups());
-        static::assertSame(['item', 'collection'], $barMetadata['y']->getGroups());
-        static::assertSame(['item', 'collection'], $barMetadata['custom']->getGroups());
+        static::assertSame(['bar:item', 'bar:collection'], $barMetadata['y']->getGroups());
+        static::assertSame(['bar:item', 'bar:collection'], $barMetadata['custom']->getGroups());
         static::assertSame(['group_custom'], $barMetadata['customWithGroups']->getGroups());
         static::assertSame(['bar:test_snake_name'], $barMetadata['testSnakeName']->getGroups());
         static::assertSame([], $barMetadata['testIgnore']->getGroups());
