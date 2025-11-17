@@ -65,9 +65,8 @@ class SiganushkaGenericExtension extends Extension implements PrependExtensionIn
         if ($container::willBeAvailable('symfony/serializer', Serializer::class, ['siganushka/generic-bundle'])) {
             $loader->load('serializer.php');
 
-            if (!$config['serializer']['entity_normalizer'] || !interface_exists(ManagerRegistry::class)) {
+            if (!$config['serializer']['entity_class_metadata_factory'] || !interface_exists(ManagerRegistry::class)) {
                 $container->removeDefinition('siganushka_generic.serializer.entity_class_metadata_factory');
-                $container->removeDefinition('siganushka_generic.serializer.entity_normalizer');
             }
 
             if (!$config['serializer']['form_error_normalizer'] || !interface_exists(FormInterface::class)) {

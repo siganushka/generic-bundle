@@ -96,7 +96,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
                 ],
             ],
             'serializer' => [
-                'entity_normalizer' => true,
+                'entity_class_metadata_factory' => true,
                 'form_error_normalizer' => true,
                 'knp_pagination_normalizer' => true,
             ],
@@ -125,7 +125,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'siganushka_generic.form.choice_type_extension',
             'siganushka_generic.form.collection_type_extension',
             'siganushka_generic.serializer.entity_class_metadata_factory',
-            'siganushka_generic.serializer.entity_normalizer',
             'siganushka_generic.serializer.form_error_normalizer',
             'siganushka_generic.serializer.knp_pagination_normalizer',
         ], $container->getServiceIds());
@@ -148,13 +147,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
         /** @var Reference */
         $registry = $entityMapping->getArgument('$registry');
         static::assertSame('doctrine', (string) $registry);
-
-        $entityNormalizer = $container->getDefinition('siganushka_generic.serializer.entity_normalizer');
-        static::assertTrue($entityNormalizer->hasTag('serializer.normalizer'));
-
-        /** @var Reference */
-        $normalizer = $entityNormalizer->getArgument('$normalizer');
-        static::assertSame('serializer.normalizer.object', (string) $normalizer);
 
         $formErrorNormalizer = $container->getDefinition('siganushka_generic.serializer.form_error_normalizer');
         static::assertTrue($formErrorNormalizer->hasTag('serializer.normalizer'));

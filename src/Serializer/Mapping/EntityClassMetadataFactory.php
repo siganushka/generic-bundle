@@ -33,8 +33,6 @@ class EntityClassMetadataFactory implements ClassMetadataFactoryInterface
         DeletableInterface::class => 'deletedAt',
     ];
 
-    private static array $cachedResourceNames = [];
-
     public function __construct(
         private readonly ClassMetadataFactoryInterface $decorated,
         private readonly ManagerRegistry $registry,
@@ -60,11 +58,15 @@ class EntityClassMetadataFactory implements ClassMetadataFactoryInterface
         $firstAttributes = array_flip($this->getSortedAttributes($entityMetadata, self::FIRST_ATTRIBUTES));
         $lastAttributes = array_flip($this->getSortedAttributes($entityMetadata, self::LAST_ATTRIBUTES));
 
-        $attributes = $metadata->getAttributesMetadata();
+        $attributesMetadata = $metadata->getAttributesMetadata();
         $attributesToSort = [];
         $index = 0;
 
-        foreach ($attributes as $attribute => $attributeMetadata) {
+        $nameParts = explode('\\', $entityClass);
+        $shortName = array_pop($nameParts);
+        $resourceName = u($shortName)->snake();
+
+        foreach ($attributesMetadata as $attribute => $attributeMetadata) {
             $attributesToSort[$attribute] = match (true) {
                 \array_key_exists($attribute, $firstAttributes) => $firstAttributes[$attribute] - 100,
                 \array_key_exists($attribute, $lastAttributes) => $lastAttributes[$attribute] + 100,
@@ -78,22 +80,22 @@ class EntityClassMetadataFactory implements ClassMetadataFactoryInterface
             /*
              * Group naming strategy:
              *
-             * field|getter|hasser|isser    => {entity_name}:{item & collection}
+             * field|getter|hasser|isser    => item & collection
              * association                  => {entity_name}:{association_name}
              */
             if ($entityMetadata->hasAssociation($attribute)) {
-                $attributeMetadata->addGroup(\sprintf('%s:%s', self::getResourceName($entityClass), self::getResourceName($attribute)));
+                $attributeMetadata->addGroup(\sprintf('%s:%s', $resourceName, u($attribute)->snake()));
             } else {
-                $attributeMetadata->addGroup(self::getGroupForItem($entityClass));
-                $attributeMetadata->addGroup(self::getGroupForCollection($entityClass));
+                $attributeMetadata->addGroup('item');
+                $attributeMetadata->addGroup('collection');
             }
         }
 
-        array_multisort($attributesToSort, \SORT_ASC, \SORT_NUMERIC, $attributes);
+        array_multisort($attributesToSort, \SORT_ASC, \SORT_NUMERIC, $attributesMetadata);
 
         $ref = new \ReflectionProperty($metadata, 'attributesMetadata');
         $ref->setAccessible(true);
-        $ref->setValue($metadata, $attributes);
+        $ref->setValue($metadata, $attributesMetadata);
         $ref->setAccessible(false);
 
         return $metadata;
@@ -102,29 +104,6 @@ class EntityClassMetadataFactory implements ClassMetadataFactoryInterface
     public function hasMetadataFor(mixed $value): bool
     {
         return $this->decorated->hasMetadataFor($value);
-    }
-
-    public static function getGroupForItem(string $entityClass): string
-    {
-        return \sprintf('%s:item', self::getResourceName($entityClass));
-    }
-
-    public static function getGroupForCollection(string $entityClass): string
-    {
-        return \sprintf('%s:collection', self::getResourceName($entityClass));
-    }
-
-    public static function getResourceName(string $entityClass): string
-    {
-        if (isset(self::$cachedResourceNames[$entityClass])) {
-            return self::$cachedResourceNames[$entityClass];
-        }
-
-        $nameParts = explode('\\', $entityClass);
-        $shortName = array_pop($nameParts);
-        $resourceName = u($shortName)->snake();
-
-        return self::$cachedResourceNames[$entityClass] = $resourceName->__toString();
     }
 
     /**
