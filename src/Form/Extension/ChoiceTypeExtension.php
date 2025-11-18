@@ -12,7 +12,10 @@ class ChoiceTypeExtension extends AbstractTypeExtension
 {
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefault('placeholder', 'generic.choice');
+        $resolver->setDefaults([
+            'placeholder' => 'generic.choice',
+            'translation_domain' => 'messages',
+        ]);
     }
 
     public static function getExtendedTypes(): iterable
