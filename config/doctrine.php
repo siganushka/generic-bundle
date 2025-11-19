@@ -17,11 +17,11 @@ use Siganushka\GenericBundle\Doctrine\EventListener\TimestampableListener;
 return static function (ContainerConfigurator $container): void {
     $container->services()
         ->set('siganushka_generic.doctrine.mapping_override_listener', MappingOverrideListener::class)
-            ->arg(0, param('siganushka_generic.doctrine.mapping_override'))
+            ->arg('$mappingOverride', param('siganushka_generic.doctrine.mapping_override'))
             ->tag('doctrine.event_listener', ['event' => Events::loadClassMetadata])
 
         ->set('siganushka_generic.doctrine.table_prefix_listener', TablePrefixListener::class)
-            ->arg(0, param('siganushka_generic.doctrine.table_prefix'))
+            ->arg('$prefix', param('siganushka_generic.doctrine.table_prefix'))
             ->tag('doctrine.event_listener', ['event' => Events::loadClassMetadata])
 
         ->set('siganushka_generic.doctrine.nestable_listener', NestableListener::class)
@@ -38,7 +38,7 @@ return static function (ContainerConfigurator $container): void {
             ->tag('doctrine.event_listener', ['event' => ToolEvents::postGenerateSchemaTable])
 
         ->set('siganushka_generic.doctrine.schema_resort_command', SchemaResortCommand::class)
-            ->arg(0, service('doctrine'))
+            ->arg('$managerRegistry', service('doctrine'))
             ->tag('console.command')
     ;
 };

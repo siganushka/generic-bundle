@@ -19,13 +19,10 @@ final class SiganushkaGenericExtensionTest extends TestCase
 {
     public function testLoadDefaultConfig(): void
     {
-        $container = $this->createContainerWithConfig([]);
+        $container = $this->createContainerWithConfig();
 
-        static::assertSame([
-            'kernel.project_dir' => __DIR__,
-            'siganushka_generic.doctrine.table_prefix' => null,
-            'siganushka_generic.doctrine.mapping_override' => [],
-        ], $container->getParameterBag()->all());
+        static::assertNull($container->getParameter('siganushka_generic.doctrine.table_prefix'));
+        static::assertSame([], $container->getParameter('siganushka_generic.doctrine.mapping_override'));
 
         static::assertSame([
             'service_container',
@@ -74,15 +71,15 @@ final class SiganushkaGenericExtensionTest extends TestCase
         static::assertTrue($schemaResortCommand->hasTag('console.command'));
 
         /** @var Reference */
-        $argument0 = $schemaResortCommand->getArgument(0);
-        static::assertSame('doctrine', (string) $argument0);
+        $managerRegistry = $schemaResortCommand->getArgument('$managerRegistry');
+        static::assertSame('doctrine', $managerRegistry->__toString());
 
         $formController = $container->getDefinition('siganushka_generic.form.controller');
         static::assertTrue($formController->hasTag('controller.service_arguments'));
 
-        $argument0 = $formController->getArgument(0);
-        static::assertInstanceOf(TaggedIteratorArgument::class, $argument0);
-        static::assertSame('form.type', $argument0->getTag());
+        $formTypes = $formController->getArgument('$formTypes');
+        static::assertInstanceOf(TaggedIteratorArgument::class, $formTypes);
+        static::assertSame('form.type', $formTypes->getTag());
     }
 
     public function testWithConfigs(): void
@@ -102,13 +99,10 @@ final class SiganushkaGenericExtensionTest extends TestCase
             ],
         ];
 
-        $container = $this->createContainerWithConfig($configs);
+        $container = $this->createContainerWithConfig($configs, true);
 
-        static::assertSame([
-            'kernel.project_dir' => __DIR__,
-            'siganushka_generic.doctrine.table_prefix' => 'test_',
-            'siganushka_generic.doctrine.mapping_override' => [Foo::class => Bar::class],
-        ], $container->getParameterBag()->all());
+        static::assertSame('test_', $container->getParameter('siganushka_generic.doctrine.table_prefix'));
+        static::assertSame([Foo::class => Bar::class], $container->getParameter('siganushka_generic.doctrine.mapping_override'));
 
         static::assertSame([
             'service_container',
@@ -120,6 +114,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'siganushka_generic.doctrine.timestampable_listener',
             'siganushka_generic.doctrine.deletable_listener',
             'siganushka_generic.form.controller',
+            'siganushka_generic.form.csrf_type_extension',
             'siganushka_generic.form.money_type_extension',
             'siganushka_generic.form.button_type_extension',
             'siganushka_generic.form.choice_type_extension',
@@ -131,40 +126,52 @@ final class SiganushkaGenericExtensionTest extends TestCase
 
         $mappingOverrideListener = $container->getDefinition('siganushka_generic.doctrine.mapping_override_listener');
         static::assertSame([['event' => 'loadClassMetadata']], $mappingOverrideListener->getTag('doctrine.event_listener'));
-        static::assertSame('%siganushka_generic.doctrine.mapping_override%', $mappingOverrideListener->getArgument(0));
+        static::assertSame('%siganushka_generic.doctrine.mapping_override%', $mappingOverrideListener->getArgument('$mappingOverride'));
 
         $tablePrefixListener = $container->getDefinition('siganushka_generic.doctrine.table_prefix_listener');
         static::assertSame([['event' => 'loadClassMetadata']], $tablePrefixListener->getTag('doctrine.event_listener'));
-        static::assertSame('%siganushka_generic.doctrine.table_prefix%', $tablePrefixListener->getArgument(0));
+        static::assertSame('%siganushka_generic.doctrine.table_prefix%', $tablePrefixListener->getArgument('$prefix'));
+
+        $csrfTypeExtension = $container->getDefinition('siganushka_generic.form.csrf_type_extension');
+        static::assertTrue($csrfTypeExtension->hasTag('form.type_extension'));
+        static::assertSame(-128, $csrfTypeExtension->getTag('form.type_extension')[0]['priority']);
+
+        /** @var Reference */
+        $requestStack = $csrfTypeExtension->getArgument('$requestStack');
+        static::assertSame('request_stack', $requestStack->__toString());
 
         $entityMapping = $container->getDefinition('siganushka_generic.serializer.entity_class_metadata_factory');
         static::assertSame(['serializer.mapping.class_metadata_factory', null, 0], $entityMapping->getDecoratedService());
 
         /** @var Reference */
         $decorated = $entityMapping->getArgument('$decorated');
-        static::assertSame('siganushka_generic.serializer.entity_class_metadata_factory.inner', (string) $decorated);
+        static::assertSame('siganushka_generic.serializer.entity_class_metadata_factory.inner', $decorated->__toString());
 
         /** @var Reference */
         $registry = $entityMapping->getArgument('$registry');
-        static::assertSame('doctrine', (string) $registry);
+        static::assertSame('doctrine', $registry->__toString());
 
         $formErrorNormalizer = $container->getDefinition('siganushka_generic.serializer.form_error_normalizer');
         static::assertTrue($formErrorNormalizer->hasTag('serializer.normalizer'));
 
         /** @var Reference */
         $translator = $formErrorNormalizer->getArgument('$translator');
-        static::assertSame('translator', (string) $translator);
+        static::assertSame('translator', $translator->__toString());
         static::assertSame(ContainerInterface::IGNORE_ON_INVALID_REFERENCE, $translator->getInvalidBehavior());
 
         $knpPaginationNormalizer = $container->getDefinition('siganushka_generic.serializer.knp_pagination_normalizer');
         static::assertTrue($knpPaginationNormalizer->hasTag('serializer.normalizer'));
     }
 
-    private function createContainerWithConfig(array $config = [], string $projectDir = __DIR__): ContainerBuilder
+    private function createContainerWithConfig(array $config = [], bool $csrf = false): ContainerBuilder
     {
+        $parameters = [
+            'form.type_extension.csrf.enabled' => $csrf,
+        ];
+
         $extension = new SiganushkaGenericExtension();
 
-        $container = new ContainerBuilder(new EnvPlaceholderParameterBag(['kernel.project_dir' => $projectDir]));
+        $container = new ContainerBuilder(new EnvPlaceholderParameterBag($parameters));
         $container->registerExtension($extension);
         $container->loadFromExtension($extension->getAlias(), $config);
 

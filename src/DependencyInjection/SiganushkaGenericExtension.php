@@ -60,6 +60,11 @@ class SiganushkaGenericExtension extends Extension implements PrependExtensionIn
             if (!class_exists(Intl::class)) {
                 $container->removeDefinition('siganushka_generic.form.money_type_extension');
             }
+
+            if (!$container->hasParameter('form.type_extension.csrf.enabled')
+                || !$container->getParameter('form.type_extension.csrf.enabled')) {
+                $container->removeDefinition('siganushka_generic.form.csrf_type_extension');
+            }
         }
 
         if ($container::willBeAvailable('symfony/serializer', Serializer::class, ['siganushka/generic-bundle'])) {
