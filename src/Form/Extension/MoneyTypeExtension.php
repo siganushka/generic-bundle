@@ -25,21 +25,18 @@ class MoneyTypeExtension extends AbstractTypeExtension
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $divisor = function (Options $options) {
-            return match ($options['scale']) {
-                4 => 10000,
-                3 => 1000,
-                2 => 100,
-                default => 1,
-            };
-        };
+        $scale = fn (Options $options): int => Currencies::getFractionDigits($options['currency']);
+        $divisor = fn (Options $options): int => 10 ** $options['scale'];
+        $attr = fn (Options $options) => ['step' => 1 / $options['divisor']];
 
         $resolver->setDefaults([
-            'scale' => Currencies::getFractionDigits($this->locale),
-            'divisor' => $divisor,
             'currency' => $this->currency,
+            'scale' => $scale,
+            'divisor' => $divisor,
+            'attr' => $attr,
             // @see https://symfony.com/doc/current/reference/forms/types/money.html#input
             'input' => 'integer',
+            'html5' => true,
         ]);
 
         $resolver->setNormalizer('constraints', function (Options $options, $constraints) {
