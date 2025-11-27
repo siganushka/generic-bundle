@@ -23,7 +23,6 @@ class SchemaResortListener
 
         /** [important] Get columns with key by Reflection */
         $ref = new \ReflectionProperty($table, '_columns');
-        $ref->setAccessible(true);
 
         /** @var array<string, Column> */
         $columns = $ref->getValue($table);
@@ -38,9 +37,7 @@ class SchemaResortListener
         }
 
         array_multisort($columnsToSrot, \SORT_ASC, \SORT_NUMERIC, $columns);
-
         $ref->setValue($table, $columns);
-        $ref->setAccessible(false);
     }
 
     /**

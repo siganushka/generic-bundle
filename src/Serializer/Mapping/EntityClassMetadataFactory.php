@@ -94,9 +94,7 @@ class EntityClassMetadataFactory implements ClassMetadataFactoryInterface
         array_multisort($attributesToSort, \SORT_ASC, \SORT_NUMERIC, $attributesMetadata);
 
         $ref = new \ReflectionProperty($metadata, 'attributesMetadata');
-        $ref->setAccessible(true);
         $ref->setValue($metadata, $attributesMetadata);
-        $ref->setAccessible(false);
 
         return $metadata;
     }
