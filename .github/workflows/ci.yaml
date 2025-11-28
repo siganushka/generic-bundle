@@ -24,8 +24,8 @@ jobs:
             - { name: Install tools,        run: composer install -d tools/ }
             - { name: Run tests,            run: tools/vendor/bin/simple-phpunit --debug }
             - name: Determine PHPStan Config based on PHP Version
-                id: set_phpstan_config
-                run: |
+              id: set_phpstan_config
+              run: |
                 PHP_VERSION_MAJOR_MINOR="${{ matrix.php-versions }}"
                 if [[ $(echo "$PHP_VERSION_MAJOR_MINOR >= 8.2" | bc -l) -eq 1 ]]; then
                     CONFIG_FILE="phpstan.neon.dist" 
@@ -34,4 +34,5 @@ jobs:
                 fi
                 echo "Selected PHPStan config: $CONFIG_FILE"
                 echo "phpstan_config=$CONFIG_FILE" >> $GITHUB_OUTPUT
-            - { name: Run phpstan,          run: tools/vendor/bin/phpstan analyse -c ${{ steps.set_phpstan_config.outputs.phpstan_config }} }
+            - name: Run phpstan
+              run: tools/vendor/bin/phpstan analyse -c ${{ steps.set_phpstan_config.outputs.phpstan_config }}
