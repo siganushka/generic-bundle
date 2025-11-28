@@ -18,7 +18,7 @@ jobs:
             - name: Checkout code
               uses: actions/checkout@v4
             - name: Install PHP
-              uses: shivammathur/setup-php@v2, with: { php-version: ${{ matrix.php-versions }} }
+              uses: shivammathur/setup-php@v2, with: { php-version: "${{ matrix.php-versions }}" }
             - name: PHP Version
               run: php --version
             - name: Validate composer
@@ -41,4 +41,4 @@ jobs:
                 echo "Selected PHPStan config: $CONFIG_FILE"
                 echo "phpstan_config=$CONFIG_FILE" >> $GITHUB_OUTPUT
             - name: Run phpstan
-              run: tools/vendor/bin/phpstan analyse -c ${{ steps.set_phpstan_config.outputs.phpstan_config }}
+              run: tools/vendor/bin/phpstan analyse -c "${{ steps.set_phpstan_config.outputs.phpstan_config }}"
