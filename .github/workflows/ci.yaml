@@ -15,20 +15,26 @@ jobs:
             matrix:
                 php-versions: ['8.1', '8.2', '8.3', '8.4', '8.5']
         steps:
-            - { name: Checkout code,        uses: actions/checkout@v4 }
-            - { name: Install PHP,          uses: shivammathur/setup-php@v2, with: { php-version: "${{ matrix.php-versions }}" } }
-            - { name: OS Version,           run: uname -a }
-            - { name: PHP Version,          run: php --version }
-            - { name: Validate composer,    run: composer validate --strict }
-            - { name: Install dependencies, run: composer install }
-            - { name: Install tools,        run: composer install -d tools/ }
-            - { name: Run tests,            run: tools/vendor/bin/simple-phpunit --debug }
+            - name: Checkout code
+              uses: actions/checkout@v4
+            - name: Install PHP
+              uses: shivammathur/setup-php@v2, with: { php-version: ${{ matrix.php-versions }} }
+            - name: PHP Version
+              run: php --version
+            - name: Validate composer
+              run: composer validate --strict
+            - name: Install dependencies
+              run: composer install
+            - name: Install tools
+              run: composer install -d tools/
+            - name: Run tests
+              run: tools/vendor/bin/simple-phpunit --debug
             - name: Determine PHPStan Config based on PHP Version
               id: set_phpstan_config
               run: |
                 PHP_VERSION_MAJOR_MINOR="${{ matrix.php-versions }}"
                 if [[ $(echo "$PHP_VERSION_MAJOR_MINOR >= 8.2" | bc -l) -eq 1 ]]; then
-                    CONFIG_FILE="phpstan.neon.dist" 
+                    CONFIG_FILE="phpstan.neon.dist"
                 else
                     CONFIG_FILE="phpstan-legacy.neon.dist"
                 fi
