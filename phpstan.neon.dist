@@ -10,3 +10,5 @@ parameters:
     ignoreErrors:
         - '#no value type specified in iterable type array#'
         - '#no value type specified in iterable type iterable#'
+        - { message: '#does not specify its types: T#', path: src/DependencyInjection/Configuration.php }
+        - { message: '#Call to method arrayNode#', path: src/DependencyInjection/Configuration.php }

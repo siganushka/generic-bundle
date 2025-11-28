@@ -10,9 +10,6 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class Configuration implements ConfigurationInterface
 {
-    /**
-     * @return TreeBuilder<'array'>
-     */
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('siganushka_generic');
@@ -24,12 +21,8 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    /**
-     * @param ArrayNodeDefinition<TreeBuilder<'array'>> $rootNode
-     */
     private function addDoctrineSection(ArrayNodeDefinition $rootNode): void
     {
-        /* @phpstan-ignore-next-line */
         $rootNode->children()
             ->arrayNode('doctrine')
                 ->addDefaultsIfNotSet()
@@ -78,12 +71,8 @@ class Configuration implements ConfigurationInterface
         ;
     }
 
-    /**
-     * @param ArrayNodeDefinition<TreeBuilder<'array'>> $rootNode
-     */
     private function addSerializerSection(ArrayNodeDefinition $rootNode): void
     {
-        /* @phpstan-ignore-next-line */
         $rootNode->children()
             ->arrayNode('serializer')
                 ->addDefaultsIfNotSet()
