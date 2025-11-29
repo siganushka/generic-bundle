@@ -36,7 +36,7 @@ class GenericEntityRepository extends EntityRepository
 
     public function createQueryBuilderWithOrderBy(string $alias, ?string $indexBy = null, string $orderBy = 'DESC'): QueryBuilder
     {
-        $queryBuilder = parent::createQueryBuilder($alias, $indexBy);
+        $queryBuilder = $this->createQueryBuilder($alias, $indexBy);
 
         if (is_subclass_of($this->getEntityName(), SortableInterface::class)) {
             $queryBuilder->addOrderBy(\sprintf('%s.sort', $alias), $orderBy);
