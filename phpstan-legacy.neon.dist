@@ -10,3 +10,4 @@ parameters:
     ignoreErrors:
         - '#no value type specified in iterable type array#'
         - '#no value type specified in iterable type iterable#'
+        - { message: '#contains generic type#', path: src/DependencyInjection/Configuration.php }
