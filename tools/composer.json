@@ -3,10 +3,10 @@
         "friendsofphp/php-cs-fixer": "^3.0",
         "friendsoftwig/twigcs": "^6.0",
         "symfony/phpunit-bridge": "^6.4|^7.0|^8.0",
+        "symfony/dotenv": "^6.4|^7.0|^8.0",
         "phpstan/phpstan": "^2.0",
         "phpstan/extension-installer": "^1.4",
-        "phpstan/phpstan-symfony": "^2.0",
-        "phpstan/phpstan-doctrine": "^2.0"
+        "phpstan/phpstan-symfony": "^2.0"
     },
     "config": {
         "allow-plugins": {
