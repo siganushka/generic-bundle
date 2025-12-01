@@ -5,11 +5,15 @@ declare(strict_types=1);
 namespace Siganushka\GenericBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\Config\Definition\Builder\NodeParentInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class Configuration implements ConfigurationInterface
 {
+    /**
+     * @return TreeBuilder<'array'>
+     */
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('siganushka_generic');
@@ -21,6 +25,9 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
+    /**
+     * @param ArrayNodeDefinition<NodeParentInterface> $rootNode
+     */
     private function addDoctrineSection(ArrayNodeDefinition $rootNode): void
     {
         $rootNode->children()
@@ -71,6 +78,9 @@ class Configuration implements ConfigurationInterface
         ;
     }
 
+    /**
+     * @param ArrayNodeDefinition<NodeParentInterface> $rootNode
+     */
     private function addSerializerSection(ArrayNodeDefinition $rootNode): void
     {
         $rootNode->children()
