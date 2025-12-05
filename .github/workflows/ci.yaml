@@ -21,7 +21,7 @@ jobs:
             - { name: Validate composer,    run: composer validate --strict }
             - { name: Install dependencies, run: composer install }
             - { name: Install tools,        run: composer install -d tools/ }
-            - { name: Run tests,            run: tools/vendor/bin/simple-phpunit -vvv }
+            - { name: Run tests,            run: tools/vendor/bin/simple-phpunit --debug }
             - name: Determine PHPStan Config based on PHP Version
               id: phpstan_config_file
               run: |

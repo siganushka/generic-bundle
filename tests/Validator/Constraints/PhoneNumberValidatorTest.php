@@ -32,10 +32,9 @@ class PhoneNumberValidatorTest extends ConstraintValidatorTestCase
         $constraint = new PhoneNumber();
 
         $this->validator->validate($phoneNumber, $constraint);
-
         $this->buildViolation($constraint->message)
             ->setParameter('{{ value }}', \sprintf('"%s"', $phoneNumber))
-            ->setCode(PhoneNumber::INVALID_ERROR)
+            ->setCode($constraint::INVALID_ERROR)
             ->assertRaised()
         ;
     }
@@ -44,21 +43,29 @@ class PhoneNumberValidatorTest extends ConstraintValidatorTestCase
     {
         yield [null];
         yield [''];
-        yield ['13000000000'];
-        yield ['14000000000'];
-        yield ['15000000000'];
-        yield ['16000000000'];
-        yield ['17000000000'];
-        yield ['18000000000'];
-        yield ['19000000000'];
+        yield ['13912345678'];
+        yield ['18688886666'];
+        yield ['18900001111'];
+        yield ['17012345678'];
+        yield ['13010012002'];
+        yield ['15899887766'];
+        yield ['17301010101'];
+        yield ['19955554444'];
+        yield ['16611223344'];
+        yield ['19877770000'];
     }
 
     public static function invalidPhoneNubmersProvider(): iterable
     {
-        yield ['1'];
-        yield ['11111111111'];
-        yield ['12222222222'];
-        yield ['1333333333a'];
+        yield ['1391234567'];
+        yield ['139123456789'];
+        yield ['11012345678'];
+        yield ['12312345678'];
+        yield ['10000000000'];
+        yield ['1391234567X'];
+        yield ['139 12345678'];
+        yield ['abcdeffg'];
+        yield ['1391234567A'];
     }
 
     protected function createValidator(): PhoneNumberValidator
