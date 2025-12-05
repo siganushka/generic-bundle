@@ -18,13 +18,15 @@ class Semver extends Constraint
         self::INVALID_ERROR => 'INVALID_ERROR',
     ];
 
-    public function __construct(mixed $options = null)
+    public function __construct(?string $message = null, ?array $groups = null, mixed $payload = null)
     {
+        parent::__construct(null, $groups, $payload);
+
+        $this->message = $message ?? $this->message;
+
         if (!class_exists(VersionParser::class)) {
             throw new \LogicException(\sprintf('The "%s" class requires the "Semver" component. Try running "composer require composer/semver".', self::class));
         }
-
-        parent::__construct($options);
     }
 
     public function validatedBy(): string

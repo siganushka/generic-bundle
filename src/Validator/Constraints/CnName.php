@@ -17,6 +17,13 @@ class CnName extends Constraint
         self::INVALID_ERROR => 'INVALID_ERROR',
     ];
 
+    public function __construct(?string $message = null, ?array $groups = null, mixed $payload = null)
+    {
+        parent::__construct(null, $groups, $payload);
+
+        $this->message = $message ?? $this->message;
+    }
+
     public function validatedBy(): string
     {
         return static::class.'Validator';
