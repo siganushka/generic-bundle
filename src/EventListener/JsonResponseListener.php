@@ -39,9 +39,9 @@ class JsonResponseListener implements EventSubscriberInterface
     {
         return [
             KernelEvents::RESPONSE => [
-                ['onKernelResponse'],
                 // priority higher than "nelmio/cors-bundle" CourtListener::onKernelResponse.
-                ['onKernelResponseForNoContent', 10],
+                ['onKernelResponseForNoContent', 4],
+                ['onKernelResponse', -4],
             ],
         ];
     }
