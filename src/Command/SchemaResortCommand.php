@@ -54,7 +54,9 @@ class SchemaResortCommand extends Command
         $platform = $connection->getDatabasePlatform();
         $introspectSchema = $connection->createSchemaManager()->introspectSchema();
 
-        $columnName = fn (Column $column): string => $column->getObjectName()->getIdentifier()->getValue();
+        $columnName = fn (Column $column): string => method_exists($column, 'getObjectName')
+            ? $column->getObjectName()->getIdentifier()->getValue()
+            : $column->getName();
 
         $sqls = [];
         foreach ($allMetadata as $metadata) {
