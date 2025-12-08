@@ -45,7 +45,8 @@ class SchemaResortListener
      */
     private function getFirstColumnNames(Table $table): array
     {
-        $unqualifiedName = fn (UnqualifiedName $name): string => $name->getIdentifier()->getValue();
+        /** @param UnqualifiedName $name */
+        $unqualifiedName = fn ($name): string => $name->getIdentifier()->getValue();
 
         // Compatible Doctrine DBAL 4.2
         $primaryKeyNames = method_exists($table, 'getPrimaryKeyConstraint')
