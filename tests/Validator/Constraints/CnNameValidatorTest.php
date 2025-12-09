@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\Tests\Validator\Constraints;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Siganushka\GenericBundle\Validator\Constraints\CnName;
 use Siganushka\GenericBundle\Validator\Constraints\CnNameValidator;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
@@ -13,9 +14,7 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
  */
 class CnNameValidatorTest extends ConstraintValidatorTestCase
 {
-    /**
-     * @dataProvider validCnNameProvider
-     */
+    #[DataProvider('validCnNameProvider')]
     public function testValid(?string $cnName): void
     {
         $constraint = new CnName();
@@ -24,9 +23,7 @@ class CnNameValidatorTest extends ConstraintValidatorTestCase
         $this->assertNoViolation();
     }
 
-    /**
-     * @dataProvider invalidCnNameProvider
-     */
+    #[DataProvider('invalidCnNameProvider')]
     public function testInvalid(string $cnName): void
     {
         $constraint = new CnName();

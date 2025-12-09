@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\Tests\EventListener;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\EventListener\JsonRequestListener;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,9 +13,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 final class JsonRequestListenerTest extends TestCase
 {
-    /**
-     * @dataProvider requestProvider
-     */
+    #[DataProvider('requestProvider')]
     public function testAll(string $method, array $server, ?string $content, array $parameter): void
     {
         $kernel = $this->createMock(HttpKernelInterface::class);

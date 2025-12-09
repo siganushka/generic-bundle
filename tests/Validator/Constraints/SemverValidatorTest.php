@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\Tests\Validator\Constraints;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Siganushka\GenericBundle\Validator\Constraints\Semver;
 use Siganushka\GenericBundle\Validator\Constraints\SemverValidator;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
@@ -13,9 +14,7 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
  */
 class SemverValidatorTest extends ConstraintValidatorTestCase
 {
-    /**
-     *  @dataProvider validSemversProvider
-     */
+    #[DataProvider('validSemversProvider')]
     public function testValid(?string $version): void
     {
         $constraint = new Semver();
@@ -24,9 +23,7 @@ class SemverValidatorTest extends ConstraintValidatorTestCase
         $this->assertNoViolation();
     }
 
-    /**
-     * @dataProvider invalidSemversProvider
-     */
+    #[DataProvider('invalidSemversProvider')]
     public function testInvalid(string $version): void
     {
         $constraint = new Semver();

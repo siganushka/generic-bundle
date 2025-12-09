@@ -45,8 +45,8 @@ class MoneyTypeExtension extends AbstractTypeExtension
             $formatter->setAttribute(\NumberFormatter::ROUNDING_MODE, \NumberFormatter::ROUND_HALFUP);
             $formatter->setAttribute(\NumberFormatter::GROUPING_USED, 0);
 
-            $messageTemplate = 'This value should be less than or equal to {{ formatted_value }}.';
-            $messageParameters = ['{{ formatted_value }}' => $formatter->format(self::INT32_MAX / $options['divisor'])];
+            $messageTemplate = 'This value should be less than or equal to {{ compared_value }}.';
+            $messageParameters = ['{{ compared_value }}' => $formatter->format(self::INT32_MAX / $options['divisor'])];
 
             $message = $this->translator
                 ? $this->translator->trans($messageTemplate, $messageParameters, 'validators')

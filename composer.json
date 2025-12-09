@@ -12,20 +12,20 @@
         }
     ],
     "require": {
-        "php": ">=8.1",
-        "symfony/framework-bundle": "^6.4|^7.0|^8.0"
+        "php": ">=8.2",
+        "symfony/framework-bundle": "^7.4|^8.0"
     },
     "require-dev": {
         "composer/semver": "^3.0",
-        "knplabs/knp-components": "^4.4|^5.0",
-        "siganushka/doctrine-contracts": "^1.1",
-        "symfony/form": "^6.4|^7.0|^8.0",
-        "symfony/http-foundation": "^6.4|^7.0|^8.0",
-        "symfony/intl": "^6.4|^7.0|^8.0",
-        "symfony/serializer": "^6.4|^7.0|^8.0",
-        "symfony/translation": "^6.4|^7.0|^8.0",
-        "symfony/validator": "^6.4|^7.0|^8.0",
-        "twig/twig": "^3.12"
+        "knplabs/knp-components": "^5.0",
+        "siganushka/doctrine-contracts": "dev-main",
+        "symfony/form": "^7.4|^8.0",
+        "symfony/http-foundation": "^7.4|^8.0",
+        "symfony/intl": "^7.4|^8.0",
+        "symfony/serializer": "^7.4|^8.0",
+        "symfony/translation": "^7.4|^8.0",
+        "symfony/validator": "^7.4|^8.0",
+        "twig/twig": "^3.20"
     },
     "autoload": {
         "psr-4": {
@@ -35,11 +35,6 @@
     "autoload-dev": {
         "psr-4": {
             "Siganushka\\GenericBundle\\Tests\\": "tests/"
-        }
-    },
-    "extra": {
-        "symfony": {
-            "allow-contrib": "true"
         }
     },
     "config": {

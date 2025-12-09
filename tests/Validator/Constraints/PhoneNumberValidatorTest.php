@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\Tests\Validator\Constraints;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Siganushka\GenericBundle\Validator\Constraints\PhoneNumber;
 use Siganushka\GenericBundle\Validator\Constraints\PhoneNumberValidator;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
@@ -13,9 +14,7 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
  */
 class PhoneNumberValidatorTest extends ConstraintValidatorTestCase
 {
-    /**
-     * @dataProvider validPhoneNubmersProvider
-     */
+    #[DataProvider('validPhoneNubmersProvider')]
     public function testValid(?string $phoneNumber): void
     {
         $constraint = new PhoneNumber();
@@ -24,9 +23,7 @@ class PhoneNumberValidatorTest extends ConstraintValidatorTestCase
         $this->assertNoViolation();
     }
 
-    /**
-     * @dataProvider invalidPhoneNubmersProvider
-     */
+    #[DataProvider('invalidPhoneNubmersProvider')]
     public function testInvalid(string $phoneNumber): void
     {
         $constraint = new PhoneNumber();

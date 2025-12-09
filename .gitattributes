@@ -7,6 +7,5 @@
 /.gitignore export-ignore
 /.php-cs-fixer.dist.php export-ignore
 /.twig_cs.dist.php export-ignore
-/phpstan-legacy.neon.dist export-ignore
 /phpstan.neon.dist export-ignore
 /phpunit.xml.dist export-ignore
