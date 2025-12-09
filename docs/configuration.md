@@ -9,7 +9,7 @@
 
 siganushka_generic:
     doctrine:
-        table_prefix: app_ # 可选，默认值为 null 时不添加表前缀
+        table_prefix: app_ # 默认值为 null
 ```
 
 ### Doctrine 实体覆盖
@@ -35,7 +35,7 @@ siganushka_generic:
 
 siganushka_generic:
     doctrine:
-        schema_resort: true # 可选，默值开启时自动排序，禁用后将按照 Doctrine 默认排序
+        schema_resort: true # 默认值为 true
 ```
 
 ### Serializer 序列化器
@@ -45,7 +45,7 @@ siganushka_generic:
 
 siganushka_generic:
     serializer:
-        entity_mapping: false               # 自动化对实体按照一定规则添加序列化组，默认关闭
+        entity_mapping: false               # 为实体（field|getter|hasser|isser）添加序列化组，默认关闭
         form_error_normalizer: false        # 表单错误序列化器，默认关闭
         knp_pagination_normalizer: false    # 分页数据序列化器，默认关闭
 ```
