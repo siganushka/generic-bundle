@@ -11,9 +11,7 @@ use Siganushka\GenericBundle\Validator\Constraints\PhoneNumber;
 
 class User
 {
-    /*
-     * @PhoneNumber
-     */
+    #[PhoneNumber]
     private ?string $phoneNumber = null;
 }
 ```
@@ -29,9 +27,7 @@ use Siganushka\GenericBundle\Validator\Constraints\CnName;
 
 class User
 {
-    /*
-     * @CnName
-     */
+    #[CnName]
     private ?string $realName = null;
 }
 ```
@@ -47,9 +43,7 @@ use Siganushka\GenericBundle\Validator\Constraints\Semver;
 
 class Client
 {
-    /*
-     * @Semver
-     */
+    #[Semver]
     private ?string $versionName = null;
 }
 ```
