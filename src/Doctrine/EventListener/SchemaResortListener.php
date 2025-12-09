@@ -45,21 +45,12 @@ class SchemaResortListener
      */
     private function getFirstColumnNames(Table $table): array
     {
-        /** @param UnqualifiedName $name */
-        $unqualifiedName = fn ($name): string => $name->getIdentifier()->getValue();
-
-        // Compatible Doctrine DBAL 4.2
-        $primaryKeyNames = method_exists($table, 'getPrimaryKeyConstraint')
-            ? array_map($unqualifiedName, $table->getPrimaryKeyConstraint()?->getColumnNames() ?? [])
-            : $table->getPrimaryKey()?->getColumns() ?? [];
+        $unqualifiedName = fn (UnqualifiedName $name): string => $name->getIdentifier()->getValue();
+        $primaryKeyNames = array_map($unqualifiedName, $table->getPrimaryKeyConstraint()?->getColumnNames() ?? []);
 
         $foreignKeyNames = [];
         foreach ($table->getForeignKeys() as $item) {
-            $foreignColumns = method_exists($item, 'getReferencingColumnNames')
-                ? array_map($unqualifiedName, $item->getReferencingColumnNames())
-                : $item->getLocalColumns();
-
-            array_push($foreignKeyNames, ...$foreignColumns);
+            array_push($foreignKeyNames, ...array_map($unqualifiedName, $item->getReferencingColumnNames()));
         }
 
         return [...$primaryKeyNames, ...$foreignKeyNames];

@@ -11,5 +11,3 @@ parameters:
         - '#no value type specified in iterable type array#'
         - '#no value type specified in iterable type iterable#'
         - '#does not specify its types: TData#'
-        - { message: '#Call to function method_exists#', path: src/Command/SchemaResortCommand.php }
-        - { message: '#Call to function method_exists#', path: src/Doctrine/EventListener/SchemaResortListener.php }
