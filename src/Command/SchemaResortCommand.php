@@ -22,9 +22,13 @@ class SchemaResortCommand extends Command
 {
     private readonly EntityManagerInterface $entityManager;
 
-    public function __construct(ManagerRegistry $managerRegistry)
+    public function __construct(?ManagerRegistry $managerRegistry = null)
     {
         parent::__construct();
+
+        if (null === $managerRegistry) {
+            throw new \LogicException('The ManagerRegistry is required.');
+        }
 
         $entityManager = $managerRegistry->getManager();
         if (!$entityManager instanceof EntityManagerInterface) {

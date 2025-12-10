@@ -38,7 +38,7 @@ return static function (ContainerConfigurator $container): void {
             ->tag('doctrine.event_listener', ['event' => ToolEvents::postGenerateSchemaTable])
 
         ->set('siganushka_generic.doctrine.schema_resort_command', SchemaResortCommand::class)
-            ->arg('$managerRegistry', service('doctrine'))
+            ->arg('$managerRegistry', service('doctrine')->nullOnInvalid())
             ->tag('console.command')
     ;
 };
