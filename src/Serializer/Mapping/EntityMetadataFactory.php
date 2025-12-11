@@ -16,9 +16,7 @@ use Siganushka\Contracts\Doctrine\VersionableInterface;
 use Symfony\Component\Serializer\Mapping\ClassMetadataInterface;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
 
-use function Symfony\Component\String\u;
-
-class EntityClassMetadataFactory implements ClassMetadataFactoryInterface
+class EntityMetadataFactory implements ClassMetadataFactoryInterface
 {
     public const FIRST_ATTRIBUTES = [
         ResourceInterface::class => 'id',
@@ -62,33 +60,12 @@ class EntityClassMetadataFactory implements ClassMetadataFactoryInterface
         $attributesToSort = [];
         $index = 0;
 
-        $nameParts = explode('\\', $entityClass);
-        $shortName = array_pop($nameParts);
-        $resourceName = u($shortName)->snake();
-
         foreach ($attributesMetadata as $attribute => $attributeMetadata) {
             $attributesToSort[$attribute] = match (true) {
                 \array_key_exists($attribute, $firstAttributes) => $firstAttributes[$attribute] - 100,
                 \array_key_exists($attribute, $lastAttributes) => $lastAttributes[$attribute] + 100,
                 default => $index++,
             };
-
-            if ($attributeMetadata->isIgnored() || \count($attributeMetadata->getGroups())) {
-                continue;
-            }
-
-            /*
-             * Group naming strategy:
-             *
-             * field|getter|hasser|isser    => item & collection
-             * association                  => {entity_name}:{association_name}
-             */
-            if ($entityMetadata->hasAssociation($attribute)) {
-                $attributeMetadata->addGroup(\sprintf('%s:%s', $resourceName, u($attribute)->snake()));
-            } else {
-                $attributeMetadata->addGroup('item');
-                $attributeMetadata->addGroup('collection');
-            }
         }
 
         array_multisort($attributesToSort, \SORT_ASC, \SORT_NUMERIC, $attributesMetadata);

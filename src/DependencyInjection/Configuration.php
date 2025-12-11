@@ -87,7 +87,6 @@ class Configuration implements ConfigurationInterface
             ->arrayNode('serializer')
                 ->addDefaultsIfNotSet()
                 ->children()
-                    ->booleanNode('entity_class_metadata_factory')->defaultFalse()->end()
                     ->booleanNode('form_error_normalizer')->defaultFalse()->end()
                     ->booleanNode('knp_pagination_normalizer')->defaultFalse()->end()
                 ->end()

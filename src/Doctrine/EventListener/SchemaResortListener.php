@@ -9,7 +9,7 @@ use Doctrine\DBAL\Schema\Name\UnqualifiedName;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Tools\Event\GenerateSchemaTableEventArgs;
-use Siganushka\GenericBundle\Serializer\Mapping\EntityClassMetadataFactory;
+use Siganushka\GenericBundle\Serializer\Mapping\EntityMetadataFactory;
 
 class SchemaResortListener
 {
@@ -64,7 +64,7 @@ class SchemaResortListener
     private function getLastColumnNames(ClassMetadata $metadata): array
     {
         $columnNames = [];
-        foreach (EntityClassMetadataFactory::LAST_ATTRIBUTES as $interface => $attribute) {
+        foreach (EntityMetadataFactory::LAST_ATTRIBUTES as $interface => $attribute) {
             if ($metadata->getReflectionClass()->implementsInterface($interface) && \array_key_exists($attribute, $metadata->fieldMappings)) {
                 $columnNames[] = $metadata->fieldMappings[$attribute]->columnName;
             }

@@ -8,13 +8,13 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
-use Siganushka\GenericBundle\Serializer\Mapping\EntityClassMetadataFactory;
+use Siganushka\GenericBundle\Serializer\Mapping\EntityMetadataFactory;
 use Siganushka\GenericBundle\Tests\Fixtures\Bar;
 use Siganushka\GenericBundle\Tests\Fixtures\Foo;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
 use Symfony\Component\Serializer\Mapping\Loader\AttributeLoader;
 
-class EntityClassMetadataFactoryTest extends TestCase
+class EntityMetadataFactoryTest extends TestCase
 {
     public function testAll(): void
     {
@@ -44,21 +44,11 @@ class EntityClassMetadataFactoryTest extends TestCase
             ->method('getManagerForClass')
             ->willReturnCallback(fn (string $class) => \in_array($class, [Foo::class, Bar::class]) ? $objectManager : null);
 
-        $factory = new EntityClassMetadataFactory(new ClassMetadataFactory(new AttributeLoader()), $managerRegistry);
-        static::assertTrue($factory->hasMetadataFor(Foo::class));
-        static::assertTrue($factory->hasMetadataFor(Bar::class));
+        $classMetadataFactory = new ClassMetadataFactory(new AttributeLoader());
+        static::assertSame(['x', 'y'], array_keys($classMetadataFactory->getMetadataFor(Foo::class)->getAttributesMetadata()));
 
-        $fooMetadata = $factory->getMetadataFor(Foo::class)->getAttributesMetadata();
-        static::assertSame([], $fooMetadata['x']->getGroups());
-        static::assertSame([], $fooMetadata['y']->getGroups());
-
-        $barMetadata = $factory->getMetadataFor(Bar::class)->getAttributesMetadata();
-        static::assertSame(['group_x'], $barMetadata['x']->getGroups());
-        static::assertSame(['item', 'collection'], $barMetadata['y']->getGroups());
-        static::assertSame(['item', 'collection'], $barMetadata['custom']->getGroups());
-        static::assertSame(['group_custom'], $barMetadata['customWithGroups']->getGroups());
-        static::assertSame(['bar:test_snake_name'], $barMetadata['testSnakeName']->getGroups());
-        static::assertSame([], $barMetadata['testIgnore']->getGroups());
-        static::assertTrue($barMetadata['testIgnore']->isIgnored());
+        $entityMetadataFactory = new EntityMetadataFactory($classMetadataFactory, $managerRegistry);
+        static::assertTrue($entityMetadataFactory->hasMetadataFor(Foo::class));
+        static::assertTrue($entityMetadataFactory->hasMetadataFor(Bar::class));
     }
 }

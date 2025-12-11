@@ -38,6 +38,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'siganushka_generic.form.button_type_extension',
             'siganushka_generic.form.choice_type_extension',
             'siganushka_generic.form.collection_type_extension',
+            'siganushka_generic.serializer.entity_metadata_factory',
             'siganushka_generic.serializer.dump_serialization_command',
         ], $container->getServiceIds());
 
@@ -82,6 +83,17 @@ final class SiganushkaGenericExtensionTest extends TestCase
         static::assertInstanceOf(TaggedIteratorArgument::class, $formTypes);
         static::assertSame('form.type', $formTypes->getTag());
 
+        $entityMapping = $container->getDefinition('siganushka_generic.serializer.entity_metadata_factory');
+        static::assertSame(['serializer.mapping.class_metadata_factory', null, 0], $entityMapping->getDecoratedService());
+
+        /** @var Reference */
+        $decorated = $entityMapping->getArgument('$decorated');
+        static::assertSame('siganushka_generic.serializer.entity_metadata_factory.inner', $decorated->__toString());
+
+        /** @var Reference */
+        $registry = $entityMapping->getArgument('$registry');
+        static::assertSame('doctrine', $registry->__toString());
+
         $dumpSerializationCommand = $container->getDefinition('siganushka_generic.serializer.dump_serialization_command');
         static::assertTrue($dumpSerializationCommand->hasTag('console.command'));
 
@@ -107,7 +119,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
                 ],
             ],
             'serializer' => [
-                'entity_class_metadata_factory' => true,
                 'form_error_normalizer' => true,
                 'knp_pagination_normalizer' => true,
             ],
@@ -133,7 +144,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'siganushka_generic.form.button_type_extension',
             'siganushka_generic.form.choice_type_extension',
             'siganushka_generic.form.collection_type_extension',
-            'siganushka_generic.serializer.entity_class_metadata_factory',
+            'siganushka_generic.serializer.entity_metadata_factory',
             'siganushka_generic.serializer.dump_serialization_command',
             'siganushka_generic.serializer.form_error_normalizer',
             'siganushka_generic.serializer.knp_pagination_normalizer',
@@ -154,17 +165,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
         /** @var Reference */
         $requestStack = $csrfTypeExtension->getArgument('$requestStack');
         static::assertSame('request_stack', $requestStack->__toString());
-
-        $entityMapping = $container->getDefinition('siganushka_generic.serializer.entity_class_metadata_factory');
-        static::assertSame(['serializer.mapping.class_metadata_factory', null, 0], $entityMapping->getDecoratedService());
-
-        /** @var Reference */
-        $decorated = $entityMapping->getArgument('$decorated');
-        static::assertSame('siganushka_generic.serializer.entity_class_metadata_factory.inner', $decorated->__toString());
-
-        /** @var Reference */
-        $registry = $entityMapping->getArgument('$registry');
-        static::assertSame('doctrine', $registry->__toString());
 
         $formErrorNormalizer = $container->getDefinition('siganushka_generic.serializer.form_error_normalizer');
         static::assertTrue($formErrorNormalizer->hasTag('serializer.normalizer'));
