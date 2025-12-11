@@ -38,6 +38,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'siganushka_generic.form.button_type_extension',
             'siganushka_generic.form.choice_type_extension',
             'siganushka_generic.form.collection_type_extension',
+            'siganushka_generic.serializer.dump_serialization_command',
         ], $container->getServiceIds());
 
         $jsonRequestListener = $container->getDefinition('siganushka_generic.json_request_listener');
@@ -80,6 +81,19 @@ final class SiganushkaGenericExtensionTest extends TestCase
         $formTypes = $formController->getArgument('$formTypes');
         static::assertInstanceOf(TaggedIteratorArgument::class, $formTypes);
         static::assertSame('form.type', $formTypes->getTag());
+
+        $dumpSerializationCommand = $container->getDefinition('siganushka_generic.serializer.dump_serialization_command');
+        static::assertTrue($dumpSerializationCommand->hasTag('console.command'));
+
+        /** @var Reference */
+        $managerRegistry = $dumpSerializationCommand->getArgument('$managerRegistry');
+        static::assertSame('doctrine', $managerRegistry->__toString());
+
+        /** @var Reference */
+        $metadataFactory = $dumpSerializationCommand->getArgument('$metadataFactory');
+        static::assertSame('serializer.mapping.class_metadata_factory', $metadataFactory->__toString());
+
+        static::assertSame('%kernel.project_dir%/config/serializer', $dumpSerializationCommand->getArgument('$serializationDir'));
     }
 
     public function testWithConfigs(): void
@@ -120,6 +134,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'siganushka_generic.form.choice_type_extension',
             'siganushka_generic.form.collection_type_extension',
             'siganushka_generic.serializer.entity_class_metadata_factory',
+            'siganushka_generic.serializer.dump_serialization_command',
             'siganushka_generic.serializer.form_error_normalizer',
             'siganushka_generic.serializer.knp_pagination_normalizer',
         ], $container->getServiceIds());
