@@ -26,7 +26,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
 
         static::assertSame([
             'service_container',
-            'siganushka_generic.json_request_listener',
             'siganushka_generic.json_response_listener',
             'siganushka_generic.doctrine.nestable_listener',
             'siganushka_generic.doctrine.timestampable_listener',
@@ -41,9 +40,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'siganushka_generic.serializer.entity_metadata_factory',
             'siganushka_generic.serializer.dump_serialization_command',
         ], $container->getServiceIds());
-
-        $jsonRequestListener = $container->getDefinition('siganushka_generic.json_request_listener');
-        static::assertTrue($jsonRequestListener->hasTag('kernel.event_subscriber'));
 
         $jsonResponseListener = $container->getDefinition('siganushka_generic.json_response_listener');
         static::assertTrue($jsonResponseListener->hasTag('kernel.event_subscriber'));
@@ -131,7 +127,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
 
         static::assertSame([
             'service_container',
-            'siganushka_generic.json_request_listener',
             'siganushka_generic.json_response_listener',
             'siganushka_generic.doctrine.mapping_override_listener',
             'siganushka_generic.doctrine.table_prefix_listener',
