@@ -6,7 +6,6 @@ namespace Siganushka\GenericBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -23,26 +22,10 @@ class JsonResponseListener implements EventSubscriberInterface
         }
     }
 
-    /**
-     * @see https://github.com/symfony/symfony/issues/29326
-     * @see https://github.com/nodejs/node/issues/24580
-     */
-    public function onKernelResponseForNoContent(ResponseEvent $event): void
-    {
-        $response = $event->getResponse();
-        if ($response instanceof JsonResponse && Response::HTTP_NO_CONTENT === $response->getStatusCode()) {
-            $event->setResponse(new Response(status: Response::HTTP_NO_CONTENT));
-        }
-    }
-
     public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::RESPONSE => [
-                // priority higher than "nelmio/cors-bundle" CourtListener::onKernelResponse.
-                ['onKernelResponseForNoContent', 4],
-                ['onKernelResponse', -4],
-            ],
+            KernelEvents::RESPONSE => 'onKernelResponse',
         ];
     }
 }

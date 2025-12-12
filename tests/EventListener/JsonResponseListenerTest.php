@@ -8,7 +8,6 @@ use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\EventListener\JsonResponseListener;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
@@ -29,15 +28,5 @@ final class JsonResponseListenerTest extends TestCase
 
         static::assertSame(\JSON_UNESCAPED_UNICODE, $response->getEncodingOptions() & \JSON_UNESCAPED_UNICODE);
         static::assertSame('{"message":"你好！"}', $response->getContent());
-
-        $noContentJsonResponse = new JsonResponse(null, JsonResponse::HTTP_NO_CONTENT);
-
-        $event = new ResponseEvent($kernel, $request, HttpKernelInterface::MAIN_REQUEST, $noContentJsonResponse);
-        $listener->onKernelResponseForNoContent($event);
-
-        $response = $event->getResponse();
-        static::assertNotInstanceOf(JsonResponse::class, $response);
-        static::assertInstanceOf(Response::class, $response);
-        static::assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
     }
 }
