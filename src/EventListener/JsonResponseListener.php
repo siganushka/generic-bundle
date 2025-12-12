@@ -25,7 +25,9 @@ class JsonResponseListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::RESPONSE => 'onKernelResponse',
+            // Priority higher than ResponseListener::onKernelResponse() in HttpKernel.
+            // @see https://github.com/siganushka/generic-bundle/commit/ab8f74c5e73ae1319421c738ce8e2f70c7db427f
+            KernelEvents::RESPONSE => ['onKernelResponse', 8],
         ];
     }
 }
