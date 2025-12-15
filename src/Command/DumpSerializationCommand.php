@@ -86,7 +86,7 @@ class DumpSerializationCommand extends Command
         $entity = $input->getArgument('entity');
         if ($entity && !empty($entity)) {
             $entityMetadata = $this->managerRegistry->getManagerForClass($entity)?->getClassMetadata($entity);
-            if (!$entityMetadata instanceof ClassMetadata) {
+            if (!$entityMetadata) {
                 throw new \InvalidArgumentException(\sprintf('Class "%s" does not exist', $entity));
             }
 

@@ -22,18 +22,12 @@ class SchemaResortCommand extends Command
 {
     private readonly EntityManagerInterface $entityManager;
 
-    public function __construct(?ManagerRegistry $managerRegistry = null)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
         parent::__construct();
 
-        if (null === $managerRegistry) {
-            throw new \LogicException('The ManagerRegistry is required.');
-        }
-
         $entityManager = $managerRegistry->getManager();
-        if (!$entityManager instanceof EntityManagerInterface) {
-            throw new \LogicException('The default Doctrine manager is not an ORM EntityManagerInterface.');
-        }
+        \assert($entityManager instanceof EntityManagerInterface);
 
         $this->entityManager = $entityManager;
     }

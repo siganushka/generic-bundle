@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Siganushka\GenericBundle;
 
 use Siganushka\GenericBundle\DependencyInjection\Compiler\DoctrineResolveTargetEntityPass;
+use Siganushka\GenericBundle\DependencyInjection\Compiler\ExtensionPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -14,6 +15,7 @@ class SiganushkaGenericBundle extends Bundle
     {
         parent::build($container);
 
+        $container->addCompilerPass(new ExtensionPass());
         $container->addCompilerPass(new DoctrineResolveTargetEntityPass());
     }
 
