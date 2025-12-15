@@ -12,6 +12,7 @@ class ExtensionPass implements CompilerPassInterface
     public const DEPENDENCY_MAPPING = [
         'siganushka_generic.doctrine.schema_resort_command' => 'doctrine',
         'siganushka_generic.serializer.dump_serialization_command' => 'doctrine',
+        'siganushka_generic.serializer.entity_metadata_factory' => 'doctrine',
         'siganushka_generic.knp_paginator_decorator' => 'knp_paginator',
     ];
 
