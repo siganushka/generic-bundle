@@ -27,6 +27,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
         static::assertSame([
             'service_container',
             'siganushka_generic.json_response_listener',
+            'siganushka_generic.knp_paginator_decorator',
             'siganushka_generic.doctrine.nestable_listener',
             'siganushka_generic.doctrine.timestampable_listener',
             'siganushka_generic.doctrine.deletable_listener',
@@ -43,6 +44,18 @@ final class SiganushkaGenericExtensionTest extends TestCase
 
         $jsonResponseListener = $container->getDefinition('siganushka_generic.json_response_listener');
         static::assertTrue($jsonResponseListener->hasTag('kernel.event_subscriber'));
+
+        $knpPaginatorDecorator = $container->getDefinition('siganushka_generic.knp_paginator_decorator');
+        static::assertSame(['knp_paginator', null, 0], $knpPaginatorDecorator->getDecoratedService());
+        static::assertSame('%knp_paginator.page_name%', $knpPaginatorDecorator->getArgument('$pageName'));
+
+        /** @var Reference */
+        $decorated = $knpPaginatorDecorator->getArgument('$decorated');
+        static::assertSame('siganushka_generic.knp_paginator_decorator.inner', $decorated->__toString());
+
+        /** @var Reference */
+        $requestStack = $knpPaginatorDecorator->getArgument('$requestStack');
+        static::assertSame('request_stack', $requestStack->__toString());
 
         $nestableListener = $container->getDefinition('siganushka_generic.doctrine.nestable_listener');
         static::assertSame([
@@ -128,6 +141,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
         static::assertSame([
             'service_container',
             'siganushka_generic.json_response_listener',
+            'siganushka_generic.knp_paginator_decorator',
             'siganushka_generic.doctrine.mapping_override_listener',
             'siganushka_generic.doctrine.table_prefix_listener',
             'siganushka_generic.doctrine.nestable_listener',
