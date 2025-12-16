@@ -28,6 +28,8 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'service_container',
             'siganushka_generic.json_response_listener',
             'siganushka_generic.knp_paginator_decorator',
+            'siganushka_generic.twig_extension',
+            'siganushka_generic.twig_runtime',
             'siganushka_generic.doctrine.nestable_listener',
             'siganushka_generic.doctrine.timestampable_listener',
             'siganushka_generic.doctrine.deletable_listener',
@@ -56,6 +58,12 @@ final class SiganushkaGenericExtensionTest extends TestCase
         /** @var Reference */
         $requestStack = $knpPaginatorDecorator->getArgument('$requestStack');
         static::assertSame('request_stack', $requestStack->__toString());
+
+        $twigExtension = $container->getDefinition('siganushka_generic.twig_extension');
+        static::assertTrue($twigExtension->hasTag('twig.extension'));
+
+        $twigRuntime = $container->getDefinition('siganushka_generic.twig_runtime');
+        static::assertTrue($twigRuntime->hasTag('twig.runtime'));
 
         $nestableListener = $container->getDefinition('siganushka_generic.doctrine.nestable_listener');
         static::assertSame([
@@ -142,6 +150,8 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'service_container',
             'siganushka_generic.json_response_listener',
             'siganushka_generic.knp_paginator_decorator',
+            'siganushka_generic.twig_extension',
+            'siganushka_generic.twig_runtime',
             'siganushka_generic.doctrine.mapping_override_listener',
             'siganushka_generic.doctrine.table_prefix_listener',
             'siganushka_generic.doctrine.nestable_listener',

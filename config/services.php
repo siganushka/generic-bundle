@@ -6,6 +6,8 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Siganushka\GenericBundle\Decorator\DecoratingKnpPaginator;
 use Siganushka\GenericBundle\EventListener\JsonResponseListener;
+use Siganushka\GenericBundle\Twig\Extension\GenericExtension;
+use Siganushka\GenericBundle\Twig\Runtime\GenericExtensionRuntime;
 
 return static function (ContainerConfigurator $container): void {
     $container->services()
@@ -17,5 +19,11 @@ return static function (ContainerConfigurator $container): void {
             ->arg('$requestStack', service('request_stack'))
             ->arg('$pageName', param('knp_paginator.page_name'))
             ->decorate('knp_paginator')
+
+        ->set('siganushka_generic.twig_extension', GenericExtension::class)
+            ->tag('twig.extension')
+
+        ->set('siganushka_generic.twig_runtime', GenericExtensionRuntime::class)
+            ->tag('twig.runtime')
     ;
 };
