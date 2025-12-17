@@ -52,7 +52,7 @@ class SchemaResortCommand extends Command
         $platform = $connection->getDatabasePlatform();
         $introspectSchema = $connection->createSchemaManager()->introspectSchema();
 
-        $columnName = fn (Column $column): string => $column->getObjectName()->getIdentifier()->getValue();
+        $columnNameCallback = fn (Column $column): string => $column->getObjectName()->getIdentifier()->getValue();
 
         $sqls = [];
         foreach ($allMetadata as $metadata) {
@@ -70,8 +70,8 @@ class SchemaResortCommand extends Command
                 continue;
             }
 
-            $columnNames = array_map($columnName, $table->getColumns());
-            $introspectColumnNames = array_map($columnName, $introspectTable->getColumns());
+            $columnNames = array_map($columnNameCallback, $table->getColumns());
+            $introspectColumnNames = array_map($columnNameCallback, $introspectTable->getColumns());
 
             if (\count($columnNames) !== \count($introspectColumnNames)) {
                 throw new \RuntimeException('Please run doctrine:schema:update to update the database schema and try again.');
