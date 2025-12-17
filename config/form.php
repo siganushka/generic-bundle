@@ -16,6 +16,7 @@ return static function (ContainerConfigurator $container): void {
         ->set('siganushka_generic.form.controller', FormController::class)
             ->arg('$formTypes', tagged_iterator('form.type'))
             ->tag('controller.service_arguments')
+            ->tag('routing.controller')
 
         ->set('siganushka_generic.form.csrf_type_extension', CsrfTypeExtension::class)
             ->arg('$requestStack', service('request_stack'))
