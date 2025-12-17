@@ -24,12 +24,17 @@ class DecoratingKnpPaginator implements PaginatorInterface
     public function paginate(mixed $target, ?int $page = null, ?int $limit = null, array $options = []): PaginationInterface
     {
         $request = $this->requestStack->getCurrentRequest();
-        if ($request && $request->query->has($this->pageName)) {
+        if ($request?->query->has($this->pageName)) {
             $page ??= $request->query->getInt($this->pageName);
         }
 
-        if ($request && $request->query->has($this->limitName)) {
+        if ($request?->query->has($this->limitName)) {
             $limit ??= $request->query->getInt($this->limitName);
+        }
+
+        // Use "limit" instead of "size", but maintain compatibility for now.
+        if ($request?->query->has('size')) {
+            $limit ??= $request->query->getInt('size');
         }
 
         /** @var int */

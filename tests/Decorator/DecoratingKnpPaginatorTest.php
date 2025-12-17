@@ -26,7 +26,13 @@ class DecoratingKnpPaginatorTest extends TestCase
         $requestStack2 = $this->createMock(RequestStack::class);
         $requestStack2->expects(static::any())
             ->method('getCurrentRequest')
-            ->willReturn(Request::create('/', parameters: ['page' => 3, 'limit' => 30]))
+            ->willReturn(Request::create('/', parameters: ['page' => 2, 'limit' => 20]))
+        ;
+
+        $requestStack3 = $this->createMock(RequestStack::class);
+        $requestStack3->expects(static::any())
+            ->method('getCurrentRequest')
+            ->willReturn(Request::create('/', parameters: ['page' => 3, 'size' => 30]))
         ;
 
         $decorated = new Paginator($eventDispatcher, new RequestArgumentAccess($requestStack1));
@@ -48,11 +54,17 @@ class DecoratingKnpPaginatorTest extends TestCase
         $paginator = new DecoratingKnpPaginator($decorated, $requestStack2);
 
         $pagination = $paginator->paginate([]);
+        static::assertSame(2, $pagination->getCurrentPageNumber());
+        static::assertSame(20, $pagination->getItemNumberPerPage());
+
+        $pagination = $paginator->paginate([], options: [DecoratingKnpPaginator::LIMIT_THRESHOLD => 15]);
+        static::assertSame(2, $pagination->getCurrentPageNumber());
+        static::assertSame(15, $pagination->getItemNumberPerPage());
+
+        $paginator = new DecoratingKnpPaginator($decorated, $requestStack3);
+
+        $pagination = $paginator->paginate([]);
         static::assertSame(3, $pagination->getCurrentPageNumber());
         static::assertSame(30, $pagination->getItemNumberPerPage());
-
-        $pagination = $paginator->paginate([], options: [DecoratingKnpPaginator::LIMIT_THRESHOLD => 20]);
-        static::assertSame(3, $pagination->getCurrentPageNumber());
-        static::assertSame(20, $pagination->getItemNumberPerPage());
     }
 }
