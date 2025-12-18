@@ -17,7 +17,7 @@ class RoutesTest extends TestCase
 
     protected function setUp(): void
     {
-        $loader = new PhpFileLoader(new FileLocator(__DIR__.'/../config/'));
+        $loader = new PhpFileLoader(new FileLocator(__DIR__.'/../config/'), 'dev');
         $this->routes = $loader->load('routes.php');
     }
 
