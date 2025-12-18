@@ -6,8 +6,8 @@ namespace Siganushka\GenericBundle\Tests;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Siganushka\GenericBundle\Controller\FormController;
-use Symfony\Bundle\FrameworkBundle\Routing\AttributeRouteControllerLoader;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Routing\Loader\PhpFileLoader;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
@@ -17,8 +17,8 @@ class RoutesTest extends TestCase
 
     protected function setUp(): void
     {
-        $loader = new AttributeRouteControllerLoader('dev');
-        $this->routes = $loader->load(FormController::class);
+        $loader = new PhpFileLoader(new FileLocator(__DIR__.'/../config/'));
+        $this->routes = $loader->load('routes.php');
     }
 
     public function testAll(): void
@@ -44,6 +44,6 @@ class RoutesTest extends TestCase
 
     public static function routesProvider(): iterable
     {
-        yield ['siganushka_generic_form', '/_form', [], FormController::class];
+        yield ['siganushka_generic_form', '/_form', [], 'siganushka_generic.form.controller'];
     }
 }

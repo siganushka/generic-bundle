@@ -11,7 +11,6 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
 
 class FormController
@@ -33,7 +32,6 @@ class FormController
         }
     }
 
-    #[Route('/_form', name: 'siganushka_generic_form', env: 'dev')]
     public function __invoke(Request $request, Environment $twig, FormFactoryInterface $factory): Response
     {
         if ($form = $this->createForm($request, $factory)) {
