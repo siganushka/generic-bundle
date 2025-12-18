@@ -6,5 +6,7 @@ namespace Siganushka\GenericBundle\Dto;
 
 class EnableDto
 {
-    use EnableDtoTrait;
+    public function __construct(public readonly ?bool $enabled = null)
+    {
+    }
 }

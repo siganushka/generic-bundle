@@ -6,5 +6,9 @@ namespace Siganushka\GenericBundle\Dto;
 
 class DateRangeDto
 {
-    use DateRangeDtoTrait;
+    public function __construct(
+        public readonly ?\DateTimeInterface $startAt = null,
+        public readonly ?\DateTimeInterface $endAt = null,
+    ) {
+    }
 }
