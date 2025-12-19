@@ -98,7 +98,7 @@ class SchemaResortCommand extends Command
                 }
             }
 
-            $sqls[$metadata->name] = \sprintf('ALTER TABLE %s %s', $platform->quoteSingleIdentifier($table->getName()), implode(', ', $sqlParts));
+            $sqls[$metadata->name] = \sprintf('ALTER TABLE %s %s', $platform->quoteSingleIdentifier($table->getObjectName()->getUnqualifiedName()->getValue()), implode(', ', $sqlParts));
         }
 
         $io = new SymfonyStyle($input, $output);
