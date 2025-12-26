@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Siganushka\Contracts\Doctrine\CreatableInterface;
 use Siganushka\Contracts\Doctrine\ResourceInterface;
 use Siganushka\Contracts\Doctrine\SortableInterface;
 
@@ -40,6 +41,10 @@ class GenericEntityRepository extends EntityRepository
 
         if (is_subclass_of($this->getEntityName(), SortableInterface::class)) {
             $queryBuilder->addOrderBy(\sprintf('%s.sort', $alias), $orderBy);
+        }
+
+        if (is_subclass_of($this->getEntityName(), CreatableInterface::class)) {
+            $queryBuilder->addOrderBy(\sprintf('%s.createdAt', $alias), 'DESC');
         }
 
         if (is_subclass_of($this->getEntityName(), ResourceInterface::class)) {
