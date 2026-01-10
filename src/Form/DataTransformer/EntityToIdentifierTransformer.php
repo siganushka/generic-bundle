@@ -70,11 +70,6 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
             throw new TransformationFailedException('Unable to get manager.');
         }
 
-        $metadata = $em->getClassMetadata($this->className);
-        if (!$metadata->hasField($this->identifierField)) {
-            throw new TransformationFailedException(\sprintf('The field "%s" is not mapped for "%s"!', $this->identifierField, $this->className));
-        }
-
         $repository = $em->getRepository($this->className);
         $result = $repository->findOneBy([$this->identifierField => $value]);
 

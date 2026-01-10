@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\Tests\Form\DataTransformer;
 
-use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectRepository;
@@ -94,12 +93,6 @@ class EntityToIdentifierTransformerTest extends TestCase
      */
     private function createEntityToIdentifierTransformer(string $className, string $identifierField): EntityToIdentifierTransformer
     {
-        $classMetadata = $this->createMock(ClassMetadata::class);
-        $classMetadata->expects(static::any())
-            ->method('hasField')
-            ->willReturnCallback(fn (string $value) => ('username' === $value) ? true : false)
-        ;
-
         $objectRepository = $this->createMock(ObjectRepository::class);
         $objectRepository->expects(static::any())
             ->method('findOneBy')
@@ -107,11 +100,6 @@ class EntityToIdentifierTransformerTest extends TestCase
         ;
 
         $objectManager = $this->createMock(ObjectManager::class);
-        $objectManager->expects(static::any())
-            ->method('getClassMetadata')
-            ->willReturn($classMetadata)
-        ;
-
         $objectManager->expects(static::any())
             ->method('getRepository')
             ->willReturn($objectRepository)
