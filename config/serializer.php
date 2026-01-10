@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Siganushka\GenericBundle\Command\DumpSerializationCommand;
+use Siganushka\GenericBundle\Command\SerializerDumpCommand;
 use Siganushka\GenericBundle\Serializer\Mapping\EntityMetadataFactory;
 use Siganushka\GenericBundle\Serializer\Normalizer\FormErrorNormalizer;
 use Siganushka\GenericBundle\Serializer\Normalizer\KnpPaginationNormalizer;
@@ -16,7 +16,7 @@ return static function (ContainerConfigurator $container): void {
             ->arg('$registry', service('doctrine'))
             ->decorate('serializer.mapping.class_metadata_factory')
 
-        ->set('siganushka_generic.serializer.dump_serialization_command', DumpSerializationCommand::class)
+        ->set('siganushka_generic.serializer.serializer_dump_command', SerializerDumpCommand::class)
             ->arg('$managerRegistry', service('doctrine'))
             ->arg('$metadataFactory', service('serializer.mapping.class_metadata_factory'))
             ->arg('$serializationDir', '%kernel.project_dir%/config/serializer')

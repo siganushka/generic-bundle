@@ -41,7 +41,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'siganushka_generic.form.choice_type_extension',
             'siganushka_generic.form.collection_type_extension',
             'siganushka_generic.serializer.entity_metadata_factory',
-            'siganushka_generic.serializer.dump_serialization_command',
+            'siganushka_generic.serializer.serializer_dump_command',
         ], $container->getServiceIds());
 
         $jsonResponseListener = $container->getDefinition('siganushka_generic.json_response_listener');
@@ -111,18 +111,18 @@ final class SiganushkaGenericExtensionTest extends TestCase
         $registry = $entityMapping->getArgument('$registry');
         static::assertSame('doctrine', $registry->__toString());
 
-        $dumpSerializationCommand = $container->getDefinition('siganushka_generic.serializer.dump_serialization_command');
-        static::assertTrue($dumpSerializationCommand->hasTag('console.command'));
+        $serializerDumpCommand = $container->getDefinition('siganushka_generic.serializer.serializer_dump_command');
+        static::assertTrue($serializerDumpCommand->hasTag('console.command'));
 
         /** @var Reference */
-        $managerRegistry = $dumpSerializationCommand->getArgument('$managerRegistry');
+        $managerRegistry = $serializerDumpCommand->getArgument('$managerRegistry');
         static::assertSame('doctrine', $managerRegistry->__toString());
 
         /** @var Reference */
-        $metadataFactory = $dumpSerializationCommand->getArgument('$metadataFactory');
+        $metadataFactory = $serializerDumpCommand->getArgument('$metadataFactory');
         static::assertSame('serializer.mapping.class_metadata_factory', $metadataFactory->__toString());
 
-        static::assertSame('%kernel.project_dir%/config/serializer', $dumpSerializationCommand->getArgument('$serializationDir'));
+        static::assertSame('%kernel.project_dir%/config/serializer', $serializerDumpCommand->getArgument('$serializationDir'));
     }
 
     public function testWithConfigs(): void
@@ -164,7 +164,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'siganushka_generic.form.choice_type_extension',
             'siganushka_generic.form.collection_type_extension',
             'siganushka_generic.serializer.entity_metadata_factory',
-            'siganushka_generic.serializer.dump_serialization_command',
+            'siganushka_generic.serializer.serializer_dump_command',
             'siganushka_generic.serializer.form_error_normalizer',
             'siganushka_generic.serializer.knp_pagination_normalizer',
         ], $container->getServiceIds());

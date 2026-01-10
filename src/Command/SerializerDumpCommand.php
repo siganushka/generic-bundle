@@ -16,8 +16,8 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
 use Symfony\Component\Yaml\Yaml;
 
-#[AsCommand('siganushka:generic:dump-serialization', 'Dump serialization configuration file as YAML.')]
-class DumpSerializationCommand extends Command
+#[AsCommand('siganushka:generic:serializer-dump', 'Dump serializer configuration file as YAML.')]
+class SerializerDumpCommand extends Command
 {
     public function __construct(
         private readonly ManagerRegistry $managerRegistry,
@@ -45,8 +45,8 @@ class DumpSerializationCommand extends Command
                 continue;
             }
 
-            $serializationMetadata = $this->metadataFactory->getMetadataFor($entityName);
-            foreach ($serializationMetadata->getAttributesMetadata() as $attribute => $attributeMetadata) {
+            $serializerMetadata = $this->metadataFactory->getMetadataFor($entityName);
+            foreach ($serializerMetadata->getAttributesMetadata() as $attribute => $attributeMetadata) {
                 if ($ignore = $attributeMetadata->isIgnored()) {
                     $collectedEntities[$entityName][$attribute]['ignore'] = $ignore;
                     continue;
