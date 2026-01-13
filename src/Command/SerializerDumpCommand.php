@@ -46,7 +46,20 @@ class SerializerDumpCommand extends Command
             }
 
             $serializerMetadata = $this->metadataFactory->getMetadataFor($entityName);
+            $ref = $serializerMetadata->getReflectionClass();
+
             foreach ($serializerMetadata->getAttributesMetadata() as $attribute => $attributeMetadata) {
+                // Remove invalid property definitions.
+                $attributeName = ucfirst($attribute);
+                $accessorOrMutator = $ref->hasMethod('get'.$attributeName)
+                    || $ref->hasMethod('has'.$attributeName)
+                    || $ref->hasMethod('can'.$attributeName)
+                    || $ref->hasMethod('is'.$attributeName);
+
+                if (!$accessorOrMutator) {
+                    continue;
+                }
+
                 if ($ignore = $attributeMetadata->isIgnored()) {
                     $collectedEntities[$entityName][$attribute]['ignore'] = $ignore;
                     continue;
