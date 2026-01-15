@@ -21,6 +21,7 @@ return [
     'generic.search' => 'Search',
     'generic.import' => 'Import',
     'generic.export' => 'Export',
+    'generic.to' => 'To',
     'generic.action' => 'Action',
     'generic.choice' => 'Please Choose',
     'generic.yes' => 'Yes',

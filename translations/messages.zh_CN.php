@@ -21,6 +21,7 @@ return [
     'generic.search' => '搜索',
     'generic.import' => '导入',
     'generic.export' => '导出',
+    'generic.to' => '至',
     'generic.action' => '操作',
     'generic.choice' => '请选择',
     'generic.yes' => '是',

@@ -71,3 +71,29 @@
   {%- set attr = attr|merge({'data-action': 'click->siganushka-generic-collection#delete'}) -%}
   {{- block('button_widget') -}}
 {%- endblock -%}
+
+{%- block date_range_widget -%}
+  <div class="input-group" {{ block('widget_container_attributes') }}>
+    {% if form.startAt.vars.label is not same as(false) %}
+      <span class="input-group-text">
+        {% with form.startAt.vars %}
+          {{- block('form_label_content') -}}
+        {% endwith %}
+      </span>
+    {% endif %}
+
+    {{ form_widget(form.startAt) }}
+
+    {% if form.endAt.vars.label is not same as(false) %}
+    <span class="input-group-text">
+      {% with form.endAt.vars %}
+        {{- block('form_label_content') -}}
+      {% endwith %}
+    </span>
+    {% endif %}
+    {{ form_widget(form.endAt) }}
+  </div>
+
+  {{ form_errors(form.startAt) }}
+  {{ form_errors(form.endAt) }}
+{%- endblock -%}

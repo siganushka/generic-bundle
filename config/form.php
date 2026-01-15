@@ -10,6 +10,7 @@ use Siganushka\GenericBundle\Form\Extension\ChoiceTypeExtension;
 use Siganushka\GenericBundle\Form\Extension\CollectionTypeExtension;
 use Siganushka\GenericBundle\Form\Extension\CsrfTypeExtension;
 use Siganushka\GenericBundle\Form\Extension\MoneyTypeExtension;
+use Siganushka\GenericBundle\Form\Type\DateRangeType;
 
 return static function (ContainerConfigurator $container): void {
     $container->services()
@@ -32,5 +33,8 @@ return static function (ContainerConfigurator $container): void {
 
         ->set('siganushka_generic.form.collection_type_extension', CollectionTypeExtension::class)
             ->tag('form.type_extension')
+
+        ->set('siganushka_generic.form.date_range_type', DateRangeType::class)
+            ->tag('form.type')
     ;
 };
