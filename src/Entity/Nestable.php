@@ -13,7 +13,7 @@ use Siganushka\GenericBundle\Repository\NestableRepository;
  * @template TNode of Nestable
  */
 #[ORM\MappedSuperclass(repositoryClass: NestableRepository::class)]
-abstract class Nestable
+class Nestable
 {
     /**
      * @var TNode|null
