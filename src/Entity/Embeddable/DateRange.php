@@ -15,7 +15,7 @@ class DateRange
     #[ORM\Column]
     private ?\DateTimeImmutable $endAt = null;
 
-    public function __construct(?\DateTimeInterface $startAt = null, ?\DateTimeImmutable $endAt = null)
+    public function __construct(?\DateTimeInterface $startAt = null, ?\DateTimeInterface $endAt = null)
     {
         $this->setStartAt($startAt);
         $this->setEndAt($endAt);
