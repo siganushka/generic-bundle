@@ -32,7 +32,7 @@ return static function (ContainerConfigurator $container): void {
             ->tag('doctrine.event_listener', ['event' => Events::preUpdate])
 
         ->set('siganushka_generic.doctrine.deletable_listener', DeletableListener::class)
-            ->tag('doctrine.event_listener', ['event' => Events::onFlush])
+            ->tag('doctrine.event_listener', ['event' => Events::onFlush, 'priority' => 128])
 
         ->set('siganushka_generic.doctrine.schema_resort_listener', SchemaResortListener::class)
             ->tag('doctrine.event_listener', ['event' => ToolEvents::postGenerateSchemaTable])

@@ -79,7 +79,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
 
         $deletableListener = $container->getDefinition('siganushka_generic.doctrine.deletable_listener');
         static::assertSame([
-            ['event' => 'onFlush'],
+            ['event' => 'onFlush', 'priority' => 128],
         ], $deletableListener->getTag('doctrine.event_listener'));
 
         $schemaResortListener = $container->getDefinition('siganushka_generic.doctrine.schema_resort_listener');
