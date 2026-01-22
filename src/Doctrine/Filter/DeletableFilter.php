@@ -16,7 +16,7 @@ class DeletableFilter extends SQLFilter
     public function addFilterConstraint(ClassMetadata $targetEntity, string $targetTableAlias): string
     {
         if ($targetEntity->reflClass?->implementsInterface(DeletableInterface::class)) {
-            return \sprintf('%s.deleted = 0 AND %s.deleted_at IS NULL', $targetTableAlias, $targetTableAlias);
+            return \sprintf('%s.deleted = 0', $targetTableAlias);
         }
 
         return '';

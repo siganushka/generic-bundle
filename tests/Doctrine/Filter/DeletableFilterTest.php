@@ -27,6 +27,6 @@ class DeletableFilterTest extends TestCase
 
         $filter = new DeletableFilter($entityManager);
         static::assertSame('', $filter->addFilterConstraint($foo, 'foo'));
-        static::assertSame('bar.deleted = 0 AND bar.deleted_at IS NULL', $filter->addFilterConstraint($bar, 'bar'));
+        static::assertSame('bar.deleted = 0', $filter->addFilterConstraint($bar, 'bar'));
     }
 }

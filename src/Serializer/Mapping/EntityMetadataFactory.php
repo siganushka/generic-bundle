@@ -11,7 +11,7 @@ use Siganushka\Contracts\Doctrine\DeletableInterface;
 use Siganushka\Contracts\Doctrine\EnableInterface;
 use Siganushka\Contracts\Doctrine\ResourceInterface;
 use Siganushka\Contracts\Doctrine\SortableInterface;
-use Siganushka\Contracts\Doctrine\TimestampableInterface;
+use Siganushka\Contracts\Doctrine\UpdatableInterface;
 use Siganushka\Contracts\Doctrine\VersionableInterface;
 use Symfony\Component\Serializer\Mapping\ClassMetadataInterface;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
@@ -27,8 +27,8 @@ class EntityMetadataFactory implements ClassMetadataFactoryInterface
         VersionableInterface::class => 'version',
         EnableInterface::class => 'enabled',
         CreatableInterface::class => 'createdAt',
-        TimestampableInterface::class => 'updatedAt',
-        DeletableInterface::class => 'deletedAt',
+        UpdatableInterface::class => 'updatedAt',
+        DeletableInterface::class => 'deleted',
     ];
 
     public function __construct(

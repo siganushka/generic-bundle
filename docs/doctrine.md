@@ -135,7 +135,7 @@ $foo->setCreatedAt(\DateTimeImmutable $createdAt);  // 设置创建时间，由�
 
 ### DeletableInterface
 
-通用的 `deletedAt` 逻辑删除字段，删除后 `ORM` 查询结果将自动过滤已删除数据。
+通用的 `deleted` 逻辑删除字段，删除后 `ORM` 查询结果将自动过滤已删除数据。
 
 ```php
 // ./src/Entity/Foo.php
@@ -151,9 +151,14 @@ class Foo implements DeletableInterface
 }
 
 $foo = new Foo();
-$foo->getDeletedAt(): ?\DateTimeImmutable;          // 返回删除时间，为 null 时表明未被删除
-$foo->setDeletedAt(?\DateTimeImmutable $deletedAt); // 设置删除时间，使用 EntityManager::remove 删除数据时自动填充
+$foo->getDeleted(): int;        // 返回删除标记，为 0 时表明未被删除
+$foo->setDeleted(int $deleted); // 设置删除标记，删除数据时自动填充
 ```
+
+> 建议仅在必要时使用此功能，其一些已知的限制：
+> 1、如果实体设置了唯一索引，需要将 `deleted` 字段纳入联合索引。
+> 2、删除标记默认使用实体自增主键填充，对于非自增或复合主键，将使用随机的删除标记以避免多次删除时索引冲突。
+> 3、如果实体是被引用方，逻辑删除后引用方查询时将提示异常，因此建议将引用方和被引用方同时使用逻辑删除。
 
 ### Nestable
 
