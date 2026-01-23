@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 return static function (RoutingConfigurator $routes): void {
     if ('dev' === $routes->env()) {
-        $routes->add('siganushka_generic_form', '/_form')
+        $routes->add('_siganushka_generic_form', '/_form')
             ->controller('siganushka_generic.form.controller')
         ;
     }

@@ -44,6 +44,6 @@ class RoutesTest extends TestCase
 
     public static function routesProvider(): iterable
     {
-        yield ['siganushka_generic_form', '/_form', [], 'siganushka_generic.form.controller'];
+        yield ['_siganushka_generic_form', '/_form', [], 'siganushka_generic.form.controller'];
     }
 }
