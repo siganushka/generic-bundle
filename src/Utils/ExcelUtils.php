@@ -34,12 +34,11 @@ class ExcelUtils
             if ($number < 26) {
                 $points[] = $number;
                 break;
-            } else {
-                $number -= 26;
-                $points[] = 0;
             }
+            $number -= 26;
+            $points[] = 0;
         }
 
-        return implode('', array_map(fn (int $point) => \chr(65 + $point), $points));
+        return implode('', array_map(static fn (int $point) => \chr(65 + $point), $points));
     }
 }

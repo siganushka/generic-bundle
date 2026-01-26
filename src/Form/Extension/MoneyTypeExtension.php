@@ -25,9 +25,9 @@ class MoneyTypeExtension extends AbstractTypeExtension
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $scale = fn (Options $options): int => Currencies::getFractionDigits($options['currency']);
-        $divisor = fn (Options $options): int => 10 ** $options['scale'];
-        $attr = fn (Options $options) => ['step' => 1 / $options['divisor']];
+        $scale = static fn (Options $options): int => Currencies::getFractionDigits($options['currency']);
+        $divisor = static fn (Options $options): int => 10 ** $options['scale'];
+        $attr = static fn (Options $options) => ['step' => 1 / $options['divisor']];
 
         $resolver->setDefaults([
             'currency' => $this->currency,

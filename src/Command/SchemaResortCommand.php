@@ -52,7 +52,7 @@ class SchemaResortCommand extends Command
         $platform = $connection->getDatabasePlatform();
         $introspectSchema = $connection->createSchemaManager()->introspectSchema();
 
-        $columnNameCallback = fn (Column $column): string => $column->getObjectName()->getIdentifier()->getValue();
+        $columnNameCallback = static fn (Column $column): string => $column->getObjectName()->getIdentifier()->getValue();
 
         $sqls = [];
         foreach ($allMetadata as $metadata) {
@@ -111,11 +111,11 @@ class SchemaResortCommand extends Command
         $force = true === $input->getOption('force');
         if ($force) {
             $io->text('Updating database schema...');
-            array_walk($sqls, fn (string $sql) => $connection->executeQuery($sql));
+            array_walk($sqls, static fn (string $sql) => $connection->executeQuery($sql));
             $io->success('Database schema updated successfully!');
         } else {
             $io->info(\sprintf('Using %s --force to updating database schema...', $this->getName()));
-            array_walk($sqls, fn (string $sql) => $io->writeln(\sprintf('%s;', $sql)));
+            array_walk($sqls, static fn (string $sql) => $io->writeln(\sprintf('%s;', $sql)));
         }
 
         return Command::SUCCESS;

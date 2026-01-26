@@ -33,7 +33,7 @@ class DateRangeType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $invalidMessage = function (Options $options): string {
+        $invalidMessage = static function (Options $options): string {
             return match ($options['entry_type']) {
                 DateType::class => 'This value should be greater than or equal to start date.',
                 default => 'This value should be greater than or equal to start datetime.',
@@ -52,13 +52,13 @@ class DateRangeType extends AbstractType
         $resolver->setAllowedTypes('start_options', ['array']);
         $resolver->setAllowedTypes('end_options', ['array']);
 
-        $resolver->setNormalizer('start_options', function (Options $options, array $value) {
+        $resolver->setNormalizer('start_options', static function (Options $options, array $value) {
             $value['label'] ??= false;
 
             return $value;
         });
 
-        $resolver->setNormalizer('end_options', function (Options $options, array $value) {
+        $resolver->setNormalizer('end_options', static function (Options $options, array $value) {
             $gte = new GreaterThanOrEqual(propertyPath: 'parent.all[startAt].data', message: $options['invalid_message']);
 
             $constraints = $value['constraints'] ?? [];

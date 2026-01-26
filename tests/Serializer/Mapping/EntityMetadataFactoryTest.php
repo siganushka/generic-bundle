@@ -25,24 +25,24 @@ class EntityMetadataFactoryTest extends TestCase
         $bar = $this->createMock(ClassMetadata::class);
         $bar->expects(static::any())
             ->method('hasField')
-            ->willReturnCallback(fn (string $fieldName) => \in_array($fieldName, ['x', 'y']))
+            ->willReturnCallback(static fn (string $fieldName) => \in_array($fieldName, ['x', 'y']))
         ;
 
         $bar->expects(static::any())
             ->method('hasAssociation')
-            ->willReturnCallback(fn (string $fieldName) => 'testSnakeName' === $fieldName)
+            ->willReturnCallback(static fn (string $fieldName) => 'testSnakeName' === $fieldName)
         ;
 
         $objectManager = $this->createMock(ObjectManager::class);
         $objectManager->expects(static::any())
             ->method('getClassMetadata')
-            ->willReturnCallback(fn (string $className) => Foo::class === $className ? $foo : $bar)
+            ->willReturnCallback(static fn (string $className) => Foo::class === $className ? $foo : $bar)
         ;
 
         $managerRegistry = $this->createMock(ManagerRegistry::class);
         $managerRegistry->expects(static::any())
             ->method('getManagerForClass')
-            ->willReturnCallback(fn (string $class) => \in_array($class, [Foo::class, Bar::class]) ? $objectManager : null);
+            ->willReturnCallback(static fn (string $class) => \in_array($class, [Foo::class, Bar::class]) ? $objectManager : null);
 
         $classMetadataFactory = new ClassMetadataFactory(new AttributeLoader());
         static::assertSame(['x', 'y'], array_keys($classMetadataFactory->getMetadataFor(Foo::class)->getAttributesMetadata()));

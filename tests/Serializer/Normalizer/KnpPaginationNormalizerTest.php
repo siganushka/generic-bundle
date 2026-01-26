@@ -65,7 +65,7 @@ class KnpPaginationNormalizerTest extends TestCase
 
         $innerNormalizer->expects(static::any())
             ->method('normalize')
-            ->willReturnCallback(fn (mixed $items) => $items)
+            ->willReturnCallback(static fn (mixed $items) => $items)
         ;
 
         $normalizer = new KnpPaginationNormalizer($context);

@@ -75,7 +75,7 @@ class GenericEntityRepositoryTest extends TestCase
 
         $entityManager->expects(static::any())
             ->method('createQueryBuilder')
-            ->willReturnCallback(fn () => new QueryBuilder($entityManager))
+            ->willReturnCallback(static fn () => new QueryBuilder($entityManager))
         ;
 
         $managerRegistry = $this->createMock(ManagerRegistry::class);

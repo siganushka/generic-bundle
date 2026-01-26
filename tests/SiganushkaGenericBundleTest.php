@@ -20,7 +20,7 @@ class SiganushkaGenericBundleTest extends TestCase
         $bundle->build($container);
 
         $passes = $container->getCompilerPassConfig()->getBeforeOptimizationPasses();
-        $classNameOfPasses = array_map(fn (CompilerPassInterface $compiler) => $compiler::class, $passes);
+        $classNameOfPasses = array_map(static fn (CompilerPassInterface $compiler) => $compiler::class, $passes);
 
         static::assertContains(DoctrineResolveTargetEntityPass::class, $classNameOfPasses);
     }

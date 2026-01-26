@@ -45,7 +45,7 @@ class SchemaResortListener
      */
     private function getFirstColumnNames(Table $table): array
     {
-        $unqualifiedName = fn (UnqualifiedName $name): string => $name->getIdentifier()->getValue();
+        $unqualifiedName = static fn (UnqualifiedName $name): string => $name->getIdentifier()->getValue();
         $primaryKeyNames = array_map($unqualifiedName, $table->getPrimaryKeyConstraint()?->getColumnNames() ?? []);
 
         $foreignKeyNames = [];

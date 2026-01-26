@@ -69,7 +69,7 @@ class SerializerDumpCommand extends Command
                     'max_depth' => $attributeMetadata->getMaxDepth(),
                     'serialized_name' => $attributeMetadata->getSerializedName(),
                     'serialized_path' => $attributeMetadata->getSerializedPath() ? (string) $attributeMetadata->getSerializedPath() : null,
-                ], fn ($value) => null !== $value);
+                ], static fn ($value) => null !== $value);
             }
         }
 
