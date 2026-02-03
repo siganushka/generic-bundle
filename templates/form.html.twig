@@ -7,7 +7,7 @@
         {% for class in types|keys %}
           <li>
             <a
-              href="{{ path('siganushka_generic_form', {class}) }}"
+              href="{{ path('_siganushka_generic_form', {class}) }}"
               class="{{ class == app.request.query.getString('class') ? 'text-danger' }}"
               title="{{ class }}"
             >{{ class }}</a>
