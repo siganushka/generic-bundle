@@ -72,6 +72,7 @@
   {{- block('button_widget') -}}
 {%- endblock -%}
 
+{# date range widget #}
 {%- block date_range_widget -%}
   <div class="input-group" {{ block('widget_container_attributes') }}>
     {% if form.startAt.vars.label is not same as(false) %}
