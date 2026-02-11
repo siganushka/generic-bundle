@@ -18,18 +18,18 @@ class TablePrefixListener
 
     public function loadClassMetadata(LoadClassMetadataEventArgs $event): void
     {
-        $addTablePrefix = fn (string $name): string => str_starts_with($name, $this->prefix) ? $name : $this->prefix.$name;
+        $tablePrefixFn = fn (string $name): string => str_starts_with($name, $this->prefix) ? $name : $this->prefix.$name;
 
-        $classMetadata = $event->getClassMetadata();
-        if (!$classMetadata->isInheritanceTypeSingleTable() || $classMetadata->name === $classMetadata->rootEntityName) {
-            $classMetadata->setPrimaryTable([
-                'name' => $addTablePrefix($classMetadata->getTableName()),
+        $metadata = $event->getClassMetadata();
+        if (!$metadata->isInheritanceTypeSingleTable() || $metadata->name === $metadata->rootEntityName) {
+            $metadata->setPrimaryTable([
+                'name' => $tablePrefixFn($metadata->getTableName()),
             ]);
         }
 
-        foreach ($classMetadata->associationMappings as $mapping) {
+        foreach ($metadata->associationMappings as $mapping) {
             if ($mapping instanceof ManyToManyOwningSideMapping) {
-                $mapping->joinTable->name = $addTablePrefix($mapping->joinTable->name);
+                $mapping->joinTable->name = $tablePrefixFn($mapping->joinTable->name);
             }
         }
     }

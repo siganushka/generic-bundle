@@ -44,15 +44,13 @@ class SchemaResortCommand extends Command
         $connection = $this->entityManager->getConnection();
         $factory = $this->entityManager->getMetadataFactory();
 
-        $allMetadata = $factory->getAllMetadata();
-
         $schemaTool = new SchemaTool($this->entityManager);
-        $schema = $schemaTool->getSchemaFromMetadata($allMetadata);
+        $schema = $schemaTool->getSchemaFromMetadata($allMetadata = $factory->getAllMetadata());
 
         $platform = $connection->getDatabasePlatform();
         $introspectSchema = $connection->createSchemaManager()->introspectSchema();
 
-        $columnNameCallback = static fn (Column $column): string => $column->getObjectName()->getIdentifier()->getValue();
+        $columnNameFn = static fn (Column $column): string => $column->getObjectName()->getIdentifier()->getValue();
 
         $sqls = [];
         foreach ($allMetadata as $metadata) {
@@ -70,8 +68,8 @@ class SchemaResortCommand extends Command
                 continue;
             }
 
-            $columnNames = array_map($columnNameCallback, $table->getColumns());
-            $introspectColumnNames = array_map($columnNameCallback, $introspectTable->getColumns());
+            $columnNames = array_map($columnNameFn, $table->getColumns());
+            $introspectColumnNames = array_map($columnNameFn, $introspectTable->getColumns());
 
             if (\count($columnNames) !== \count($introspectColumnNames)) {
                 throw new \RuntimeException('Please run doctrine:schema:update to update the database schema and try again.');
