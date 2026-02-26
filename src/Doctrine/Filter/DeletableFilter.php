@@ -7,6 +7,7 @@ namespace Siganushka\GenericBundle\Doctrine\Filter;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
 use Siganushka\Contracts\Doctrine\DeletableInterface;
+use Siganushka\GenericBundle\Doctrine\EventListener\DeletableListener;
 
 class DeletableFilter extends SQLFilter
 {
@@ -16,7 +17,7 @@ class DeletableFilter extends SQLFilter
     public function addFilterConstraint(ClassMetadata $targetEntity, string $targetTableAlias): string
     {
         if ($targetEntity->reflClass?->implementsInterface(DeletableInterface::class)) {
-            return \sprintf('%s.deleted = 0', $targetTableAlias);
+            return \sprintf('%s.%s = 0', $targetTableAlias, DeletableListener::FIELD_NAME);
         }
 
         return '';

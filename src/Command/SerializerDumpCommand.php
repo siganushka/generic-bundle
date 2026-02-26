@@ -49,7 +49,7 @@ class SerializerDumpCommand extends Command
             $ref = $serializerMetadata->getReflectionClass();
 
             foreach ($serializerMetadata->getAttributesMetadata() as $attribute => $attributeMetadata) {
-                // Remove invalid or deleted attributes definition.
+                // Remove deleted attributes definition.
                 $attributeName = ucfirst($attribute);
                 $accessorOrMutator = $ref->hasMethod('get'.$attributeName)
                     || $ref->hasMethod('has'.$attributeName)
