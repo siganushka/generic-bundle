@@ -8,17 +8,14 @@ use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\Response\ProblemJsonResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-use function PHPUnit\Framework\assertInstanceOf;
-use function PHPUnit\Framework\assertSame;
-
 class ProblemJsonResponseTest extends TestCase
 {
     public function testConstructor(): void
     {
         $response = new ProblemJsonResponse('test error', ProblemJsonResponse::HTTP_BAD_REQUEST);
-        assertInstanceOf(JsonResponse::class, $response);
-        assertSame(ProblemJsonResponse::HTTP_BAD_REQUEST, $response->getStatusCode());
-        assertSame('application/problem+json', $response->headers->get('Content-Type'));
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertSame(ProblemJsonResponse::HTTP_BAD_REQUEST, $response->getStatusCode());
+        static::assertSame('application/problem+json', $response->headers->get('Content-Type'));
 
         static::assertSame([
             'type' => 'about:blank',
@@ -28,7 +25,7 @@ class ProblemJsonResponseTest extends TestCase
         ], json_decode($response->getContent() ?: '', true, \JSON_THROW_ON_ERROR));
 
         $response = new ProblemJsonResponse('test error', ProblemJsonResponse::HTTP_BAD_REQUEST, headers: ['Content-Type' => 'application/json']);
-        assertSame('application/json', $response->headers->get('Content-Type'));
+        static::assertSame('application/json', $response->headers->get('Content-Type'));
     }
 
     public function testCreateAsArray(): void
