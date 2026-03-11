@@ -55,11 +55,9 @@ class GenericEntityRepository extends EntityRepository
     }
 
     /**
-     * @param mixed ...$args
-     *
      * @return T
      */
-    public function createNew(...$args): object
+    public function createNew(mixed ...$args): object
     {
         return (new \ReflectionClass($this->getEntityName()))->newInstanceArgs($args);
     }
