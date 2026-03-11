@@ -74,7 +74,7 @@ trait OperationsTrait
         $er = $this->entityManager->getRepository($this->entityName);
 
         return $er instanceof GenericEntityRepository
-            ? $er->createNew($args)
+            ? $er->createNew(...$args)
             : (new \ReflectionClass($er->getClassName()))->newInstanceArgs($args);
     }
 
