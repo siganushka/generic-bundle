@@ -32,8 +32,10 @@ trait NewTrait
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->entityManager->persist($entity);
-            $this->entityManager->flush();
+            $this->runInTransaction(function () use ($entity): void {
+                $this->entityManager->persist($entity);
+                $this->entityManager->flush();
+            });
 
             $session = $request->getSession();
             if ($session instanceof FlashBagAwareSessionInterface) {

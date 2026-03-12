@@ -32,7 +32,7 @@ trait EditTrait
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->entityManager->flush();
+            $this->runInTransaction($this->entityManager->flush(...));
 
             $session = $request->getSession();
             if ($session instanceof FlashBagAwareSessionInterface) {

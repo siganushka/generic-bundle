@@ -30,8 +30,7 @@ trait PutItemTrait
             return new JsonResponse($serializer->serialize($form, 'json'), Response::HTTP_UNPROCESSABLE_ENTITY, json: true);
         }
 
-        $this->entityManager->persist($entity);
-        $this->entityManager->flush();
+        $this->runInTransaction($this->entityManager->flush(...));
 
         $data = $serializer->serialize($entity, 'json', $this->serializationItemContext);
 

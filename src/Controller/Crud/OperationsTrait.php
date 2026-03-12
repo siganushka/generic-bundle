@@ -43,6 +43,7 @@ trait OperationsTrait
 
     protected array $serializationCollectionContext;
     protected array $serializationItemContext;
+    protected bool $transactionUsed;
     protected bool $paginationUsed;
 
     /**
@@ -55,6 +56,7 @@ trait OperationsTrait
         ?string $entityForm = null,
         ?array $serializationCollectionContext = null,
         ?array $serializationItemContext = null,
+        ?bool $transactionUsed = null,
         ?bool $paginationUsed = null,
     ): void {
         $this->entityName = $entityName;
@@ -62,6 +64,7 @@ trait OperationsTrait
         $this->entityForm = $entityForm ?? FormType::class;
         $this->serializationCollectionContext = $serializationCollectionContext ?? [AbstractNormalizer::GROUPS => \sprintf('%s:collection', ClassUtils::generateAlias($this->entityName))];
         $this->serializationItemContext = $serializationItemContext ?? [AbstractNormalizer::GROUPS => \sprintf('%s:item', ClassUtils::generateAlias($this->entityName))];
+        $this->transactionUsed = $transactionUsed ?? false;
         $this->paginationUsed = $paginationUsed ?? true;
     }
 
@@ -94,6 +97,15 @@ trait OperationsTrait
     protected function createEntityForm(object $data, array $options = []): FormInterface
     {
         return $this->formFactory->create($this->entityForm, $data, $options);
+    }
+
+    protected function runInTransaction(callable $func): void
+    {
+        if ($this->transactionUsed) {
+            $this->entityManager->wrapInTransaction($func);
+        } else {
+            \call_user_func($func);
+        }
     }
 
     protected function isGrantedForOperation(string $operation, object $entity): bool
