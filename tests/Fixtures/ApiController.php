@@ -10,7 +10,7 @@ use Siganushka\GenericBundle\Controller\Crud\GetItemTrait;
 use Siganushka\GenericBundle\Controller\Crud\PostCollectionTrait;
 use Siganushka\GenericBundle\Controller\Crud\PutItemTrait;
 
-class TestController
+class ApiController
 {
     use GetCollectionTrait;
     use PostCollectionTrait;

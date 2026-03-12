@@ -20,7 +20,7 @@ trait GetCollectionTrait
         $queryBuilder = $this->createEntityQueryBuilder('entity');
         $query = $queryBuilder->getQuery();
 
-        $data = $this->pagination
+        $data = $this->paginationUsed
             ? $paginator->paginate($query)
             : $query->getResult();
 

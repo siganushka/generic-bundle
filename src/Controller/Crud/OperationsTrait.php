@@ -18,6 +18,11 @@ use Symfony\Contracts\Service\Attribute\Required;
 
 trait OperationsTrait
 {
+    public const OPERATION_READ = 'READ';
+    public const OPERATION_CREATE = 'CREATE';
+    public const OPERATION_UPDATE = 'UPDATE';
+    public const OPERATION_DELETE = 'DELETE';
+
     #[Required]
     public EntityManagerInterface $entityManager;
 
@@ -38,7 +43,7 @@ trait OperationsTrait
 
     protected array $serializationCollectionContext;
     protected array $serializationItemContext;
-    protected bool $pagination;
+    protected bool $paginationUsed;
 
     /**
      * @param class-string<object>            $entityName
@@ -50,14 +55,14 @@ trait OperationsTrait
         ?string $entityForm = null,
         ?array $serializationCollectionContext = null,
         ?array $serializationItemContext = null,
-        ?bool $pagination = null,
+        ?bool $paginationUsed = null,
     ): void {
         $this->entityName = $entityName;
         $this->entityIdentifier = $entityIdentifier ?? 'id';
         $this->entityForm = $entityForm ?? FormType::class;
         $this->serializationCollectionContext = $serializationCollectionContext ?? [AbstractNormalizer::GROUPS => \sprintf('%s:collection', ClassUtils::generateAlias($this->entityName))];
         $this->serializationItemContext = $serializationItemContext ?? [AbstractNormalizer::GROUPS => \sprintf('%s:item', ClassUtils::generateAlias($this->entityName))];
-        $this->pagination = $pagination ?? true;
+        $this->paginationUsed = $paginationUsed ?? true;
     }
 
     protected function createEntityQueryBuilder(string $alias): QueryBuilder
@@ -89,5 +94,15 @@ trait OperationsTrait
     protected function createEntityForm(object $data, array $options = []): FormInterface
     {
         return $this->formFactory->create($this->entityForm, $data, $options);
+    }
+
+    protected function isGrantedForOperation(string $operation, object $entity): bool
+    {
+        return \in_array($operation, [
+            self::OPERATION_READ,
+            self::OPERATION_CREATE,
+            self::OPERATION_UPDATE,
+            self::OPERATION_DELETE,
+        ]);
     }
 }

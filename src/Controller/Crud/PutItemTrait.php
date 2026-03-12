@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\SerializerInterface;
 
 trait PutItemTrait
@@ -18,6 +19,9 @@ trait PutItemTrait
     public function putItem(Request $request, SerializerInterface $serializer, string $_id): Response
     {
         $entity = $this->findEntity($_id);
+        if (!$this->isGrantedForOperation(self::OPERATION_UPDATE, $entity)) {
+            throw new AccessDeniedException();
+        }
 
         $form = $this->createEntityForm($entity);
         $form->submit($request->getPayload()->all(), !$request->isMethod('PATCH'));

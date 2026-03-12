@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\SerializerInterface;
 
 trait PostCollectionTrait
@@ -18,6 +19,9 @@ trait PostCollectionTrait
     public function postCollection(Request $request, SerializerInterface $serializer): Response
     {
         $entity = $this->createEntity();
+        if (!$this->isGrantedForOperation(self::OPERATION_CREATE, $entity)) {
+            throw new AccessDeniedException();
+        }
 
         $form = $this->createEntityForm($entity);
         $form->submit($request->getPayload()->all());

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Siganushka\GenericBundle\Tests\Utils;
 
 use PHPUnit\Framework\TestCase;
+use Siganushka\GenericBundle\Tests\Fixtures\ApiController;
 use Siganushka\GenericBundle\Tests\Fixtures\Foo;
-use Siganushka\GenericBundle\Tests\Fixtures\TestController;
 use Siganushka\GenericBundle\Utils\ClassUtils;
 
 class ClassUtilsTest extends TestCase
@@ -15,6 +15,6 @@ class ClassUtilsTest extends TestCase
     {
         static::assertSame('class_utils_test', ClassUtils::generateAlias($this));
         static::assertSame('foo', ClassUtils::generateAlias(Foo::class));
-        static::assertSame('test_controller', ClassUtils::generateAlias(TestController::class));
+        static::assertSame('api_controller', ClassUtils::generateAlias(ApiController::class));
     }
 }
