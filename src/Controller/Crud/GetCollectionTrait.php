@@ -6,7 +6,6 @@ namespace Siganushka\GenericBundle\Controller\Crud;
 
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -15,7 +14,7 @@ trait GetCollectionTrait
     use OperationsTrait;
 
     #[Route(methods: 'GET')]
-    public function getCollection(SerializerInterface $serializer, PaginatorInterface $paginator): Response
+    public function getCollection(SerializerInterface $serializer, PaginatorInterface $paginator): JsonResponse
     {
         $queryBuilder = $this->createEntityQueryBuilder('entity');
         $query = $queryBuilder->getQuery();

@@ -6,7 +6,6 @@ namespace Siganushka\GenericBundle\Controller\Crud;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -16,7 +15,7 @@ trait PostCollectionTrait
     use OperationsTrait;
 
     #[Route(methods: 'POST')]
-    public function postCollection(Request $request, SerializerInterface $serializer): Response
+    public function postCollection(Request $request, SerializerInterface $serializer): JsonResponse
     {
         $entity = $this->createEntity();
         if (!$this->isGrantedForOperation(self::OPERATION_CREATE, $entity)) {
@@ -27,7 +26,7 @@ trait PostCollectionTrait
         $form->submit($request->getPayload()->all());
 
         if (!$form->isValid()) {
-            return new JsonResponse($serializer->serialize($form, 'json'), Response::HTTP_UNPROCESSABLE_ENTITY, json: true);
+            return new JsonResponse($serializer->serialize($form, 'json'), JsonResponse::HTTP_UNPROCESSABLE_ENTITY, json: true);
         }
 
         $this->runInTransaction(function () use ($entity): void {
@@ -35,8 +34,8 @@ trait PostCollectionTrait
             $this->entityManager->flush();
         });
 
-        $data = $serializer->serialize($entity, 'json', $this->serializationItemContext);
+        $json = $serializer->serialize($entity, 'json', $this->serializationItemContext);
 
-        return new JsonResponse($data, Response::HTTP_CREATED, json: true);
+        return new JsonResponse($json, JsonResponse::HTTP_CREATED, json: true);
     }
 }
