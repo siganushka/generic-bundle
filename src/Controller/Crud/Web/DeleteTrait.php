@@ -6,6 +6,7 @@ namespace Siganushka\GenericBundle\Controller\Crud\Web;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -18,7 +19,7 @@ trait DeleteTrait
     use WebOperationsTrait;
 
     #[Route('/{_id<\d+>}/delete', methods: 'GET')]
-    public function delete(Request $request, CsrfTokenManagerInterface $tokenManager, UrlGeneratorInterface $urlGenerator, string $_id): RedirectResponse
+    public function delete(Request $request, CsrfTokenManagerInterface $tokenManager, UrlGeneratorInterface $urlGenerator, string $_id): Response
     {
         $entity = $this->findEntity($_id);
         if (!$this->isGrantedForOperation(self::OPERATION_DELETE, $entity)) {
@@ -44,6 +45,6 @@ trait DeleteTrait
         $route = \sprintf('app_%s_index', $this->getControllerAlias());
         $url = $urlGenerator->generate($route, []);
 
-        return new RedirectResponse($url, RedirectResponse::HTTP_SEE_OTHER);
+        return new RedirectResponse($url, Response::HTTP_SEE_OTHER);
     }
 }

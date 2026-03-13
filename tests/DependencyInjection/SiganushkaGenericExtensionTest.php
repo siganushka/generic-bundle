@@ -26,6 +26,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
 
         static::assertSame([
             'service_container',
+            'siganushka_generic.json_response_listener',
             'siganushka_generic.knp_paginator_decorator',
             'siganushka_generic.twig_extension',
             'siganushka_generic.twig_runtime',
@@ -43,6 +44,9 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'siganushka_generic.serializer.entity_metadata_factory',
             'siganushka_generic.serializer.serializer_dump_command',
         ], $container->getServiceIds());
+
+        $jsonResponseListener = $container->getDefinition('siganushka_generic.json_response_listener');
+        static::assertTrue($jsonResponseListener->hasTag('kernel.event_subscriber'));
 
         $knpPaginatorDecorator = $container->getDefinition('siganushka_generic.knp_paginator_decorator');
         static::assertSame(['knp_paginator', null, 0], $knpPaginatorDecorator->getDecoratedService());
@@ -145,6 +149,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
 
         static::assertSame([
             'service_container',
+            'siganushka_generic.json_response_listener',
             'siganushka_generic.knp_paginator_decorator',
             'siganushka_generic.twig_extension',
             'siganushka_generic.twig_runtime',
