@@ -41,6 +41,7 @@ trait OperationsTrait
      */
     protected string $entityForm;
 
+    protected ?string $queryDtoClass;
     protected array $serializationCollectionContext;
     protected array $serializationItemContext;
     protected bool $transactionUsed;
@@ -54,6 +55,7 @@ trait OperationsTrait
         string $entityName,
         ?string $entityIdentifier = null,
         ?string $entityForm = null,
+        ?string $queryDtoClass = null,
         ?array $serializationCollectionContext = null,
         ?array $serializationItemContext = null,
         ?bool $transactionUsed = null,
@@ -62,13 +64,14 @@ trait OperationsTrait
         $this->entityName = $entityName;
         $this->entityIdentifier = $entityIdentifier ?? 'id';
         $this->entityForm = $entityForm ?? FormType::class;
+        $this->queryDtoClass = $queryDtoClass;
         $this->serializationCollectionContext = $serializationCollectionContext ?? [AbstractNormalizer::GROUPS => \sprintf('%s:collection', ClassUtils::generateAlias($this->entityName))];
         $this->serializationItemContext = $serializationItemContext ?? [AbstractNormalizer::GROUPS => \sprintf('%s:item', ClassUtils::generateAlias($this->entityName))];
         $this->transactionUsed = $transactionUsed ?? false;
         $this->paginationUsed = $paginationUsed ?? true;
     }
 
-    protected function createEntityQueryBuilder(string $alias): QueryBuilder
+    protected function createEntityQueryBuilder(string $alias, ?object $dto): QueryBuilder
     {
         $er = $this->entityManager->getRepository($this->entityName);
 
