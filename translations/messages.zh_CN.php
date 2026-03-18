@@ -16,6 +16,8 @@ return [
     'generic.remove' => '移除',
     'generic.back' => '返回',
     'generic.save' => '保存',
+    'generic.close' => '关闭',
+    'generic.cancel' => '取消',
     'generic.reset' => '重置',
     'generic.query' => '查询',
     'generic.search' => '搜索',

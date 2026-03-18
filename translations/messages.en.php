@@ -16,6 +16,8 @@ return [
     'generic.remove' => 'Remove',
     'generic.back' => 'Back',
     'generic.save' => 'Save',
+    'generic.close' => 'Close',
+    'generic.cancel' => 'Cancel',
     'generic.reset' => 'Reset',
     'generic.query' => 'Query',
     'generic.search' => 'Search',
