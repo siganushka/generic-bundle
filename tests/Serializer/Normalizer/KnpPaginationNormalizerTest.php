@@ -14,9 +14,9 @@ class KnpPaginationNormalizerTest extends TestCase
     public function testNormalize(): void
     {
         $context = [
-            KnpPaginationNormalizer::CURRENT_PAGE_NUMBER_KEY => 'page',
-            KnpPaginationNormalizer::ITEMS_PER_PAGE_KEY => 'per_page',
             KnpPaginationNormalizer::TOTAL_COUNT_KEY => 'total',
+            KnpPaginationNormalizer::CURRENT_PAGE_KEY => 'page',
+            KnpPaginationNormalizer::ITEMS_PER_PAGE_KEY => 'per_page',
             KnpPaginationNormalizer::ITEMS_KEY => 'data',
         ];
 
@@ -30,23 +30,23 @@ class KnpPaginationNormalizerTest extends TestCase
         $normalizerWithContext = $this->createNormalizerWithContext($context);
 
         static::assertSame([
-            'currentPageNumber' => $pagination->getCurrentPageNumber(),
-            'itemsPerPage' => $pagination->getItemNumberPerPage(),
             'totalCount' => $pagination->getTotalItemCount(),
+            'currentPage' => $pagination->getCurrentPageNumber(),
+            'itemsPerPage' => $pagination->getItemNumberPerPage(),
             'items' => $pagination->getItems(),
         ], $normalizer->normalize($pagination));
 
         static::assertSame([
+            'total' => $pagination->getTotalItemCount(),
             'page' => $pagination->getCurrentPageNumber(),
             'per_page' => $pagination->getItemNumberPerPage(),
-            'total' => $pagination->getTotalItemCount(),
             'data' => $pagination->getItems(),
         ], $normalizer->normalize($pagination, null, $context));
 
         static::assertSame([
+            'total' => $pagination->getTotalItemCount(),
             'page' => $pagination->getCurrentPageNumber(),
             'per_page' => $pagination->getItemNumberPerPage(),
-            'total' => $pagination->getTotalItemCount(),
             'data' => $pagination->getItems(),
         ], $normalizerWithContext->normalize($pagination));
     }
