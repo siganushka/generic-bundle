@@ -44,7 +44,7 @@ class GenericEntityRepository extends EntityRepository
         }
 
         if (is_subclass_of($this->getEntityName(), CreatableInterface::class)) {
-            $queryBuilder->addOrderBy(\sprintf('%s.createdAt', $alias), 'DESC');
+            $queryBuilder->addOrderBy(\sprintf('%s.createdAt', $alias), $orderBy);
         }
 
         if (is_subclass_of($this->getEntityName(), ResourceInterface::class)) {
