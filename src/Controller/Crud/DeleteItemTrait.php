@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\Controller\Crud;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -20,9 +21,9 @@ trait DeleteItemTrait
             throw new AccessDeniedException();
         }
 
-        $this->runInTransaction(function () use ($entity): void {
-            $this->entityManager->remove($entity);
-            $this->entityManager->flush();
+        $this->runInTransaction(static function (EntityManagerInterface $em) use ($entity): void {
+            $em->remove($entity);
+            $em->flush();
         });
 
         return new Response(status: Response::HTTP_NO_CONTENT);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\Controller\Crud\Web;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,9 +32,9 @@ trait NewTrait
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->runInTransaction(function () use ($entity): void {
-                $this->entityManager->persist($entity);
-                $this->entityManager->flush();
+            $this->runInTransaction(static function (EntityManagerInterface $em) use ($entity): void {
+                $em->persist($entity);
+                $em->flush();
             });
 
             $metadata = $this->entityManager->getClassMetadata($entity::class);

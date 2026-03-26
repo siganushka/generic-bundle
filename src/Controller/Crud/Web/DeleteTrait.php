@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\Controller\Crud\Web;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -27,9 +28,9 @@ trait DeleteTrait
 
         $token = new CsrfToken('delete'.$_id, $request->query->getString('_token'));
         if ($tokenManager->isTokenValid($token)) {
-            $this->runInTransaction(function () use ($entity): void {
-                $this->entityManager->remove($entity);
-                $this->entityManager->flush();
+            $this->runInTransaction(static function (EntityManagerInterface $em) use ($entity): void {
+                $em->remove($entity);
+                $em->flush();
             });
 
             $metadata = $this->entityManager->getClassMetadata($entity::class);

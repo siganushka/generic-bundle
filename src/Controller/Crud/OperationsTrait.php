@@ -107,7 +107,7 @@ trait OperationsTrait
         if ($this->transactionUsed) {
             $this->entityManager->wrapInTransaction($func);
         } else {
-            \call_user_func($func);
+            \call_user_func($func, $this->entityManager);
         }
     }
 
