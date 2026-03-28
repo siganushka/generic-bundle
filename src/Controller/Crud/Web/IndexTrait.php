@@ -19,11 +19,12 @@ trait IndexTrait
     #[Route(methods: 'GET')]
     public function index(Request $request, SerializerInterface $serializer, Environment $twig, PaginatorInterface $paginator): Response
     {
-        $dto = $this->queryDtoClass && $serializer instanceof DenormalizerInterface
-            ? $serializer->denormalize($request->query->all(), $this->queryDtoClass, 'csv')
-            : null;
+        $arguments = ['entity'];
+        if ($this->queryDtoClass && $serializer instanceof DenormalizerInterface) {
+            $arguments[] = $serializer->denormalize($request->query->all(), $this->queryDtoClass, 'csv');
+        }
 
-        $queryBuilder = $this->createEntityQueryBuilder('entity', $dto);
+        $queryBuilder = $this->createEntityQueryBuilder(...$arguments);
         $query = $queryBuilder->getQuery();
 
         if ($this->paginationUsed) {

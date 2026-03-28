@@ -71,7 +71,7 @@ trait OperationsTrait
         $this->paginationUsed = $paginationUsed ?? true;
     }
 
-    protected function createEntityQueryBuilder(string $alias, ?object $dto): QueryBuilder
+    protected function createEntityQueryBuilder(string $alias): QueryBuilder
     {
         $er = $this->entityManager->getRepository($this->entityName);
 
@@ -80,13 +80,13 @@ trait OperationsTrait
             : $er->createQueryBuilder($alias);
     }
 
-    protected function createEntity(mixed ...$args): object
+    protected function createEntity(): object
     {
         $er = $this->entityManager->getRepository($this->entityName);
 
         return $er instanceof GenericEntityRepository
-            ? $er->createNew(...$args)
-            : (new \ReflectionClass($er->getClassName()))->newInstanceArgs($args);
+            ? $er->createNew()
+            : (new \ReflectionClass($er->getClassName()))->newInstanceArgs();
     }
 
     protected function findEntity(string $_id): object
