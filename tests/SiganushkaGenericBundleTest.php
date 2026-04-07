@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Siganushka\GenericBundle\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Siganushka\GenericBundle\DependencyInjection\Compiler\DoctrineResolveTargetEntityPass;
+use Siganushka\GenericBundle\DependencyInjection\Compiler\ExtensionPass;
 use Siganushka\GenericBundle\SiganushkaGenericBundle;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -22,6 +22,6 @@ class SiganushkaGenericBundleTest extends TestCase
         $passes = $container->getCompilerPassConfig()->getBeforeOptimizationPasses();
         $classNameOfPasses = array_map(static fn (CompilerPassInterface $compiler) => $compiler::class, $passes);
 
-        static::assertContains(DoctrineResolveTargetEntityPass::class, $classNameOfPasses);
+        static::assertContains(ExtensionPass::class, $classNameOfPasses);
     }
 }
