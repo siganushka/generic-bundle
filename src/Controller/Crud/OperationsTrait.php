@@ -48,16 +48,21 @@ trait OperationsTrait
     protected bool $paginationUsed;
 
     /**
-     * @param class-string<object>            $entityName
-     * @param class-string<FormTypeInterface> $entityForm
+     * @param class-string<object>                 $entityName
+     * @param class-string<FormTypeInterface>|null $entityForm
+     * @param class-string<object>|null            $queryDtoClass
+     * @param array<int, string>|null              $serializationCollectionGroups
+     * @param array<int, string>|null              $serializationItemGroups
+     * @param array<string, mixed>|null            $serializationCollectionContext
+     * @param array<string, mixed>|null            $serializationItemContext
      */
     protected function configureCrud(
         string $entityName,
         ?string $entityIdentifier = null,
         ?string $entityForm = null,
         ?string $queryDtoClass = null,
-        array|string|null $serializationCollectionGroups = null,
-        array|string|null $serializationItemGroups = null,
+        ?array $serializationCollectionGroups = null,
+        ?array $serializationItemGroups = null,
         ?array $serializationCollectionContext = null,
         ?array $serializationItemContext = null,
         ?bool $transactionUsed = null,
