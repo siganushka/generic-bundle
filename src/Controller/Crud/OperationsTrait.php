@@ -56,17 +56,23 @@ trait OperationsTrait
         ?string $entityIdentifier = null,
         ?string $entityForm = null,
         ?string $queryDtoClass = null,
+        array|string|null $serializationCollectionGroups = null,
+        array|string|null $serializationItemGroups = null,
         ?array $serializationCollectionContext = null,
         ?array $serializationItemContext = null,
         ?bool $transactionUsed = null,
         ?bool $paginationUsed = null,
     ): void {
+        $entityAlias = ClassUtils::generateAlias($entityName);
+        $serializationCollectionGroups ??= \sprintf('%s:collection', $entityAlias);
+        $serializationItemGroups ??= \sprintf('%s:collection', $entityAlias);
+
         $this->entityName = $entityName;
         $this->entityIdentifier = $entityIdentifier ?? 'id';
         $this->entityForm = $entityForm ?? FormType::class;
         $this->queryDtoClass = $queryDtoClass;
-        $this->serializationCollectionContext = $serializationCollectionContext ?? [AbstractNormalizer::GROUPS => \sprintf('%s:collection', ClassUtils::generateAlias($this->entityName))];
-        $this->serializationItemContext = $serializationItemContext ?? [AbstractNormalizer::GROUPS => \sprintf('%s:item', ClassUtils::generateAlias($this->entityName))];
+        $this->serializationCollectionContext = $serializationCollectionContext ?? [AbstractNormalizer::GROUPS => $serializationCollectionGroups];
+        $this->serializationItemContext = $serializationItemContext ?? [AbstractNormalizer::GROUPS => $serializationItemGroups];
         $this->transactionUsed = $transactionUsed ?? false;
         $this->paginationUsed = $paginationUsed ?? true;
     }
@@ -89,7 +95,7 @@ trait OperationsTrait
             : (new \ReflectionClass($er->getClassName()))->newInstanceArgs();
     }
 
-    protected function findEntity(string $_id): object
+    protected function findEntity(int|string $_id): object
     {
         $er = $this->entityManager->getRepository($this->entityName);
 
