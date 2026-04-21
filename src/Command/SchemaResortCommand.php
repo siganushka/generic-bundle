@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\Command;
 
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Exception\ColumnDoesNotExist;
 use Doctrine\DBAL\Schema\Exception\TableDoesNotExist;
@@ -42,14 +43,18 @@ class SchemaResortCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $connection = $this->entityManager->getConnection();
+
+        $platform = $connection->getDatabasePlatform();
+        if (!$platform instanceof AbstractMySQLPlatform) {
+            throw new \RuntimeException('This command is only supported on the MySQL platform.');
+        }
+
         $factory = $this->entityManager->getMetadataFactory();
 
         $schemaTool = new SchemaTool($this->entityManager);
         $schema = $schemaTool->getSchemaFromMetadata($allMetadata = $factory->getAllMetadata());
 
-        $platform = $connection->getDatabasePlatform();
         $introspectSchema = $connection->createSchemaManager()->introspectSchema();
-
         $columnNameFn = static fn (Column $column): string => $column->getObjectName()->getIdentifier()->getValue();
 
         $sqls = [];
