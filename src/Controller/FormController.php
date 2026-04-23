@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -32,9 +33,9 @@ class FormController
         }
     }
 
-    public function __invoke(Request $request, Environment $twig, FormFactoryInterface $factory): Response
+    public function __invoke(Request $request, EntityManagerInterface $entityManager, Environment $twig, FormFactoryInterface $factory): Response
     {
-        if ($form = $this->createForm($request, $factory)) {
+        if ($form = $this->createForm($request, $factory, $entityManager)) {
             $form->add('submit', SubmitType::class);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
@@ -54,7 +55,7 @@ class FormController
         return new Response($content, $status);
     }
 
-    private function createForm(Request $request, FormFactoryInterface $factory): ?FormInterface
+    private function createForm(Request $request, FormFactoryInterface $factory, EntityManagerInterface $entityManager): ?FormInterface
     {
         $class = $request->query->getString('class');
         if (!$type = $this->types[$class] ?? null) {
@@ -62,6 +63,17 @@ class FormController
         }
 
         $form = $factory->create($type::class);
+
+        /** @var class-string|null */
+        $dataClass = $form->getConfig()->getDataClass();
+        if ($dataClass && $request->query->has('id')) {
+            try {
+                $data = $entityManager->find($dataClass, $request->query->get('id'));
+                $form->setData($data);
+            } catch (\Throwable) {
+            }
+        }
+
         if ($form->getConfig()->getOption('compound')
             && !$form->getConfig()->getOption('inherit_data')
             && !$form->getConfig()->hasOption('keep_as_list')) {
