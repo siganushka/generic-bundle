@@ -10,6 +10,7 @@ use Doctrine\Persistence\ObjectRepository;
 use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\Form\DataTransformer\EntityToIdentifierTransformer;
 use Symfony\Component\Form\Exception\TransformationFailedException;
+use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
 class EntityToIdentifierTransformerTest extends TestCase
 {
@@ -48,7 +49,7 @@ class EntityToIdentifierTransformerTest extends TestCase
 
     public function testTransformInvalidValueException(): void
     {
-        $this->expectException(TransformationFailedException::class);
+        $this->expectException(UnexpectedTypeException::class);
 
         $transformer = $this->createEntityToIdentifierTransformer(Foo::class, 'username');
         $transformer->transform(new \stdClass());

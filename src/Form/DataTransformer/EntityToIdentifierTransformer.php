@@ -7,6 +7,7 @@ namespace Siganushka\GenericBundle\Form\DataTransformer;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
+use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Util\FormUtil;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
@@ -32,7 +33,7 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
         }
 
         if (!$value instanceof $this->className) {
-            throw new TransformationFailedException('Invalid class name.');
+            throw new UnexpectedTypeException($value, $this->className);
         }
 
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
