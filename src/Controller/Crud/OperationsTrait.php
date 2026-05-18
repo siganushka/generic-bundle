@@ -70,7 +70,7 @@ trait OperationsTrait
     ): void {
         $entityAlias = ClassUtils::generateAlias($entityName);
         $serializationCollectionGroups ??= \sprintf('%s:collection', $entityAlias);
-        $serializationItemGroups ??= \sprintf('%s:collection', $entityAlias);
+        $serializationItemGroups ??= \sprintf('%s:item', $entityAlias);
 
         $this->entityName = $entityName;
         $this->entityIdentifier = $entityIdentifier ?? 'id';
