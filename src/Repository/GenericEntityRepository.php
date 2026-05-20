@@ -8,9 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Siganushka\Contracts\Doctrine\CreatableInterface;
 use Siganushka\Contracts\Doctrine\ResourceInterface;
-use Siganushka\Contracts\Doctrine\SortableInterface;
 
 /**
  * @see https://github.com/bmewburn/vscode-intelephense/issues/2447
@@ -38,14 +36,6 @@ class GenericEntityRepository extends EntityRepository
     public function createQueryBuilderWithOrderBy(string $alias, ?string $indexBy = null, string $orderBy = 'DESC'): QueryBuilder
     {
         $queryBuilder = $this->createQueryBuilder($alias, $indexBy);
-
-        if (is_subclass_of($this->getEntityName(), SortableInterface::class)) {
-            $queryBuilder->addOrderBy(\sprintf('%s.sort', $alias), $orderBy);
-        }
-
-        if (is_subclass_of($this->getEntityName(), CreatableInterface::class)) {
-            $queryBuilder->addOrderBy(\sprintf('%s.createdAt', $alias), $orderBy);
-        }
 
         if (is_subclass_of($this->getEntityName(), ResourceInterface::class)) {
             $queryBuilder->addOrderBy(\sprintf('%s.id', $alias), $orderBy);
