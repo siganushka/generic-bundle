@@ -22,7 +22,8 @@ class TimestampableListener
     public function preUpdate(PreUpdateEventArgs $event): void
     {
         $object = $event->getObject();
-        if ($object instanceof UpdatableInterface) {
+        if ($object instanceof UpdatableInterface && $event->getEntityChangeSet()) {
+            // ManyToMany (Unidirectional) modifications will trigger a preUpdate event, but the ChangeSet will be empty.
             $object->setUpdatedAt(new \DateTimeImmutable());
         }
     }

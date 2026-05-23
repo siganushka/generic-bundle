@@ -48,6 +48,11 @@ final class TimestampableListenerTest extends TestCase
         $listener = new TimestampableListener();
         $listener->preUpdate(new PreUpdateEventArgs($foo, $entityManager, $changeSet));
 
+        static::assertNull($foo->getUpdatedAt());
+
+        $changeSet = ['foo' => ['oldValue', 'newValue']];
+
+        $listener->preUpdate(new PreUpdateEventArgs($foo, $entityManager, $changeSet));
         static::assertInstanceOf(\DateTimeImmutable::class, $foo->getUpdatedAt());
 
         $fooWithUpdatedAt = new FooTimestampable();
