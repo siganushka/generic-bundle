@@ -36,6 +36,7 @@ return [
     'generic.sort' => '排序',
     'generic.created_at' => '创建时间',
     'generic.updated_at' => '更新时间',
+    'generic.expired_at' => '过期时间',
     'generic.no_results' => '暂无数据',
     'generic.total_results' => '共计 %total_results% 条结果',
     'generic.remove_confirmation' => '确定要移除吗？',

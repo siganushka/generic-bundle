@@ -36,6 +36,7 @@ return [
     'generic.sort' => 'Sort',
     'generic.created_at' => 'Created At',
     'generic.updated_at' => 'Updated At',
+    'generic.expired_at' => 'Expired At',
     'generic.no_results' => 'No results found',
     'generic.total_results' => 'Total %total_results% results',
     'generic.remove_confirmation' => 'Are you sure you want to remove?',
