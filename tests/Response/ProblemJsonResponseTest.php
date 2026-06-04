@@ -22,7 +22,7 @@ class ProblemJsonResponseTest extends TestCase
             'title' => 'Bad Request',
             'status' => 400,
             'detail' => 'test error',
-        ], json_decode($response->getContent() ?: '', true, \JSON_THROW_ON_ERROR));
+        ], json_decode($response->getContent() ?: '', true, flags: \JSON_THROW_ON_ERROR));
 
         $response = new ProblemJsonResponse('test error', ProblemJsonResponse::HTTP_BAD_REQUEST, headers: ['Content-Type' => 'application/json']);
         static::assertSame('application/json', $response->headers->get('Content-Type'));
