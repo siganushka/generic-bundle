@@ -18,7 +18,7 @@ trait GetCollectionTrait
     #[Route(methods: 'GET')]
     public function getCollection(Request $request, SerializerInterface $serializer, PaginatorInterface $paginator): JsonResponse
     {
-        $arguments = ['entity'];
+        $arguments = [];
         if ($this->queryDtoClass && $serializer instanceof DenormalizerInterface) {
             $arguments[] = $serializer->denormalize($request->query->all(), $this->queryDtoClass, 'csv');
         }
