@@ -9,6 +9,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Siganushka\Contracts\Doctrine\CreatableInterface;
 use Siganushka\Contracts\Doctrine\DeletableInterface;
 use Siganushka\Contracts\Doctrine\EnableInterface;
+use Siganushka\Contracts\Doctrine\ExpirableInterface;
 use Siganushka\Contracts\Doctrine\ResourceInterface;
 use Siganushka\Contracts\Doctrine\SortableInterface;
 use Siganushka\Contracts\Doctrine\UpdatableInterface;
@@ -28,13 +29,14 @@ class EntityMetadataFactory implements ClassMetadataFactoryInterface
         EnableInterface::class => 'enabled',
         CreatableInterface::class => 'createdAt',
         UpdatableInterface::class => 'updatedAt',
+        ExpirableInterface::class => 'expiredAt',
         DeletableInterface::class => 'deleted',
     ];
 
     public function __construct(
         private readonly ClassMetadataFactoryInterface $decorated,
-        private readonly ManagerRegistry $registry,
-    ) {
+        private readonly ManagerRegistry $registry)
+    {
     }
 
     public function getMetadataFor(string|object $value): ClassMetadataInterface
