@@ -23,6 +23,7 @@ return static function (ContainerConfigurator $container): void {
             ->tag('console.command')
 
         ->set('siganushka_generic.serializer.form_error_normalizer', FormErrorNormalizer::class)
+            ->arg('$translator', service('translator')->ignoreOnInvalid())
             ->tag('serializer.normalizer')
 
         ->set('siganushka_generic.serializer.knp_pagination_normalizer', KnpPaginationNormalizer::class)

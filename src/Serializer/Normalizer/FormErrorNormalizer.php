@@ -7,6 +7,8 @@ namespace Siganushka\GenericBundle\Serializer\Normalizer;
 use Siganushka\GenericBundle\Response\ProblemJsonResponse;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Contracts\Translation\TranslatableInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FormErrorNormalizer implements NormalizerInterface
 {
@@ -20,7 +22,7 @@ class FormErrorNormalizer implements NormalizerInterface
         self::WITH_ERRORS => true,
     ];
 
-    public function __construct(array $defaultContext = [])
+    public function __construct(array $defaultContext = [], private readonly ?TranslatorInterface $translator = null)
     {
         $this->defaultContext = array_merge($this->defaultContext, $defaultContext);
     }
@@ -33,7 +35,7 @@ class FormErrorNormalizer implements NormalizerInterface
         $type = $context[self::TYPE] ?? $this->defaultContext[self::TYPE];
         $status = $context[self::STATUS] ?? $this->defaultContext[self::STATUS];
 
-        $detail = $this->convertFormFirstError($object);
+        $detail = $this->convertFormErrorToStirng($object) ?? 'Validation Failed.';
         $data = ProblemJsonResponse::createAsArray($detail, $status, type: $type);
 
         if ($context[self::WITH_ERRORS] ?? $this->defaultContext[self::WITH_ERRORS]) {
@@ -55,25 +57,33 @@ class FormErrorNormalizer implements NormalizerInterface
         ];
     }
 
-    private function convertFormFirstError(FormInterface $data): string
+    public function convertFormErrorToStirng(FormInterface $data, bool $showLabel = true): ?string
     {
-        $error = $data->getErrors(true)->current();
+        $errors = $data->getErrors(true);
+        if (0 === $errors->count()) {
+            return null;
+        }
+
+        $error = $errors->current();
+        if (!$showLabel) {
+            return $error->getMessage();
+        }
 
         $form = $error->getOrigin();
         if (!$form || $form->isRoot()) {
             return $error->getMessage();
         }
 
-        return \sprintf('[%s] %s', $form->getName(), $error->getMessage());
-    }
-
-    private function convertFormErrorsToArray(FormInterface $data): ?string
-    {
-        foreach ($data->getErrors() as $error) {
-            return $error->getMessage();
+        $label = $form->getConfig()->getOption('label');
+        if (\is_string($label)) {
+            $label = $this->translator?->trans($label, [], \is_string($domain = $form->getConfig()->getOption('translation_domain')) ? $domain : null) ?? $label;
+        } elseif ($this->translator && $label instanceof TranslatableInterface) {
+            $label = $label->trans($this->translator);
+        } else {
+            $label = $form->getName();
         }
 
-        return null;
+        return \sprintf('%s: %s', $label, $error->getMessage());
     }
 
     private function convertFormChildrenToArray(FormInterface $data): array
@@ -82,7 +92,7 @@ class FormErrorNormalizer implements NormalizerInterface
 
         foreach ($data->all() as $child) {
             $childData = [
-                'error' => $this->convertFormErrorsToArray($child),
+                'error' => $this->convertFormErrorToStirng($child, false),
             ];
 
             if ($child->all()) {
