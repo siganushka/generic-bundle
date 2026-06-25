@@ -7,19 +7,20 @@ namespace Siganushka\GenericBundle\Serializer\Normalizer;
 use Siganushka\GenericBundle\Response\ProblemJsonResponse;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FormErrorNormalizer implements NormalizerInterface
 {
     public const TYPE = 'form_error_type';
     public const STATUS = 'form_error_status';
+    public const WITH_ERRORS = 'form_error_with_errors';
 
     private array $defaultContext = [
         self::TYPE => 'https://symfony.com/errors/form',
         self::STATUS => ProblemJsonResponse::HTTP_UNPROCESSABLE_ENTITY,
+        self::WITH_ERRORS => true,
     ];
 
-    public function __construct(array $defaultContext = [], private readonly ?TranslatorInterface $translator = null)
+    public function __construct(array $defaultContext = [])
     {
         $this->defaultContext = array_merge($this->defaultContext, $defaultContext);
     }
@@ -29,14 +30,15 @@ class FormErrorNormalizer implements NormalizerInterface
      */
     public function normalize(mixed $object, ?string $format = null, array $context = []): array
     {
-        $detailFn = fn (string $detail): string => $this->translator?->trans($detail, domain: 'validators') ?? $detail;
-
         $type = $context[self::TYPE] ?? $this->defaultContext[self::TYPE];
         $status = $context[self::STATUS] ?? $this->defaultContext[self::STATUS];
-        $detail = $this->convertFormErrorsToArray($object) ?? $detailFn('Validation Failed');
 
+        $detail = $this->convertFormFirstError($object);
         $data = ProblemJsonResponse::createAsArray($detail, $status, type: $type);
-        $data['errors'] = $this->convertFormChildrenToArray($object);
+
+        if ($context[self::WITH_ERRORS] ?? $this->defaultContext[self::WITH_ERRORS]) {
+            $data['errors'] = $this->convertFormChildrenToArray($object);
+        }
 
         return $data;
     }
@@ -51,6 +53,18 @@ class FormErrorNormalizer implements NormalizerInterface
         return [
             FormInterface::class => false,
         ];
+    }
+
+    private function convertFormFirstError(FormInterface $data): string
+    {
+        $error = $data->getErrors(true)->current();
+
+        $form = $error->getOrigin();
+        if (!$form || $form->isRoot()) {
+            return $error->getMessage();
+        }
+
+        return \sprintf('[%s] %s', $form->getName(), $error->getMessage());
     }
 
     private function convertFormErrorsToArray(FormInterface $data): ?string

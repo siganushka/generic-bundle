@@ -41,10 +41,10 @@ class FormErrorNormalizerTest extends TypeTestCase
             'title' => 'Bad Request',
             'status' => 400,
             'detail' => 'foo',
-            'errors' => [],
         ], $normalizer->normalize($form, context: [
             FormErrorNormalizer::TYPE => 'test type',
             FormErrorNormalizer::STATUS => 400,
+            FormErrorNormalizer::WITH_ERRORS => false,
         ]));
 
         $normalizer = new FormErrorNormalizer([

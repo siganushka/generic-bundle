@@ -11,7 +11,6 @@ use Siganushka\GenericBundle\Tests\Fixtures\Foo;
 use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
 use Symfony\Component\DependencyInjection\Compiler\ResolveChildDefinitionsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\EnvPlaceholderParameterBag;
 use Symfony\Component\DependencyInjection\Reference;
 
@@ -189,11 +188,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
 
         $formErrorNormalizer = $container->getDefinition('siganushka_generic.serializer.form_error_normalizer');
         static::assertTrue($formErrorNormalizer->hasTag('serializer.normalizer'));
-
-        /** @var Reference */
-        $translator = $formErrorNormalizer->getArgument('$translator');
-        static::assertSame('translator', $translator->__toString());
-        static::assertSame(ContainerInterface::IGNORE_ON_INVALID_REFERENCE, $translator->getInvalidBehavior());
 
         $knpPaginationNormalizer = $container->getDefinition('siganushka_generic.serializer.knp_pagination_normalizer');
         static::assertTrue($knpPaginationNormalizer->hasTag('serializer.normalizer'));
