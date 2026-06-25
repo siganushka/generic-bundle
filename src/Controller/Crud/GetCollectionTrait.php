@@ -23,8 +23,8 @@ trait GetCollectionTrait
             $arguments[] = $serializer->denormalize($request->query->all(), $this->queryDtoClass, 'csv');
         }
 
-        $queryBuilder = $this->createEntityQueryBuilder(...$arguments);
-        $query = $queryBuilder->getQuery();
+        $qb = $this->createEntityQueryBuilder(...$arguments);
+        $query = $qb->getQuery();
 
         $data = $this->paginationUsed
             ? $paginator->paginate($query)

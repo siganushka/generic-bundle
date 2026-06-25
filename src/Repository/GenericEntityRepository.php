@@ -35,13 +35,13 @@ class GenericEntityRepository extends EntityRepository
 
     public function createQueryBuilderWithOrderBy(string $alias, ?string $indexBy = null, string $orderBy = 'DESC'): QueryBuilder
     {
-        $queryBuilder = $this->createQueryBuilder($alias, $indexBy);
+        $qb = $this->createQueryBuilder($alias, $indexBy);
 
         if (is_subclass_of($this->getEntityName(), ResourceInterface::class)) {
-            $queryBuilder->addOrderBy(\sprintf('%s.id', $alias), $orderBy);
+            $qb->addOrderBy(\sprintf('%s.id', $alias), $orderBy);
         }
 
-        return $queryBuilder;
+        return $qb;
     }
 
     /**

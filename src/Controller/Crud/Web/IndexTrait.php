@@ -24,8 +24,8 @@ trait IndexTrait
             $arguments[] = $serializer->denormalize($request->query->all(), $this->queryDtoClass, 'csv');
         }
 
-        $queryBuilder = $this->createEntityQueryBuilder(...$arguments);
-        $query = $queryBuilder->getQuery();
+        $qb = $this->createEntityQueryBuilder(...$arguments);
+        $query = $qb->getQuery();
 
         if ($this->paginationUsed) {
             $context['pagination'] = $paginator->paginate($query);
