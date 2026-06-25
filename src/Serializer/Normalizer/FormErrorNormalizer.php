@@ -14,12 +14,12 @@ class FormErrorNormalizer implements NormalizerInterface
 {
     public const TYPE = 'form_error_type';
     public const STATUS = 'form_error_status';
-    public const WITH_ERRORS = 'form_error_with_errors';
+    public const ERRORS = 'form_error_errors';
 
     private array $defaultContext = [
         self::TYPE => 'https://symfony.com/errors/form',
         self::STATUS => ProblemJsonResponse::HTTP_UNPROCESSABLE_ENTITY,
-        self::WITH_ERRORS => true,
+        self::ERRORS => true,
     ];
 
     public function __construct(array $defaultContext = [], private readonly ?TranslatorInterface $translator = null)
@@ -38,7 +38,7 @@ class FormErrorNormalizer implements NormalizerInterface
         $detail = $this->convertFormErrorToStirng($object) ?? 'Validation Failed.';
         $data = ProblemJsonResponse::createAsArray($detail, $status, type: $type);
 
-        if ($context[self::WITH_ERRORS] ?? $this->defaultContext[self::WITH_ERRORS]) {
+        if ($context[self::ERRORS] ?? $this->defaultContext[self::ERRORS]) {
             $data['errors'] = $this->convertFormChildrenToArray($object);
         }
 
