@@ -95,10 +95,10 @@ class FormErrorNormalizer implements NormalizerInterface
                 'error' => $this->convertFormErrorToStirng($child, false),
             ];
 
-            $isMultipleChoice = $child->getConfig()->hasOption('choices')
-                && $child->getConfig()->getOption('multiple');
+            $isExpandedChoice = $child->getConfig()->hasOption('choices')
+                && $child->getConfig()->getOption('expanded');
 
-            if ($child->all() && !$isMultipleChoice) {
+            if ($child->all() && !$isExpandedChoice) {
                 $childData['children'] = $this->convertFormChildrenToArray($child);
             }
 
