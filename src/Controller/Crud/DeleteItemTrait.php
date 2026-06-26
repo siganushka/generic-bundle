@@ -13,10 +13,10 @@ trait DeleteItemTrait
 {
     use OperationsTrait;
 
-    #[Route('/{_id<\d+>}', methods: 'DELETE')]
-    public function deleteItem(string $_id): Response
+    #[Route('/{id<\d+>}', methods: 'DELETE')]
+    public function deleteItem(string $id): Response
     {
-        $entity = $this->findEntity($_id);
+        $entity = $this->findEntity($id);
         if (!$this->isGrantedForOperation(self::OPERATION_DELETE, $entity)) {
             throw new AccessDeniedException();
         }

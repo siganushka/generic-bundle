@@ -13,10 +13,10 @@ trait ShowTrait
 {
     use WebOperationsTrait;
 
-    #[Route('/{_id<\d+>}', methods: 'GET')]
-    public function show(Environment $twig, string $_id): Response
+    #[Route('/{id<\d+>}', methods: 'GET')]
+    public function show(Environment $twig, string $id): Response
     {
-        $entity = $this->findEntity($_id);
+        $entity = $this->findEntity($id);
         if (!$this->isGrantedForOperation(self::OPERATION_READ, $entity)) {
             throw new AccessDeniedException();
         }

@@ -19,10 +19,10 @@ trait EditTrait
 {
     use WebOperationsTrait;
 
-    #[Route('/{_id<\d+>}/edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Environment $twig, UrlGeneratorInterface $urlGenerator, string $_id): Response
+    #[Route('/{id<\d+>}/edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Environment $twig, UrlGeneratorInterface $urlGenerator, string $id): Response
     {
-        $entity = $this->findEntity($_id);
+        $entity = $this->findEntity($id);
         if (!$this->isGrantedForOperation(self::OPERATION_UPDATE, $entity)) {
             throw new AccessDeniedException();
         }
@@ -38,7 +38,7 @@ trait EditTrait
             $identifier = $metadata->getFieldValue($entity, $metadata->getSingleIdentifierFieldName());
 
             $message = \sprintf('Entity %s updated successfully!', $entity::class);
-            $this->addFlashMessage($request, 'success', new TranslatableMessage($message, ['%_id%' => $identifier]));
+            $this->addFlashMessage($request, 'success', new TranslatableMessage($message, ['%id%' => $identifier]));
 
             $route = \sprintf('app_%s_index', $this->getControllerAlias());
             $url = $urlGenerator->generate($route, []);

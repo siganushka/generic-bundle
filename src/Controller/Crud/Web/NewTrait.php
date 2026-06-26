@@ -41,7 +41,7 @@ trait NewTrait
             $identifier = $metadata->getFieldValue($entity, $metadata->getSingleIdentifierFieldName());
 
             $message = \sprintf('Entity %s created successfully!', $entity::class);
-            $this->addFlashMessage($request, 'success', new TranslatableMessage($message, ['%_id%' => $identifier]));
+            $this->addFlashMessage($request, 'success', new TranslatableMessage($message, ['%id%' => $identifier]));
 
             $route = \sprintf('app_%s_index', $this->getControllerAlias());
             $url = $urlGenerator->generate($route, []);

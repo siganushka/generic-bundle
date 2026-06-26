@@ -18,15 +18,15 @@ trait DeleteTrait
 {
     use WebOperationsTrait;
 
-    #[Route('/{_id<\d+>}/delete', methods: 'GET')]
-    public function delete(Request $request, CsrfTokenManagerInterface $tokenManager, UrlGeneratorInterface $urlGenerator, string $_id): RedirectResponse
+    #[Route('/{id<\d+>}/delete', methods: 'GET')]
+    public function delete(Request $request, CsrfTokenManagerInterface $tokenManager, UrlGeneratorInterface $urlGenerator, string $id): RedirectResponse
     {
-        $entity = $this->findEntity($_id);
+        $entity = $this->findEntity($id);
         if (!$this->isGrantedForOperation(self::OPERATION_DELETE, $entity)) {
             throw new AccessDeniedException();
         }
 
-        $token = new CsrfToken('delete'.$_id, $request->query->getString('_token'));
+        $token = new CsrfToken('delete'.$id, $request->query->getString('_token'));
         if ($tokenManager->isTokenValid($token)) {
             $this->runInTransaction(static function (EntityManagerInterface $em) use ($entity): void {
                 $em->remove($entity);
@@ -37,7 +37,7 @@ trait DeleteTrait
             $identifier = $metadata->getFieldValue($entity, $metadata->getSingleIdentifierFieldName());
 
             $message = \sprintf('Entity %s deleted successfully!', $entity::class);
-            $this->addFlashMessage($request, 'success', new TranslatableMessage($message, ['%_id%' => $identifier]));
+            $this->addFlashMessage($request, 'success', new TranslatableMessage($message, ['%id%' => $identifier]));
         } else {
             $this->addFlashMessage($request, 'danger', new TranslatableMessage('Invalid csrf token.'));
         }

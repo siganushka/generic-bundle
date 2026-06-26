@@ -15,10 +15,10 @@ trait PutItemTrait
 {
     use OperationsTrait;
 
-    #[Route('/{_id<\d+>}', methods: ['PUT', 'PATCH'])]
-    public function putItem(Request $request, SerializerInterface $serializer, string $_id): JsonResponse
+    #[Route('/{id<\d+>}', methods: ['PUT', 'PATCH'])]
+    public function putItem(Request $request, SerializerInterface $serializer, string $id): JsonResponse
     {
-        $entity = $this->findEntity($_id);
+        $entity = $this->findEntity($id);
         if (!$this->isGrantedForOperation(self::OPERATION_UPDATE, $entity)) {
             throw new AccessDeniedException();
         }

@@ -13,10 +13,10 @@ trait GetItemTrait
 {
     use OperationsTrait;
 
-    #[Route('/{_id<\d+>}', methods: 'GET')]
-    public function getItem(SerializerInterface $serializer, string $_id): JsonResponse
+    #[Route('/{id<\d+>}', methods: 'GET')]
+    public function getItem(SerializerInterface $serializer, string $id): JsonResponse
     {
-        $entity = $this->findEntity($_id);
+        $entity = $this->findEntity($id);
         if (!$this->isGrantedForOperation(self::OPERATION_READ, $entity)) {
             throw new AccessDeniedException();
         }

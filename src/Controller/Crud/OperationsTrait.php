@@ -100,11 +100,11 @@ trait OperationsTrait
             : (new \ReflectionClass($er->getClassName()))->newInstanceArgs();
     }
 
-    protected function findEntity(int|string $_id): object
+    protected function findEntity(int|string $id): object
     {
         $er = $this->entityManager->getRepository($this->entityName);
 
-        return $er->findOneBy([$this->entityIdentifier => $_id])
+        return $er->findOneBy([$this->entityIdentifier => $id])
             ?? throw new NotFoundHttpException('Not Found');
     }
 
