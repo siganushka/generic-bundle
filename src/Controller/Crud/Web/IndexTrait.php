@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 use Twig\Environment;
 
 trait IndexTrait
@@ -17,11 +16,11 @@ trait IndexTrait
     use WebOperationsTrait;
 
     #[Route(methods: 'GET')]
-    public function index(Request $request, SerializerInterface $serializer, Environment $twig, PaginatorInterface $paginator): Response
+    public function index(Request $request, DenormalizerInterface $denormalizer, Environment $twig, PaginatorInterface $paginator): Response
     {
         $arguments = [];
-        if ($this->queryDtoClass && $serializer instanceof DenormalizerInterface) {
-            $arguments[] = $serializer->denormalize($request->query->all(), $this->queryDtoClass, 'csv');
+        if ($this->queryDtoClass) {
+            $arguments[] = $denormalizer->denormalize($request->query->all(), $this->queryDtoClass, 'csv');
         }
 
         $qb = $this->createEntityQueryBuilder(...$arguments);
