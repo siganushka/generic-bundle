@@ -32,7 +32,7 @@ trait NewTrait
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->runInTransaction(static function (EntityManagerInterface $em) use ($entity): void {
+            $this->runInTransaction(static function (EntityManagerInterface $em) use ($entity) {
                 $em->persist($entity);
                 $em->flush();
             });
