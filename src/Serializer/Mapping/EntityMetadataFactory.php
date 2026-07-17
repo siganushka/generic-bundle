@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\Serializer\Mapping;
 
-use Doctrine\ORM\Mapping\ClassMetadata as EntityClassMetadata;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Persistence\ManagerRegistry;
 use Siganushka\Contracts\Doctrine\CreatableInterface;
 use Siganushka\Contracts\Doctrine\DeletableInterface;
@@ -45,13 +45,13 @@ class EntityMetadataFactory implements ClassMetadataFactoryInterface
 
         /** @var class-string */
         $entityClass = $metadata->getName();
-        /** @var EntityClassMetadata<object>|null */
+        /** @var ClassMetadata<object>|null */
         $entityMetadata = $this->registry->getManagerForClass($entityClass)?->getClassMetadata($entityClass);
 
         if (!$entityMetadata
             || $entityMetadata->isMappedSuperclass
             || $entityMetadata->isEmbeddedClass
-            || ($entityMetadata->reflClass?->isAbstract() ?? false)) {
+            || $entityMetadata->getReflectionClass()->isAbstract()) {
             return $metadata;
         }
 
@@ -84,12 +84,12 @@ class EntityMetadataFactory implements ClassMetadataFactoryInterface
     }
 
     /**
-     * @param EntityClassMetadata<object> $metadata
+     * @param ClassMetadata<object>       $metadata
      * @param array<class-string, string> $interfaces
      *
      * @return array<int, string>
      */
-    private function getSortedAttributes(EntityClassMetadata $metadata, array $interfaces): array
+    private function getSortedAttributes(ClassMetadata $metadata, array $interfaces): array
     {
         $attributes = [];
         foreach ($interfaces as $interface => $attribute) {
