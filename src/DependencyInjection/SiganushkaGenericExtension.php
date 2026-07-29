@@ -8,6 +8,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Siganushka\Contracts\Doctrine\ResourceInterface;
 use Siganushka\GenericBundle\Doctrine\Filter\DeletableFilter;
 use Siganushka\GenericBundle\Repository\GenericEntityRepository;
+use Symfony\Bundle\SecurityBundle\SecurityBundle;
 use Symfony\Component\AssetMapper\AssetMapperInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -76,6 +77,10 @@ class SiganushkaGenericExtension extends Extension implements PrependExtensionIn
             if (!$config['serializer']['knp_pagination_normalizer'] || !interface_exists(PaginatorInterface::class)) {
                 $container->removeDefinition('siganushka_generic.serializer.knp_pagination_normalizer');
             }
+        }
+
+        if (!class_exists(SecurityBundle::class)) {
+            $container->removeDefinition('siganushka_generic.security.mock_authenticator');
         }
 
         $container->registerForAutoconfiguration(GenericEntityRepository::class)

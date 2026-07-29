@@ -29,6 +29,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'siganushka_generic.knp_paginator_decorator',
             'siganushka_generic.twig_extension',
             'siganushka_generic.twig_runtime',
+            'siganushka_generic.security.mock_authenticator',
             'siganushka_generic.doctrine.nestable_listener',
             'siganushka_generic.doctrine.timestampable_listener',
             'siganushka_generic.doctrine.deletable_listener',
@@ -64,6 +65,13 @@ final class SiganushkaGenericExtensionTest extends TestCase
 
         $twigRuntime = $container->getDefinition('siganushka_generic.twig_runtime');
         static::assertTrue($twigRuntime->hasTag('twig.runtime'));
+
+        $mockAuthenticator = $container->getDefinition('siganushka_generic.security.mock_authenticator');
+        static::assertSame('%kernel.debug%', $mockAuthenticator->getArgument('$debug'));
+
+        /** @var Reference */
+        $httpUtils = $mockAuthenticator->getArgument('$httpUtils');
+        static::assertSame('security.http_utils', $httpUtils->__toString());
 
         $nestableListener = $container->getDefinition('siganushka_generic.doctrine.nestable_listener');
         static::assertSame([
@@ -152,6 +160,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'siganushka_generic.knp_paginator_decorator',
             'siganushka_generic.twig_extension',
             'siganushka_generic.twig_runtime',
+            'siganushka_generic.security.mock_authenticator',
             'siganushka_generic.doctrine.mapping_override_listener',
             'siganushka_generic.doctrine.table_prefix_listener',
             'siganushka_generic.doctrine.nestable_listener',

@@ -6,6 +6,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Siganushka\GenericBundle\Decorator\DecoratingKnpPaginator;
 use Siganushka\GenericBundle\EventListener\JsonResponseListener;
+use Siganushka\GenericBundle\Security\Http\MockAuthenticator;
 use Siganushka\GenericBundle\Twig\Extension\GenericExtension;
 use Siganushka\GenericBundle\Twig\Runtime\GenericExtensionRuntime;
 
@@ -25,5 +26,9 @@ return static function (ContainerConfigurator $container): void {
 
         ->set('siganushka_generic.twig_runtime', GenericExtensionRuntime::class)
             ->tag('twig.runtime')
+
+        ->set('siganushka_generic.security.mock_authenticator', MockAuthenticator::class)
+            ->arg('$httpUtils', service('security.http_utils'))
+            ->arg('$debug', param('kernel.debug'))
     ;
 };
