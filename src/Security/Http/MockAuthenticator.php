@@ -55,10 +55,8 @@ class MockAuthenticator extends AbstractAuthenticator
 
     public function authenticate(Request $request): Passport
     {
-        $identifier = $request->query->get($this->options['identifier_parameter']);
-        if (!$identifier) {
-            throw new BadCredentialsException(\sprintf('The %s not found.', $this->options['identifier_parameter']));
-        }
+        $identifier = $request->query->get($this->options['identifier_parameter'])
+            ?? throw new BadCredentialsException(\sprintf('The %s not found.', $this->options['identifier_parameter']));
 
         return new SelfValidatingPassport(new UserBadge($identifier, $this->userProvider->loadUserByIdentifier(...)));
     }
