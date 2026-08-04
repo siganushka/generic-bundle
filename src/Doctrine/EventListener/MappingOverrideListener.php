@@ -17,6 +17,14 @@ class MappingOverrideListener
         $classMetadata = $event->getClassMetadata();
         if (\array_key_exists($classMetadata->getName(), $this->mappingOverride)) {
             $classMetadata->isMappedSuperclass = true;
+            // [important] Duplicate definition of column "xxx"
+            foreach (array_keys($classMetadata->embeddedClasses) as $embeddedField) {
+                foreach (array_keys($classMetadata->fieldMappings) as $field) {
+                    if (str_starts_with($field, $embeddedField.'.')) {
+                        unset($classMetadata->fieldMappings[$field]);
+                    }
+                }
+            }
         }
     }
 }
