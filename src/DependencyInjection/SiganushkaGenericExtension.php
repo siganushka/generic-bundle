@@ -90,12 +90,10 @@ class SiganushkaGenericExtension extends Extension implements PrependExtensionIn
 
     public function prepend(ContainerBuilder $container): void
     {
-        if (self::isAssetMapperAvailable($container)) {
+        if ($this->isAssetMapperAvailable($container)) {
             $container->prependExtensionConfig('framework', [
                 'asset_mapper' => [
-                    'paths' => [
-                        __DIR__.'/../../assets/dist' => '@siganushka/generic-bundle',
-                    ],
+                    'paths' => [__DIR__.'/../../assets/dist' => '@siganushka/generic-bundle'],
                 ],
             ]);
         }
@@ -114,10 +112,7 @@ class SiganushkaGenericExtension extends Extension implements PrependExtensionIn
         }
     }
 
-    /**
-     * @see https://symfony.com/doc/current/frontend/create_ux_bundle.html#specifics-for-asset-mapper
-     */
-    public static function isAssetMapperAvailable(ContainerBuilder $container): bool
+    private function isAssetMapperAvailable(ContainerBuilder $container): bool
     {
         if (!interface_exists(AssetMapperInterface::class)) {
             return false;
