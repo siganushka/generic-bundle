@@ -10,15 +10,15 @@ use Doctrine\ORM\Mapping as ORM;
 class DateRange
 {
     #[ORM\Column]
-    private ?\DateTimeImmutable $startAt = null;
+    private ?\DateTimeImmutable $startAt;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $endAt = null;
+    private ?\DateTimeImmutable $endAt;
 
-    public function __construct(?\DateTimeInterface $startAt = null, ?\DateTimeInterface $endAt = null)
+    public function __construct(?\DateTimeImmutable $startAt = null, ?\DateTimeImmutable $endAt = null)
     {
-        $this->setStartAt($startAt);
-        $this->setEndAt($endAt);
+        $this->startAt = $startAt;
+        $this->endAt = $endAt;
     }
 
     public function getStartAt(): ?\DateTimeImmutable
@@ -26,22 +26,8 @@ class DateRange
         return $this->startAt;
     }
 
-    public function setStartAt(?\DateTimeInterface $startAt): static
-    {
-        $startAt && $this->startAt = \DateTimeImmutable::createFromInterface($startAt);
-
-        return $this;
-    }
-
     public function getEndAt(): ?\DateTimeImmutable
     {
         return $this->endAt;
-    }
-
-    public function setEndAt(?\DateTimeInterface $endAt): static
-    {
-        $endAt && $this->endAt = \DateTimeImmutable::createFromInterface($endAt);
-
-        return $this;
     }
 }

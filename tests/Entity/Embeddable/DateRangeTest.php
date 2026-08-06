@@ -18,7 +18,8 @@ class DateRangeTest extends TestCase
         $startAt = new \DateTimeImmutable();
         $endAt = $startAt->modify('+3 days');
 
-        $range->setStartAt($startAt);
-        $range->setEndAt($endAt);
+        $range = new DateRange($startAt, $endAt);
+        static::assertSame($startAt, $range->getStartAt());
+        static::assertSame($endAt, $range->getEndAt());
     }
 }
