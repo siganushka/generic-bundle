@@ -9,10 +9,12 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @template TNode of AbstractNestable = AbstractNestable
+ * @template TNode of Nestable = Nestable
+ *
+ * @deprecated since siganushka/generic-bundle 1.3, use {@see AbstractNestable} instead.
  */
 #[ORM\MappedSuperclass]
-abstract class AbstractNestable
+abstract class Nestable
 {
     /**
      * @var TNode|null
