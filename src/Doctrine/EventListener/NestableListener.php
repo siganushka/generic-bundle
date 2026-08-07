@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Siganushka\GenericBundle\Doctrine\EventListener;
 
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
-use Siganushka\GenericBundle\Entity\Nestable;
+use Siganushka\GenericBundle\Entity\AbstractNestable;
 
 class NestableListener
 {
     public function loadClassMetadata(LoadClassMetadataEventArgs $event): void
     {
         $metadata = $event->getClassMetadata();
-        if ($metadata->isMappedSuperclass || !is_subclass_of($metadata->getName(), Nestable::class)) {
+        if ($metadata->isMappedSuperclass || !is_subclass_of($metadata->getName(), AbstractNestable::class)) {
             return;
         }
 

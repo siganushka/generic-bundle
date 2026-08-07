@@ -10,10 +10,10 @@ use Doctrine\ORM\Mapping as ORM;
 class DateRange
 {
     #[ORM\Column]
-    private ?\DateTimeImmutable $startAt;
+    private readonly ?\DateTimeImmutable $startAt;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $endAt;
+    private readonly ?\DateTimeImmutable $endAt;
 
     public function __construct(?\DateTimeImmutable $startAt = null, ?\DateTimeImmutable $endAt = null)
     {

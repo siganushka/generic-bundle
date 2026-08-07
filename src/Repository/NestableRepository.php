@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\Repository;
 
-use Siganushka\GenericBundle\Entity\Nestable;
+use Siganushka\GenericBundle\Entity\AbstractNestable;
 
 /**
- * @template T of Nestable = Nestable
+ * @template T of AbstractNestable = AbstractNestable
  *
  * @extends GenericEntityRepository<T>
  */

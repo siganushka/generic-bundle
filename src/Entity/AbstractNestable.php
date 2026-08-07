@@ -10,10 +10,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Siganushka\GenericBundle\Repository\NestableRepository;
 
 /**
- * @template TNode of Nestable = Nestable
+ * @template TNode of AbstractNestable = AbstractNestable
  */
 #[ORM\MappedSuperclass(repositoryClass: NestableRepository::class)]
-abstract class Nestable
+abstract class AbstractNestable
 {
     /**
      * @var TNode|null
