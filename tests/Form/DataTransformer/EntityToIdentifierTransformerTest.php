@@ -95,20 +95,17 @@ class EntityToIdentifierTransformerTest extends TestCase
     private function createEntityToIdentifierTransformer(string $className, string $identifierField): EntityToIdentifierTransformer
     {
         $objectRepository = $this->createMock(ObjectRepository::class);
-        $objectRepository->expects(static::any())
-            ->method('findOneBy')
+        $objectRepository->method('findOneBy')
             ->willReturnCallback(fn (array $value) => $value === ['username' => 'siganushka'] ? $this->foo : null)
         ;
 
         $objectManager = $this->createMock(ObjectManager::class);
-        $objectManager->expects(static::any())
-            ->method('getRepository')
+        $objectManager->method('getRepository')
             ->willReturn($objectRepository)
         ;
 
         $managerRegistry = $this->createMock(ManagerRegistry::class);
-        $managerRegistry->expects(static::any())
-            ->method('getManagerForClass')
+        $managerRegistry->method('getManagerForClass')
             ->willReturn($objectManager)
         ;
 

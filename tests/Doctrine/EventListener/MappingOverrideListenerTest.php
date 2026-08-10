@@ -21,8 +21,7 @@ final class MappingOverrideListenerTest extends TestCase
         static::assertSame(EntityRepository::class, $classMetadata->customRepositoryClassName);
 
         $loadClassMetadataEventArgs = $this->createMock(LoadClassMetadataEventArgs::class);
-        $loadClassMetadataEventArgs->expects(static::any())
-            ->method('getClassMetadata')
+        $loadClassMetadataEventArgs->method('getClassMetadata')
             ->willReturn($classMetadata)
         ;
 

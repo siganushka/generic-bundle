@@ -23,25 +23,21 @@ class EntityMetadataFactoryTest extends TestCase
         $foo->isEmbeddedClass = true;
 
         $bar = $this->createMock(ClassMetadata::class);
-        $bar->expects(static::any())
-            ->method('hasField')
+        $bar->method('hasField')
             ->willReturnCallback(static fn (string $fieldName) => \in_array($fieldName, ['x', 'y']))
         ;
 
-        $bar->expects(static::any())
-            ->method('hasAssociation')
+        $bar->method('hasAssociation')
             ->willReturnCallback(static fn (string $fieldName) => 'testSnakeName' === $fieldName)
         ;
 
         $objectManager = $this->createMock(ObjectManager::class);
-        $objectManager->expects(static::any())
-            ->method('getClassMetadata')
+        $objectManager->method('getClassMetadata')
             ->willReturnCallback(static fn (string $className) => Foo::class === $className ? $foo : $bar)
         ;
 
         $managerRegistry = $this->createMock(ManagerRegistry::class);
-        $managerRegistry->expects(static::any())
-            ->method('getManagerForClass')
+        $managerRegistry->method('getManagerForClass')
             ->willReturnCallback(static fn (string $class) => \in_array($class, [Foo::class, Bar::class]) ? $objectManager : null);
 
         $classMetadataFactory = new ClassMetadataFactory(new AttributeLoader());

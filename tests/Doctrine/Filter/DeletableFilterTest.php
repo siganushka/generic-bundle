@@ -16,8 +16,7 @@ class DeletableFilterTest extends TestCase
         $entityManager = $this->createMock(EntityManagerInterface::class);
 
         $reflClass = $this->createMock(\ReflectionClass::class);
-        $reflClass->expects(static::any())
-            ->method('implementsInterface')
+        $reflClass->method('implementsInterface')
             ->willReturn(true)
         ;
 

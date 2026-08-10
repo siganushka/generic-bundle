@@ -24,14 +24,12 @@ class DecoratingKnpPaginatorTest extends TestCase
 
         $requestStack1 = $this->createMock(RequestStack::class);
         $requestStack2 = $this->createMock(RequestStack::class);
-        $requestStack2->expects(static::any())
-            ->method('getCurrentRequest')
+        $requestStack2->method('getCurrentRequest')
             ->willReturn(Request::create('/', parameters: ['page' => 2, 'limit' => 20]))
         ;
 
         $requestStack3 = $this->createMock(RequestStack::class);
-        $requestStack3->expects(static::any())
-            ->method('getCurrentRequest')
+        $requestStack3->method('getCurrentRequest')
             ->willReturn(Request::create('/', parameters: ['page' => 3, 'size' => 30]))
         ;
 

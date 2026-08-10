@@ -63,8 +63,7 @@ class KnpPaginationNormalizerTest extends TestCase
     {
         $innerNormalizer = $this->createMock(NormalizerInterface::class);
 
-        $innerNormalizer->expects(static::any())
-            ->method('normalize')
+        $innerNormalizer->method('normalize')
             ->willReturnCallback(static fn (mixed $items) => $items)
         ;
 

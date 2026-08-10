@@ -33,8 +33,7 @@ final class TablePrefixListenerTest extends TestCase
         static::assertSame('test_case_bar', $bars->joinTable->name);
 
         $loadClassMetadataEventArgs = $this->createMock(LoadClassMetadataEventArgs::class);
-        $loadClassMetadataEventArgs->expects(static::any())
-            ->method('getClassMetadata')
+        $loadClassMetadataEventArgs->method('getClassMetadata')
             ->willReturn($classMetadata)
         ;
 

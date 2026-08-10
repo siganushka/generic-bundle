@@ -22,7 +22,6 @@ class GenericEntityRepositoryTest extends TestCase
     public function testAll(): void
     {
         $repository = $this->createRepository(Foo::class);
-        static::assertInstanceOf(GenericEntityRepository::class, $repository);
 
         $entity = $repository->createNew('foo');
         static::assertInstanceOf(Foo::class, $entity);
@@ -65,22 +64,20 @@ class GenericEntityRepositoryTest extends TestCase
      */
     private function createRepository(string $entityClass): GenericEntityRepository
     {
-        $classMetadata = new ClassMetadata($entityClass);
-
         $entityManager = $this->createMock(EntityManagerInterface::class);
-        $entityManager->expects(static::any())
-            ->method('getClassMetadata')
-            ->willReturn($classMetadata)
+
+        $entityManager->method('getClassMetadata')
+            ->willReturn(new ClassMetadata($entityClass))
         ;
 
-        $entityManager->expects(static::any())
-            ->method('createQueryBuilder')
+        $entityManager->method('createQueryBuilder')
+            // Using willReturnCallback to create new instance
             ->willReturnCallback(static fn () => new QueryBuilder($entityManager))
         ;
 
         $managerRegistry = $this->createMock(ManagerRegistry::class);
-        $managerRegistry->expects(static::any())
-            ->method('getManagerForClass')
+
+        $managerRegistry->method('getManagerForClass')
             ->willReturn($entityManager)
         ;
 
