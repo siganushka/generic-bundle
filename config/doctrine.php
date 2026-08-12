@@ -8,7 +8,6 @@ use Doctrine\ORM\Events;
 use Doctrine\ORM\Tools\ToolEvents;
 use Siganushka\GenericBundle\Command\SchemaResortCommand;
 use Siganushka\GenericBundle\Doctrine\EventListener\DeletableListener;
-use Siganushka\GenericBundle\Doctrine\EventListener\MappingOverrideListener;
 use Siganushka\GenericBundle\Doctrine\EventListener\NestableListener;
 use Siganushka\GenericBundle\Doctrine\EventListener\SchemaResortListener;
 use Siganushka\GenericBundle\Doctrine\EventListener\TablePrefixListener;
@@ -16,10 +15,6 @@ use Siganushka\GenericBundle\Doctrine\EventListener\TimestampableListener;
 
 return static function (ContainerConfigurator $container): void {
     $container->services()
-        ->set('siganushka_generic.doctrine.mapping_override_listener', MappingOverrideListener::class)
-            ->arg('$mappingOverride', param('siganushka_generic.doctrine.mapping_override'))
-            ->tag('doctrine.event_listener', ['event' => Events::loadClassMetadata])
-
         ->set('siganushka_generic.doctrine.table_prefix_listener', TablePrefixListener::class)
             ->arg('$prefix', param('siganushka_generic.doctrine.table_prefix'))
             ->tag('doctrine.event_listener', ['event' => Events::loadClassMetadata])

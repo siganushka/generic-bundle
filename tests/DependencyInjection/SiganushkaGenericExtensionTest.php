@@ -6,8 +6,6 @@ namespace Siganushka\GenericBundle\Tests\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\DependencyInjection\SiganushkaGenericExtension;
-use Siganushka\GenericBundle\Tests\Fixtures\Bar;
-use Siganushka\GenericBundle\Tests\Fixtures\Foo;
 use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
 use Symfony\Component\DependencyInjection\Compiler\ResolveChildDefinitionsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -21,7 +19,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
         $container = $this->createContainerWithConfig();
 
         static::assertNull($container->getParameter('siganushka_generic.doctrine.table_prefix'));
-        static::assertSame([], $container->getParameter('siganushka_generic.doctrine.mapping_override'));
+        static::assertTrue($container->getParameter('siganushka_generic.doctrine.schema_resort'));
 
         static::assertSame([
             'service_container',
@@ -139,9 +137,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'doctrine' => [
                 'schema_resort' => false,
                 'table_prefix' => 'test_',
-                'mapping_override' => [
-                    Foo::class => Bar::class,
-                ],
             ],
             'serializer' => [
                 'form_error_normalizer' => true,
@@ -152,7 +147,7 @@ final class SiganushkaGenericExtensionTest extends TestCase
         $container = $this->createContainerWithConfig($configs, true);
 
         static::assertSame('test_', $container->getParameter('siganushka_generic.doctrine.table_prefix'));
-        static::assertSame([Foo::class => Bar::class], $container->getParameter('siganushka_generic.doctrine.mapping_override'));
+        static::assertFalse($container->getParameter('siganushka_generic.doctrine.schema_resort'));
 
         static::assertSame([
             'service_container',
@@ -161,7 +156,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'siganushka_generic.twig_extension',
             'siganushka_generic.twig_runtime',
             'siganushka_generic.security.mock_authenticator',
-            'siganushka_generic.doctrine.mapping_override_listener',
             'siganushka_generic.doctrine.table_prefix_listener',
             'siganushka_generic.doctrine.nestable_listener',
             'siganushka_generic.doctrine.timestampable_listener',
@@ -178,10 +172,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'siganushka_generic.serializer.form_error_normalizer',
             'siganushka_generic.serializer.knp_pagination_normalizer',
         ], $container->getServiceIds());
-
-        $mappingOverrideListener = $container->getDefinition('siganushka_generic.doctrine.mapping_override_listener');
-        static::assertSame([['event' => 'loadClassMetadata']], $mappingOverrideListener->getTag('doctrine.event_listener'));
-        static::assertSame('%siganushka_generic.doctrine.mapping_override%', $mappingOverrideListener->getArgument('$mappingOverride'));
 
         $tablePrefixListener = $container->getDefinition('siganushka_generic.doctrine.table_prefix_listener');
         static::assertSame([['event' => 'loadClassMetadata']], $tablePrefixListener->getTag('doctrine.event_listener'));

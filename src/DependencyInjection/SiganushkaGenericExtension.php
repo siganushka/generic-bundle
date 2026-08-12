@@ -31,7 +31,7 @@ class SiganushkaGenericExtension extends Extension implements PrependExtensionIn
         $config = $this->processConfiguration($configuration, $configs);
 
         $container->setParameter('siganushka_generic.doctrine.table_prefix', $config['doctrine']['table_prefix']);
-        $container->setParameter('siganushka_generic.doctrine.mapping_override', $config['doctrine']['mapping_override']);
+        $container->setParameter('siganushka_generic.doctrine.schema_resort', $config['doctrine']['schema_resort']);
 
         if ($container::willBeAvailable('siganushka/doctrine-contracts', ResourceInterface::class, ['siganushka/generic-bundle'])) {
             $loader->load('doctrine.php');
@@ -39,10 +39,6 @@ class SiganushkaGenericExtension extends Extension implements PrependExtensionIn
             if (!$config['doctrine']['schema_resort']) {
                 $container->removeDefinition('siganushka_generic.doctrine.schema_resort_listener');
                 $container->removeDefinition('siganushka_generic.doctrine.schema_resort_command');
-            }
-
-            if (!$config['doctrine']['mapping_override']) {
-                $container->removeDefinition('siganushka_generic.doctrine.mapping_override_listener');
             }
 
             if (!$config['doctrine']['table_prefix']) {
