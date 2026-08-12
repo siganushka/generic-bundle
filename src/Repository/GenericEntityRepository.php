@@ -23,9 +23,11 @@ class GenericEntityRepository extends EntityRepository
      */
     public function __construct(ManagerRegistry $registry, string $entityClass)
     {
-        /** @var EntityManagerInterface */
-        $manager = $registry->getManagerForClass($entityClass)
-            ?? throw new \LogicException(\sprintf('Could not find the entity manager for class "%s". Check your Doctrine configuration to make sure it is configured to load this entity’s metadata.', $entityClass));
+        $manager = $registry->getManagerForClass($entityClass) ?? $registry->getManager();
+
+        if (!$manager instanceof EntityManagerInterface) {
+            throw new \LogicException(\sprintf('Could not find the entity manager for class "%s". Check your Doctrine configuration to make sure it is configured to load this entity’s metadata.', $entityClass));
+        }
 
         parent::__construct($manager, $manager->getClassMetadata($entityClass));
     }
