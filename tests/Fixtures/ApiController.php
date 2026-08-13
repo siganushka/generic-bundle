@@ -9,7 +9,9 @@ use Siganushka\GenericBundle\Controller\Crud\GetCollectionTrait;
 use Siganushka\GenericBundle\Controller\Crud\GetItemTrait;
 use Siganushka\GenericBundle\Controller\Crud\PostCollectionTrait;
 use Siganushka\GenericBundle\Controller\Crud\PutItemTrait;
+use Symfony\Component\Routing\Attribute\Route;
 
+#[Route('/api/users')]
 class ApiController
 {
     use GetCollectionTrait;
