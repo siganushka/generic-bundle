@@ -25,8 +25,8 @@ final class ConfigurationTest extends TestCase
 
         static::assertSame($processedConfig, [
             'doctrine' => [
-                'schema_resort' => true,
                 'table_prefix' => null,
+                'schema_resort' => true,
             ],
             'serializer' => [
                 'form_error_normalizer' => false,
@@ -38,8 +38,8 @@ final class ConfigurationTest extends TestCase
     public function testCustomDoctrineConfig(): void
     {
         $config = [
-            'schema_resort' => false,
             'table_prefix' => 'test_',
+            'schema_resort' => false,
         ];
 
         $processor = new Processor();

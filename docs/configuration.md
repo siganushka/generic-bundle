@@ -31,7 +31,6 @@ siganushka_generic:
 
 siganushka_generic:
     serializer:
-        entity_mapping: false               # 为实体（field|getter|hasser|isser）添加序列化组，默认关闭
         form_error_normalizer: false        # 表单错误序列化器，默认关闭
         knp_pagination_normalizer: false    # 分页数据序列化器，默认关闭
 ```

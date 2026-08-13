@@ -168,9 +168,9 @@ $foo->setDeleted(int $deleted); // 设置删除标记，删除数据时自动填
 // ./src/Entity/Category.php
 
 use Doctrine\Common\Collections\Collection;
-use Siganushka\GenericBundle\Entity\Nestable;
+use Siganushka\GenericBundle\Entity\AbstractNestable;
 
-class Category extends Nestable
+class Category extends AbstractNestable
 {
     // ...
 }
