@@ -28,6 +28,7 @@ return static function (ContainerConfigurator $container): void {
             ->tag('twig.runtime')
 
         ->set('siganushka_generic.security.mock_authenticator', MockAuthenticator::class)
+            ->abstract()
             ->arg('$httpUtils', service('security.http_utils'))
             ->arg('$debug', param('kernel.debug'))
     ;
