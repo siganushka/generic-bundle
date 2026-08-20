@@ -30,7 +30,11 @@ class MockAuthenticator extends AbstractAuthenticator
      *  identifier_parameter: string
      * }
      */
-    private array $options;
+    private array $options = [
+        'success_path' => '/',
+        'failure_path' => '/',
+        'identifier_parameter' => '_identifier',
+    ];
 
     /**
      * @param UserProviderInterface<UserInterface> $userProvider
@@ -41,11 +45,7 @@ class MockAuthenticator extends AbstractAuthenticator
         private readonly bool $debug,
         array $options = [])
     {
-        $this->options = array_merge([
-            'success_path' => '/',
-            'failure_path' => '/',
-            'identifier_parameter' => '_identifier',
-        ], $options);
+        $this->options = array_merge($this->options, $options);
     }
 
     public function supports(Request $request): ?bool
