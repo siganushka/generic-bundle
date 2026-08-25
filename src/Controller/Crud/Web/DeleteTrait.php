@@ -28,10 +28,7 @@ trait DeleteTrait
 
         $token = new CsrfToken('delete'.$id, $request->query->getString('_token'));
         if ($tokenManager->isTokenValid($token)) {
-            $this->runInTransaction(static function (EntityManagerInterface $em) use ($entity) {
-                $em->remove($entity);
-                $em->flush();
-            });
+            $this->runInTransaction(static fn (EntityManagerInterface $em) => $em->remove($entity));
 
             $metadata = $this->entityManager->getClassMetadata($entity::class);
             $identifier = $metadata->getFieldValue($entity, $metadata->getSingleIdentifierFieldName());

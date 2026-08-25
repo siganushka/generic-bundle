@@ -21,10 +21,7 @@ trait DeleteItemTrait
             throw new AccessDeniedException();
         }
 
-        $this->runInTransaction(static function (EntityManagerInterface $em) use ($entity) {
-            $em->remove($entity);
-            $em->flush();
-        });
+        $this->runInTransaction(static fn (EntityManagerInterface $em) => $em->remove($entity));
 
         return new Response(status: Response::HTTP_NO_CONTENT);
     }

@@ -30,10 +30,7 @@ trait PostCollectionTrait
             return new JsonResponse($serializer->serialize($form, 'json'), JsonResponse::HTTP_UNPROCESSABLE_ENTITY, json: true);
         }
 
-        $this->runInTransaction(static function (EntityManagerInterface $em) use ($entity) {
-            $em->persist($entity);
-            $em->flush();
-        });
+        $this->runInTransaction(static fn (EntityManagerInterface $em) => $em->persist($entity));
 
         $json = $serializer->serialize($entity, 'json', $this->serializationItemContext);
 

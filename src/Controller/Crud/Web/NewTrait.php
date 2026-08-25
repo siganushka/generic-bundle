@@ -32,10 +32,7 @@ trait NewTrait
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->runInTransaction(static function (EntityManagerInterface $em) use ($entity) {
-                $em->persist($entity);
-                $em->flush();
-            });
+            $this->runInTransaction(static fn (EntityManagerInterface $em) => $em->persist($entity));
 
             $metadata = $this->entityManager->getClassMetadata($entity::class);
             $identifier = $metadata->getFieldValue($entity, $metadata->getSingleIdentifierFieldName());
