@@ -119,6 +119,7 @@ trait OperationsTrait
             $this->entityManager->wrapInTransaction($func);
         } else {
             \call_user_func($func, $this->entityManager);
+            $this->entityManager->flush();
         }
     }
 
