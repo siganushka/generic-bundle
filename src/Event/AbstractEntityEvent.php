@@ -25,11 +25,11 @@ abstract class AbstractEntityEvent extends Event
         return $this->context;
     }
 
-    public function getEventName(): string
+    public static function getName(string $entityFqcn): string
     {
         $eventAlias = ClassUtils::generateAlias(static::class);
         $eventAlias = str_replace(['entity_', '_event'], '', $eventAlias);
 
-        return \sprintf('%s.%s', $this->entity::class, $eventAlias);
+        return \sprintf('%s.%s', $entityFqcn, $eventAlias);
     }
 }

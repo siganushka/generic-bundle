@@ -28,7 +28,7 @@ class EntityEventTest extends TestCase
 
         static::assertSame($entity, $event->getEntity());
         static::assertSame([], $event->getContext());
-        static::assertSame($entity::class.'.'.$eventAlias, $event->getEventName());
+        static::assertSame($entity::class.'.'.$eventAlias, $event::getName($entity::class));
     }
 
     public static function entityEventProvider(): iterable

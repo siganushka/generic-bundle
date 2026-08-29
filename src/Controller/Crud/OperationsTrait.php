@@ -145,9 +145,9 @@ trait OperationsTrait
             default => throw new BadRequestHttpException('Unexpected operation.'),
         };
 
-        $this->eventDispatcher->dispatch($preEvent, $preEvent->getEventName());
+        $this->eventDispatcher->dispatch($preEvent, $preEvent::getName($entity::class));
         $this->runInTransaction($callable);
-        $this->eventDispatcher->dispatch($postEvent, $postEvent->getEventName());
+        $this->eventDispatcher->dispatch($postEvent, $postEvent::getName($entity::class));
     }
 
     protected function runInTransaction(callable $func): void
