@@ -31,7 +31,7 @@ trait EditTrait
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->runInTransaction(static fn () => null);
+            $this->commitEntity(self::OPERATION_UPDATE, $entity);
 
             $metadata = $this->entityManager->getClassMetadata($entity::class);
             $identifier = $metadata->getFieldValue($entity, $metadata->getSingleIdentifierFieldName());

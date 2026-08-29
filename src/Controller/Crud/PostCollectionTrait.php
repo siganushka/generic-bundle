@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\Controller\Crud;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -30,7 +29,7 @@ trait PostCollectionTrait
             return new JsonResponse($serializer->serialize($form, 'json'), JsonResponse::HTTP_UNPROCESSABLE_ENTITY, json: true);
         }
 
-        $this->runInTransaction(static fn (EntityManagerInterface $em) => $em->persist($entity));
+        $this->commitEntity(self::OPERATION_CREATE, $entity);
 
         $json = $serializer->serialize($entity, 'json', $this->serializationItemContext);
 

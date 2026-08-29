@@ -6,14 +6,22 @@ namespace Siganushka\GenericBundle\Controller\Crud;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
+use Siganushka\GenericBundle\Event\EntityBeforeCreateEvent;
+use Siganushka\GenericBundle\Event\EntityBeforeDeleteEvent;
+use Siganushka\GenericBundle\Event\EntityBeforeUpdateEvent;
+use Siganushka\GenericBundle\Event\EntityCreatedEvent;
+use Siganushka\GenericBundle\Event\EntityDeletedEvent;
+use Siganushka\GenericBundle\Event\EntityUpdatedEvent;
 use Siganushka\GenericBundle\Repository\GenericEntityRepository;
 use Siganushka\GenericBundle\Utils\ClassUtils;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 
 trait OperationsTrait
@@ -25,6 +33,9 @@ trait OperationsTrait
 
     #[Required]
     public EntityManagerInterface $entityManager;
+
+    #[Required]
+    public EventDispatcherInterface $eventDispatcher;
 
     #[Required]
     public FormFactoryInterface $formFactory;
@@ -111,6 +122,32 @@ trait OperationsTrait
     protected function createEntityForm(object $data, array $options = []): FormInterface
     {
         return $this->formFactory->create($this->entityForm, $data, $options);
+    }
+
+    protected function commitEntity(string $operation, object $entity): void
+    {
+        [$callable, $preEvent, $postEvent] = match ($operation) {
+            self::OPERATION_CREATE => [
+                static fn (EntityManagerInterface $em) => $em->persist($entity),
+                new EntityBeforeCreateEvent($entity),
+                new EntityCreatedEvent($entity),
+            ],
+            self::OPERATION_UPDATE => [
+                static fn () => null,
+                new EntityBeforeUpdateEvent($entity),
+                new EntityUpdatedEvent($entity),
+            ],
+            self::OPERATION_DELETE => [
+                static fn (EntityManagerInterface $em) => $em->remove($entity),
+                new EntityBeforeDeleteEvent($entity),
+                new EntityDeletedEvent($entity),
+            ],
+            default => throw new BadRequestHttpException('Unexpected operation.'),
+        };
+
+        $this->eventDispatcher->dispatch($preEvent, $preEvent->getEventName());
+        $this->runInTransaction($callable);
+        $this->eventDispatcher->dispatch($postEvent, $postEvent->getEventName());
     }
 
     protected function runInTransaction(callable $func): void
