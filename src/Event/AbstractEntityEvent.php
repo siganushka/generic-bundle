@@ -7,14 +7,23 @@ namespace Siganushka\GenericBundle\Event;
 use Siganushka\GenericBundle\Utils\ClassUtils;
 use Symfony\Contracts\EventDispatcher\Event;
 
+/**
+ * @template T of object = object
+ */
 abstract class AbstractEntityEvent extends Event
 {
+    /**
+     * @param T $entity
+     */
     public function __construct(
         protected readonly object $entity,
         protected readonly array $context = [])
     {
     }
 
+    /**
+     * @return T
+     */
     public function getEntity(): object
     {
         return $this->entity;
