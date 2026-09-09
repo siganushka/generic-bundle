@@ -32,7 +32,7 @@ class GenericEntityRepository extends EntityRepository
         parent::__construct($manager, $manager->getClassMetadata($entityClass));
     }
 
-    public function createQueryBuilderWithOrderBy(string $alias, ?string $indexBy = null, string $orderBy = 'DESC'): QueryBuilder
+    public function createQueryBuilderWithOrderBy(string $alias, ?string $indexBy = null, \SortDirection|string $orderBy = \SortDirection::Descending): QueryBuilder
     {
         $qb = $this->createQueryBuilder($alias, $indexBy);
 
