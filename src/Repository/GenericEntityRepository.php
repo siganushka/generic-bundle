@@ -34,6 +34,11 @@ class GenericEntityRepository extends EntityRepository
 
     public function createQueryBuilderWithOrderBy(string $alias, ?string $indexBy = null, \SortDirection|string $orderBy = \SortDirection::Descending): QueryBuilder
     {
+        // Compatible with doctrine/orm > 3.7.0
+        if ($orderBy instanceof \SortDirection) {
+            $orderBy = \SortDirection::Ascending === $orderBy ? 'ASC' : 'DESC';
+        }
+
         $qb = $this->createQueryBuilder($alias, $indexBy);
 
         if (is_subclass_of($this->getEntityName(), ResourceInterface::class)) {
