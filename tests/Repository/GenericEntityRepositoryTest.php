@@ -20,6 +20,7 @@ use Siganushka\GenericBundle\Dto\DateRangeDto;
 use Siganushka\GenericBundle\Repository\GenericEntityRepository;
 use Siganushka\GenericBundle\Tests\Fixtures\QueryFilterDto;
 use Siganushka\GenericBundle\Tests\Fixtures\QueryFilterDto2;
+use Siganushka\GenericBundle\Tests\Fixtures\QueryFilterDto3;
 
 class GenericEntityRepositoryTest extends TestCase
 {
@@ -65,12 +66,21 @@ class GenericEntityRepositoryTest extends TestCase
         static::assertSame($dql, $qb->getDQL());
     }
 
-    public function testCreateCriteriaFromDtoWithInvalidArgumentException(): void
+    public function testCreateCriteriaFromDtoWithExprException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Unsupported expr "INVALID"');
+        $this->expectExceptionMessage('The QueryFilter::expr with value "INVALID" is not supported');
 
         $dto = new QueryFilterDto2(q: 'hello');
+        GenericEntityRepository::createCriteriaFromDto($dto);
+    }
+
+    public function testCreateCriteriaFromDtoWithWhenException(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The QueryFilter::when is not a callable expression');
+
+        $dto = new QueryFilterDto3(q: 'hello');
         GenericEntityRepository::createCriteriaFromDto($dto);
     }
 

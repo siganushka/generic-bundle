@@ -62,7 +62,7 @@ class GenericEntityRepository extends EntityRepository
     public static function createCriteriaFromDto(object $dto): Criteria
     {
         $expressions = [];
-        $expressionFn = static fn (string $expr): \Closure => match ($expr) {
+        $expression = static fn (string $expr): \Closure => match ($expr) {
             Comparison::EQ => Criteria::expr()->eq(...),
             Comparison::NEQ => Criteria::expr()->neq(...),
             Comparison::LT => Criteria::expr()->lt(...),
@@ -75,39 +75,41 @@ class GenericEntityRepository extends EntityRepository
             Comparison::MEMBER_OF => Criteria::expr()->memberOf(...),
             Comparison::STARTS_WITH => Criteria::expr()->startsWith(...),
             Comparison::ENDS_WITH => Criteria::expr()->endsWith(...),
-            default => throw new \InvalidArgumentException(\sprintf('Unsupported expr "%s".', $expr)),
+            default => throw new \InvalidArgumentException(\sprintf('The QueryFilter::expr with value "%s" is not supported.', $expr)),
         };
 
-        $emptyFn = static fn (mixed $value): bool => null === $value || '' === $value || [] === $value;
+        $shouldSkip = static fn (mixed $v, bool $forceOnNull): bool => (!$forceOnNull && null === $v) || '' === $v || [] === $v;
 
-        $ref = new \ReflectionClass($dto);
-        foreach ($ref->getProperties() as $property) {
+        foreach ((new \ReflectionClass($dto))->getProperties() as $property) {
             if (!$property->isInitialized($dto)) {
                 continue;
             }
 
+            $filter = ($property->getAttributes(QueryFilter::class)[0] ?? null)?->newInstance() ?? null;
+            if (null === $filter) {
+                continue;
+            }
+
             $value = $property->getValue($dto);
-            if ($emptyFn($value)) {
+            if ($shouldSkip($value, $filter->forceOnNull)) {
                 continue;
             }
 
-            $attribute = $property->getAttributes(QueryFilter::class)[0] ?? null;
-            if (null === $attribute) {
-                continue;
+            if ($filter->when && !\is_callable($filter->when)) {
+                throw new \InvalidArgumentException('The QueryFilter::when is not a callable expression.');
             }
 
-            $filter = $attribute->newInstance();
             if (\is_callable($filter->when) && !($filter->when)($dto, $value)) {
                 continue;
             }
 
             if (\is_string($filter->expr)) {
                 /* @phpstan-ignore argument.type */
-                $expressions[] = $expressionFn($filter->expr)($filter->field ?? $property->getName(), $value);
+                $expressions[] = $expression($filter->expr)($filter->field ?? $property->getName(), $value);
             } else {
                 foreach ($filter->expr as $subProperty => $subExpr) {
-                    if (!$emptyFn($value->$subProperty)) {
-                        $expressions[] = $expressionFn($subExpr)($filter->field ?? $property->getName(), $value->$subProperty);
+                    if (!$shouldSkip($value->$subProperty, $filter->forceOnNull)) {
+                        $expressions[] = $expression($subExpr)($filter->field ?? $property->getName(), $value->$subProperty);
                     }
                 }
             }

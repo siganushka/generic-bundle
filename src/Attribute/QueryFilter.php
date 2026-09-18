@@ -10,14 +10,16 @@ use Doctrine\ORM\Query\Expr\Comparison;
 class QueryFilter
 {
     /**
-     * @param string|null              $field Define entity field name
-     * @param string|array             $expr  Define comparison expressions
-     * @param \Closure|array|null|null $when  define whether the comparison expressions applies to the query
+     * @param string|null              $field       Define entity field name
+     * @param string|array             $expr        Define comparison expressions
+     * @param \Closure|array|null|null $when        Define whether the comparison expressions applies to the query
+     * @param bool                     $forceOnNull define how to query NULL values
      */
     public function __construct(
         public readonly ?string $field = null,
         public readonly string|array $expr = Comparison::EQ,
         public readonly \Closure|array|null $when = null,
+        public readonly bool $forceOnNull = false,
     ) {
     }
 }
