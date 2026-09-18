@@ -19,6 +19,7 @@ use Siganushka\Contracts\Doctrine\TimestampableTrait;
 use Siganushka\GenericBundle\Dto\DateRangeDto;
 use Siganushka\GenericBundle\Repository\GenericEntityRepository;
 use Siganushka\GenericBundle\Tests\Fixtures\QueryFilterDto;
+use Siganushka\GenericBundle\Tests\Fixtures\QueryFilterDto2;
 
 class GenericEntityRepositoryTest extends TestCase
 {
@@ -62,6 +63,15 @@ class GenericEntityRepositoryTest extends TestCase
         $qb->addCriteria($criteria);
 
         static::assertSame($dql, $qb->getDQL());
+    }
+
+    public function testCreateCriteriaFromDtoWithInvalidArgumentException(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unsupported expr "INVALID"');
+
+        $dto = new QueryFilterDto2(q: 'hello');
+        GenericEntityRepository::createCriteriaFromDto($dto);
     }
 
     public function testArgumentCountError(): void
