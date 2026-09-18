@@ -6,7 +6,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Siganushka\GenericBundle\Decorator\DecoratingKnpPaginator;
 use Siganushka\GenericBundle\EventListener\JsonResponseListener;
-use Siganushka\GenericBundle\Security\Http\MockAuthenticator;
+use Siganushka\GenericBundle\Security\Http\Authenticator\MockAuthenticator;
 use Siganushka\GenericBundle\Twig\Extension\GenericExtension;
 use Siganushka\GenericBundle\Twig\Runtime\GenericExtensionRuntime;
 

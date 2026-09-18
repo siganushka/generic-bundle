@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Siganushka\GenericBundle\Security\Http;
+namespace Siganushka\GenericBundle\Security\Http\Authenticator;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
