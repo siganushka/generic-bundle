@@ -6,10 +6,10 @@ namespace Siganushka\GenericBundle\Tests\Fixtures;
 
 use Siganushka\GenericBundle\Attribute\QueryFilter;
 
-class QueryFilterDto3
+class QueryFilterDtoForceOnNull
 {
     public function __construct(
-        #[QueryFilter(when: [self::class, 'nonValidCallable'])]
+        #[QueryFilter(forceOnNull: true)]
         public readonly ?string $q = null,
     ) {
     }

@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Siganushka\GenericBundle\Tests\Repository;
 
+use Doctrine\Common\Collections\Expr\Expression;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Query\QueryExpressionVisitor;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -19,8 +21,9 @@ use Siganushka\Contracts\Doctrine\TimestampableTrait;
 use Siganushka\GenericBundle\Dto\DateRangeDto;
 use Siganushka\GenericBundle\Repository\GenericEntityRepository;
 use Siganushka\GenericBundle\Tests\Fixtures\QueryFilterDto;
-use Siganushka\GenericBundle\Tests\Fixtures\QueryFilterDto2;
-use Siganushka\GenericBundle\Tests\Fixtures\QueryFilterDto3;
+use Siganushka\GenericBundle\Tests\Fixtures\QueryFilterDtoForceOnNull;
+use Siganushka\GenericBundle\Tests\Fixtures\QueryFilterDtoInvalidExpr;
+use Siganushka\GenericBundle\Tests\Fixtures\QueryFilterDtoInvalidWhen;
 
 class GenericEntityRepositoryTest extends TestCase
 {
@@ -55,15 +58,22 @@ class GenericEntityRepositoryTest extends TestCase
     }
 
     #[DataProvider('queryFilterProvider')]
-    public function testCreateCriteriaFromDto(array $arguments, string $dql): void
+    public function testCreateCriteriaFromDto(object $dto, ?string $dql): void
     {
-        $dto = new QueryFilterDto(...$arguments);
         $criteria = GenericEntityRepository::createCriteriaFromDto($dto);
 
-        $qb = $this->createRepository(Foo::class)->createQueryBuilder('f');
-        $qb->addCriteria($criteria);
+        $whereExpression = $criteria->getWhereExpression();
+        if (null === $dql) {
+            static::assertNull($whereExpression);
+        } else {
+            static::assertInstanceOf(Expression::class, $whereExpression);
 
-        static::assertSame($dql, $qb->getDQL());
+            $visitor = new QueryExpressionVisitor(['f']);
+
+            $queryExpression = $visitor->dispatch($whereExpression);
+            static::assertInstanceOf(\Stringable::class, $queryExpression);
+            static::assertSame($dql, $queryExpression->__toString());
+        }
     }
 
     public function testCreateCriteriaFromDtoWithExprException(): void
@@ -71,7 +81,7 @@ class GenericEntityRepositoryTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The QueryFilter::expr with value "INVALID" is not supported');
 
-        $dto = new QueryFilterDto2(q: 'hello');
+        $dto = new QueryFilterDtoInvalidExpr(q: 'hello');
         GenericEntityRepository::createCriteriaFromDto($dto);
     }
 
@@ -80,11 +90,11 @@ class GenericEntityRepositoryTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The QueryFilter::when is not a callable expression');
 
-        $dto = new QueryFilterDto3(q: 'hello');
+        $dto = new QueryFilterDtoInvalidWhen(q: 'hello');
         GenericEntityRepository::createCriteriaFromDto($dto);
     }
 
-    public function testArgumentCountError(): void
+    public function testCreateNewWithArgumentCountException(): void
     {
         $this->expectException(\ArgumentCountError::class);
 
@@ -124,80 +134,73 @@ class GenericEntityRepositoryTest extends TestCase
         $now = new \DateTimeImmutable();
 
         yield [
-            [
-                'q1' => 'q1_value',
-                'q2' => 0,
-                'q3' => false,
-                'q4' => 'q4_value',
-                'q5' => 'q5_value',
-                'q6' => 'q6_value',
-                'q7' => ['q7_value'],
-                'q8' => ['q8_value'],
-                'q9' => 'q9_value',
-                'q10' => 'q10_value',
-                'q11' => 'q11_value',
-                'q12' => 'q12_value',
-                'q13' => new DateRangeDto($now, $now->modify('+7 days')),
-                'q14' => 'q14_value',
-            ],
-            'SELECT f FROM Siganushka\GenericBundle\Tests\Repository\Foo f WHERE f.q1 = :q1 AND f.q2 <> :q2 AND f.q333 < :q333 AND f.q4 <= :q4 AND f.q5 > :q5 AND f.q6 >= :q6 AND f.q7 IN(:q7) AND f.q8 NOT IN(:q8) AND f.q9 LIKE :q9 AND q10 MEMBER OF q10_value AND f.q11 LIKE :q11 AND f.q12 LIKE :q12 AND f.q13 >= :q13 AND f.q13 <= :q13_12 AND f.q14 = :q14',
+            new QueryFilterDto(
+                q1: 'q1_value',
+                q2: 0,
+                q3: false,
+                q4: 'q4_value',
+                q5: 'q5_value',
+                q6: 'q6_value',
+                q7: ['q7_value'],
+                q8: ['q8_value'],
+                q9: 'q9_value',
+                q10: 'q10_value',
+                q11: 'q11_value',
+                q12: 'q12_value',
+                q13: new DateRangeDto($now, $now->modify('+7 days')),
+                q14: 'q14_value',
+            ),
+            'f.q1 = :q1 AND f.q2 <> :q2 AND f.q333 < :q333 AND f.q4 <= :q4 AND f.q5 > :q5 AND f.q6 >= :q6 AND f.q7 IN(:q7) AND f.q8 NOT IN(:q8) AND f.q9 LIKE :q9 AND q10 MEMBER OF q10_value AND f.q11 LIKE :q11 AND f.q12 LIKE :q12 AND f.q13 >= :q13 AND f.q13 <= :q13_12 AND f.q14 = :q14',
         ];
 
         yield [
-            [
-                'q1' => null,
-            ],
-            'SELECT f FROM Siganushka\GenericBundle\Tests\Repository\Foo f',
+            new QueryFilterDto(q1: null),
+            null,
         ];
 
         yield [
-            [
-                'q1' => '',
-            ],
-            'SELECT f FROM Siganushka\GenericBundle\Tests\Repository\Foo f',
+            new QueryFilterDto(q1: ''),
+            null,
         ];
 
         yield [
-            [
-                'q7' => [],
-            ],
-            'SELECT f FROM Siganushka\GenericBundle\Tests\Repository\Foo f',
+            new QueryFilterDto(q7: []),
+            null,
         ];
 
         yield [
-            [
-                'q13' => new DateRangeDto(),
-            ],
-            'SELECT f FROM Siganushka\GenericBundle\Tests\Repository\Foo f',
+            new QueryFilterDto(q13: new DateRangeDto()),
+            null,
         ];
 
         yield [
-            [
-                'q13' => new DateRangeDto(startAt: $now),
-            ],
-            'SELECT f FROM Siganushka\GenericBundle\Tests\Repository\Foo f WHERE f.q13 >= :q13',
+            new QueryFilterDto(q13: new DateRangeDto(startAt: $now)),
+            'f.q13 >= :q13',
         ];
 
         yield [
-            [
-                'q13' => new DateRangeDto(endAt: $now),
-            ],
-            'SELECT f FROM Siganushka\GenericBundle\Tests\Repository\Foo f WHERE f.q13 <= :q13',
+            new QueryFilterDto(q13: new DateRangeDto(endAt: $now)),
+            'f.q13 <= :q13',
         ];
 
         yield [
-            [
-                'q14' => 'q14_value',
-            ],
-            'SELECT f FROM Siganushka\GenericBundle\Tests\Repository\Foo f',
+            new QueryFilterDto(q14: 'q14_value'),
+            null,
         ];
 
         yield [
-            [
-                'q1' => 'q1_value',
-                'q14' => 'q14_value',
-            ],
-            'SELECT f FROM Siganushka\GenericBundle\Tests\Repository\Foo f WHERE f.q1 = :q1 AND f.q14 = :q14',
+            new QueryFilterDto(q1: 'q1_value', q14: 'q14_value'),
+            'f.q1 = :q1 AND f.q14 = :q14',
+        ];
+
+        yield [
+            new QueryFilterDtoForceOnNull(),
+            'f.q IS NULL',
+        ];
+
+        yield [
+            new QueryFilterDtoForceOnNull(q: 'q_value'),
+            'f.q = :q',
         ];
     }
 }

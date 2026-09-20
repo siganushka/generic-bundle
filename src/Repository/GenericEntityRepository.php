@@ -91,6 +91,15 @@ class GenericEntityRepository extends EntityRepository
             }
 
             $value = $property->getValue($dto);
+
+            // Normalize HTTP query boundary: convert empty strings ('') to null if forceOnNull is enabled.
+            // In HTTP GET requests, empty parameters (e.g., '?parent=') are parsed as empty strings rather than null.
+            // Without this normalization, 'shouldSkip' logic would treat '' as an invalid input and skip the field,
+            // leading to unintended 'SELECT ALL' queries instead of triggering the expected 'IS NULL' condition.
+            if ($filter->forceOnNull && '' === $value) {
+                $value = null;
+            }
+
             if ($shouldSkip($value, $filter->forceOnNull)) {
                 continue;
             }

@@ -6,10 +6,10 @@ namespace Siganushka\GenericBundle\Tests\Fixtures;
 
 use Siganushka\GenericBundle\Attribute\QueryFilter;
 
-class QueryFilterDto2
+class QueryFilterDtoInvalidWhen
 {
     public function __construct(
-        #[QueryFilter(expr: 'INVALID')]
+        #[QueryFilter(when: [self::class, 'INVALID'])]
         public readonly ?string $q = null,
     ) {
     }
