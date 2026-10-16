@@ -6,7 +6,6 @@ namespace Siganushka\GenericBundle\Doctrine\EventListener;
 
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Siganushka\Contracts\Doctrine\DeletableInterface;
-use Siganushka\Contracts\Doctrine\ResourceInterface;
 
 class DeletableListener
 {
@@ -23,8 +22,8 @@ class DeletableListener
 
                 $oldValue = $metadata->getFieldValue($entity, self::FIELD_NAME);
                 // [important] Using unique identifier to ensure multiple delete operations when using a composite index.
-                $newValue = ($entity instanceof ResourceInterface ? $entity->getId() : null)
-                    ?? (microtime(true) * 1000) % 1000000 * 1000 + random_int(0, 999);
+                $newValue = 1 === \count($ids = $metadata->getIdentifierValues($entity)) && \is_int($id = current($ids))
+                    ? $id : (microtime(true) * 1000) % 1000000 * 1000 + random_int(0, 999);
 
                 $metadata->setFieldValue($entity, self::FIELD_NAME, $newValue);
                 $em->persist($entity);
