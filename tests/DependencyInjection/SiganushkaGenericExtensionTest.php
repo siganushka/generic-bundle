@@ -19,7 +19,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
         $container = $this->createContainerWithConfig();
 
         static::assertNull($container->getParameter('siganushka_generic.doctrine.table_prefix'));
-        static::assertTrue($container->getParameter('siganushka_generic.doctrine.schema_resort'));
 
         static::assertSame([
             'service_container',
@@ -31,15 +30,12 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'siganushka_generic.doctrine.nestable_listener',
             'siganushka_generic.doctrine.timestampable_listener',
             'siganushka_generic.doctrine.deletable_listener',
-            'siganushka_generic.doctrine.schema_resort_listener',
-            'siganushka_generic.doctrine.schema_resort_command',
             'siganushka_generic.form.controller',
             'siganushka_generic.form.money_type_extension',
             'siganushka_generic.form.button_type_extension',
             'siganushka_generic.form.choice_type_extension',
             'siganushka_generic.form.collection_type_extension',
             'siganushka_generic.form.date_range_type',
-            'siganushka_generic.serializer.entity_metadata_factory',
             'siganushka_generic.serializer.serializer_dump_command',
         ], $container->getServiceIds());
 
@@ -87,35 +83,12 @@ final class SiganushkaGenericExtensionTest extends TestCase
             ['event' => 'onFlush', 'priority' => 128],
         ], $deletableListener->getTag('doctrine.event_listener'));
 
-        $schemaResortListener = $container->getDefinition('siganushka_generic.doctrine.schema_resort_listener');
-        static::assertSame([
-            ['event' => 'postGenerateSchemaTable'],
-        ], $schemaResortListener->getTag('doctrine.event_listener'));
-
-        $schemaResortCommand = $container->getDefinition('siganushka_generic.doctrine.schema_resort_command');
-        static::assertTrue($schemaResortCommand->hasTag('console.command'));
-
-        /** @var Reference */
-        $managerRegistry = $schemaResortCommand->getArgument('$managerRegistry');
-        static::assertSame('doctrine', $managerRegistry->__toString());
-
         $formController = $container->getDefinition('siganushka_generic.form.controller');
         static::assertTrue($formController->hasTag('controller.service_arguments'));
 
         $formTypes = $formController->getArgument('$formTypes');
         static::assertInstanceOf(TaggedIteratorArgument::class, $formTypes);
         static::assertSame('form.type', $formTypes->getTag());
-
-        $entityMapping = $container->getDefinition('siganushka_generic.serializer.entity_metadata_factory');
-        static::assertSame(['serializer.mapping.class_metadata_factory', null, 0], $entityMapping->getDecoratedService());
-
-        /** @var Reference */
-        $decorated = $entityMapping->getArgument('$decorated');
-        static::assertSame('siganushka_generic.serializer.entity_metadata_factory.inner', $decorated->__toString());
-
-        /** @var Reference */
-        $registry = $entityMapping->getArgument('$registry');
-        static::assertSame('doctrine', $registry->__toString());
 
         $serializerDumpCommand = $container->getDefinition('siganushka_generic.serializer.serializer_dump_command');
         static::assertTrue($serializerDumpCommand->hasTag('console.command'));
@@ -135,7 +108,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
     {
         $configs = [
             'doctrine' => [
-                'schema_resort' => false,
                 'table_prefix' => 'test_',
             ],
             'serializer' => [
@@ -147,7 +119,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
         $container = $this->createContainerWithConfig($configs, true);
 
         static::assertSame('test_', $container->getParameter('siganushka_generic.doctrine.table_prefix'));
-        static::assertFalse($container->getParameter('siganushka_generic.doctrine.schema_resort'));
 
         static::assertSame([
             'service_container',
@@ -167,7 +138,6 @@ final class SiganushkaGenericExtensionTest extends TestCase
             'siganushka_generic.form.choice_type_extension',
             'siganushka_generic.form.collection_type_extension',
             'siganushka_generic.form.date_range_type',
-            'siganushka_generic.serializer.entity_metadata_factory',
             'siganushka_generic.serializer.serializer_dump_command',
             'siganushka_generic.serializer.form_error_normalizer',
             'siganushka_generic.serializer.knp_pagination_normalizer',

@@ -10,7 +10,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Siganushka\Contracts\Doctrine\ResourceInterface;
 use Siganushka\GenericBundle\Attribute\QueryFilter;
 
 /**
@@ -42,10 +41,12 @@ class GenericEntityRepository extends EntityRepository
             $orderBy = \SortDirection::Ascending === $orderBy ? 'ASC' : 'DESC';
         }
 
-        $qb = $this->createQueryBuilder($alias, $indexBy);
+        $metadata = $this->getClassMetadata();
+        $identifierFieldNames = $metadata->getIdentifierFieldNames();
 
-        if (is_subclass_of($this->getEntityName(), ResourceInterface::class)) {
-            $qb->addOrderBy(\sprintf('%s.id', $alias), $orderBy);
+        $qb = $this->createQueryBuilder($alias, $indexBy);
+        foreach ($identifierFieldNames as $field) {
+            $qb->addOrderBy($alias.'.'.$field, $orderBy);
         }
 
         return $qb;

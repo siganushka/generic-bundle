@@ -12,8 +12,6 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Siganushka\Contracts\Doctrine\ResourceInterface;
-use Siganushka\Contracts\Doctrine\ResourceTrait;
 use Siganushka\Contracts\Doctrine\SortableInterface;
 use Siganushka\Contracts\Doctrine\SortableTrait;
 use Siganushka\Contracts\Doctrine\TimestampableInterface;
@@ -109,10 +107,13 @@ class GenericEntityRepositoryTest extends TestCase
      */
     private function createRepository(string $entityClass): GenericEntityRepository
     {
+        $classMetadata = new ClassMetadata($entityClass);
+        $classMetadata->setIdentifier(['id']);
+
         $entityManager = $this->createMock(EntityManagerInterface::class);
 
         $entityManager->method('getClassMetadata')
-            ->willReturn(new ClassMetadata($entityClass))
+            ->willReturn($classMetadata)
         ;
 
         $entityManager->method('createQueryBuilder')
@@ -205,9 +206,8 @@ class GenericEntityRepositoryTest extends TestCase
     }
 }
 
-class Foo implements ResourceInterface, SortableInterface, TimestampableInterface
+class Foo implements SortableInterface, TimestampableInterface
 {
-    use ResourceTrait;
     use SortableTrait;
     use TimestampableTrait;
 

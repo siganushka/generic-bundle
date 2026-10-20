@@ -33,7 +33,7 @@ class DependencyCheckPassTest extends TestCase
         ];
         yield [
             ['doctrine'],
-            ['service_container', 'doctrine', 'siganushka_generic.doctrine.schema_resort_command', 'siganushka_generic.serializer.serializer_dump_command', 'siganushka_generic.serializer.entity_metadata_factory'],
+            ['service_container', 'doctrine', 'siganushka_generic.serializer.serializer_dump_command'],
         ];
         yield [
             ['twig'],

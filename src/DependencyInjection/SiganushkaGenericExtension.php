@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Siganushka\GenericBundle\DependencyInjection;
 
 use Knp\Component\Pager\PaginatorInterface;
-use Siganushka\Contracts\Doctrine\ResourceInterface;
+use Siganushka\Contracts\Doctrine\TimestampableInterface;
 use Siganushka\GenericBundle\Doctrine\Filter\DeletableFilter;
 use Siganushka\GenericBundle\Repository\GenericEntityRepository;
 use Symfony\Bundle\SecurityBundle\SecurityBundle;
@@ -31,15 +31,9 @@ class SiganushkaGenericExtension extends Extension implements PrependExtensionIn
         $config = $this->processConfiguration($configuration, $configs);
 
         $container->setParameter('siganushka_generic.doctrine.table_prefix', $config['doctrine']['table_prefix']);
-        $container->setParameter('siganushka_generic.doctrine.schema_resort', $config['doctrine']['schema_resort']);
 
-        if ($container::willBeAvailable('siganushka/doctrine-contracts', ResourceInterface::class, ['siganushka/generic-bundle'])) {
+        if ($container::willBeAvailable('siganushka/doctrine-contracts', TimestampableInterface::class, ['siganushka/generic-bundle'])) {
             $loader->load('doctrine.php');
-
-            if (!$config['doctrine']['schema_resort']) {
-                $container->removeDefinition('siganushka_generic.doctrine.schema_resort_listener');
-                $container->removeDefinition('siganushka_generic.doctrine.schema_resort_command');
-            }
 
             if (!$config['doctrine']['table_prefix']) {
                 $container->removeDefinition('siganushka_generic.doctrine.table_prefix_listener');

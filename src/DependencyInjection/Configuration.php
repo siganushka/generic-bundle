@@ -41,9 +41,6 @@ class Configuration implements ConfigurationInterface
                             ->thenInvalid('The "%s" for doctrine.table_prefix contains illegal character(s).')
                         ->end()
                     ->end()
-                    ->booleanNode('schema_resort')
-                        ->defaultTrue()
-                    ->end()
                 ->end()
             ->end()
         ;
