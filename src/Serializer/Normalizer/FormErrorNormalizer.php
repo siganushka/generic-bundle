@@ -57,9 +57,9 @@ class FormErrorNormalizer implements NormalizerInterface
         ];
     }
 
-    public function convertFormErrorToStirng(FormInterface $data, bool $showLabel = true): ?string
+    public function convertFormErrorToStirng(FormInterface $data, bool $deep = true, bool $showLabel = true): ?string
     {
-        $errors = $data->getErrors(true);
+        $errors = $data->getErrors($deep);
         if (0 === $errors->count()) {
             return null;
         }
@@ -92,7 +92,7 @@ class FormErrorNormalizer implements NormalizerInterface
 
         foreach ($data->all() as $child) {
             $childData = [
-                'error' => $this->convertFormErrorToStirng($child, false),
+                'error' => $this->convertFormErrorToStirng($child, false, false),
             ];
 
             $isExpandedChoice = $child->getConfig()->hasOption('choices')
