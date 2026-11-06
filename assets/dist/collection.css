@@ -1,4 +1,4 @@
-[data-controller=siganushka-generic-collection] tr td { background-color: transparent; }
-[data-controller=siganushka-generic-collection] tr td:first-child { padding-left: 0; }
-[data-controller=siganushka-generic-collection] tr td:last-child { padding-right: 0; }
-[data-controller=siganushka-generic-collection] tr:last-child td { padding-bottom: 0; }
+[data-controller~=siganushka-generic-collection] tr td { background-color: transparent; }
+[data-controller~=siganushka-generic-collection] tr td:first-child { padding-left: 0; }
+[data-controller~=siganushka-generic-collection] tr td:last-child { padding-right: 0; }
+[data-controller~=siganushka-generic-collection] tr:last-child td { padding-bottom: 0; }
