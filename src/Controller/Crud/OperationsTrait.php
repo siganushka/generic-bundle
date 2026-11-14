@@ -14,7 +14,6 @@ use Siganushka\GenericBundle\Event\EntityDeletedEvent;
 use Siganushka\GenericBundle\Event\EntityUpdatedEvent;
 use Siganushka\GenericBundle\Repository\GenericEntityRepository;
 use Siganushka\GenericBundle\Utils\ClassUtils;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
@@ -48,9 +47,9 @@ trait OperationsTrait
     protected string $entityIdentifier;
 
     /**
-     * @var class-string<FormTypeInterface>
+     * @var class-string<FormTypeInterface>|null
      */
-    protected string $entityForm;
+    protected ?string $entityForm;
 
     protected ?string $queryDtoClass;
     protected array $serializationCollectionContext;
@@ -85,7 +84,7 @@ trait OperationsTrait
 
         $this->entityName = $entityName;
         $this->entityIdentifier = $entityIdentifier ?? 'id';
-        $this->entityForm = $entityForm ?? FormType::class;
+        $this->entityForm = $entityForm;
         $this->queryDtoClass = $queryDtoClass;
         $this->serializationCollectionContext = $serializationCollectionContext ?? [AbstractNormalizer::GROUPS => $serializationCollectionGroups];
         $this->serializationItemContext = $serializationItemContext ?? [AbstractNormalizer::GROUPS => $serializationItemGroups];
@@ -121,6 +120,10 @@ trait OperationsTrait
 
     protected function createEntityForm(object $data, array $options = []): FormInterface
     {
+        if (!$this->entityForm) {
+            throw new \RuntimeException('The entity form class must be configured.');
+        }
+
         return $this->formFactory->create($this->entityForm, $data, $options);
     }
 
