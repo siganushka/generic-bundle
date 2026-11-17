@@ -27,7 +27,7 @@
     {%- for entry in compound ? form : [form] -%}
       {% set row_attr = entry.vars.row_attr %}
       {% if 'hidden' in entry.vars.block_prefixes %}
-        {% set row_attr = entry.vars.row_attr|merge({style: (row_attr.style|default('') ~ ' display: none')|trim}) %}
+        {% set row_attr = row_attr|merge({style: (row_attr.style|default('') ~ ' display: none')|trim}) %}
       {% endif %}
       <td{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
         {{- form_widget(entry, {attr: {placeholder: entry.vars.label}}) -}}
