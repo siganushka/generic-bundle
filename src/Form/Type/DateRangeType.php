@@ -62,7 +62,7 @@ class DateRangeType extends AbstractType
             $gte = new GreaterThanOrEqual(propertyPath: 'parent.all[startAt].data', message: $options['invalid_message']);
 
             $constraints = $value['constraints'] ?? [];
-            $newConstraints = \is_array($constraints) ? $constraints + [$gte] : [$constraints, $gte];
+            $newConstraints = \is_array($constraints) ? array_merge($constraints, [$gte]) : [$constraints, $gte];
 
             $value['constraints'] = $newConstraints;
             $value['label'] ??= 'generic.to';

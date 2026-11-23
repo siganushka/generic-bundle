@@ -114,7 +114,6 @@ class GenericEntityRepository extends EntityRepository
             }
 
             if (\is_string($filter->expr)) {
-                /* @phpstan-ignore argument.type */
                 $expressions[] = $expression($filter->expr)($filter->field ?? $property->getName(), $value);
             } else {
                 foreach ($filter->expr as $subProperty => $subExpr) {
