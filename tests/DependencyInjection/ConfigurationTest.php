@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Siganushka\GenericBundle\DependencyInjection\Configuration;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
 
 final class ConfigurationTest extends TestCase
@@ -31,6 +32,7 @@ final class ConfigurationTest extends TestCase
                 'form_error_normalizer' => false,
                 'knp_pagination_normalizer' => false,
             ],
+            'request_format' => [],
         ]);
     }
 
@@ -61,5 +63,53 @@ final class ConfigurationTest extends TestCase
         ]);
 
         static::assertSame($processedConfig['serializer'], $config);
+    }
+
+    public function testCustomRequestFormatConfig(): void
+    {
+        $config = [
+            ['pattern' => '^/api', 'format' => 'json'],
+            ['pattern' => '^/server', 'format' => 'xml'],
+        ];
+
+        $processor = new Processor();
+        $processedConfig = $processor->processConfiguration(new Configuration(), [
+            ['request_format' => $config],
+        ]);
+
+        static::assertSame($processedConfig['request_format'], $config);
+    }
+
+    public function testRequestFormatNormalizesPattern(): void
+    {
+        $processor = new Processor();
+        $processedConfig = $processor->processConfiguration(new Configuration(), [
+            ['request_format' => [['pattern' => ['^/api', '^/shop'], 'format' => 'json']]],
+        ]);
+
+        static::assertSame([[
+            'pattern' => '(?:^/api|^/shop)',
+            'format' => 'json',
+        ]], $processedConfig['request_format']);
+    }
+
+    public function testRequestFormatRequiresPattern(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+
+        $processor = new Processor();
+        $processor->processConfiguration(new Configuration(), [
+            ['request_format' => [['format' => 'json']]],
+        ]);
+    }
+
+    public function testRequestFormatRequiresFormat(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+
+        $processor = new Processor();
+        $processor->processConfiguration(new Configuration(), [
+            ['request_format' => [['pattern' => '^/api']]],
+        ]);
     }
 }

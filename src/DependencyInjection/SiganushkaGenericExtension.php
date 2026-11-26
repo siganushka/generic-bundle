@@ -15,7 +15,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RequestMatcher\PathRequestMatcher;
 use Symfony\Component\Intl\Intl;
 use Symfony\Component\Serializer\Serializer;
 use Twig\Environment;
@@ -31,6 +33,23 @@ class SiganushkaGenericExtension extends Extension implements PrependExtensionIn
         $config = $this->processConfiguration($configuration, $configs);
 
         $container->setParameter('siganushka_generic.doctrine.table_prefix', $config['doctrine']['table_prefix']);
+
+        $requestFormatListener = $container->getDefinition('siganushka_generic.request_format_listener');
+        foreach ($config['request_format'] as $rule) {
+            $id = '.siganushka_generic.request_matcher.'.ContainerBuilder::hash([PathRequestMatcher::class, $rule['pattern']]);
+            if (!$container->hasDefinition($id)) {
+                $container
+                    ->register($id, PathRequestMatcher::class)
+                    ->setArguments([$rule['pattern']])
+                ;
+            }
+
+            $requestFormatListener->addMethodCall('addMatcher', [new Reference($id), $rule['format']]);
+        }
+
+        if (!$config['request_format']) {
+            $container->removeDefinition('siganushka_generic.request_format_listener');
+        }
 
         if ($container::willBeAvailable('siganushka/doctrine-contracts', TimestampableInterface::class, ['siganushka/generic-bundle'])) {
             $loader->load('doctrine.php');

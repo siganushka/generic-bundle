@@ -11,6 +11,7 @@ use Symfony\Component\DependencyInjection\Compiler\ResolveChildDefinitionsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\EnvPlaceholderParameterBag;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\HttpFoundation\RequestMatcher\PathRequestMatcher;
 
 final class SiganushkaGenericExtensionTest extends TestCase
 {
@@ -160,6 +161,31 @@ final class SiganushkaGenericExtensionTest extends TestCase
 
         $knpPaginationNormalizer = $container->getDefinition('siganushka_generic.serializer.knp_pagination_normalizer');
         static::assertTrue($knpPaginationNormalizer->hasTag('serializer.normalizer'));
+    }
+
+    public function testRequestFormatListener(): void
+    {
+        $rules = [
+            ['pattern' => '^/(api|shop)', 'format' => 'json'],
+            ['pattern' => '^/server', 'format' => 'xml'],
+        ];
+
+        $container = $this->createContainerWithConfig(['request_format' => $rules]);
+
+        $requestFormatListener = $container->getDefinition('siganushka_generic.request_format_listener');
+        static::assertTrue($requestFormatListener->hasTag('kernel.event_subscriber'));
+
+        $methodCalls = $requestFormatListener->getMethodCalls();
+        static::assertCount(2, $methodCalls);
+        static::assertSame('addMatcher', $methodCalls[0][0]);
+        static::assertSame('json', $methodCalls[0][1][1]);
+        static::assertSame('xml', $methodCalls[1][1][1]);
+
+        /** @var Reference */
+        $pathMatcher = $methodCalls[0][1][0];
+        $pathMatcherDefinition = $container->getDefinition((string) $pathMatcher);
+        static::assertSame(PathRequestMatcher::class, $pathMatcherDefinition->getClass());
+        static::assertSame(['^/(api|shop)'], $pathMatcherDefinition->getArguments());
     }
 
     private function createContainerWithConfig(array $config = [], bool $csrf = false): ContainerBuilder

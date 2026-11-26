@@ -34,3 +34,16 @@ siganushka_generic:
         form_error_normalizer: false        # 表单错误序列化器，默认关闭
         knp_pagination_normalizer: false    # 分页数据序列化器，默认关闭
 ```
+
+### 请求格式
+
+强制指定请求格式，避免 `Symfony` 依据 `Accept` 请求头自行协商（例如让 `/api/*` 的错误响应始终为 `JSON`）。
+
+```yaml
+# ./config/packages/siganushka_generic.yaml
+
+siganushka_generic:
+    request_format:
+        - { pattern: '^/(api|shop)', format: json }
+        - { pattern: '^/server', format: xml }
+```

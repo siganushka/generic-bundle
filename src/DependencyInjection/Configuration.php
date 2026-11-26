@@ -21,6 +21,7 @@ class Configuration implements ConfigurationInterface
 
         $this->addDoctrineSection($rootNode);
         $this->addSerializerSection($rootNode);
+        $this->addRequestFormatSection($rootNode);
 
         return $treeBuilder;
     }
@@ -57,6 +58,33 @@ class Configuration implements ConfigurationInterface
                 ->children()
                     ->booleanNode('form_error_normalizer')->defaultFalse()->end()
                     ->booleanNode('knp_pagination_normalizer')->defaultFalse()->end()
+                ->end()
+            ->end()
+        ;
+    }
+
+    /**
+     * @param ArrayNodeDefinition<NodeParentInterface> $rootNode
+     */
+    private function addRequestFormatSection(ArrayNodeDefinition $rootNode): void
+    {
+        $rootNode->children()
+            ->arrayNode('request_format')
+                ->arrayPrototype()
+                    ->children()
+                        ->scalarNode('pattern')
+                            ->isRequired()
+                            ->cannotBeEmpty()
+                            ->beforeNormalization()
+                                ->ifArray()
+                                ->then(static fn (array $v): string => \sprintf('(?:%s)', implode('|', $v)))
+                            ->end()
+                        ->end()
+                        ->scalarNode('format')
+                            ->isRequired()
+                            ->cannotBeEmpty()
+                        ->end()
+                    ->end()
                 ->end()
             ->end()
         ;
