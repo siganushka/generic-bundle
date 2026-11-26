@@ -160,6 +160,37 @@ $foo->setDeleted(int $deleted); // 设置删除标记，删除数据时自动填
 > 2、删除标记默认使用实体自增主键填充，对于非自增或复合主键，将使用随机的删除标记以避免多次删除时索引冲突。
 > 3、如果实体是被引用方，逻辑删除后引用方查询时将提示异常，因此建议将引用方和被引用方同时使用逻辑删除。
 
+### DateRange
+
+通用的时间范围 `Embeddable`，提供只读的 `startAt`、`endAt` 字段，适合配合 [时间范围表单](form.md) 使用。
+
+```php
+// ./src/Entity/Promotion.php
+
+use Doctrine\ORM\Mapping as ORM;
+use Siganushka\GenericBundle\Entity\Embeddable\DateRange;
+
+class Promotion
+{
+    #[ORM\Embedded(class: DateRange::class)]
+    private DateRange $period;
+
+    public function __construct()
+    {
+        $this->period = new DateRange();
+    }
+
+    public function getPeriod(): DateRange
+    {
+        return $this->period;
+    }
+}
+
+$promotion = new Promotion();
+$promotion->getPeriod()->getStartAt(): ?\DateTimeImmutable; // 返回开始时间
+$promotion->getPeriod()->getEndAt(): ?\DateTimeImmutable;   // 返回结束时间
+```
+
 ### Nestable
 
 通用的嵌套结构 `MappedSuperclass`，用于实现任何树形结构，比如无限级分类、菜单等。
@@ -178,10 +209,12 @@ class Category extends AbstractNestable
 $category = new Category();
 $category->getParent(): ?self;          // 获取父节点
 $category->getChildren(): Collection;   // 获取子节点
-$category->getAncestors(): array;       // 获取所有祖先节点
-$category->getSiblings(): array;        // 获取所有同级节点（兄弟节点）
-$category->getDescendants(): array;     // 获取所有后代节点
-$category->getDepth(): int;             // 获取节点深度
-$category->isRoot(): bool;              // 是否为根节点
-$category->isLeaf(): bool;              // 是否为叶子节点
+$category->getAncestors(bool $includeSelf = false): array;    // 获取所有祖先节点
+$category->getSiblings(bool $includeSelf = false): array;     // 获取所有同级节点（兄弟节点）
+$category->getDescendants(bool $includeSelf = false): array;  // 获取所有后代节点
+$category->getDepth(): int;                                   // 获取节点深度
+$category->isRoot(): bool;                                    // 是否为根节点
+$category->isLeaf(): bool;                                    // 是否为叶子节点
 ```
+
+`NestableRepository` 额外提供 `findByParent()`，用于查询指定父节点的直接子节点。

@@ -18,3 +18,8 @@ $ composer require siganushka/generic-bundle
 - [全局配置](docs/configuration.md)
 - [实体模型](docs/doctrine.md)
 - [类型验证](docs/constraint.md)
+- [CRUD 控制器](docs/crud.md)
+- [查询过滤](docs/query-filter.md)
+- [表单扩展](docs/form.md)
+- [序列化](docs/serializer.md)
+- [问题响应](docs/response.md)
