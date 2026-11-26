@@ -73,7 +73,9 @@ protected function isGrantedForOperation(string $operation, object $entity): boo
 {
     return match ($operation) {
         self::OPERATION_READ => true,
-        self::OPERATION_CREATE, self::OPERATION_UPDATE, self::OPERATION_DELETE => $this->security->isGranted('ROLE_ADMIN'),
+        self::OPERATION_CREATE,
+        self::OPERATION_UPDATE,
+        self::OPERATION_DELETE => $this->security->isGranted('ROLE_ADMIN'),
         default => false,
     };
 }

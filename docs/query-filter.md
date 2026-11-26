@@ -5,12 +5,12 @@
 ### 定义 DTO
 
 ```php
-// ./src/Dto/ProductFilter.php
+// ./src/Dto/ProductQueryDto.php
 
 use Doctrine\Common\Collections\Expr\Comparison;
 use Siganushka\GenericBundle\Attribute\QueryFilter;
 
-class ProductFilter
+class ProductQueryDto
 {
     public function __construct(
         #[QueryFilter(expr: Comparison::CONTAINS)]
@@ -75,7 +75,7 @@ use Siganushka\GenericBundle\Repository\GenericEntityRepository;
 
 class ProductRepository extends GenericEntityRepository
 {
-    public function createQueryBuilderWithFilter(string $alias, ProductFilter $dto): QueryBuilder
+    public function createQueryBuilderWithFilter(string $alias, ProductQueryDto $dto): QueryBuilder
     {
         return $this->createQueryBuilderWithOrderBy($alias)
             ->addCriteria(self::createCriteriaFromDto($dto))
@@ -95,7 +95,7 @@ class ProductRepository extends GenericEntityRepository
 `GetCollectionTrait` 会把 `queryDtoClass` 反序列化后传给 `createEntityQueryBuilder()`，在控制器中覆盖该方法即可复用同一套过滤逻辑：
 
 ```php
-protected function createEntityQueryBuilder(ProductFilter $dto): QueryBuilder
+protected function createEntityQueryBuilder(ProductQueryDto $dto): QueryBuilder
 {
     return $this->entityManager->getRepository(Product::class)->createQueryBuilderWithFilter('entity', $dto);
 }

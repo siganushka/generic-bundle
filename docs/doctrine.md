@@ -1,27 +1,5 @@
-# 通用实体模型
 
-### Resource
-
-通用的实体资源 `id` 主键，统一全局主键类型为 `auto_increment`。
-
-```php
-// ./src/Entity/Foo.php
-
-use Siganushka\Contracts\Doctrine\ResourceInterface;
-use Siganushka\Contracts\Doctrine\ResourceTrait;
-
-class Foo implements ResourceInterface
-{
-    use ResourceTrait;
-
-    // ...
-}
-
-$foo = new Foo();
-$foo->getId(): ?int; // 返回主键 ID
-```
-
-### Enable
+### EnableInterface
 
 通用的 `enabled` 字段，适用物状态、是否启用等场景。
 
@@ -43,7 +21,7 @@ $foo->isEnabled(): bool;            // 返回状态、是否启用
 $foo->setEnabled(bool $enabled);    // 设置状态、是否启用
 ```
 
-### Sortable
+### SortableInterface
 
 通用的 `sort` 字段，抽象于常用的排序、优先级等场景。
 
@@ -65,7 +43,7 @@ $foo->getSort(): ?int;      // 返回排序值
 $foo->setSort(?int $sort);  // 设置排序值
 ```
 
-### Versionable
+### VersionableInterface
 
 通用的 `version` 字段，典型的乐观锁版本字段，由 `Doctrine` 自动维护。
 
@@ -87,7 +65,7 @@ $foo->getVersion(): ?int;           // 获取当前版本
 $foo->setVersion(?int $version);    // 设置当前版本，由 Doctrine 自动填充，不需要手动设置
 ```
 
-### Timestampable
+### TimestampableInterface
 
 通用的 `updatedAt` 和 `createdAt` 时间字段，并在更新、创建时自动填充。
 
